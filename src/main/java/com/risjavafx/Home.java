@@ -15,6 +15,7 @@ public class Home implements Initializable {
 
     public AnchorPane centerContent;
     public HBox topContent;
+    public HBox hi;
 
     // Load NavigationBar component into home-page.fxml
     @Override
