@@ -1,0 +1,36 @@
+#loginContainer {
+  -fx-background-color: #313131;
+  -fx-background-radius: 10px;
+}
+
+#mainContainer {
+    -fx-background-color: #121212;
+}
+
+#primaryButton {
+    -fx-background-color: #BB86FC;
+}
+
+#secondaryButton {
+    -fx-background-color: #03DAC6;
+}
+
+#secondaryButton: hover {
+    -fx-background-color: #03DAC673;
+}
+
+#menuBar {
+    -fx-background-color: #121212;
+}
+
+#menuBarButton {
+    -fx-background-color: transparent;
+}
+
+#menuBarButton: hover {
+    -fx-background-color: #313131;
+}
+
+#menuBarButtonClicked {
+    -fx-background-color: #BB86FC;
+}
