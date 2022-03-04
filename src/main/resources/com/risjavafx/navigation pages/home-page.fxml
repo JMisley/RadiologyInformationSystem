@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane id="mainContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0"
+<BorderPane id="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0"
             prefWidth="1500.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.risjavafx.Home">
    <top>
       <HBox fx:id="topContent"/>
@@ -19,7 +18,5 @@
       <HBox />
    </bottom>
    <center>
-      <AnchorPane fx:id="centerContent" BorderPane.alignment="CENTER">
-      </AnchorPane>
    </center>
 </BorderPane>

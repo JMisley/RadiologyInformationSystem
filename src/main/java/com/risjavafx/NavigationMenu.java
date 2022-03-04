@@ -39,20 +39,24 @@ public class NavigationMenu implements Initializable {
         main.changeScene("navigation pages/userinfo-page.fxml");
     }
 
-    public void openAdmin(ActionEvent event) {
+    public void openAdmin(ActionEvent event) throws IOException {
         Pages.setPage(Pages.ADMIN);
+        main.changeScene("navigation pages/admin-page.fxml");
     }
 
-    public void openReferrals(ActionEvent event) {
+    public void openReferrals(ActionEvent event) throws IOException {
         Pages.setPage(Pages.REFERRALS);
+        main.changeScene("navigation pages/referrals-page.fxml");
     }
 
-    public void openAppointments(ActionEvent event) {
+    public void openAppointments(ActionEvent event) throws IOException {
         Pages.setPage(Pages.APPOINTMENTS);
+        main.changeScene("navigation pages/appointments-page.fxml");
     }
 
-    public void openOrders(ActionEvent event) {
+    public void openOrders(ActionEvent event) throws IOException {
         Pages.setPage(Pages.ORDERS);
+        main.changeScene("navigation pages/orders-page.fxml");
     }
 
     public void userLogout(ActionEvent event) throws IOException {

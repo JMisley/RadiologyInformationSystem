@@ -10,7 +10,7 @@ import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class Orders implements Initializable {
+public class Admin implements Initializable {
 
     public HBox topContent;
 
