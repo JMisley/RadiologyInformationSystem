@@ -1,8 +1,5 @@
 package com.risjavafx;
 
-import com.risjavafx.Main;
-import com.risjavafx.Pages;
-import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
@@ -29,37 +26,37 @@ public class NavigationMenu implements Initializable {
         getPageButton().setId("menuBarButtonClicked");
     }
 
-    public void openHome(ActionEvent event) throws IOException {
+    public void openHome() throws IOException {
         Pages.setPage(Pages.HOME);
         main.changeScene("navigation pages/home-page.fxml");
     }
 
-    public void openUserInfo(ActionEvent event) throws IOException {
+    public void openUserInfo() throws IOException {
         Pages.setPage(Pages.USERINFO);
         main.changeScene("navigation pages/userinfo-page.fxml");
     }
 
-    public void openAdmin(ActionEvent event) throws IOException {
+    public void openAdmin() throws IOException {
         Pages.setPage(Pages.ADMIN);
         main.changeScene("navigation pages/admin-page.fxml");
     }
 
-    public void openReferrals(ActionEvent event) throws IOException {
+    public void openReferrals() throws IOException {
         Pages.setPage(Pages.REFERRALS);
         main.changeScene("navigation pages/referrals-page.fxml");
     }
 
-    public void openAppointments(ActionEvent event) throws IOException {
+    public void openAppointments() throws IOException {
         Pages.setPage(Pages.APPOINTMENTS);
         main.changeScene("navigation pages/appointments-page.fxml");
     }
 
-    public void openOrders(ActionEvent event) throws IOException {
+    public void openOrders() throws IOException {
         Pages.setPage(Pages.ORDERS);
         main.changeScene("navigation pages/orders-page.fxml");
     }
 
-    public void userLogout(ActionEvent event) throws IOException {
+    public void userLogout() throws IOException {
         main.changeScene("login-page.fxml");
     }
 

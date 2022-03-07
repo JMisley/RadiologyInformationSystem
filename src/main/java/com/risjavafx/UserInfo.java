@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.fxml.Initializable;
@@ -36,6 +37,7 @@ public class UserInfo implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         createNavBar();
+
         try {
             createTable();
         } catch (SQLException e) {
@@ -59,8 +61,9 @@ public class UserInfo implements Initializable {
             setColumns(tableColumnsList);
             addColumnsToTable();
             tableView.setMaxWidth(1150);
-            tableView.setMaxHeight(750);
-            setEvenColumnWidth(tableColumnsList);
+            tableView.setMaxHeight(650);
+            tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+            tableView.setStyle("styles.css");
         }};
         centerContent.getChildren().add(infoTable.tableView);
         infoTable.tableView.setItems(queryData());

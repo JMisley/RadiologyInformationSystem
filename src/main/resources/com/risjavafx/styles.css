@@ -1,6 +1,8 @@
 #loginContainer {
-  -fx-background-color: #313131;
-  -fx-background-radius: 10px;
+  -fx-background-color: transparent;
+  -fx-border-color: white;
+  -fx-border-width: 2px;
+  -fx-border-radius: 5px;
 }
 
 #mainContainer {
@@ -15,7 +17,7 @@
     -fx-background-color: #03DAC6;
 }
 
-#secondaryButton: hover {
+#secondaryButton:hover {
     -fx-background-color: #03DAC673;
 }
 
@@ -27,10 +29,46 @@
     -fx-background-color: transparent;
 }
 
-#menuBarButton: hover {
+#menuBarButton:hover {
     -fx-background-color: #313131;
 }
 
 #menuBarButtonClicked {
     -fx-background-color: #BB86FC;
+}
+
+
+/*TableView styles*/
+.table-view {
+    -fx-background-radius: 14 14 0 0;
+    -fx-background-color: #121212;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #121212;
+    -fx-background-radius: 14;
+    -fx-background-insets: 0 0 10 0;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-size: 50px;
+    -fx-border-width: 0 0 10 0;
+    -fx-background-color: transparent;
+}
+
+.table-cell {
+    -fx-text-fill: white;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #121212;
+}
+
+.table-row-cell:even {
+    -fx-background-color: #3e3e3e;
 }

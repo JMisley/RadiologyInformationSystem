@@ -2,6 +2,7 @@ package com.risjavafx;
 
 import javafx.beans.property.SimpleStringProperty;
 
+@SuppressWarnings("unused")
 public class UserInfoData {
     SimpleStringProperty userIdData;
     SimpleStringProperty usernameData;
@@ -17,13 +18,9 @@ public class UserInfoData {
         this.systemRoleData = new SimpleStringProperty(systemRole);
     }
 
-    public String getUserIdData() {
-        return userIdData.get();
-    }
+    public String getUserIdData() {return userIdData.get();}
 
-    public void setUserIdData(String USERID) {
-        this.userIdData.set(USERID);
-    }
+    public void setUserIdData(String USERID) {this.userIdData.set(USERID);}
 
     public String getUsernameData() {
         return usernameData.get();
