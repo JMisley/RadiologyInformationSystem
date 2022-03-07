@@ -41,13 +41,13 @@
 /*TableView styles*/
 .table-view {
     -fx-background-radius: 14 14 0 0;
-    -fx-background-color: #121212;
+    -fx-background-color: #282828;
 }
 
 .table-view .column-header-background {
-    -fx-background-color: #121212;
-    -fx-background-radius: 14;
-    -fx-background-insets: 0 0 10 0;
+    -fx-background-color: linear-gradient(#282828, #121212 85%, #282828);
+    -fx-background-radius: 14 14 0 0;
+    -fx-background-insets: 0 0 0 0;
 }
 
 .table-view .column-header .label {
@@ -66,9 +66,9 @@
 }
 
 .table-row-cell:odd {
-    -fx-background-color: #121212;
+    -fx-background-color: linear-gradient(#282828, #121212 80%, #282828);
 }
 
 .table-row-cell:even {
-    -fx-background-color: #3e3e3e;
+    -fx-background-color: linear-gradient(#282828, #3e3e3e 80%, #282828);
 }
