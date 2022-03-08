@@ -20,6 +20,10 @@
     -fx-background-color: transparent;
 }
 
+#titleBarButton:hover {
+    -fx-background-color: #FFFFFF50;
+}
+
 #primaryButton {
     -fx-background-color: #BB86FC;
 }

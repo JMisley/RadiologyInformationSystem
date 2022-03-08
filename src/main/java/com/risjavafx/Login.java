@@ -1,6 +1,5 @@
 package com.risjavafx;
 
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -10,6 +9,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
 import java.io.IOException;
@@ -20,24 +20,19 @@ import java.util.ResourceBundle;
 
 public class Login implements Initializable {
 
-    @FXML
+    public BorderPane mainContainer;
     public Button loginButton;
-    @FXML
     public Label errorMessage;
-    @FXML
     public TextField username;
-    @FXML
     public PasswordField password;
-    @FXML
     public AnchorPane loginContainer;
-    @FXML
-    public HBox topContent;
-
+    public HBox titleBar;
     Miscellaneous misc = new Miscellaneous();
     Main main = new Main();
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        //TEMPORARY
+        TitleBar.createTitleBar(mainContainer, titleBar, this.getClass());
+
         Pages.setPage(Pages.HOME);
         loginContainer.setPrefWidth(misc.getScreenWidth() * .3);
         loginContainer.setPrefHeight(misc.getScreenHeight() * .7);
@@ -51,23 +46,11 @@ public class Login implements Initializable {
                 }
             }
         });
-
-        createTitleBar();
-    }
-
-    public void createTitleBar() {
-        try {
-            URL navigationBarComponent = getClass().getResource("fxml components/TitleBar.fxml");
-            topContent.getChildren().setAll((Node) FXMLLoader.load(Objects.requireNonNull(navigationBarComponent)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     // If entered credentials are authorized, open home page, else return an error message
     public void userLogin() throws IOException, SQLException {
         if (checkCredentials(username.getText(), password.getText())) {
-            //TEMPORARY
             main.changeScene("navigation pages/home-page.fxml");
         } else if (username.getText().isBlank() || password.getText().isEmpty()) {
             errorMessage.setText("Please enter all information");

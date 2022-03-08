@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public class Main extends Application {
 
-    private static Stage stage;
+    public static Stage stage;
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -24,7 +24,8 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.setMinWidth(misc.getScreenWidth());
         primaryStage.setMinHeight(misc.getScreenHeight());
-        primaryStage.setMaximized(true);
+        primaryStage.setMaximized(false);
+        primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.show();
     }
 

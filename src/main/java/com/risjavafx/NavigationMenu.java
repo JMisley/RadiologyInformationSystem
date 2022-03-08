@@ -1,7 +1,9 @@
 package com.risjavafx;
 
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -9,6 +11,7 @@ import javafx.stage.Screen;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class NavigationMenu implements Initializable {
@@ -25,6 +28,15 @@ public class NavigationMenu implements Initializable {
 
         getPageButton().setId("menuBarButtonClicked");
         setButtonWidth();
+    }
+
+    public static <E> void createNavBar(HBox topContent, Class<E> thisClass) {
+        try {
+            URL navigationBarComponent = thisClass.getResource("fxml components/NavigationBar.fxml");
+            topContent.getChildren().setAll((Node) FXMLLoader.load(Objects.requireNonNull(navigationBarComponent)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void openHome() throws IOException {

@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.risjavafx.Login">
+<BorderPane fx:id="mainContainer" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.risjavafx.Login">
    <center>
       <StackPane BorderPane.alignment="CENTER">
          <AnchorPane fx:id="loginContainer" maxHeight="650.0" maxWidth="400.0" prefHeight="650.0" prefWidth="425.0" stylesheets="@styles.css">
@@ -46,6 +46,6 @@
       </StackPane>
    </center>
    <top>
-      <HBox fx:id="topContent"  id="titleBar" nodeOrientation="RIGHT_TO_LEFT" BorderPane.alignment="CENTER"/>
+      <HBox fx:id="titleBar" nodeOrientation="RIGHT_TO_LEFT" BorderPane.alignment="CENTER"/>
    </top>
 </BorderPane>
