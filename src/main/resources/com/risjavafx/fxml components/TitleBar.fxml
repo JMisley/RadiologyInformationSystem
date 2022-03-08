@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+
+<HBox nodeOrientation="RIGHT_TO_LEFT" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml" fx:controller="com.risjavafx.TitleBar">
+    <Button id="titleBarButton" fx:id="titleBarCloseButton" mnemonicParsing="false">
+        <graphic>
+            <ImageView fx:id="closeImage" fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+            </ImageView>
+        </graphic>
+        <HBox.margin>
+            <Insets bottom="5.0" left="15.0" right="15.0" top="5.0"/>
+        </HBox.margin>
+    </Button>
+    <Button id="titleBarButton" fx:id="titleBarMaxButton" mnemonicParsing="false">
+        <graphic>
+            <ImageView fx:id="maxImage" fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+            </ImageView>
+        </graphic>
+        <HBox.margin>
+            <Insets bottom="5.0" left="15.0" right="15.0" top="5.0"/>
+        </HBox.margin>
+    </Button>
+    <Button id="titleBarButton" fx:id="titleBarMinButton" mnemonicParsing="false">
+        <graphic>
+            <ImageView fx:id="minImage" fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+            </ImageView>
+        </graphic>
+        <HBox.margin>
+            <Insets bottom="5.0" left="15.0" right="15.0" top="5.0"/>
+        </HBox.margin>
+    </Button>
+</HBox>

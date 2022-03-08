@@ -4,6 +4,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 import javafx.stage.Screen;
 
 import java.io.IOException;
@@ -14,16 +15,16 @@ public class NavigationMenu implements Initializable {
     public HBox menuBar;
     public Button homeButton, userInfoButton, adminButton, referralsButton, appointmentsButton, ordersButton, logoutButton;
     public Button[] buttonArray;
-    public Main main;
+    Miscellaneous misc = new Miscellaneous();
+    Main main = new Main();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-        menuBar.setPrefWidth(primaryScreenBounds.getWidth());
-        buttonArray = new Button[] {homeButton, userInfoButton, adminButton, referralsButton, appointmentsButton, ordersButton};
-        main = new Main();
+        menuBar.setPrefWidth(misc.getScreenWidth());
+        buttonArray = new Button[] {homeButton, userInfoButton, adminButton, referralsButton, appointmentsButton, ordersButton, logoutButton};
 
         getPageButton().setId("menuBarButtonClicked");
+        setButtonWidth();
     }
 
     public void openHome() throws IOException {
@@ -70,5 +71,20 @@ public class NavigationMenu implements Initializable {
             case ORDERS -> {return ordersButton;}
         }
         return null;
+    }
+
+    public void setButtonWidth() {
+        for (Button button: buttonArray) {
+            button.setPrefWidth((misc.getScreenWidth()/7) * .8);
+            button.setMaxWidth(225);
+
+            double fontSize;
+            if ((misc.getScreenWidth()/80) < 20) {
+                fontSize = misc.getScreenWidth()/80;
+            } else {
+                fontSize = 20;
+            }
+            button.setStyle("-fx-font-size: " + fontSize);
+        }
     }
 }

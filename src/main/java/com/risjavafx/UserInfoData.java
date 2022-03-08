@@ -20,7 +20,7 @@ public class UserInfoData {
 
     public String getUserIdData() {return userIdData.get();}
 
-    public void setUserIdData(String USERID) {this.userIdData.set(USERID);}
+    public void setUserIdData(String userId) {this.userIdData.set(userId);}
 
     public String getUsernameData() {
         return usernameData.get();

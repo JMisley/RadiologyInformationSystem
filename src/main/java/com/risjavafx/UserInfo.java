@@ -55,15 +55,23 @@ public class UserInfo implements Initializable {
     }
 
     public void createTable() throws SQLException {
+        Miscellaneous misc = new Miscellaneous();
+
         queryData();
         setCellFactoryValues();
-        InfoTable<UserInfoData> infoTable = new InfoTable<>(){{
+        InfoTable<UserInfoData, String> infoTable = new InfoTable<>(){{
             setColumns(tableColumnsList);
             addColumnsToTable();
-            tableView.setMaxWidth(1150);
-            tableView.setMaxHeight(650);
+
+            setCustomColumnWidth(userId, .12);
+            setCustomColumnWidth(username, .18);
+            setCustomColumnWidth(displayName, .2);
+            setCustomColumnWidth(emailAdr, .3);
+            setCustomColumnWidth(systemRole, .2);
+
+            centerContent.setMaxWidth(misc.getScreenWidth() * .85);
+            centerContent.setMaxHeight(misc.getScreenHeight() * .75);
             tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-            tableView.setStyle("styles.css");
         }};
         centerContent.getChildren().add(infoTable.tableView);
         infoTable.tableView.setItems(queryData());
@@ -71,11 +79,12 @@ public class UserInfo implements Initializable {
 
     public ObservableList<UserInfoData> queryData() throws SQLException {ObservableList<UserInfoData> observableList = FXCollections.observableArrayList();
         Driver driver = new Driver();
-        ResultSet resultSet = driver.connection.createStatement().executeQuery("""
+        String sql = """
                 SELECT *
                 FROM users, roles
                 WHERE users.user_id = roles.role_id
-                """);
+                """;
+        ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
 
         while (resultSet.next()) {
             observableList.add(new UserInfoData(

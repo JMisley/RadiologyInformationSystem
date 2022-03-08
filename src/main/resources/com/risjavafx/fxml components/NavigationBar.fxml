@@ -6,47 +6,53 @@
 
 <HBox fx:id="menuBar" prefHeight="60" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.risjavafx.NavigationMenu">
-    <Button id="menuBarButton" fx:id="homeButton" mnemonicParsing="false" onAction="#openHome" prefHeight="65.0" prefWidth="150.0"
+    <Button id="menuBarButton" fx:id="homeButton" mnemonicParsing="false" onAction="#openHome" prefHeight="65.0"
+            prefWidth="150.0"
             text="Home" textFill="WHITE">
         <font>
-            <Font name="Century Gothic" size="16.0" />
+            <Font name="Century Gothic"/>
         </font>
     </Button>
     <Button id="menuBarButton" fx:id="userInfoButton" mnemonicParsing="false" onAction="#openUserInfo" prefHeight="65.0"
             prefWidth="150.0" text="User Info" textFill="WHITE">
         <font>
-            <Font name="Century Gothic" size="16.0" />
+            <Font name="Century Gothic"/>
         </font>
     </Button>
-    <Button id="menuBarButton" fx:id="adminButton" mnemonicParsing="false" onAction="#openAdmin" prefHeight="65.0" prefWidth="150.0"
+    <Button id="menuBarButton" fx:id="adminButton" mnemonicParsing="false" onAction="#openAdmin" prefHeight="65.0"
+            prefWidth="150.0"
             text="Admin" textFill="WHITE">
         <font>
-            <Font name="Century Gothic" size="16.0" />
+            <Font name="Century Gothic"/>
         </font>
     </Button>
-    <Button id="menuBarButton" fx:id="referralsButton" mnemonicParsing="false" onAction="#openReferrals" prefHeight="65.0"
+    <Button id="menuBarButton" fx:id="referralsButton" mnemonicParsing="false" onAction="#openReferrals"
+            prefHeight="65.0"
             prefWidth="150.0" text="Referrals" textFill="WHITE">
         <font>
-            <Font name="Century Gothic" size="16.0" />
+            <Font name="Century Gothic"/>
         </font>
     </Button>
-    <Button id="menuBarButton" fx:id="appointmentsButton" mnemonicParsing="false" onAction="#openAppointments" prefHeight="65.0"
+    <Button id="menuBarButton" fx:id="appointmentsButton" mnemonicParsing="false" onAction="#openAppointments"
+            prefHeight="65.0"
             prefWidth="150.0" text="Appointments" textFill="WHITE">
         <font>
-            <Font name="Century Gothic" size="16.0" />
+            <Font name="Century Gothic"/>
         </font>
     </Button>
-    <Button id="menuBarButton" fx:id="ordersButton" mnemonicParsing="false" onAction="#openOrders" prefHeight="65.0" prefWidth="150.0"
+    <Button id="menuBarButton" fx:id="ordersButton" mnemonicParsing="false" onAction="#openOrders" prefHeight="65.0"
+            prefWidth="150.0"
             text="Orders" textFill="WHITE">
         <font>
-            <Font name="Century Gothic" size="16.0" />
+            <Font name="Century Gothic"/>
         </font>
     </Button>
-    <HBox prefHeight="100.0" HBox.hgrow="ALWAYS" />
-    <Button id="menuBarButton" fx:id="logoutButton" mnemonicParsing="false" onAction="#userLogout" prefHeight="65.0" prefWidth="150.0"
+    <HBox prefHeight="100.0" HBox.hgrow="ALWAYS"/>
+    <Button id="menuBarButton" fx:id="logoutButton" mnemonicParsing="false" onAction="#userLogout" prefHeight="65.0"
+            prefWidth="150.0"
             text="Logout" textFill="WHITE">
         <font>
-            <Font name="Century Gothic" size="16.0" />
+            <Font name="Century Gothic"/>
         </font>
     </Button>
 </HBox>
