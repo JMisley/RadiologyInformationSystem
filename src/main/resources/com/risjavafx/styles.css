@@ -81,7 +81,7 @@
 
 /*TableView styles*/
 .table-view {
-    -fx-background-color: #121212;
+    -fx-background-color: #3e3e3e;
     -fx-background-radius: 5 5 0 0;
     -fx-background-insets: 0;
 }
@@ -139,9 +139,15 @@
 
 .table-view > .virtual-flow > .scroll-bar:vertical,
 .table-view > .virtual-flow > .scroll-bar:vertical > .track,
-.table-view > .virtual-flow > .scroll-bar:vertical > .track-background,
-.table-view > .virtual-flow > .scroll-bar:horizontal,
-.table-view > .virtual-flow > .scroll-bar:horizontal > .track,
-.table-view > .virtual-flow > .scroll-bar:horizontal > .track-background {
+.table-view > .virtual-flow > .scroll-bar:vertical > .track-background{
     -fx-background-color: transparent;
+}
+
+.table-view *.scroll-bar:horizontal *.increment-button,
+.table-view *.scroll-bar:horizontal *.decrement-button,
+.table-view *.scroll-bar:horizontal *.increment-arrow,
+.table-view *.scroll-bar:horizontal *.decrement-arrow
+{
+    -fx-padding: 0;
+    -fx-shape: "";
 }
