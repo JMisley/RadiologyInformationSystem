@@ -15,11 +15,16 @@ import javafx.scene.Node;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
 
 public class Orders implements Initializable {
+    public HBox titleBar;
+    public BorderPane mainContainer;
+    Miscellaneous misc = new Miscellaneous();
+
     public HBox topContent;
     public StackPane centerContent;
     public TableColumn<OrdersData, String> orderId = new TableColumn("Order ID");
@@ -36,7 +41,9 @@ public ArrayList<TableColumn<OrdersData, String>> tableColumnsList = new ArrayLi
     // Load NavigationBar component into home-page.fxml
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        createNavBar();
+        TitleBar.createTitleBar(mainContainer, titleBar, this.getClass());
+        NavigationMenu.createNavBar(topContent, this.getClass());
+
 
         try {
             createTable();
@@ -45,23 +52,15 @@ public ArrayList<TableColumn<OrdersData, String>> tableColumnsList = new ArrayLi
         }
     }
 
-    public void createNavBar() {
-        try {
-            URL navigationBarComponent = getClass().getResource("fxml components/NavigationBar.fxml");
-            topContent.getChildren().setAll((Node) FXMLLoader.load(Objects.requireNonNull(navigationBarComponent)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     public void createTable() throws SQLException {
         queryData();
         setCellFactoryValues();
-        InfoTable<OrdersData> infoTable = new InfoTable<>(){{
+        InfoTable<OrdersData, String> infoTable = new InfoTable<>(){{
             setColumns(tableColumnsList);
             addColumnsToTable();
-            tableView.setMaxWidth(1150);
-            tableView.setMaxHeight(650);
+            centerContent.setMaxWidth(misc.getScreenWidth() * .85);
+            centerContent.setMaxHeight(misc.getScreenHeight() * .75);
             tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
             tableView.setStyle("styles.css");
         }};

@@ -2,6 +2,7 @@
 
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 
 <BorderPane fx:id="mainContainer" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.risjavafx.Appointments">
@@ -20,11 +21,12 @@
                 <HBox/>
             </bottom>
             <center>
+                <StackPane fx:id="centerContent"/>
             </center>
         </BorderPane>
     </center>
     <top>
-        <HBox fx:id="titleBar"/>
+        <HBox fx:id="titleBar" nodeOrientation="RIGHT_TO_LEFT" BorderPane.alignment="CENTER"/>
     </top>
 </BorderPane>
 

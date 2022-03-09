@@ -4,21 +4,29 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 
-<BorderPane id="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0"
-            prefWidth="1500.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.risjavafx.Orders">
-    <top>
-        <HBox fx:id="topContent"/>
-    </top>
-    <left>
-        <HBox />
-    </left>
-    <right>
-        <HBox />
-    </right>
-    <bottom>
-        <HBox />
-    </bottom>
+<BorderPane fx:id="mainContainer" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.risjavafx.Orders">
     <center>
-        <StackPane fx:id="centerContent"/>
+        <BorderPane>
+            <top>
+                <HBox fx:id="topContent"/>
+            </top>
+            <left>
+                <HBox/>
+            </left>
+            <right>
+                <HBox/>
+            </right>
+            <bottom>
+                <HBox/>
+            </bottom>
+            <center>
+                <StackPane fx:id="centerContent"/>
+            </center>
+        </BorderPane>
     </center>
+    <top>
+        <HBox fx:id="titleBar" nodeOrientation="RIGHT_TO_LEFT" BorderPane.alignment="CENTER"/>
+    </top>
 </BorderPane>
+

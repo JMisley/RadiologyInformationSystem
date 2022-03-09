@@ -26,9 +26,9 @@ public class TitleBar implements javafx.fxml.Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Image close = new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/close.png");
-        Image max = new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/circle.png");
-        Image min = new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/minus.png");
+        Image close = new Image("file:C:/Users/couss/Documents/SoftwareEng/RISJavaFXProject/src/main/resources/com/risjavafx/images/close.png");
+        Image max = new Image("file:C:/Users/couss/Documents/SoftwareEng/RISJavaFXProject/src/main/resources/com/risjavafx/images/circle.png");
+        Image min = new Image("file:C:/Users/couss/Documents/SoftwareEng/RISJavaFXProject/src/main/resources/com/risjavafx/images/minus.png");
 
         closeImage.setImage(close);
         maxImage.setImage(max);
