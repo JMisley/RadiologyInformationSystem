@@ -22,15 +22,15 @@
     -fx-background-color: transparent;
 }
 
-#titleBarCloseButtonButton:hover {
+#titleBarCloseButton:hover {
     -fx-background-color: #d5747445;
 }
 
-#titleBarMaxButtonButton:hover {
+#titleBarMaxButton:hover {
     -fx-background-color: #3eb89745;
 }
 
-#titleBarMinButtonButton:hover {
+#titleBarMinButton:hover {
     -fx-background-color: #5fa3a345;
 }
 
