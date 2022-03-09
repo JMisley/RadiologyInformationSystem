@@ -7,21 +7,21 @@ public class OrdersData {
     SimpleStringProperty orderIdData;
     SimpleStringProperty patientData;
     SimpleStringProperty referralMdData;
-//    SimpleStringProperty modalityData;
-//    SimpleStringProperty appointmentData;
-//    SimpleStringProperty notesData;
-//    SimpleStringProperty statusData;
-//    SimpleStringProperty reportData;
+    SimpleStringProperty modalityData;
+    SimpleStringProperty appointmentData;
+    SimpleStringProperty notesData;
+    SimpleStringProperty statusData;
+    SimpleStringProperty reportData;
 
-    public OrdersData(String orderId, String patient, String referralMd /*String modality, String appointment, String notes, String status, String */) {
+    public OrdersData(String orderId, String patient, String referralMd, String modality, String appointment, String notes, String status, String report) {
         this.orderIdData = new SimpleStringProperty(orderId);
         this.patientData = new SimpleStringProperty(patient);
         this.referralMdData = new SimpleStringProperty(referralMd);
-//        this.modalityData = new SimpleStringProperty(modality);
-//        this.appointmentData = new SimpleStringProperty(appointment);
-//        this.notesData = new SimpleStringProperty(notes);
-//        this.statusData = new SimpleStringProperty(status);
-//        this.reportData = new SimpleStringProperty(report);
+        this.modalityData = new SimpleStringProperty(modality);
+        this.appointmentData = new SimpleStringProperty(appointment);
+        this.notesData = new SimpleStringProperty(notes);
+        this.statusData = new SimpleStringProperty(status);
+        this.reportData = new SimpleStringProperty(report);
     }
 
     public String getOrderIdData() {return orderIdData.get();}
@@ -44,19 +44,35 @@ public class OrdersData {
         this.referralMdData.set(referralMdData);
     }
 
-//    public String getEmailAddressData() {
-//        return emailAddressData.get();
-//    }
-//
-//    public void setEmailAddressData(String emailAddressData) {
-//        this.emailAddressData.set(emailAddressData);
-//    }
-//
-//    public String getSystemRoleData() {
-//        return systemRoleData.get();
-//    }
-//
-//    public void setSystemRoleData(String systemRoleData) {
-//        this.systemRoleData.set(systemRoleData);
-//    }
+    public String getModalityData() {
+        return modalityData.get();
+    }
+
+    public void setModalityData(String modalityData) {
+        this.modalityData.set(modalityData);
+    }
+
+    public String getNotesData() {
+        return notesData.get();
+    }
+
+    public void setNotesData(String notesData) {
+        this.notesData.set(notesData);
+    }
+
+    public String getStatusData() {
+        return statusData.get();
+    }
+
+    public void setStatusData(String statusData) {
+        this.statusData.set(statusData);
+    }
+
+    public String getReportData() {
+        return reportData.get();
+    }
+
+    public void setReportData(String reportData) {
+        this.reportData.set(reportData);
+    }
 }

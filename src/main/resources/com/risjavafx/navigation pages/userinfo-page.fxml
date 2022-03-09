@@ -2,8 +2,8 @@
 
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-
 <?import javafx.scene.layout.StackPane?>
+
 <BorderPane id="" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0"
             prefWidth="1500.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.risjavafx.UserInfo">
     <top>
