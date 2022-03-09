@@ -5,10 +5,10 @@ import javafx.scene.control.TableView;
 
 import java.util.ArrayList;
 
-public class InfoTable <E> {
+public class InfoTable<T, K> {
 
-    public TableView<E> tableView;
-    public ArrayList<TableColumn<E, String>> columnsArrayList = new ArrayList<>();
+    public TableView<T> tableView;
+    public ArrayList<TableColumn<T, K>> columnsArrayList = new ArrayList<>();
 
 
     public InfoTable() {
@@ -16,18 +16,20 @@ public class InfoTable <E> {
         tableView.setColumnResizePolicy(resizeFeatures -> false);
     }
 
-    public void setColumns(ArrayList<TableColumn<E, String>> columnsArrayList) {
+    public void setColumns(ArrayList<TableColumn<T, K>> columnsArrayList) {
         this.columnsArrayList = columnsArrayList;
     }
 
     public void addColumnsToTable() {
-        for (TableColumn<E, String> tableColumn : columnsArrayList) {
+        for (TableColumn<T, K> tableColumn : columnsArrayList) {
             tableView.getColumns().add(tableColumn);
+            tableColumn.setReorderable(false);
+            tableColumn.setSortable(true);
         }
     }
 
     // Allows you to specify what column width percent you want for each column
-    public void setCustomColumnWidth(TableColumn<E, String> column, double width) {
+    public void setCustomColumnWidth(TableColumn<T, K> column, double width) {
         column.prefWidthProperty().bind(tableView.widthProperty().multiply(width));
     }
 }
