@@ -1,8 +1,6 @@
 package com.risjavafx;
 
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -15,7 +13,6 @@ import javafx.scene.layout.HBox;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class Login implements Initializable {

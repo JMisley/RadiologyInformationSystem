@@ -13,7 +13,7 @@
 <BorderPane fx:id="mainContainer" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.risjavafx.Login">
    <center>
       <StackPane BorderPane.alignment="CENTER">
-         <AnchorPane fx:id="loginContainer" maxHeight="650.0" maxWidth="400.0" prefHeight="650.0" prefWidth="425.0" stylesheets="@styles.css">
+         <AnchorPane fx:id="loginContainer" maxHeight="650.0" maxWidth="400.0" stylesheets="@styles.css">
             <Label layoutX="124.0" layoutY="48.0" text="LOGIN" textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="48.0" />

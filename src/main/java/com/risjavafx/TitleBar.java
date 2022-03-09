@@ -21,12 +21,11 @@ public class TitleBar implements javafx.fxml.Initializable {
     public ImageView closeImage;
     public ImageView maxImage;
     public ImageView minImage;
+    private static double x = 0, y = 0;
     static Miscellaneous misc = new Miscellaneous();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-
         Image close = new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/close.png");
         Image max = new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/circle.png");
         Image min = new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/minus.png");
@@ -39,6 +38,7 @@ public class TitleBar implements javafx.fxml.Initializable {
     public static <E> void createTitleBar(BorderPane mainContainer, HBox titleBar, Class<E> thisClass) {
         mainContainer.setMinHeight(misc.getScreenHeight());
         mainContainer.setMinWidth(misc.getScreenWidth());
+        setDraggable(titleBar);
         try {
             URL navigationBarComponent = thisClass.getResource("fxml components/TitleBar.fxml");
             titleBar.getChildren().setAll((Node) FXMLLoader.load(Objects.requireNonNull(navigationBarComponent)));
@@ -52,12 +52,27 @@ public class TitleBar implements javafx.fxml.Initializable {
     }
 
     public void maxApp() {
-        Main.stage.setMaximized(!Main.stage.isMaximized());
+        resetStagePosition();
     }
 
     public void minApp() {
         Main.stage.setIconified(true);
     }
 
+    private static void resetStagePosition() {
+        Main.stage.setX(0);
+        Main.stage.setY(0);
+    }
 
+    private static void setDraggable(HBox titleBar) {
+        titleBar.setOnMousePressed(mouseEvent -> {
+            x = (mouseEvent.getSceneX());
+            y = (mouseEvent.getSceneY());
+        });
+
+        titleBar.setOnMouseDragged(mouseEvent -> {
+            Main.stage.setX(mouseEvent.getScreenX() - x);
+            Main.stage.setY(mouseEvent.getScreenY() - y);
+        });
+    }
 }

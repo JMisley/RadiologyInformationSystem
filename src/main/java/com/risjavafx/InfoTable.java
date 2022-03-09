@@ -23,6 +23,8 @@ public class InfoTable<T, K> {
     public void addColumnsToTable() {
         for (TableColumn<T, K> tableColumn : columnsArrayList) {
             tableView.getColumns().add(tableColumn);
+            tableColumn.setReorderable(false);
+            tableColumn.setSortable(true);
         }
     }
 

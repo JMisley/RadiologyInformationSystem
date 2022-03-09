@@ -1,26 +1,27 @@
 package com.risjavafx;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 @SuppressWarnings("unused")
-public class UserInfoData {
-    SimpleStringProperty userIdData;
+public class AdminData {
+    SimpleIntegerProperty userIdData;
     SimpleStringProperty usernameData;
     SimpleStringProperty displayNameData;
     SimpleStringProperty emailAddressData;
     SimpleStringProperty systemRoleData;
 
-    public UserInfoData(String userId, String username, String displayName, String emailAdr, String systemRole) {
-        this.userIdData = new SimpleStringProperty(userId);
+    public AdminData(int userId, String username, String displayName, String emailAdr, String systemRole) {
+        this.userIdData = new SimpleIntegerProperty(userId);
         this.usernameData = new SimpleStringProperty(username);
         this.displayNameData = new SimpleStringProperty(displayName);
         this.emailAddressData = new SimpleStringProperty(emailAdr);
         this.systemRoleData = new SimpleStringProperty(systemRole);
     }
 
-    public String getUserIdData() {return userIdData.get();}
+    public int getUserIdData() {return userIdData.get();}
 
-    public void setUserIdData(String userId) {this.userIdData.set(userId);}
+    public void setUserIdData(int userId) {this.userIdData.set(userId);}
 
     public String getUsernameData() {
         return usernameData.get();
