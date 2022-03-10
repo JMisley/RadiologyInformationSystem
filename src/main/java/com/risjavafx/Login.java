@@ -58,7 +58,7 @@ public class Login implements Initializable {
 
     // If input username and password combination exists in database, return true
     private boolean checkCredentials(String username, String password) throws SQLException {
-        com.risjavafx.Driver driver = new Driver();
+        Driver driver = new Driver();
         PreparedStatement preparedStatement;
         final String sql = """
                 SELECT *

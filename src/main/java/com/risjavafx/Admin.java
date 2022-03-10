@@ -54,7 +54,7 @@ public class Admin implements Initializable {
 
         queryData();
         setCellFactoryValues();
-        InfoTable<AdminData, String> infoTable = new InfoTable<>() {{
+        InfoTable<AdminData> infoTable = new InfoTable<>() {{
             setColumns(tableColumnsList);
             addColumnsToTable();
 
