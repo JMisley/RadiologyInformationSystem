@@ -1,4 +1,4 @@
-package com.risjavafx;
+package com.risjavafx.model;
 
 import java.sql.*;
 

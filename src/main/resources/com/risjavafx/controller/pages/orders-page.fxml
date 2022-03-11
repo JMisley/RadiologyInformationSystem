@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.HBox?>
 
 <BorderPane fx:id="mainContainer" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.risjavafx.Referrals">
+            fx:controller="com.risjavafx.controller.Orders">
     <center>
         <BorderPane>
             <top>

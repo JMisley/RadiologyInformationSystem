@@ -3,6 +3,8 @@ module com.example.risjavafx {
     requires javafx.fxml;
     requires java.sql;
 
-    opens com.risjavafx to javafx.fxml;
-    exports com.risjavafx;
+    exports com.risjavafx.model;
+    opens com.risjavafx.model to javafx.fxml;
+    exports com.risjavafx.controller;
+    opens com.risjavafx.controller to javafx.fxml;
 }

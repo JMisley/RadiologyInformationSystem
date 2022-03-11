@@ -4,8 +4,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:id="menuBar" prefHeight="60" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.risjavafx.NavigationMenu">
+<HBox fx:id="menuBar" prefHeight="60" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.risjavafx.controller.NavigationBar">
     <Button id="menuBarButton" fx:id="homeButton" mnemonicParsing="false" onAction="#openHome" prefHeight="65.0"
             prefWidth="150.0"
             text="Home" textFill="WHITE">
@@ -14,7 +15,8 @@
         </font>
     </Button>
     <Button id="menuBarButton" fx:id="userInfoButton" mnemonicParsing="false" onAction="#openUserInfo" prefHeight="65.0"
-            prefWidth="150.0" text="User Info" textFill="WHITE">
+            prefWidth="150.0"
+            text="User Info" textFill="WHITE">
         <font>
             <Font name="Century Gothic"/>
         </font>

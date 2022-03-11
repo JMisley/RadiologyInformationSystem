@@ -1,5 +1,7 @@
-package com.risjavafx;
+package com.risjavafx.model;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
@@ -9,7 +11,7 @@ public class InfoTable<T, K> {
 
     public TableView<T> tableView;
     public ArrayList<TableColumn<T, K>> columnsArrayList = new ArrayList<>();
-
+    private final BooleanProperty pageInitialized = new SimpleBooleanProperty();
 
     public InfoTable() {
         tableView = new TableView<>();

@@ -1,5 +1,6 @@
-package com.risjavafx;
+package com.risjavafx.controller;
 
+import com.risjavafx.model.Pages;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -15,7 +16,8 @@ public class UserInfo implements Initializable {
     // Load NavigationBar component into home-page.fxml
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Pages.setPage(Pages.USERINFO);
         TitleBar.createTitleBar(mainContainer, titleBar, this.getClass());
-        NavigationMenu.createNavBar(topContent, this.getClass());
+        NavigationBar.createNavBar(topContent, this.getClass());
     }
 }

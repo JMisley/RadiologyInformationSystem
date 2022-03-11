@@ -1,5 +1,6 @@
-package com.risjavafx;
+package com.risjavafx.controller;
 
+import com.risjavafx.model.Miscellaneous;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,27 +14,27 @@ import java.util.Objects;
 public class Main extends Application {
 
     public static Stage stage;
+    private static final ScreenManager screenController = new ScreenManager();
 
     @Override
     public void start(Stage primaryStage) throws IOException {
         Miscellaneous misc = new Miscellaneous();
         stage = primaryStage;
-        Parent root = FXMLLoader.load((Objects.requireNonNull(getClass().getResource("login-page.fxml"))));
+        Parent root = FXMLLoader.load(((Objects.requireNonNull(getClass().getResource("pages/login-page.fxml")))));
         root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styles.css")).toExternalForm());
-        primaryStage.setTitle("Radiology System");
         primaryStage.setScene(new Scene(root));
         primaryStage.setMinWidth(misc.getScreenWidth());
         primaryStage.setMinHeight(misc.getScreenHeight());
         primaryStage.setMaximized(false);
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.show();
+
+        screenController.initializeHashMap();
     }
 
     // Method to change scene
-    public void changeScene(String fxml) throws IOException {
-        Parent pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(fxml)));
-        pane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styles.css")).toExternalForm());
-        stage.getScene().setRoot(pane);
+    public void changeScene(String pageUrl) throws IOException {
+        stage.getScene().setRoot(screenController.getPage(pageUrl));
     }
 
     public static void main(String[] args) {

@@ -1,5 +1,6 @@
-package com.risjavafx;
+package com.risjavafx.controller;
 
+import com.risjavafx.model.Miscellaneous;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -40,7 +41,7 @@ public class TitleBar implements javafx.fxml.Initializable {
         mainContainer.setMinWidth(misc.getScreenWidth());
         setDraggable(titleBar);
         try {
-            URL navigationBarComponent = thisClass.getResource("fxml components/TitleBar.fxml");
+            URL navigationBarComponent = thisClass.getResource("components/TitleBar.fxml");
             titleBar.getChildren().setAll((Node) FXMLLoader.load(Objects.requireNonNull(navigationBarComponent)));
         } catch (IOException e) {
             e.printStackTrace();

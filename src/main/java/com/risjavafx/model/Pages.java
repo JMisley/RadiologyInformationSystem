@@ -1,4 +1,4 @@
-package com.risjavafx;
+package com.risjavafx.model;
 
 public enum Pages {
     HOME, USERINFO, ADMIN, REFERRALS, APPOINTMENTS, ORDERS;

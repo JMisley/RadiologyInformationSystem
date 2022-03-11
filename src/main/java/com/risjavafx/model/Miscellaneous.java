@@ -1,4 +1,4 @@
-package com.risjavafx;
+package com.risjavafx.model;
 
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;

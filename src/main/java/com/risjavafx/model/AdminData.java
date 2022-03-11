@@ -1,4 +1,4 @@
-package com.risjavafx;
+package com.risjavafx.model;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;

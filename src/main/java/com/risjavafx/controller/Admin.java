@@ -1,7 +1,10 @@
-package com.risjavafx;
+package com.risjavafx.controller;
 
+import com.risjavafx.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
@@ -18,9 +21,9 @@ import java.util.ResourceBundle;
 public class Admin implements Initializable {
 
     public BorderPane mainContainer;
-    public HBox topContent;
-    public HBox titleBar;
+    public HBox topContent, titleBar, tableSearchBar;
     public StackPane centerContent;
+    public SplitPane centerContentContainer;
 
     public TableColumn<AdminData, String>
             userId = new TableColumn<>("User ID"),
@@ -36,11 +39,13 @@ public class Admin implements Initializable {
         add(systemRole);
     }};
 
-    // Load NavigationBar component into home-page.fxml
-    @Override
+    InfoTable<AdminData, String> infoTable = new InfoTable<>();
+
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Pages.setPage(Pages.ADMIN);
         TitleBar.createTitleBar(mainContainer, titleBar, this.getClass());
-        NavigationMenu.createNavBar(topContent, this.getClass());
+        NavigationBar.createNavBar(topContent, this.getClass());
+        TableSearchBar.createSearchBar(tableSearchBar, this.getClass());
 
         try {
             createTable();
@@ -54,19 +59,18 @@ public class Admin implements Initializable {
 
         queryData();
         setCellFactoryValues();
-        InfoTable<AdminData, String> infoTable = new InfoTable<>() {{
-            setColumns(tableColumnsList);
-            addColumnsToTable();
 
-            setCustomColumnWidth(userId, .12);
-            setCustomColumnWidth(username, .18);
-            setCustomColumnWidth(displayName, .2);
-            setCustomColumnWidth(emailAdr, .3);
-            setCustomColumnWidth(systemRole, .2);
+        infoTable.setColumns(tableColumnsList);
+        infoTable.addColumnsToTable();
 
-            centerContent.setMaxWidth(misc.getScreenWidth() * .85);
-            centerContent.setMaxHeight(misc.getScreenHeight() * .75);
-        }};
+        infoTable.setCustomColumnWidth(userId, .105);
+        infoTable.setCustomColumnWidth(username, .18);
+        infoTable.setCustomColumnWidth(displayName, .2);
+        infoTable.setCustomColumnWidth(emailAdr, .3);
+        infoTable.setCustomColumnWidth(systemRole, .2);
+
+        centerContentContainer.setMaxWidth(misc.getScreenWidth() * .85);
+        centerContentContainer.setMaxHeight(misc.getScreenHeight() * .85);
         centerContent.getChildren().add(infoTable.tableView);
         infoTable.tableView.setItems(queryData());
     }

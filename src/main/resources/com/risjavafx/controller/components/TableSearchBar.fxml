@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
+
+<HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.risjavafx.controller.TableSearchBar" HBox.hgrow="ALWAYS" alignment="CENTER">
+    <Label fx:id="searchLabel" contentDisplay="CENTER" text="Search:" textFill="WHITE">
+        <font>
+            <Font name="Century Gothic"/>
+        </font>
+        <padding>
+            <Insets left="20.0" right="10.0"/>
+        </padding>
+    </Label>
+    <TextField fx:id="textField" maxHeight="30.0" maxWidth="250.0"/>
+    <HBox HBox.hgrow="ALWAYS"/>
+    <Button fx:id="addButton" id="primaryButton" maxHeight="30.0" maxWidth="70.0" mnemonicParsing="false" text="Add"
+            textFill="WHITE">
+        <font>
+            <Font name="Century Gothic"/>
+        </font>
+        <HBox.margin>
+            <Insets right="20.0"/>
+        </HBox.margin>
+    </Button>
+</HBox>
