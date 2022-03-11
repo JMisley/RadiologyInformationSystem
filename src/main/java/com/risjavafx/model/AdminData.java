@@ -2,6 +2,7 @@ package com.risjavafx.model;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.scene.control.TextField;
 
 @SuppressWarnings("unused")
 public class AdminData {
@@ -10,6 +11,10 @@ public class AdminData {
     SimpleStringProperty displayNameData;
     SimpleStringProperty emailAddressData;
     SimpleStringProperty systemRoleData;
+
+    public static TextField textField;
+
+    public AdminData() {}
 
     public AdminData(int userId, String username, String displayName, String emailAdr, String systemRole) {
         this.userIdData = new SimpleIntegerProperty(userId);

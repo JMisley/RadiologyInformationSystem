@@ -3,8 +3,9 @@ package com.risjavafx.controller;
 import com.risjavafx.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
@@ -24,6 +25,8 @@ public class Admin implements Initializable {
     public HBox topContent, titleBar, tableSearchBar;
     public StackPane centerContent;
     public SplitPane centerContentContainer;
+    public FilteredList<AdminData> filteredList;
+    public SortedList<AdminData> sortedList;
 
     public TableColumn<AdminData, String>
             userId = new TableColumn<>("User ID"),
@@ -40,39 +43,41 @@ public class Admin implements Initializable {
     }};
 
     InfoTable<AdminData, String> infoTable = new InfoTable<>();
+    TableSearchBar searchBar = new TableSearchBar();
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Pages.setPage(Pages.ADMIN);
         TitleBar.createTitleBar(mainContainer, titleBar, this.getClass());
         NavigationBar.createNavBar(topContent, this.getClass());
-        TableSearchBar.createSearchBar(tableSearchBar, this.getClass());
-
-        try {
-            createTable();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        searchBar.createSearchBar(tableSearchBar, this.getClass());
+        createTable();
+        filterData();
     }
 
-    public void createTable() throws SQLException {
-        Miscellaneous misc = new Miscellaneous();
+    public void createTable() {
+        try {
+            Miscellaneous misc = new Miscellaneous();
 
-        queryData();
-        setCellFactoryValues();
+            queryData();
+            setCellFactoryValues();
 
-        infoTable.setColumns(tableColumnsList);
-        infoTable.addColumnsToTable();
+            infoTable.setColumns(tableColumnsList);
+            infoTable.addColumnsToTable();
 
-        infoTable.setCustomColumnWidth(userId, .105);
-        infoTable.setCustomColumnWidth(username, .18);
-        infoTable.setCustomColumnWidth(displayName, .2);
-        infoTable.setCustomColumnWidth(emailAdr, .3);
-        infoTable.setCustomColumnWidth(systemRole, .2);
+            infoTable.setCustomColumnWidth(userId, .105);
+            infoTable.setCustomColumnWidth(username, .18);
+            infoTable.setCustomColumnWidth(displayName, .2);
+            infoTable.setCustomColumnWidth(emailAdr, .3);
+            infoTable.setCustomColumnWidth(systemRole, .2);
 
-        centerContentContainer.setMaxWidth(misc.getScreenWidth() * .85);
-        centerContentContainer.setMaxHeight(misc.getScreenHeight() * .85);
-        centerContent.getChildren().add(infoTable.tableView);
-        infoTable.tableView.setItems(queryData());
+            centerContentContainer.setMaxWidth(misc.getScreenWidth() * .85);
+            centerContentContainer.setMaxHeight(misc.getScreenHeight() * .85);
+            centerContent.getChildren().add(infoTable.tableView);
+            infoTable.tableView.setItems(queryData());
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+
     }
 
     public ObservableList<AdminData> queryData() throws SQLException {
@@ -105,5 +110,33 @@ public class Admin implements Initializable {
         displayName.setCellValueFactory(new PropertyValueFactory<>("displayNameData"));
         emailAdr.setCellValueFactory(new PropertyValueFactory<>("emailAddressData"));
         systemRole.setCellValueFactory(new PropertyValueFactory<>("systemRoleData"));
+    }
+
+    public void filterData() {
+        try {
+            filteredList = new FilteredList<>(queryData());
+
+            AdminData.textField.textProperty().addListener((observable, oldValue, newValue) -> filteredList.setPredicate(adminData -> {
+                if (newValue.isEmpty() || newValue.isBlank()) {
+                    return true;
+                }
+
+                String searchKeyword = newValue.toLowerCase();
+
+                if (adminData.getUsernameData().toLowerCase().contains(searchKeyword)) {
+                    return true;
+                } else if (adminData.getDisplayNameData().toLowerCase().contains(searchKeyword)) {
+                    return true;
+                } else if (adminData.getEmailAddressData().toLowerCase().contains(searchKeyword)) {
+                    return true;
+                } else return adminData.getSystemRoleData().toLowerCase().contains(searchKeyword);
+            }));
+
+            sortedList = new SortedList<>(filteredList);
+            sortedList.comparatorProperty().bind(infoTable.tableView.comparatorProperty());
+            infoTable.tableView.setItems(sortedList);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 }

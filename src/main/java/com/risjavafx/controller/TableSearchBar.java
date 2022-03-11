@@ -1,5 +1,6 @@
 package com.risjavafx.controller;
 
+import com.risjavafx.model.AdminData;
 import com.risjavafx.model.Miscellaneous;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,9 +24,10 @@ public class TableSearchBar implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         resizeElements();
+        AdminData.textField = textField;
     }
 
-    public static <E> void createSearchBar(HBox tableSearchBar, Class<E> thisClass) {
+    public <E> void createSearchBar(HBox tableSearchBar, Class<E> thisClass) {
         try {
             URL navigationBarComponent = thisClass.getResource("components/TableSearchBar.fxml");
             tableSearchBar.getChildren().setAll((Node) FXMLLoader.load(Objects.requireNonNull(navigationBarComponent)));
@@ -49,6 +51,6 @@ public class TableSearchBar implements Initializable {
         }
         searchLabel.setStyle("-fx-font-size: " + fontSize);
         addButton.setStyle("-fx-font-size: " + fontSize);
+        textField.setStyle("-fx-font-size: " + (fontSize - 2) + "; -fx-font-family: 'Arial'");
     }
 }
-

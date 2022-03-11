@@ -20,7 +20,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
         Miscellaneous misc = new Miscellaneous();
         stage = primaryStage;
-        Parent root = FXMLLoader.load(((Objects.requireNonNull(getClass().getResource("pages/login-page.fxml")))));
+        Parent root = FXMLLoader.load(((Objects.requireNonNull(getClass().getResource("pages/home-page.fxml")))));
         root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styles.css")).toExternalForm());
         primaryStage.setScene(new Scene(root));
         primaryStage.setMinWidth(misc.getScreenWidth());
