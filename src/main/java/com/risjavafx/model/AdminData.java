@@ -1,8 +1,8 @@
 package com.risjavafx.model;
 
+import com.risjavafx.controller.TableSearchBar;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.scene.control.TextField;
 
 @SuppressWarnings("unused")
 public class AdminData {
@@ -12,9 +12,7 @@ public class AdminData {
     SimpleStringProperty emailAddressData;
     SimpleStringProperty systemRoleData;
 
-    public static TextField textField;
-
-    public AdminData() {}
+    TableSearchBar tableSearchBar = new TableSearchBar();
 
     public AdminData(int userId, String username, String displayName, String emailAdr, String systemRole) {
         this.userIdData = new SimpleIntegerProperty(userId);

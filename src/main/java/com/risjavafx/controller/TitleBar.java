@@ -25,7 +25,6 @@ public class TitleBar implements javafx.fxml.Initializable {
     private static double x = 0, y = 0;
     static Miscellaneous misc = new Miscellaneous();
 
-    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Image close = new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/close.png");
         Image max = new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/circle.png");

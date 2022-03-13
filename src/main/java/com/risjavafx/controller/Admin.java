@@ -34,6 +34,7 @@ public class Admin implements Initializable {
             displayName = new TableColumn<>("Full Name"),
             emailAdr = new TableColumn<>("Email Address"),
             systemRole = new TableColumn<>("System Role");
+
     public ArrayList<TableColumn<AdminData, String>> tableColumnsList = new ArrayList<>() {{
         add(userId);
         add(username);
@@ -43,13 +44,13 @@ public class Admin implements Initializable {
     }};
 
     InfoTable<AdminData, String> infoTable = new InfoTable<>();
-    TableSearchBar searchBar = new TableSearchBar();
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Pages.setPage(Pages.ADMIN);
         TitleBar.createTitleBar(mainContainer, titleBar, this.getClass());
         NavigationBar.createNavBar(topContent, this.getClass());
-        searchBar.createSearchBar(tableSearchBar, this.getClass());
+        TableSearchBar.createSearchBar(tableSearchBar, this.getClass());
+        setComboBoxItems();
         createTable();
         filterData();
     }
@@ -116,20 +117,21 @@ public class Admin implements Initializable {
         try {
             filteredList = new FilteredList<>(queryData());
 
-            AdminData.textField.textProperty().addListener((observable, oldValue, newValue) -> filteredList.setPredicate(adminData -> {
+            TableSearchBar.usableTextField.textProperty().addListener((observable, oldValue, newValue) -> filteredList.setPredicate(adminData -> {
                 if (newValue.isEmpty() || newValue.isBlank()) {
                     return true;
                 }
 
                 String searchKeyword = newValue.toLowerCase();
 
-                if (adminData.getUsernameData().toLowerCase().contains(searchKeyword)) {
+                if (adminData.getUsernameData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Username")) {
                     return true;
-                } else if (adminData.getDisplayNameData().toLowerCase().contains(searchKeyword)) {
+                } else if (adminData.getDisplayNameData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Full name")) {
                     return true;
-                } else if (adminData.getEmailAddressData().toLowerCase().contains(searchKeyword)) {
+                } else if (adminData.getEmailAddressData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Email address")) {
                     return true;
-                } else return adminData.getSystemRoleData().toLowerCase().contains(searchKeyword);
+                } else
+                    return adminData.getSystemRoleData().toLowerCase().contains(searchKeyword) && getComboBoxItem("System role");
             }));
 
             sortedList = new SortedList<>(filteredList);
@@ -138,5 +140,23 @@ public class Admin implements Initializable {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+    }
+
+    public void setComboBoxItems() {
+        ObservableList<String> oblist = FXCollections.observableArrayList(
+                "All",
+                "User ID",
+                "Username",
+                "Full name",
+                "Email address",
+                "System role"
+        );
+        TableSearchBar.usableComboBox.setItems(oblist);
+    }
+
+    public boolean getComboBoxItem(String string) {
+        System.out.println(TableSearchBar.usableComboBox.getValue());
+        String selectedComboValue = TableSearchBar.usableComboBox.getValue();
+        return string.equals(selectedComboValue) || "All".equals(selectedComboValue);
     }
 }

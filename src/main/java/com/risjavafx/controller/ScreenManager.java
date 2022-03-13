@@ -16,18 +16,11 @@ public class ScreenManager {
             "pages/referrals-page.fxml",
             "pages/appointments-page.fxml",
             "pages/orders-page.fxml",
+            "pages/login-page.fxml"
     };
 
-    public Parent getPage(String pageUrl) throws IOException {
-        if(screensMap.containsKey(pageUrl)) {
-            return screensMap.get(pageUrl);
-        }
-        else {
-            Parent pane = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(pageUrl)));
-            pane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styles.css")).toExternalForm());
-            screensMap.put(pageUrl, pane);
-            return pane;
-        }
+    public Parent getPage(String pageUrl) {
+        return screensMap.get(pageUrl);
     }
 
     public void initializeHashMap() throws IOException {

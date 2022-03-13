@@ -20,7 +20,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
         Miscellaneous misc = new Miscellaneous();
         stage = primaryStage;
-        Parent root = FXMLLoader.load(((Objects.requireNonNull(getClass().getResource("pages/home-page.fxml")))));
+        Parent root = FXMLLoader.load(((Objects.requireNonNull(getClass().getResource("pages/admin-page.fxml")))));
         root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styles.css")).toExternalForm());
         primaryStage.setScene(new Scene(root));
         primaryStage.setMinWidth(misc.getScreenWidth());
@@ -33,7 +33,7 @@ public class Main extends Application {
     }
 
     // Method to change scene
-    public void changeScene(String pageUrl) throws IOException {
+    public void changeScene(String pageUrl) {
         stage.getScene().setRoot(screenController.getPage(pageUrl));
     }
 
