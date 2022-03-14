@@ -14,17 +14,19 @@ import java.util.Objects;
 
 public class Main extends Application {
 
-    public static Stage stage;
-    public static Popup popup;
+    public static Stage usableStage;
+    public static Popup popupMenu = new Popup();
+    public static Popup popupAlert = new Popup();
+    public static Parent mainRoot;
     private static final ScreenManager screenController = new ScreenManager();
     Miscellaneous misc = new Miscellaneous();
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        stage = primaryStage;
-        Parent root = FXMLLoader.load(((Objects.requireNonNull(getClass().getResource("pages/admin-page.fxml")))));
-        root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styles.css")).toExternalForm());
-        primaryStage.setScene(new Scene(root));
+        usableStage = primaryStage;
+        mainRoot = FXMLLoader.load(((Objects.requireNonNull(getClass().getResource("pages/admin-page.fxml")))));
+        mainRoot.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styles.css")).toExternalForm());
+        primaryStage.setScene(new Scene(mainRoot));
         primaryStage.setMinWidth(misc.getScreenWidth());
         primaryStage.setMinHeight(misc.getScreenHeight());
         primaryStage.setMaximized(false);
@@ -35,20 +37,23 @@ public class Main extends Application {
     }
 
     // Method to create a popup menu. Input a decimals to represent a percentage of the screen height and width
-    public void createPopup(String pageUrl) throws IOException {
+    public void createPopup(String pageUrl, Popup popup) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource(pageUrl)));
         root.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styles.css")).toExternalForm());
 
-        popup = new Popup();
-        popup.setAutoHide(true);
-        popup.centerOnScreen();
         popup.getContent().add(root);
-        popup.show(stage);
+        popup.setAutoHide(false);
+        popup.show(usableStage);
+
+        usableStage.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (aBoolean) popup.setOpacity(0f);
+            else popup.setOpacity(1f);
+        });
     }
 
     // Method to change scene
     public void changeScene(String pageUrl) {
-        stage.getScene().setRoot(screenController.getPage(pageUrl));
+        usableStage.getScene().setRoot(screenController.getPage(pageUrl));
     }
 
     public static void main(String[] args) {

@@ -48,7 +48,7 @@ public class TitleBar implements javafx.fxml.Initializable {
     }
 
     public void closeApp() {
-        Main.stage.close();
+        Main.usableStage.close();
     }
 
     public void maxApp() {
@@ -56,12 +56,12 @@ public class TitleBar implements javafx.fxml.Initializable {
     }
 
     public void minApp() {
-        Main.stage.setIconified(true);
+        Main.usableStage.setIconified(true);
     }
 
     private static void resetStagePosition() {
-        Main.stage.setX(0);
-        Main.stage.setY(0);
+        Main.usableStage.setX(0);
+        Main.usableStage.setY(0);
     }
 
     private static void setDraggable(HBox titleBar) {
@@ -71,8 +71,8 @@ public class TitleBar implements javafx.fxml.Initializable {
         });
 
         titleBar.setOnMouseDragged(mouseEvent -> {
-            Main.stage.setX(mouseEvent.getScreenX() - x);
-            Main.stage.setY(mouseEvent.getScreenY() - y);
+            Main.usableStage.setX(mouseEvent.getScreenX() - x);
+            Main.usableStage.setY(mouseEvent.getScreenY() - y);
         });
     }
 }

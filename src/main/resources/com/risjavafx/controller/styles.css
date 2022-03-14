@@ -29,14 +29,6 @@
     -fx-background-color: #BB86FC73;
 }
 
-#secondaryButton {
-    -fx-background-color: #03DAC6;
-}
-
-#secondaryButton:hover {
-    -fx-background-color: #03DAC673;
-}
-
 
 
 /*Combo box styling*/
@@ -193,4 +185,45 @@
 {
     -fx-padding: 0;
     -fx-shape: "";
+}
+
+
+
+/*Alert box styling*/
+#alertBox {
+    -fx-background-color: #121212;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-width: 3px;
+    -fx-border-color: white;
+}
+
+#alertBox-header {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+#alertBox-content {
+    -fx-text-fill: white;
+}
+
+
+.dialog-pane > *.button-bar > *.container{
+    -fx-background-color: #121212;
+}
+
+.dialog-pane > *.label.content{
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #cf6679;
+}
+
+.dialog-pane *.header-panel{
+    -fx-background-color: #121212;
+}
+
+.dialog-pane *.header-panel *.label{
+    -fx-font-size: 18px;
+    -fx-font-style: italic;
+    -fx-text-fill: #cf6679;
 }

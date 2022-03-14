@@ -64,7 +64,7 @@ public class TableSearchBar implements Initializable {
     }
 
     public void addItems() throws IOException {
-        main.createPopup("popups/admin-popup.fxml");
+        main.createPopup("popups/admin-popup.fxml", Main.popupMenu);
     }
 
     public void comboBoxValueChange() {

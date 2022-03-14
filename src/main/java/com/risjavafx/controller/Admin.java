@@ -65,7 +65,7 @@ public class Admin implements Initializable {
             infoTable.setColumns(tableColumnsList);
             infoTable.addColumnsToTable();
 
-            infoTable.setCustomColumnWidth(userId, .105);
+            infoTable.setCustomColumnWidth(userId, .12);
             infoTable.setCustomColumnWidth(username, .18);
             infoTable.setCustomColumnWidth(displayName, .2);
             infoTable.setCustomColumnWidth(emailAdr, .3);

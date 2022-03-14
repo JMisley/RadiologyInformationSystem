@@ -9,7 +9,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox id="popupContainer" prefWidth="350.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+<VBox fx:id="popupContainer" maxHeight="570.0" maxWidth="500.0"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.risjavafx.controller.AdminPopup">
     <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
         <VBox.margin>
@@ -39,7 +40,7 @@
             </font>
         </Label>
         <HBox HBox.hgrow="ALWAYS"/>
-        <ComboBox fx:id="roleComboBox" prefWidth="150.0" promptText="Select Role">
+        <ComboBox fx:id="roleComboBox" maxHeight="30.0" promptText="Select Role">
             <HBox.margin>
                 <Insets/>
             </HBox.margin>
@@ -57,7 +58,7 @@
                 <Font name="Century Gothic" size="14.0"/>
             </font>
         </Label>
-        <TextField fx:id="fullNameTextField" HBox.hgrow="ALWAYS">
+        <TextField fx:id="fullNameTextField" maxHeight="30.0" HBox.hgrow="ALWAYS">
             <font>
                 <Font name="Arial" size="14.0"/>
             </font>
@@ -78,7 +79,7 @@
                 <Font name="Century Gothic" size="14.0"/>
             </font>
         </Label>
-        <TextField fx:id="emailTextField" HBox.hgrow="ALWAYS">
+        <TextField fx:id="emailTextField" maxHeight="30.0" HBox.hgrow="ALWAYS">
             <font>
                 <Font name="Arial" size="14.0"/>
             </font>
@@ -99,7 +100,7 @@
                 <Font name="Century Gothic" size="14.0"/>
             </font>
         </Label>
-        <TextField fx:id="usernameTextField" HBox.hgrow="ALWAYS">
+        <TextField fx:id="usernameTextField" maxHeight="30.0" HBox.hgrow="ALWAYS">
             <font>
                 <Font name="Arial" size="14.0"/>
             </font>
@@ -120,7 +121,7 @@
                 <Font name="Century Gothic" size="14.0"/>
             </font>
         </Label>
-        <TextField fx:id="passwordTextField" HBox.hgrow="ALWAYS">
+        <TextField fx:id="passwordTextField" maxHeight="30.0" HBox.hgrow="ALWAYS">
             <font>
                 <Font name="Arial" size="14.0"/>
             </font>
@@ -131,13 +132,13 @@
     </HBox>
     <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
         <VBox.margin>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="60.0"/>
         </VBox.margin>
-        <Button id="primaryButton" alignment="CENTER" mnemonicParsing="false" onAction="#createNewUser"
-                prefHeight="30.0" prefWidth="350.0" text="Submit" HBox.hgrow="ALWAYS">
-            <HBox.margin>
-                <Insets/>
-            </HBox.margin>
-        </Button>
+        <Button id="primaryButton" fx:id="cancelButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="60.0"
+                maxWidth="200.0" mnemonicParsing="false" onAction="#cancelButtonOnclick" text="Cancel"/>
+        <HBox HBox.hgrow="ALWAYS"/>
+        <Button id="primaryButton" fx:id="submitButton" alignment="CENTER" maxHeight="60.0" maxWidth="200.0"
+                mnemonicParsing="false" onAction="#submitButtonOnclick"
+                text="Submit"/>
     </HBox>
 </VBox>
