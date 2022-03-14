@@ -123,8 +123,12 @@ public class Admin implements Initializable {
                 }
 
                 String searchKeyword = newValue.toLowerCase();
+                int searchKeyInt = -1;
+                try {searchKeyInt = Integer.parseInt(newValue);} catch (Exception ignored) {}
 
-                if (adminData.getUsernameData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Username")) {
+                if (adminData.getUserIdData() == searchKeyInt && getComboBoxItem("User ID")) {
+                    return true;
+                } else if (adminData.getUsernameData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Username")) {
                     return true;
                 } else if (adminData.getDisplayNameData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Full name")) {
                     return true;
@@ -155,7 +159,6 @@ public class Admin implements Initializable {
     }
 
     public boolean getComboBoxItem(String string) {
-        System.out.println(TableSearchBar.usableComboBox.getValue());
         String selectedComboValue = TableSearchBar.usableComboBox.getValue();
         return string.equals(selectedComboValue) || "All".equals(selectedComboValue);
     }

@@ -3,6 +3,14 @@
     -fx-background-color: #121212;
 }
 
+#popupContainer {
+    -fx-background-color: #121212;
+    -fx-background-radius: 5px;
+    -fx-border-width: 3px;
+    -fx-border-color: white;
+    -fx-border-radius: 5px;
+}
+
 #loginContainer {
     -fx-background-color: transparent;
     -fx-background-insets: 0;
@@ -13,6 +21,8 @@
 
 #primaryButton {
     -fx-background-color: #BB86FC;
+    -fx-text-fill: white;
+    -fx-font-family: "Century Gothic";
 }
 
 #primaryButton:hover {
@@ -36,6 +46,7 @@
 }
 
 .combo-box, .combo-box .list-view {
+    -fx-font-size: 14px;
     -fx-background-color: #3e3e3e;
 }
 

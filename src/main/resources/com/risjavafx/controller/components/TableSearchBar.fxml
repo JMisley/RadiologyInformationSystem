@@ -34,11 +34,8 @@
         </HBox.margin>
     </Label>
     <HBox HBox.hgrow="ALWAYS"/>
-    <Button id="primaryButton" fx:id="addButton" maxHeight="30.0" maxWidth="70.0" mnemonicParsing="false" text="Add"
-            textFill="WHITE">
-        <font>
-            <Font name="Century Gothic"/>
-        </font>
+    <Button id="primaryButton" fx:id="addButton" maxHeight="30.0" maxWidth="70.0" mnemonicParsing="false"
+            onAction="#addItems" text="Add">
         <HBox.margin>
             <Insets right="20.0"/>
         </HBox.margin>

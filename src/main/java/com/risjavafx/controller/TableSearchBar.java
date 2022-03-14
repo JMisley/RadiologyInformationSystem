@@ -23,6 +23,7 @@ public class TableSearchBar implements Initializable {
     public ComboBox<String> comboBox;
     public static ComboBox<String> usableComboBox;
 
+    Main main = new Main();
     static Miscellaneous misc = new Miscellaneous();
 
     @Override
@@ -60,6 +61,10 @@ public class TableSearchBar implements Initializable {
         searchLabel.setStyle("-fx-font-size: " + fontSize);
         addButton.setStyle("-fx-font-size: " + fontSize);
         textField.setStyle("-fx-font-size: " + (fontSize - 2) + "; -fx-font-family: 'Arial'");
+    }
+
+    public void addItems() throws IOException {
+        main.createPopup("popups/admin-popup.fxml");
     }
 
     public void comboBoxValueChange() {
