@@ -62,7 +62,7 @@ public class Login implements Initializable {
         final String sql = """
                 SELECT *
                 FROM users
-                WHERE username = ? AND password = ?
+                WHERE BINARY username = ? AND BINARY password = ?
                 """;
         preparedStatement = driver.connection.prepareStatement(sql);
         preparedStatement.setString(1, username);
