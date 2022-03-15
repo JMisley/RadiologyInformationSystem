@@ -25,21 +25,21 @@ public class Admin implements Initializable {
     public HBox topContent, titleBar, tableSearchBar;
     public StackPane centerContent;
     public SplitPane centerContentContainer;
-    public FilteredList<AdminData> filteredList;
-    public SortedList<AdminData> sortedList;
+    public static SortedList<AdminData> sortedList;
+    public static FilteredList<AdminData> filteredList;
     public static ObservableList<AdminData> observableList = FXCollections.observableArrayList();
 
     public TableColumn<AdminData, String>
             userId = new TableColumn<>("User ID"),
-            username = new TableColumn<>("Username"),
             displayName = new TableColumn<>("Full Name"),
+            username = new TableColumn<>("Username"),
             emailAdr = new TableColumn<>("Email Address"),
             systemRole = new TableColumn<>("System Role");
 
     public ArrayList<TableColumn<AdminData, String>> tableColumnsList = new ArrayList<>() {{
         add(userId);
-        add(username);
         add(displayName);
+        add(username);
         add(emailAdr);
         add(systemRole);
     }};
@@ -65,8 +65,8 @@ public class Admin implements Initializable {
             infoTable.addColumnsToTable();
 
             infoTable.setCustomColumnWidth(userId, .12);
-            infoTable.setCustomColumnWidth(username, .18);
             infoTable.setCustomColumnWidth(displayName, .2);
+            infoTable.setCustomColumnWidth(username, .18);
             infoTable.setCustomColumnWidth(emailAdr, .3);
             infoTable.setCustomColumnWidth(systemRole, .2);
 
@@ -74,11 +74,11 @@ public class Admin implements Initializable {
             centerContentContainer.setMaxHeight(misc.getScreenHeight() * .85);
             centerContent.getChildren().add(infoTable.tableView);
 
-            if (infoTable.tableView.getItems().isEmpty()) {
-                queryData(getAllDataStringQuery());
-                infoTable.tableView.setItems(observableList);
-            }
-        } catch (Exception exception) {
+            queryData(getAllDataStringQuery());
+            infoTable.tableView.setItems(observableList);
+            infoTable.tableView.refresh();
+        } catch (
+                Exception exception) {
             exception.printStackTrace();
         }
 
@@ -91,8 +91,8 @@ public class Admin implements Initializable {
         while (resultSet.next()) {
             observableList.add(new AdminData(
                     resultSet.getInt("user_id"),
-                    resultSet.getString("username"),
                     resultSet.getString("full_name"),
+                    resultSet.getString("username"),
                     resultSet.getString("email"),
                     resultSet.getString("name")
             ));
@@ -121,17 +121,18 @@ public class Admin implements Initializable {
 
     public void setCellFactoryValues() {
         userId.setCellValueFactory(new PropertyValueFactory<>("userIdData"));
-        username.setCellValueFactory(new PropertyValueFactory<>("usernameData"));
         displayName.setCellValueFactory(new PropertyValueFactory<>("displayNameData"));
+        username.setCellValueFactory(new PropertyValueFactory<>("usernameData"));
         emailAdr.setCellValueFactory(new PropertyValueFactory<>("emailAddressData"));
         systemRole.setCellValueFactory(new PropertyValueFactory<>("systemRoleData"));
     }
 
-    public void filterData() {
+    public static void filterData() {
         try {
             filteredList = new FilteredList<>(observableList);
 
             TableSearchBar.usableTextField.textProperty().addListener((observable, oldValue, newValue) -> filteredList.setPredicate(adminData -> {
+                System.out.println("listening");
                 if (TableSearchBar.usableComboBox.getValue() == null) {
                     TableSearchBar.usableErrorLabel.setText("Please select a filter");
                 } else {
@@ -151,9 +152,9 @@ public class Admin implements Initializable {
 
                 if (adminData.getUserIdData() == searchKeyInt && getComboBoxItem("User ID")) {
                     return true;
-                } else if (adminData.getUsernameData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Username")) {
-                    return true;
                 } else if (adminData.getDisplayNameData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Full name")) {
+                    return true;
+                } else if (adminData.getUsernameData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Username")) {
                     return true;
                 } else if (adminData.getEmailAddressData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Email address")) {
                     return true;
@@ -164,6 +165,7 @@ public class Admin implements Initializable {
             sortedList = new SortedList<>(filteredList);
             sortedList.comparatorProperty().bind(infoTable.tableView.comparatorProperty());
             infoTable.tableView.setItems(sortedList);
+
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -173,15 +175,15 @@ public class Admin implements Initializable {
         ObservableList<String> oblist = FXCollections.observableArrayList(
                 "All",
                 "User ID",
-                "Username",
                 "Full name",
+                "Username",
                 "Email address",
                 "System role"
         );
         TableSearchBar.usableComboBox.setItems(oblist);
     }
 
-    public boolean getComboBoxItem(String string) {
+    public static boolean getComboBoxItem(String string) {
         String selectedComboValue = TableSearchBar.usableComboBox.getValue();
         return string.equals(selectedComboValue) || "All".equals(selectedComboValue);
     }

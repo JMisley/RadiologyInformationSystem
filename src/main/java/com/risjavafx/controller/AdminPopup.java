@@ -16,6 +16,7 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class AdminPopup implements Initializable {
@@ -41,7 +42,7 @@ public class AdminPopup implements Initializable {
         resizeElements();
         setUserIDLabel();
         populateComboBox();
-        Main.popupMenu.showingProperty().addListener((observableValue, aBoolean, t1) -> Main.mainRoot.setDisable(!aBoolean));
+        Main.popupMenu.showingProperty().addListener((observableValue, aBoolean, t1) -> PageManager.root.setDisable(!aBoolean));
     }
 
     public void setUserIDLabel() {
@@ -152,7 +153,6 @@ public class AdminPopup implements Initializable {
             insertUserQuery();
             insertRoleIdQuery();
             Admin.queryData(Admin.getLastRowStringQuery());
-            Admin.infoTable.tableView.setItems(Admin.observableList);
             Main.popupMenu.hide();
         } else if (!validInput()) {
             main.createPopup("popups/alert-popup.fxml", Main.popupAlert);

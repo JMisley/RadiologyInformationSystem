@@ -7,17 +7,18 @@ import javafx.beans.property.SimpleStringProperty;
 @SuppressWarnings("unused")
 public class AdminData {
     SimpleIntegerProperty userIdData;
-    SimpleStringProperty usernameData;
     SimpleStringProperty displayNameData;
+
+    SimpleStringProperty usernameData;
     SimpleStringProperty emailAddressData;
     SimpleStringProperty systemRoleData;
 
     TableSearchBar tableSearchBar = new TableSearchBar();
 
-    public AdminData(int userId, String username, String displayName, String emailAdr, String systemRole) {
+    public AdminData(int userId, String displayName, String username, String emailAdr, String systemRole) {
         this.userIdData = new SimpleIntegerProperty(userId);
-        this.usernameData = new SimpleStringProperty(username);
         this.displayNameData = new SimpleStringProperty(displayName);
+        this.usernameData = new SimpleStringProperty(username);
         this.emailAddressData = new SimpleStringProperty(emailAdr);
         this.systemRoleData = new SimpleStringProperty(systemRole);
     }
@@ -26,20 +27,20 @@ public class AdminData {
 
     public void setUserIdData(int userId) {this.userIdData.set(userId);}
 
-    public String getUsernameData() {
-        return usernameData.get();
-    }
-
-    public void setUsernameData(String usernameData) {
-        this.usernameData.set(usernameData);
-    }
-
     public String getDisplayNameData() {
         return displayNameData.get();
     }
 
     public void setDisplayNameData(String displayNameData) {
         this.displayNameData.set(displayNameData);
+    }
+
+    public String getUsernameData() {
+        return usernameData.get();
+    }
+
+    public void setUsernameData(String usernameData) {
+        this.usernameData.set(usernameData);
     }
 
     public String getEmailAddressData() {

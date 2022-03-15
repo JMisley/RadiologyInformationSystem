@@ -2,6 +2,7 @@ package com.risjavafx.controller;
 
 import com.risjavafx.model.Driver;
 import com.risjavafx.model.Miscellaneous;
+import com.risjavafx.model.Pages;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -47,7 +48,7 @@ public class Login implements Initializable {
     // If entered credentials are authorized, open home page, else return an error message
     public void userLogin() throws IOException, SQLException {
         if (checkCredentials(username.getText(), password.getText())) {
-            main.changeScene("pages/home-page.fxml");
+            PageManager.switchPage(Pages.HOME);
         } else if (username.getText().isBlank() || password.getText().isEmpty()) {
             errorMessage.setText("Please enter all information");
         } else {

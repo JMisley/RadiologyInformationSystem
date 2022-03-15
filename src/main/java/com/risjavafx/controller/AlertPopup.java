@@ -35,7 +35,7 @@ public class AlertPopup implements Initializable {
 
         Main.popupAlert.showingProperty().addListener((observableValue, aBoolean, t1) -> {
             if (!Main.popupMenu.isShowing()) {
-                Main.mainRoot.setDisable(!aBoolean);
+                PageManager.root.setDisable(!aBoolean);
             }
         });
     }
