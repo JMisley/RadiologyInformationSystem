@@ -22,6 +22,8 @@ public class TableSearchBar implements Initializable {
     public static TextField usableTextField;
     public ComboBox<String> comboBox;
     public static ComboBox<String> usableComboBox;
+    public Label errorLabel;
+    public static Label usableErrorLabel;
 
     Main main = new Main();
     static Miscellaneous misc = new Miscellaneous();
@@ -31,6 +33,7 @@ public class TableSearchBar implements Initializable {
         resizeElements();
         usableTextField = textField;
         usableComboBox = comboBox;
+        usableErrorLabel = errorLabel;
     }
 
     public static <E> void createSearchBar(HBox tableSearchBar, Class<E> thisClass) {

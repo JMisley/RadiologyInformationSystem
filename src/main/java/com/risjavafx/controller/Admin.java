@@ -27,6 +27,7 @@ public class Admin implements Initializable {
     public SplitPane centerContentContainer;
     public FilteredList<AdminData> filteredList;
     public SortedList<AdminData> sortedList;
+    public static ObservableList<AdminData> observableList = FXCollections.observableArrayList();
 
     public TableColumn<AdminData, String>
             userId = new TableColumn<>("User ID"),
@@ -43,7 +44,8 @@ public class Admin implements Initializable {
         add(systemRole);
     }};
 
-    InfoTable<AdminData, String> infoTable = new InfoTable<>();
+    public static InfoTable<AdminData, String> infoTable = new InfoTable<>();
+    Miscellaneous misc = new Miscellaneous();
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Pages.setPage(Pages.ADMIN);
@@ -57,9 +59,6 @@ public class Admin implements Initializable {
 
     public void createTable() {
         try {
-            Miscellaneous misc = new Miscellaneous();
-
-            queryData();
             setCellFactoryValues();
 
             infoTable.setColumns(tableColumnsList);
@@ -74,23 +73,19 @@ public class Admin implements Initializable {
             centerContentContainer.setMaxWidth(misc.getScreenWidth() * .85);
             centerContentContainer.setMaxHeight(misc.getScreenHeight() * .85);
             centerContent.getChildren().add(infoTable.tableView);
-            infoTable.tableView.setItems(queryData());
+
+            if (infoTable.tableView.getItems().isEmpty()) {
+                queryData(getAllDataStringQuery());
+                infoTable.tableView.setItems(observableList);
+            }
         } catch (Exception exception) {
             exception.printStackTrace();
         }
 
     }
 
-    public ObservableList<AdminData> queryData() throws SQLException {
-        ObservableList<AdminData> observableList = FXCollections.observableArrayList();
+    public static void queryData(String sql) throws SQLException {
         Driver driver = new Driver();
-        String sql = """
-                select *
-                from users, roles inner join users_roles
-                on roles.role_id = users_roles.role_id
-                where users.user_id = users_roles.user_id
-                order by users.user_id;
-                """;
         ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
 
         while (resultSet.next()) {
@@ -102,7 +97,26 @@ public class Admin implements Initializable {
                     resultSet.getString("name")
             ));
         }
-        return observableList;
+    }
+
+    public String getAllDataStringQuery() {
+        return """
+                SELECT *
+                FROM users, roles INNER JOIN users_roles
+                ON roles.role_id = users_roles.role_id
+                WHERE users.user_id = users_roles.user_id
+                ORDER BY users.user_id;
+                """;
+    }
+
+    public static String getLastRowStringQuery() {
+        return """
+                SELECT *
+                FROM users, roles INNER JOIN users_roles
+                ON roles.role_id = users_roles.role_id
+                WHERE users.user_id = users_roles.user_id
+                ORDER BY users.user_id DESC LIMIT 1;
+                """;
     }
 
     public void setCellFactoryValues() {
@@ -115,16 +129,25 @@ public class Admin implements Initializable {
 
     public void filterData() {
         try {
-            filteredList = new FilteredList<>(queryData());
+            filteredList = new FilteredList<>(observableList);
 
             TableSearchBar.usableTextField.textProperty().addListener((observable, oldValue, newValue) -> filteredList.setPredicate(adminData -> {
+                if (TableSearchBar.usableComboBox.getValue() == null) {
+                    TableSearchBar.usableErrorLabel.setText("Please select a filter");
+                } else {
+                    TableSearchBar.usableErrorLabel.setText(null);
+                }
+
                 if (newValue.isEmpty() || newValue.isBlank()) {
                     return true;
                 }
 
                 String searchKeyword = newValue.toLowerCase();
                 int searchKeyInt = -1;
-                try {searchKeyInt = Integer.parseInt(newValue);} catch (Exception ignored) {}
+                try {
+                    searchKeyInt = Integer.parseInt(newValue);
+                } catch (Exception ignored) {
+                }
 
                 if (adminData.getUserIdData() == searchKeyInt && getComboBoxItem("User ID")) {
                     return true;

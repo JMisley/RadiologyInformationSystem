@@ -31,8 +31,7 @@ public class Login implements Initializable {
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         TitleBar.createTitleBar(mainContainer, titleBar, this.getClass());
-        loginContainer.setPrefWidth(misc.getScreenWidth() * .3);
-        loginContainer.setPrefHeight(misc.getScreenHeight() * .7);
+        resizeElements();
 
         loginContainer.setOnKeyPressed(e -> {
             if(e.getCode() == KeyCode.ENTER) {
@@ -71,5 +70,12 @@ public class Login implements Initializable {
         ResultSet resultSet = preparedStatement.executeQuery();
 
         return resultSet.next();
+    }
+
+    private void resizeElements() {
+        loginContainer.setPrefWidth(misc.getScreenWidth() * .3);
+        loginContainer.setPrefHeight(misc.getScreenHeight() * .7);
+
+        loginButton.setStyle("-fx-font-size: 36px");
     }
 }

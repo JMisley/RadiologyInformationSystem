@@ -48,7 +48,7 @@ public class AlertPopup implements Initializable {
 
         exitButton.setPrefHeight(misc.getScreenHeight() * .05);
         exitButton.setPrefWidth(misc.getScreenHeight() * .1);
-        exitButton.setStyle("-fx-font-size: 15px");
+        exitButton.setStyle("-fx-font-size: 18px");
 
         double headerFontSize;
         double contentFontSize;

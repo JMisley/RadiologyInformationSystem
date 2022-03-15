@@ -38,10 +38,10 @@ public class AdminPopup implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        resizeElements();
         setUserIDLabel();
         populateComboBox();
         Main.popupMenu.showingProperty().addListener((observableValue, aBoolean, t1) -> Main.mainRoot.setDisable(!aBoolean));
-        resizeElements();
     }
 
     public void setUserIDLabel() {
@@ -119,10 +119,10 @@ public class AdminPopup implements Initializable {
 
     // Returns false if any input field is invalid
     public boolean validInput() {
-        return roleComboBox.getValue() != null ||
-                !fullNameTextField.getText().isBlank() ||
-                !emailTextField.getText().isBlank() ||
-                !usernameTextField.getText().isBlank() ||
+        return roleComboBox.getValue() != null &&
+                !fullNameTextField.getText().isBlank() &&
+                !emailTextField.getText().isBlank() &&
+                !usernameTextField.getText().isBlank() &&
                 !passwordTextField.getText().isBlank();
     }
 
@@ -151,6 +151,8 @@ public class AdminPopup implements Initializable {
         if (validInput()) {
             insertUserQuery();
             insertRoleIdQuery();
+            Admin.queryData(Admin.getLastRowStringQuery());
+            Admin.infoTable.tableView.setItems(Admin.observableList);
             Main.popupMenu.hide();
         } else if (!validInput()) {
             main.createPopup("popups/alert-popup.fxml", Main.popupAlert);
