@@ -25,8 +25,8 @@ public class TableSearchBar implements Initializable {
     public Label errorLabel;
     public static Label usableErrorLabel;
 
-    Main main = new Main();
     static Miscellaneous misc = new Miscellaneous();
+    Main main = new Main();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

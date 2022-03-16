@@ -16,7 +16,6 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class AdminPopup implements Initializable {
@@ -154,6 +153,7 @@ public class AdminPopup implements Initializable {
             insertRoleIdQuery();
             Admin.queryData(Admin.getLastRowStringQuery());
             Main.popupMenu.hide();
+            Notification.createNotification();
         } else if (!validInput()) {
             main.createPopup("popups/alert-popup.fxml", Main.popupAlert);
             AlertPopup.setHeaderLabel("Submission Error");
