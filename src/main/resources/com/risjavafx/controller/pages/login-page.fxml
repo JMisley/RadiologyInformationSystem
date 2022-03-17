@@ -14,24 +14,24 @@
    <center>
       <StackPane BorderPane.alignment="CENTER">
          <AnchorPane fx:id="loginContainer" maxHeight="650.0" maxWidth="400.0" stylesheets="@../styles.css">
-            <Label layoutX="124.0" layoutY="48.0" text="LOGIN" textFill="WHITE">
+            <Label layoutX="135.0" layoutY="48.0" text="Login" textFill="BLACK">
                <font>
-                  <Font name="Century Gothic" size="48.0" />
+                  <Font name="Lucida Sans Unicode" size="48.0"  />
                </font>
             </Label>
-            <TextField fx:id="username" layoutX="75.0" layoutY="172.0" prefHeight="50.0" prefWidth="250.0" promptText="Username:" stylesheets="@../styles.css">
+            <TextField fx:id="username" layoutX="75.0" layoutY="172.0" prefHeight="50.0" prefWidth="250.0" promptText="Username" stylesheets="@../styles.css">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
             </TextField>
-            <PasswordField fx:id="password" layoutX="75.0" layoutY="258.0" prefHeight="50.0" prefWidth="250.0" promptText="Password:">
+            <PasswordField fx:id="password" layoutX="75.0" layoutY="258.0" prefHeight="50.0" prefWidth="250.0" promptText="Password">
                <font>
                   <Font name="Arial" size="18.0" />
                </font>
             </PasswordField>
             <Button id="primaryButton" fx:id="loginButton" layoutX="75.0" layoutY="396.0" mnemonicParsing="false" onAction="#userLogin" prefHeight="50.0" prefWidth="250.0" text="LOGIN" textAlignment="CENTER">
                <font>
-                  <Font name="Century Gothic" size="36.0" />
+                  <Font name="Poppins-Regular" size="36.0" />
                </font>
             </Button>
             <StackPane layoutX="100.0" layoutY="309.0" prefHeight="87.0" prefWidth="200.0">

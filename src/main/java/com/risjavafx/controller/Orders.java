@@ -12,7 +12,7 @@ public class Orders implements Initializable {
 
     public HBox topContent;
     public BorderPane mainContainer;
-    public HBox titleBar;
+    public HBox titleBar, tableSearchBar;
 
     // Load NavigationBar component into home-page.fxml
     @Override

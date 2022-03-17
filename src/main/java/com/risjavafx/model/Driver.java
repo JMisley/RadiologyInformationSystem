@@ -9,6 +9,6 @@ public class Driver {
     // Set up connection to database
     public Driver() throws SQLException {
         String MYSQL_URL = "jdbc:mysql://localhost:3306/db_ris";
-        connection = DriverManager.getConnection(MYSQL_URL, "root", "Jm091136");
+        connection = DriverManager.getConnection(MYSQL_URL, "root", "1357980Jg*");
     }
 }

@@ -1,6 +1,8 @@
 /*Theme styling-------------------------------------------------------------------------------------------------------*/
 .root {
-    -fx-background-color: #121212;
+    -fx-background-image: url(../images/bg-01.jpg);
+    -fx-background-size: cover;
+
 }
 
 #popupContainer {
@@ -12,7 +14,7 @@
 }
 
 #loginContainer {
-    -fx-background-color: transparent;
+    -fx-background-color: whitesmoke;
     -fx-background-insets: 0;
     -fx-border-style: solid solid solid solid;
     -fx-border-color: white #444444 #444444 white;
@@ -86,7 +88,7 @@
 /*Title bar styling---------------------------------------------------------------------------------------------------*/
 #titleBar {
     -fx-border-style: none none solid none;
-    -fx-border-color: transparent transparent white transparent;
+    -fx-background-color: transparent;
     -fx-border-width: 0 0 .5 0;
 }
 
@@ -98,6 +100,9 @@
 
 #titleBarCloseButton:hover {
     -fx-background-color: #d5747445;
+    -fx-text:"x";
+    -fx-text-fill: #121212;
+
 }
 
 #titleBarMaxButton:hover {
