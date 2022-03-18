@@ -1,5 +1,5 @@
 # Project exclude paths
 /out/
 /target/
-src/main/resources/com/risjavafx/controller/components/Table.fxml
+src/main/resources/com/risjavafx/components/Table.fxml
 src/main/java/com/risjavafx/Driver.java
