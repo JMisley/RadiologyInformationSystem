@@ -1,0 +1,7 @@
+#popupContainer {
+    -fx-background-color: #121212;
+    -fx-background-radius: 5px;
+    -fx-border-width: 3px;
+    -fx-border-color: white;
+    -fx-border-radius: 5px;
+}

@@ -1,0 +1,335 @@
+/*Theme styling-------------------------------------------------------------------------------------------------------*/
+.root {
+    -fx-background-color: #121212;
+}
+
+#popupContainer {
+    -fx-background-color: #121212;
+    -fx-background-radius: 5px;
+    -fx-border-width: 3px;
+    -fx-border-color: white;
+    -fx-border-radius: 5px;
+}
+
+#loginContainer {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-style: solid solid solid solid;
+    -fx-border-color: white #444444 #444444 white;
+    -fx-border-width: 3px 2px 2px 3px;
+}
+
+#tableBarContainer {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-style: solid solid none solid;
+    -fx-border-color: white white transparent white;
+    -fx-border-width: 3px;
+}
+
+#primaryButton {
+    -fx-background-color: #BB86FC;
+    -fx-text-fill: white;
+    -fx-font-family: "Century Gothic";
+}
+
+#primaryButton:hover {
+    -fx-background-color: #BB86FC73;
+}
+
+#editButton {
+    -fx-background-color: #03DAC6;
+    -fx-text-fill: white;
+    -fx-font-family: "Century Gothic";
+}
+
+#editButton:hover {
+    -fx-background-color: #03DAC673;
+}
+
+#deleteButton {
+    -fx-background-color: #CF6676;
+    -fx-text-fill: white;
+    -fx-font-family: "Century Gothic";
+}
+
+#deleteButton:hover {
+    -fx-background-color: #CF667673;
+}
+
+
+/*Combo box styling---------------------------------------------------------------------------------------------------*/
+/*Combo box header*/
+.combo-box-base {
+    -fx-background-color: #444444;
+    -fx-background-radius: 5px;
+    -fx-padding: 6 0 6 0;
+}
+
+.combo-box {
+    -fx-font-size: 14px;
+    -fx-background-color: #444444;
+}
+
+.combo-box:hover {
+    -fx-background-color: #383838;
+}
+
+.combo-box:focused {
+    -fx-background-color: #383838;
+}
+
+.combo-box:focused:hover {
+    -fx-background-color: #3e3e3e;
+}
+
+.combo-box .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-family: Arial;
+}
+
+/*Combo box list*/
+.combo-box .list-view {
+    -fx-font-size: 14px;
+    -fx-background-color: #5b5b5b;
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-family: Arial;
+    -fx-padding: 10 0 10 10;
+}
+
+.combo-box-popup .list-cell:hover {
+    -fx-background-color: #28282845;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected {
+    -fx-background-color: #BB86FC;
+}
+
+
+/*Title bar styling---------------------------------------------------------------------------------------------------*/
+#titleBar {
+    -fx-border-style: none none solid none;
+    -fx-border-color: transparent transparent white transparent;
+    -fx-border-width: 0 0 .5 0;
+}
+
+#titleBarMaxButton,
+#titleBarMinButton,
+#titleBarCloseButton {
+    -fx-background-color: transparent;
+}
+
+#titleBarCloseButton:hover {
+    -fx-background-color: #d5747445;
+}
+
+#titleBarMaxButton:hover {
+    -fx-background-color: #3eb89745;
+}
+
+#titleBarMinButton:hover {
+    -fx-background-color: #5fa3a345;
+}
+
+
+/*Navigation bar styling----------------------------------------------------------------------------------------------*/
+#menuBar {
+    -fx-background-color: #121212;
+}
+
+#menuBarButton {
+    -fx-background-color: transparent;
+    -fx-font-size: 16px;
+}
+
+#menuBarButton:hover {
+    -fx-background-insets: 0;
+    -fx-border-style: none none solid none;
+    -fx-border-color: transparent transparent #444444 transparent;
+    -fx-border-width: 7px;
+}
+
+#menuBarButtonClicked {
+    -fx-background-color: transparent;
+    -fx-font-size: 16px, 20px;
+    -fx-background-insets: 0;
+    -fx-border-style: none none solid none;
+    -fx-border-color: transparent transparent #BB86FC transparent;
+    -fx-border-width: 7px;
+}
+
+
+/*TableView styles----------------------------------------------------------------------------------------------------*/
+.table-view {
+    -fx-background-color: #444444;
+    -fx-background-radius: 5 5 0 0;
+    -fx-background-insets: 0;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #8692fc;
+    -fx-background-insets: 0;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-alignment: center-left;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-size: 60px;
+    -fx-background-color: transparent;
+    -fx-border-style: none none solid none;
+    -fx-border-color: transparent transparent white transparent;
+    -fx-border-width: 0 0 2 0;
+    -fx-padding: 0 0 0 20px;
+}
+
+.table-cell {
+    -fx-text-fill: white;
+    -fx-font-size: 17px;
+    -fx-font-family: Arial;
+    -fx-alignment: top-left;
+    -fx-padding: 18px 0 18px 18px;
+
+    -fx-border-style: none none solid none;
+    -fx-border-color: transparent transparent #282828 transparent;
+}
+
+.table-row-cell {
+    -fx-background-color: -fx-table-cell-border-color, #444444;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em;
+}
+
+.table-row-cell:hover .table-cell {
+    -fx-background-color: #28282845;
+    -fx-background-insets: 0;
+    -fx-background-radius: 1;
+}
+
+.table-row-cell:selected .table-cell {
+    -fx-font-style: oblique;
+    -fx-background-color: #BB86FC45;
+    -fx-background-insets: 0;
+    -fx-background-radius: 1;
+}
+
+.table-view > .virtual-flow > .scroll-bar:vertical,
+.table-view > .virtual-flow > .scroll-bar:vertical > .track,
+.table-view > .virtual-flow > .scroll-bar:vertical > .track-background {
+    -fx-background-color: #2a2a2a;
+}
+
+.table-view *.scroll-bar:horizontal *.increment-button,
+.table-view *.scroll-bar:horizontal *.decrement-button,
+.table-view *.scroll-bar:horizontal *.increment-arrow,
+.table-view *.scroll-bar:horizontal *.decrement-arrow {
+    -fx-padding: 0;
+    -fx-shape: "";
+}
+
+
+/*Alert box styling---------------------------------------------------------------------------------------------------*/
+#alertBox {
+    -fx-background-color: #121212;
+    -fx-background-radius: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-width: 3px;
+    -fx-border-color: white;
+}
+
+#alertBox-header {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+#alertBox-content {
+    -fx-text-fill: white;
+}
+
+.dialog-pane > *.button-bar > *.container {
+    -fx-background-color: #121212;
+}
+
+.dialog-pane > *.label.content {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #cf6679;
+}
+
+.dialog-pane *.header-panel {
+    -fx-background-color: #121212;
+}
+
+.dialog-pane *.header-panel *.label {
+    -fx-font-size: 18px;
+    -fx-font-style: italic;
+    -fx-text-fill: #cf6679;
+}
+
+
+/*Notification styling------------------------------------------------------------------------------------------------*/
+.notification-bar > .pane {
+    -fx-background-color: red;
+    -fx-padding: 5 5 5 5;
+    -fx-background-insets: 0, 1, 2;
+}
+
+.notification-bar > .pane .title {
+    -fx-font-size: 1.333em; /*16px;*/
+    -fx-text-fill: purple;
+    -fx-font-weight: bold;
+}
+
+.notification-bar > .pane .label {
+    -fx-font-size: 1em; /*12px;*/
+    -fx-text-fill: blue;
+    -fx-alignment: top-left;
+}
+
+/******************************************************************************
+ *
+ * Close button
+ *
+ *****************************************************************************/
+
+.notification-bar > .pane .close-button {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+    -fx-padding: 0 0 0 0;
+    -fx-alignment: center;
+}
+
+.notification-bar > .pane .close-button:hover {
+    -fx-background-color: brown;
+}
+
+.notification-bar > .pane .close-button:pressed {
+    -fx-background-color: orange;
+}
+
+.notification-bar > .pane .close-button > .graphic {
+    -fx-background-color: yellow;
+    -fx-scale-shape: false;
+    -fx-padding: 4.5 4.5 4.5 4.5; /* Graphic is 9x9 px */
+}
+
+.notification-bar > .pane .close-button:hover > .graphic {
+    -fx-background-color: green;
+}
+
+.notification-bar > .pane .close-button:pressed > .graphic {
+    -fx-background-color: gold;
+}
+
+.notification-bar > .pane .close-button > .graphic {
+    -fx-shape: "M395.992,296.758l1.794-1.794l7.292,7.292l-1.795,1.794 L395.992,296.758z M403.256,294.992l1.794,1.794l-7.292,7.292l-1.794-1.795 L403.256,294.992z";
+}
