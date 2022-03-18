@@ -13,7 +13,7 @@ public class AdminData {
     SimpleStringProperty emailAddressData;
     SimpleStringProperty systemRoleData;
 
-    TableSearchBar tableSearchBar = new TableSearchBar();
+    public static TableSearchBar tableSearchBar = new TableSearchBar();
 
     public AdminData(int userId, String displayName, String username, String emailAdr, String systemRole) {
         this.userIdData = new SimpleIntegerProperty(userId);
@@ -23,9 +23,13 @@ public class AdminData {
         this.systemRoleData = new SimpleStringProperty(systemRole);
     }
 
-    public int getUserIdData() {return userIdData.get();}
+    public int getUserIdData() {
+        return userIdData.get();
+    }
 
-    public void setUserIdData(int userId) {this.userIdData.set(userId);}
+    public void setUserIdData(int userId) {
+        this.userIdData.set(userId);
+    }
 
     public String getDisplayNameData() {
         return displayNameData.get();

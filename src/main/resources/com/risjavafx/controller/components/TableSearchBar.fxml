@@ -14,9 +14,6 @@
         <font>
             <Font name="Century Gothic"/>
         </font>
-        <padding>
-            <Insets left="20.0"/>
-        </padding>
     </Label>
     <TextField fx:id="textField" maxHeight="30.0" maxWidth="250.0">
         <HBox.margin>
@@ -38,10 +35,21 @@
             </font>
         </Label>
     </HBox>
-    <Button id="primaryButton" fx:id="addButton" maxHeight="30.0" maxWidth="70.0" mnemonicParsing="false"
-            onAction="#addItems" text="Add">
+    <Button id="deleteButton" fx:id="deleteButton" maxHeight="40.0" maxWidth="85.0" mnemonicParsing="false"
+            text="Delete" disable="true" opacity="0f"/>
+    <Button id="editButton" fx:id="editButton" maxHeight="40.0" maxWidth="85.0" mnemonicParsing="false"
+            onAction="#editItems" text="Edit" disable="true" opacity="0f">
         <HBox.margin>
-            <Insets right="20.0"/>
+            <Insets left="10.0"/>
         </HBox.margin>
     </Button>
+    <Button id="primaryButton" fx:id="addButton" maxHeight="40.0" maxWidth="85.0" mnemonicParsing="false"
+            onAction="#addItems" text="Add">
+        <HBox.margin>
+            <Insets left="10.0"/>
+        </HBox.margin>
+    </Button>
+    <padding>
+        <Insets left="20.0" right="20.0"/>
+    </padding>
 </HBox>

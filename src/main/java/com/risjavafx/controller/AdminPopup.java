@@ -2,6 +2,7 @@ package com.risjavafx.controller;
 
 import com.risjavafx.model.Driver;
 import com.risjavafx.model.Miscellaneous;
+import com.risjavafx.model.Popups;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -20,6 +21,8 @@ import java.util.ResourceBundle;
 
 public class AdminPopup implements Initializable {
     public VBox popupContainer;
+    public static VBox usablePopupContainer;
+
     public Label userIDLabel;
     public ComboBox<String> roleComboBox;
     public TextField fullNameTextField;
@@ -30,7 +33,6 @@ public class AdminPopup implements Initializable {
     public Button submitButton;
 
     Driver driver = new Driver();
-    Main main = new Main();
     Miscellaneous misc = new Miscellaneous();
 
     public AdminPopup() throws SQLException {
@@ -41,7 +43,8 @@ public class AdminPopup implements Initializable {
         resizeElements();
         setUserIDLabel();
         populateComboBox();
-        Main.popupMenu.showingProperty().addListener((observableValue, aBoolean, t1) -> PageManager.root.setDisable(!aBoolean));
+        Popups.ADMIN.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> PageManager.root.setDisable(!aBoolean));
+        usablePopupContainer = popupContainer;
     }
 
     public void setUserIDLabel() {
@@ -127,8 +130,10 @@ public class AdminPopup implements Initializable {
     }
 
     public void resizeElements() {
-        popupContainer.setPrefHeight(misc.getScreenWidth() * .315);
-        popupContainer.setPrefWidth(misc.getScreenWidth() * .285);
+        popupContainer.setPrefHeight(Popups.getMenuDimensions()[0]);
+        popupContainer.setPrefWidth(Popups.getMenuDimensions()[1]);
+        popupContainer.setMaxHeight(Popups.getMenuDimensions()[0]);
+        popupContainer.setMaxWidth(Popups.getMenuDimensions()[1]);
 
         cancelButton.setPrefHeight(misc.getScreenWidth() * .033);
         cancelButton.setPrefWidth(misc.getScreenWidth() * .11);
@@ -152,19 +157,20 @@ public class AdminPopup implements Initializable {
             insertUserQuery();
             insertRoleIdQuery();
             Admin.queryData(Admin.getLastRowStringQuery());
-            Main.popupMenu.hide();
+            Popups.getPopupEnum().getPopup().hide();
             Notification.createNotification();
         } else if (!validInput()) {
-            main.createPopup("popups/alert-popup.fxml", Main.popupAlert);
-            AlertPopup.setHeaderLabel("Submission Error");
-            AlertPopup.setContentLabel("Please make sure you have filled out all the fields");
+            PopupManager.createPopup(Popups.ALERT);
+            AlertPopup.setHeaderLabel("Submission Failed");
+            AlertPopup.setContentLabel("Please make sure you filled out all fields");
             AlertPopup.setExitButtonLabel("Retry");
         }
     }
 
     // Onclick for cancel button
     public void cancelButtonOnclick() {
-        Main.popupMenu.hide();
-        try {Main.popupAlert.hide();} catch (Exception ignore) {}
+        Popups.ADMIN.getPopup().hide();
+        try {
+            Popups.ALERT.getPopup().hide();} catch (Exception ignore) {}
     }
 }
