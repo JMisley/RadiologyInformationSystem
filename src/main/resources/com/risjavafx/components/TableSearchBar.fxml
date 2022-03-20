@@ -20,7 +20,7 @@
             <Insets left="10.0"/>
         </HBox.margin>
     </TextField>
-    <ComboBox fx:id="comboBox" maxHeight="30.0" maxWidth="300" onAction="#comboBoxValueChange" promptText="Filter by">
+    <ComboBox fx:id="comboBox" maxHeight="30.0" maxWidth="300" promptText="Filter by">
         <HBox.margin>
             <Insets left="10.0"/>
         </HBox.margin>
@@ -37,14 +37,13 @@
     </HBox>
     <Button id="deleteButton" fx:id="deleteButton" maxHeight="40.0" maxWidth="85.0" mnemonicParsing="false"
             text="Delete" disable="true" opacity="0f"/>
-    <Button id="editButton" fx:id="editButton" maxHeight="40.0" maxWidth="85.0" mnemonicParsing="false"
-            onAction="#editItems" text="Edit" disable="true" opacity="0f">
+    <Button id="editButton" fx:id="editButton" maxHeight="40.0" maxWidth="85.0" mnemonicParsing="false" text="Edit"
+            disable="true" opacity="0f">
         <HBox.margin>
             <Insets left="10.0"/>
         </HBox.margin>
     </Button>
-    <Button id="primaryButton" fx:id="addButton" maxHeight="40.0" maxWidth="85.0" mnemonicParsing="false"
-            onAction="#addItems" text="Add">
+    <Button id="primaryButton" fx:id="addButton" maxHeight="40.0" maxWidth="85.0" mnemonicParsing="false" text="Add">
         <HBox.margin>
             <Insets left="10.0"/>
         </HBox.margin>

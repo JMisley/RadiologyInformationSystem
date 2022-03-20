@@ -5,9 +5,11 @@ import javafx.stage.Popup;
 
 public enum Popups {
     ADMIN("admin-popup.fxml", PopupManager.popupMenu, "MENU"),
-    ALERT("alert-popup.fxml", PopupManager.popupAlert, "ALERT");
+    CONFIRMATION("popup-confirmation.fxml", PopupManager.popupAlert, "ALERT"),
+    ALERT("popup-alert.fxml", PopupManager.popupAlert, "ALERT");
 
-    private static Popups popups;
+    private static Popups menuPopups;
+    private static Popups alertPopups;
     private final String filename;
     private final Popup popup;
     private final String type;
@@ -32,12 +34,20 @@ public enum Popups {
         return type;
     }
 
-    public static void setPopupEnum(Popups popups) {
-        Popups.popups = popups;
+    public static void setMenuPopupEnum(Popups popups) {
+        Popups.menuPopups = popups;
     }
 
-    public static Popups getPopupEnum() {
-        return popups;
+    public static Popups getMenuPopupEnum() {
+        return menuPopups;
+    }
+
+    public static void setAlertPopupEnum(Popups popups) {
+        Popups.alertPopups = popups;
+    }
+
+    public static Popups getAlertPopupEnum() {
+        return alertPopups;
     }
 
     public static double[] getMenuDimensions() {

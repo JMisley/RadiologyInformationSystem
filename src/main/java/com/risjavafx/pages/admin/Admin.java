@@ -7,16 +7,21 @@ import com.risjavafx.components.NavigationBar;
 import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.pages.Pages;
+import com.risjavafx.popups.PopupConfirmation;
+import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -33,7 +38,7 @@ import java.util.ResourceBundle;
 public class Admin implements Initializable {
 
     public BorderPane mainContainer;
-    public HBox topContent, titleBar, tableSearchBar;
+    public HBox topContent, titleBar, tableSearchBarContainer;
     public StackPane centerContent;
     public SplitPane centerContentContainer;
     public static ObservableList<AdminData> observableList = FXCollections.observableArrayList();
@@ -56,15 +61,16 @@ public class Admin implements Initializable {
     }};
 
     InfoTable<AdminData, String> infoTable = new InfoTable<>();
+    TableSearchBar tableSearchBar = new TableSearchBar();
     Miscellaneous misc = new Miscellaneous();
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Pages.setPage(Pages.ADMIN);
-        Popups.setPopupEnum(Popups.ADMIN);
 
         TitleBar.createTitleBar(mainContainer, titleBar);
         NavigationBar.createNavBar(topContent);
-        TableSearchBar.createSearchBar(tableSearchBar);
+        tableSearchBar.createSearchBar(tableSearchBarContainer);
+        tableSearchBarAddButtonListener();
         setComboBoxItems();
         createTable();
         filterData();
@@ -165,11 +171,11 @@ public class Admin implements Initializable {
                 "Email address",
                 "System role"
         );
-        TableSearchBar.usableComboBox.setItems(oblist);
+        tableSearchBar.getComboBox().setItems(oblist);
     }
 
-    public static boolean getComboBoxItem(String string) {
-        String selectedComboValue = TableSearchBar.usableComboBox.getValue();
+    public boolean getComboBoxItem(String string) {
+        String selectedComboValue = tableSearchBar.getComboBox().getValue();
         return string.equals(selectedComboValue) || "All".equals(selectedComboValue);
     }
 
@@ -178,13 +184,13 @@ public class Admin implements Initializable {
         try {
             filteredList = new FilteredList<>(Admin.observableList);
 
-            TableSearchBar.usableTextField.textProperty().addListener((observable, oldValue, newValue) ->
+            tableSearchBar.getTextField().textProperty().addListener((observable, oldValue, newValue) ->
                     filteredList.setPredicate(adminData -> filterDataEvent(newValue, adminData)));
 
-            TableSearchBar.usableComboBox.valueProperty().addListener((newValue) ->
+            tableSearchBar.getComboBox().valueProperty().addListener((newValue) ->
                     filteredList.setPredicate(adminData -> {
                         if (newValue != null) {
-                            return filterDataEvent(TableSearchBar.usableTextField.getText(), adminData);
+                            return filterDataEvent(tableSearchBar.getTextField().getText(), adminData);
                         }
                         return false;
                     }));
@@ -199,11 +205,11 @@ public class Admin implements Initializable {
     }
 
     // Action to be performed for Admin TextField and ComboBox listener
-    public static boolean filterDataEvent(String newValue, AdminData adminData) {
-        if (TableSearchBar.usableComboBox.getValue() == null) {
-            TableSearchBar.usableErrorLabel.setText("Please select a filter");
+    public boolean filterDataEvent(String newValue, AdminData adminData) {
+        if (tableSearchBar.getComboBox().getValue() == null) {
+            tableSearchBar.getErrorLabel().setText("Please select a filter");
         } else {
-            TableSearchBar.usableErrorLabel.setText(null);
+            tableSearchBar.getErrorLabel().setText(null);
         }
 
         if (newValue.isEmpty() || newValue.isBlank()) {
@@ -217,39 +223,32 @@ public class Admin implements Initializable {
         } catch (Exception ignored) {
         }
 
-        if (adminData.getUserIdData() == searchKeyInt && Admin.getComboBoxItem("User ID")) {
+        if (adminData.getUserIdData() == searchKeyInt && getComboBoxItem("User ID")) {
             return true;
-        } else if (adminData.getDisplayNameData().toLowerCase().contains(searchKeyword) && Admin.getComboBoxItem("Full name")) {
+        } else if (adminData.getDisplayNameData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Full name")) {
             return true;
-        } else if (adminData.getUsernameData().toLowerCase().contains(searchKeyword) && Admin.getComboBoxItem("Username")) {
+        } else if (adminData.getUsernameData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Username")) {
             return true;
-        } else if (adminData.getEmailAddressData().toLowerCase().contains(searchKeyword) && Admin.getComboBoxItem("Email address")) {
+        } else if (adminData.getEmailAddressData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Email address")) {
             return true;
         } else
-            return adminData.getSystemRoleData().toLowerCase().contains(searchKeyword) && Admin.getComboBoxItem("System role");
+            return adminData.getSystemRoleData().toLowerCase().contains(searchKeyword) && getComboBoxItem("System role");
     }
 
     // Listener for Admin TableView
     public void tableViewListener() {
         infoTable.tableView.getSelectionModel().selectedItemProperty().addListener((observableValue, adminData, t1) -> {
             if (t1 != null) {
-                TableSearchBar.toggleButtons(false);
-                TableSearchBar.usableDeleteButton.setOnAction(actionEvent -> {
-                    try {
-                        deleteSelectedItemsQuery("users_roles");
-                        deleteSelectedItemsQuery("users");
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                    TableSearchBar.deleteItems(infoTable, observableList);
-                });
+                tableSearchBar.toggleButtons(false);
+                tableSearchBar.getDeleteButton().setOnAction(actionEvent ->
+                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> Popups.getAlertPopupEnum().getPopup().hide()));
             }
         });
     }
 
     // If a selected row is clicked again, it will unselect. TableSearchBar Buttons will also adjust appropriately
     public void manageRowSelection() {
-        infoTable.tableView.setRowFactory(tableView2 -> {
+        infoTable.tableView.setRowFactory(tableView -> {
             final TableRow<AdminData> row = new TableRow<>();
             row.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
                 final int index = row.getIndex();
@@ -257,11 +256,39 @@ public class Admin implements Initializable {
                     infoTable.tableView.getSelectionModel().isSelected(index)) {
                     infoTable.tableView.getSelectionModel().clearSelection();
 
-                    TableSearchBar.toggleButtons(true);
+                    tableSearchBar.toggleButtons(true);
                     event.consume();
                 }
             });
             return row;
         });
+    }
+
+    public void customConfirmationPopup(EventHandler<ActionEvent> confirm, EventHandler<ActionEvent> cancel) {
+        PopupManager.createPopup(Popups.CONFIRMATION);
+        new PopupConfirmation() {{
+            setConfirmButtonLabel("Continue");
+            setExitButtonLabel("Cancel");
+            setHeaderLabel("Warning");
+            setContentLabel("This data will be permanently deleted");
+            setConfirmationImage(new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/warning.png"));
+            getConfirmationButton().setOnAction(confirm);
+            getCancelButton().setOnAction(cancel);
+        }};
+    }
+
+    public void confirmDeletion() {
+        try {
+            deleteSelectedItemsQuery("users_roles");
+            deleteSelectedItemsQuery("users");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
+        Popups.getAlertPopupEnum().getPopup().hide();
+    }
+
+    public void tableSearchBarAddButtonListener() {
+        tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.ADMIN));
     }
 }

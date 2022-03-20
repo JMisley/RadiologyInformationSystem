@@ -1,9 +1,7 @@
 package com.risjavafx.components;
 
 import com.risjavafx.Miscellaneous;
-import com.risjavafx.popups.PopupManager;
-import com.risjavafx.popups.Popups;
-import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -11,37 +9,35 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class TableSearchBar implements Initializable {
 
-    public Label searchLabel;
+    @FXML private Label searchLabel;
+    @FXML private Button addButton;
+    @FXML private Button deleteButton;
+    @FXML private Button editButton;
+    @FXML private TextField textField;
+    @FXML private ComboBox<String> comboBox;
+    @FXML private Label errorLabel;
 
-    public Button addButton;
-    public static Button usableAddButton;
-
-    public Button deleteButton;
-    public static Button usableDeleteButton;
-
-    public Button editButton;
-    public static Button usableEditButton;
-
-    public TextField textField;
-    public static TextField usableTextField;
-
-    public ComboBox<String> comboBox;
-    public static ComboBox<String> usableComboBox;
-
-    public Label errorLabel;
-    public static Label usableErrorLabel;
+    private static Button usableAddButton;
+    private static Button usableDeleteButton;
+    private static Button usableEditButton;
+    private static TextField usableTextField;
+    private static ComboBox<String> usableComboBox;
+    private static Label usableErrorLabel;
 
     static Miscellaneous misc = new Miscellaneous();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         resizeElements();
+        initializeUsables();
+    }
+
+    public void initializeUsables() {
         usableTextField = textField;
         usableComboBox = comboBox;
         usableErrorLabel = errorLabel;
@@ -50,7 +46,7 @@ public class TableSearchBar implements Initializable {
         usableDeleteButton = deleteButton;
     }
 
-    public static void createSearchBar(HBox tableSearchBar) {
+    public void createSearchBar(HBox tableSearchBar) {
         ComponentsManager.createComponent(Components.TABLE_SEARCH_BAR, tableSearchBar);
     }
 
@@ -78,7 +74,7 @@ public class TableSearchBar implements Initializable {
         }
     }
 
-    public static void toggleButtons(boolean showAddButton) {
+    public void toggleButtons(boolean showAddButton) {
         int addOpacity, otherOpacity;
         if (showAddButton) {
             addOpacity = 1;
@@ -96,22 +92,15 @@ public class TableSearchBar implements Initializable {
         TableSearchBar.usableDeleteButton.setOpacity(otherOpacity);
     }
 
-    // Add Button OnClick Listener
-    public void addItems() throws IOException {
-        PopupManager.createPopup(Popups.getPopupEnum());
-    }
+    public TextField getTextField() {return usableTextField;}
 
-    // Edit Button OnClick Listener
-    public void editItems() {
-    }
+    public ComboBox<String> getComboBox() {return usableComboBox;}
 
-    // Delete Button OnClick Listener
-    public static <E> void deleteItems(InfoTable<E, ?> infoTable, ObservableList<E> observableList) {
-        ObservableList<E> selectedItems = infoTable.tableView.getSelectionModel().getSelectedItems();
-        observableList.removeAll(selectedItems);
-    }
+    public Label getErrorLabel() {return usableErrorLabel;}
 
-    public void comboBoxValueChange() {
-        usableComboBox = comboBox;
-    }
+    public Button getAddButton() {return usableAddButton;}
+
+    public Button getEditButton() {return usableEditButton;}
+
+    public Button getDeleteButton() {return usableDeleteButton;}
 }
