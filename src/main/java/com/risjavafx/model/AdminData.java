@@ -4,7 +4,7 @@ import com.risjavafx.controller.TableSearchBar;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-@SuppressWarnings("unused")
+
 public class AdminData {
     SimpleIntegerProperty userIdData;
     SimpleStringProperty displayNameData;
