@@ -8,14 +8,15 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="alertBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+<VBox fx:id="popupContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
       prefWidth="400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.risjavafx.popups.PopupAlert">
+      fx:controller="com.risjavafx.popups.PopupConfirmation">
     <HBox alignment="CENTER">
         <VBox.margin>
             <Insets top="20.0"/>
         </VBox.margin>
-        <ImageView fx:id="errorImage" fitHeight="150.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true"/>
+        <ImageView fx:id="confirmationImage" fitHeight="150.0" fitWidth="75.0" pickOnBounds="true"
+                   preserveRatio="true"/>
     </HBox>
     <HBox alignment="CENTER">
         <VBox.margin>
@@ -39,8 +40,13 @@
     </HBox>
     <HBox alignment="CENTER">
         <VBox.margin>
-            <Insets bottom="20.0" top="40.0"/>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="40.0"/>
         </VBox.margin>
-        <Button id="primaryButton" fx:id="exitButton" mnemonicParsing="false" onAction="#exitPopup" text="Button"/>
+        <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+            <Button id="primaryButton" fx:id="cancelButton" mnemonicParsing="false" text="Button"/>
+        </HBox>
+        <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
+            <Button id="primaryButton" fx:id="confirmButton" mnemonicParsing="false" text="Button"/>
+        </HBox>
     </HBox>
 </VBox>

@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
@@ -47,7 +48,8 @@ public class AdminPopup implements Initializable {
         resizeElements();
         setUserIDLabel();
         populateComboBox();
-        Popups.ADMIN.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> PageManager.root.setDisable(!aBoolean));
+        Popups.ADMIN.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) ->
+                PageManager.getRoot().setDisable(!aBoolean));
         usablePopupContainer = popupContainer;
     }
 
@@ -156,18 +158,22 @@ public class AdminPopup implements Initializable {
 
     //Button Onclicks
     // Onclick for submit button
-    public void submitButtonOnclick() throws IOException, SQLException {
+    public void submitButtonOnclick() throws SQLException {
         if (validInput()) {
             insertUserQuery();
             insertRoleIdQuery();
             Admin.queryData(Admin.getLastRowStringQuery());
-            Popups.getPopupEnum().getPopup().hide();
+            Popups.getMenuPopupEnum().getPopup().hide();
             Notification.createNotification();
         } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);
-            PopupAlert.setHeaderLabel("Submission Failed");
-            PopupAlert.setContentLabel("Please make sure you filled out all fields");
-            PopupAlert.setExitButtonLabel("Retry");
+            new PopupAlert() {{
+                setAlertImage(new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/error.png"));
+                setHeaderLabel("Submission Failed");
+                setContentLabel("Please make sure you filled out all fields");
+                setExitButtonLabel("Retry");
+            }};
+
         }
     }
 
