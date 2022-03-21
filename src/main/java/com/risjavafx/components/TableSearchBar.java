@@ -33,8 +33,8 @@ public class TableSearchBar implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        resizeElements();
         initializeUsables();
+        resizeElements();
     }
 
     public void initializeUsables() {

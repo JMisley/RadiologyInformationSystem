@@ -14,7 +14,7 @@ public class Notification {
         imageView.setFitWidth(50);
         Notifications
                 .create()
-                .owner(PageManager.root)
+                .owner(PageManager.getRoot())
                 .title("Submission Complete")
                 .text("You successfully added a new user")
                 .hideAfter(Duration.seconds(5))

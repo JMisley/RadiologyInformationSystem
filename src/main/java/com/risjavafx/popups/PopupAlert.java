@@ -33,7 +33,7 @@ public class PopupAlert extends PopupBlueprint implements Initializable {
 
         Popups.getMenuPopupEnum().getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
             if (!Popups.getMenuPopupEnum().getPopup().isShowing()) {
-                PageManager.root.setDisable(!aBoolean);
+                PageManager.getRoot().setDisable(!aBoolean);
             }
         });
     }

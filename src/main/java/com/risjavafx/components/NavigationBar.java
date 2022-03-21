@@ -3,15 +3,11 @@ package com.risjavafx.components;
 import com.risjavafx.Miscellaneous;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
-import java.io.IOException;
 import java.net.URL;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class NavigationBar implements Initializable {
@@ -28,7 +24,7 @@ public class NavigationBar implements Initializable {
         setButtonWidth();
     }
 
-    public static <E> void createNavBar(HBox topContent) {
+    public static void createNavBar(HBox topContent) {
         ComponentsManager.createComponent(Components.NAVIGATION_BAR, topContent);
     }
 
@@ -40,17 +36,13 @@ public class NavigationBar implements Initializable {
         switchPage(Pages.USERINFO);
     }
 
-    public void openAdmin() {
-        switchPage(Pages.ADMIN);
-    }
+    public void openAdmin() {switchPage(Pages.ADMIN);}
 
     public void openReferrals() {
         switchPage(Pages.REFERRALS);
     }
 
-    public void openAppointments() {
-        switchPage(Pages.APPOINTMENTS);
-    }
+    public void openAppointments() {switchPage(Pages.APPOINTMENTS);}
 
     public void openOrders() {
         switchPage(Pages.ORDERS);
@@ -101,6 +93,7 @@ public class NavigationBar implements Initializable {
 
     public void switchPage(Pages page) {
         if (Pages.getPage() != page) {
+            Pages.setPage(page);
             PageManager.switchPage(page);
         }
     }

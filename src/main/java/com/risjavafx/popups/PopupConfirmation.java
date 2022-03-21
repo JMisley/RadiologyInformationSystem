@@ -36,7 +36,7 @@ public class PopupConfirmation extends PopupBlueprint implements Initializable {
         try {
             Popups.getMenuPopupEnum().getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
                 if (!Popups.getMenuPopupEnum().getPopup().isShowing()) {
-                    PageManager.root.setDisable(!aBoolean);
+                    PageManager.getRoot().setDisable(!aBoolean);
                 }
             });
         } catch (Exception ignored) {}

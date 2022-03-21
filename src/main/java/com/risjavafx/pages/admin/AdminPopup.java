@@ -48,7 +48,8 @@ public class AdminPopup implements Initializable {
         resizeElements();
         setUserIDLabel();
         populateComboBox();
-        Popups.ADMIN.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> PageManager.root.setDisable(!aBoolean));
+        Popups.ADMIN.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) ->
+                PageManager.getRoot().setDisable(!aBoolean));
         usablePopupContainer = popupContainer;
     }
 

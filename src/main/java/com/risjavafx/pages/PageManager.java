@@ -10,12 +10,8 @@ import java.util.Objects;
 
 public class PageManager {
     private static final Map<Pages, Parent> cache = new HashMap<>();
-    public static Scene scene;
-    public static Parent root;
-
-    public static void setScene (Scene scene) {
-        PageManager.scene = scene;
-    }
+    private static Scene scene;
+    private static Parent root;
 
     public static void switchPage(Pages page) {
         if (scene == null) {
@@ -35,9 +31,21 @@ public class PageManager {
             }
             scene.setRoot(root);
             PageManager.root = root;
-            Pages.setPage(page);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+    }
+
+    // Use this to override caching functionality for specific methods in an isCachable class
+    public static Scene getScene() {
+        return scene;
+    }
+
+    public static void setScene (Scene scene) {
+        PageManager.scene = scene;
+    }
+
+    public static Parent getRoot() {
+        return root;
     }
 }

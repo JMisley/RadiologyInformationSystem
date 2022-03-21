@@ -40,9 +40,7 @@ public enum Pages {
         return isCachable;
     }
 
-    public static Pages getPage() {
-        return page;
-    }
+    public static Pages getPage() {return page;}
 
     public static void setPage(Pages page) {
         Pages.page = page;

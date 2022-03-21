@@ -6,6 +6,7 @@ import com.risjavafx.Miscellaneous;
 import com.risjavafx.components.NavigationBar;
 import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
+import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.popups.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
@@ -41,9 +42,14 @@ public class Admin implements Initializable {
     public HBox topContent, titleBar, tableSearchBarContainer;
     public StackPane centerContent;
     public SplitPane centerContentContainer;
+
     public static ObservableList<AdminData> observableList = FXCollections.observableArrayList();
     SortedList<AdminData> sortedList;
     FilteredList<AdminData> filteredList;
+
+    InfoTable<AdminData, String> infoTable = new InfoTable<>();
+    TableSearchBar tableSearchBar = new TableSearchBar();
+    Miscellaneous misc = new Miscellaneous();
 
     public TableColumn<AdminData, String>
             userId = new TableColumn<>("User ID"),
@@ -51,7 +57,6 @@ public class Admin implements Initializable {
             username = new TableColumn<>("Username"),
             emailAdr = new TableColumn<>("Email Address"),
             systemRole = new TableColumn<>("System Role");
-
     public ArrayList<TableColumn<AdminData, String>> tableColumnsList = new ArrayList<>() {{
         add(userId);
         add(displayName);
@@ -60,22 +65,34 @@ public class Admin implements Initializable {
         add(systemRole);
     }};
 
-    InfoTable<AdminData, String> infoTable = new InfoTable<>();
-    TableSearchBar tableSearchBar = new TableSearchBar();
-    Miscellaneous misc = new Miscellaneous();
-
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Miscellaneous components initialization
         Pages.setPage(Pages.ADMIN);
-
         TitleBar.createTitleBar(mainContainer, titleBar);
         NavigationBar.createNavBar(topContent);
+
+        // *TableView* initialization
+        createTable();
+        tableViewListener();
+        manageRowSelection();
+
+        // Overrides caching functionality and loads *TableSearchBar* every time page is opened
+        PageManager.getScene().rootProperty().addListener(observable -> {
+            if (Pages.getPage() == Pages.ADMIN) {
+                createTableSearchBar();
+            }
+        });
+    }
+
+    public void createTableSearchBar() {
         tableSearchBar.createSearchBar(tableSearchBarContainer);
         tableSearchBarAddButtonListener();
         setComboBoxItems();
-        createTable();
         filterData();
-        tableViewListener();
-        manageRowSelection();
+
+        if (!infoTable.tableView.getSelectionModel().getSelectedItems().isEmpty()) {
+            tableSearchBar.toggleButtons(false);
+        }
     }
 
     public void createTable() {
@@ -187,13 +204,12 @@ public class Admin implements Initializable {
             tableSearchBar.getTextField().textProperty().addListener((observable, oldValue, newValue) ->
                     filteredList.setPredicate(adminData -> filterDataEvent(newValue, adminData)));
 
-            tableSearchBar.getComboBox().valueProperty().addListener((newValue) ->
-                    filteredList.setPredicate(adminData -> {
-                        if (newValue != null) {
-                            return filterDataEvent(tableSearchBar.getTextField().getText(), adminData);
-                        }
-                        return false;
-                    }));
+            tableSearchBar.getComboBox().valueProperty().addListener((newValue) -> filteredList.setPredicate(adminData -> {
+                if (newValue != null) {
+                    return filterDataEvent(tableSearchBar.getTextField().getText(), adminData);
+                }
+                return false;
+            }));
 
             sortedList = new SortedList<>(filteredList);
             sortedList.comparatorProperty().bind(infoTable.tableView.comparatorProperty());
@@ -242,6 +258,8 @@ public class Admin implements Initializable {
                 tableSearchBar.toggleButtons(false);
                 tableSearchBar.getDeleteButton().setOnAction(actionEvent ->
                         customConfirmationPopup(confirm -> confirmDeletion(), cancel -> Popups.getAlertPopupEnum().getPopup().hide()));
+            } else {
+                tableSearchBar.toggleButtons(true);
             }
         });
     }
