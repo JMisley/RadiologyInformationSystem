@@ -100,10 +100,10 @@ public class Orders implements Initializable {
         orderId.setCellValueFactory(new PropertyValueFactory<>("orderIdData"));
         patient.setCellValueFactory(new PropertyValueFactory<>("patientData"));
         referralMd.setCellValueFactory(new PropertyValueFactory<>("referralMdData"));
-        modality.setCellValueFactory(new PropertyValueFactory<>("modality"));
-        appointment.setCellValueFactory(new PropertyValueFactory<>("appointment"));
-        notes.setCellValueFactory(new PropertyValueFactory<>("notes"));
-        status.setCellValueFactory(new PropertyValueFactory<>("status"));
-        report.setCellValueFactory(new PropertyValueFactory<>("report"));
+        modality.setCellValueFactory(new PropertyValueFactory<>("modalityData"));
+        appointment.setCellValueFactory(new PropertyValueFactory<>("appointmentData"));
+        notes.setCellValueFactory(new PropertyValueFactory<>("notesData"));
+        status.setCellValueFactory(new PropertyValueFactory<>("statusData"));
+        report.setCellValueFactory(new PropertyValueFactory<>("reportData"));
     }
 }

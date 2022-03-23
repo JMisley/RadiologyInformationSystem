@@ -36,7 +36,7 @@ public class OrdersData {
         this.patientData.set(patientData);
     }
 
-    public String getReferralMdDataData() {
+    public String getReferralMdData() {
         return referralMdData.get();
     }
 
@@ -50,6 +50,13 @@ public class OrdersData {
 
     public void setModalityData(String modalityData) {
         this.modalityData.set(modalityData);
+    }
+
+    public String getAppointmentData() {
+        return appointmentData.get();}
+
+    public void setAppointmentData(String appointmentData) {
+        this.appointmentData.set(appointmentData);
     }
 
     public String getNotesData() {
