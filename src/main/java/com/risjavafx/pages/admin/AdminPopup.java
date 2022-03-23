@@ -88,8 +88,10 @@ public class AdminPopup implements Initializable {
 
     public void insertUserQuery() throws SQLException {
         String sql = """
-                insert into users
-                values (?, ?, ?, ?, ?, ?);
+                INSERT INTO `db_ris`.`appointments` 
+                (`appointment_id`, `patient`, `modality`, `date_time`, `radiologist`, `technician`, `checked_in`, `closed`) 
+                VALUES ('?', '?', '?', '?', '?', '?', b'?', b'?');
+                           
                 """;
         PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
         preparedStatement.setInt(1, Integer.parseInt(userIDLabel.getText()));

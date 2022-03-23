@@ -1,8 +1,11 @@
 package com.risjavafx.pages.appointments;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 @SuppressWarnings("unused")
 public class AppointmentData {
+
+    SimpleIntegerProperty patientId;
     SimpleStringProperty patient;
     SimpleStringProperty modality;
     SimpleStringProperty price;
@@ -11,22 +14,27 @@ public class AppointmentData {
     SimpleStringProperty technician;
     SimpleStringProperty closedFlag;
 
-    public AppointmentData(String patient, String modality, String price, String date, String radiologist, String technician, String closedFlag) {
+    public AppointmentData(int patientId, String patient, String modality, String price, String dateTime, String radiologist, String technician, String closedFlag) {
+        this.patientId = new SimpleIntegerProperty(patientId);
         this.patient = new SimpleStringProperty(patient);
         this.modality = new SimpleStringProperty(modality);
         this.price = new SimpleStringProperty(price);
-        this.date = new SimpleStringProperty(date);
+        this.date = new SimpleStringProperty(dateTime);
         this.radiologist = new SimpleStringProperty(radiologist);
         this.technician = new SimpleStringProperty(technician);
         this.closedFlag = new SimpleStringProperty(closedFlag);
     }
 
-    public String getPatient() {
-        return patient.get();
+    public int getPatientId() {
+        return patientId.get();
     }
 
-    public SimpleStringProperty patientProperty() {
-        return patient;
+    public void setPatientId(int patientId) {
+        this.patientId.set(patientId);
+    }
+
+    public String getPatient() {
+        return patient.get();
     }
 
     public void setPatient(String patient) {
@@ -37,21 +45,12 @@ public class AppointmentData {
         return modality.get();
     }
 
-
-    public SimpleStringProperty modalityProperty() {
-        return modality;
-    }
-
     public void setModality(String modality) {
         this.modality.set(modality);
     }
 
     public String getPrice() {
         return price.get();
-    }
-
-    public SimpleStringProperty priceProperty() {
-        return price;
     }
 
     public void setPrice(String price) {
@@ -62,20 +61,12 @@ public class AppointmentData {
         return date.get();
     }
 
-    public SimpleStringProperty dateProperty() {
-        return date;
-    }
-
     public void setDate(String date) {
         this.date.set(date);
     }
 
     public String getRadiologist() {
         return radiologist.get();
-    }
-
-    public SimpleStringProperty radiologistProperty() {
-        return radiologist;
     }
 
     public void setRadiologist(String radiologist) {
@@ -86,20 +77,12 @@ public class AppointmentData {
         return technician.get();
     }
 
-    public SimpleStringProperty technicianProperty() {
-        return technician;
-    }
-
     public void setTechnician(String technician) {
         this.technician.set(technician);
     }
 
     public String getClosedFlag() {
         return closedFlag.get();
-    }
-
-    public SimpleStringProperty closedFlagProperty() {
-        return closedFlag;
     }
 
     public void setClosedFlag(String closedFlag) {
