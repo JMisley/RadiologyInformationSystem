@@ -1,19 +1,16 @@
 package com.risjavafx.pages.admin;
 
-import com.risjavafx.components.TableSearchBar;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 @SuppressWarnings("unused")
 public class AdminData {
+
     SimpleIntegerProperty userIdData;
     SimpleStringProperty displayNameData;
-
     SimpleStringProperty usernameData;
     SimpleStringProperty emailAddressData;
     SimpleStringProperty systemRoleData;
-
-    public static TableSearchBar tableSearchBar = new TableSearchBar();
 
     public AdminData(int userId, String displayName, String username, String emailAdr, String systemRole) {
         this.userIdData = new SimpleIntegerProperty(userId);
