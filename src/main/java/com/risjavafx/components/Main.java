@@ -22,7 +22,7 @@ public class Main extends Application {
         PageManager.setScene(scene);
         PageManager.switchPage(Pages.LOGIN);
 
-        //  PageManager.switchPage(Pages.ADMIN);
+       //  PageManager.switchPage(Pages.APPOINTMENTS);
 
         usableStage.setScene(scene);
         usableStage.setMinWidth(misc.getScreenWidth());
