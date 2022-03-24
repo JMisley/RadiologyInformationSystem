@@ -24,9 +24,13 @@ public class OrdersData {
         this.reportData = new SimpleStringProperty(report);
     }
 
-    public String getOrderIdData() {return orderIdData.get();}
+    public String getOrderIdData() {
+        return orderIdData.get();
+    }
 
-    public void setOrderIdData(String ORDERID) {this.orderIdData.set(ORDERID);}
+    public void setOrderIdData(String ORDERID) {
+        this.orderIdData.set(ORDERID);
+    }
 
     public String getPatientData() {
         return patientData.get();
@@ -53,7 +57,8 @@ public class OrdersData {
     }
 
     public String getAppointmentData() {
-        return appointmentData.get();}
+        return appointmentData.get();
+    }
 
     public void setAppointmentData(String appointmentData) {
         this.appointmentData.set(appointmentData);

@@ -34,17 +34,26 @@ public class Orders implements Initializable {
 
     public HBox topContent;
     public StackPane centerContent;
-    public TableColumn<OrdersData, String> orderId = new TableColumn("Order ID");
-    public TableColumn<OrdersData, String> patient = new TableColumn("Patient");
-    public TableColumn<OrdersData, String> referralMd = new TableColumn("Referral MD");
-    public TableColumn<OrdersData, String> modality = new TableColumn("Modality");
-    public TableColumn<OrdersData, String> appointment = new TableColumn("Appointment");
-    public TableColumn<OrdersData, String> notes = new TableColumn("Notes");
-    public TableColumn<OrdersData, String> status = new TableColumn("Status");
-    public TableColumn<OrdersData, String> report = new TableColumn("Report");
-    public ArrayList<TableColumn<OrdersData, String>> tableColumnsList = new ArrayList<>(){{
-        add(orderId); add(patient); add(referralMd); add(modality); add(appointment); add(notes); add(status); add(report);
+    public TableColumn<OrdersData, String>
+            orderId = new TableColumn("Order ID"),
+            patient = new TableColumn("Patient"),
+            referralMd = new TableColumn("Referral MD"),
+            modality = new TableColumn("Modality"),
+            appointment = new TableColumn("Appointment"),
+            notes = new TableColumn("Notes"),
+            status = new TableColumn("Status"),
+            report = new TableColumn("Report");
+    public ArrayList<TableColumn<OrdersData, String>> tableColumnsList = new ArrayList<>() {{
+        add(orderId);
+        add(patient);
+        add(referralMd);
+        add(modality);
+        add(appointment);
+        add(notes);
+        add(status);
+        add(report);
     }};
+
     // Load NavigationBar component into home-page.fxml
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -63,7 +72,7 @@ public class Orders implements Initializable {
     public void createTable() throws SQLException {
         queryData();
         setCellFactoryValues();
-        InfoTable<OrdersData, String> infoTable = new InfoTable<>(){{
+        InfoTable<OrdersData, String> infoTable = new InfoTable<>() {{
             setColumns(tableColumnsList);
             addColumnsToTable();
             centerContent.setMaxWidth(misc.getScreenWidth() * .85);
@@ -75,7 +84,8 @@ public class Orders implements Initializable {
         infoTable.tableView.setItems(queryData());
     }
 
-    public ObservableList<OrdersData> queryData() throws SQLException {ObservableList<OrdersData> observableList = FXCollections.observableArrayList();
+    public ObservableList<OrdersData> queryData() throws SQLException {
+        ObservableList<OrdersData> observableList = FXCollections.observableArrayList();
         Driver driver = new Driver();
         ResultSet resultSet = driver.connection.createStatement().executeQuery("""
                 SELECT * FROM db_ris.orders
