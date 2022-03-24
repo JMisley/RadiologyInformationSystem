@@ -83,7 +83,7 @@ public class Appointments implements Initializable {
         // Overrides caching functionality and loads *TableSearchBar* every time page is opened
         PageManager.getScene().rootProperty().addListener(observable -> {
             if (Pages.getPage() == Pages.APPOINTMENTS) {
-                createTableSearchBar();
+                 createTableSearchBar();
             }
         });
 
@@ -116,14 +116,14 @@ public class Appointments implements Initializable {
             infoTable.setColumns(tableColumnsList);
             infoTable.addColumnsToTable();
 
-            infoTable.setCustomColumnWidth(patientId, .12);
-            infoTable.setCustomColumnWidth(patient, .12);
-            infoTable.setCustomColumnWidth(modality, .12);
+            infoTable.setCustomColumnWidth(patientId, .1);
+            infoTable.setCustomColumnWidth(patient, .15);
+            infoTable.setCustomColumnWidth(modality, .13);
             infoTable.setCustomColumnWidth(price, .12);
-            infoTable.setCustomColumnWidth(dateTime, .12);
+            infoTable.setCustomColumnWidth(dateTime, .15);
             infoTable.setCustomColumnWidth(radiologist, .12);
             infoTable.setCustomColumnWidth(technician, .12);
-            infoTable.setCustomColumnWidth(closedFlag, .2);
+            infoTable.setCustomColumnWidth(closedFlag, .11);
 
 
             centerContentContainer.setMaxWidth(misc.getScreenWidth() * .9);
@@ -141,7 +141,7 @@ public class Appointments implements Initializable {
 
 
     public static void queryData(String sql) throws SQLException {
-         ObservableList<AppointmentData> observableList = FXCollections.observableArrayList();
+        // ObservableList<AppointmentData> observableList = FXCollections.observableArrayList();
         Driver driver = new Driver();
         ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
 
@@ -158,7 +158,7 @@ public class Appointments implements Initializable {
                     resultSet.getInt("patients.patient_id"),
                     name,
                     resultSet.getString("modalities.name"),
-                    resultSet.getString("modalities.price"),
+                    "$" + resultSet.getString("modalities.price"),
                     resultSet.getString("appointments.date_time"),
                     resultSet.getString("appointments.radiologist"),
                     resultSet.getString("appointments.technician"),
@@ -307,7 +307,7 @@ public class Appointments implements Initializable {
             row.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
                 final int index = row.getIndex();
                 if (index >= 0 && index < infoTable.tableView.getItems().size() &&
-                        infoTable.tableView.getSelectionModel().isSelected(index)) {
+                    infoTable.tableView.getSelectionModel().isSelected(index)) {
                     infoTable.tableView.getSelectionModel().clearSelection();
 
                     tableSearchBar.toggleButtons(true);
@@ -343,6 +343,6 @@ public class Appointments implements Initializable {
     }
 
     public void tableSearchBarAddButtonListener() {
-        tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.APPOINTMENT));
+        tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.ADMIN));
     }
 }
