@@ -75,17 +75,12 @@ public class TableSearchBar implements Initializable {
     }
 
     public void toggleButtons(boolean showAddButton) {
-        int addOpacity, otherOpacity;
+        int otherOpacity;
         if (showAddButton) {
-            addOpacity = 1;
             otherOpacity = 0;
         } else {
-            addOpacity = 0;
             otherOpacity = 1;
         }
-        TableSearchBar.usableAddButton.setManaged(showAddButton);
-        TableSearchBar.usableAddButton.setDisable(!showAddButton);
-        TableSearchBar.usableAddButton.setOpacity(addOpacity);
         TableSearchBar.usableEditButton.setDisable(showAddButton);
         TableSearchBar.usableEditButton.setOpacity(otherOpacity);
         TableSearchBar.usableDeleteButton.setDisable(showAddButton);
