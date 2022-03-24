@@ -27,8 +27,11 @@ public class AppointmentPopUp implements Initializable {
     public VBox popupContainer;
     public static VBox usablePopupContainer;
 
-    public Label patientIdLabel;
-    public ComboBox<String> roleComboBox;
+    public Label appointmentIdLabel;
+    public ComboBox<String> roleComboBoxModality;
+    public ComboBox<String> roleComboBoxRad;
+    public ComboBox<String> roleComboBoxTech;
+    public ComboBox<String> roleComboBoxPatient;
     public TextField FirstNameLabel;
     public TextField lastNameLabel;
     public TextField priceTextField;
@@ -47,22 +50,25 @@ public class AppointmentPopUp implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         resizeElements();
-        setUserIDLabel();
-        populateComboBox();
+        setAppointmentIdLabel();
+        populateComboBoxModality();
+        populateComboBoxRadiologist();
+        populateComboBoxTechnician();
+        populateComboBoxPatient();
         Popups.APPOINTMENT.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) ->
                 PageManager.getRoot().setDisable(!aBoolean));
         usablePopupContainer = popupContainer;
     }
 
-    public void setUserIDLabel() {
+    public void setAppointmentIdLabel() {
         try {
             String sql = """
-                    select MAX(patient_id)
-                    from patients;
+                    select MAX(appointment_id)
+                    from appointments;
                     """;
             ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
             while (resultSet.next()) {
-                patientIdLabel.setText(String.valueOf(resultSet.getInt("MAX(patient_id)") + 1));
+                appointmentIdLabel.setText(String.valueOf(resultSet.getInt("MAX(appointment_id)") + 1));
             }
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -70,7 +76,60 @@ public class AppointmentPopUp implements Initializable {
 
     }
 
-    public void populateComboBox() {
+
+    public void populateComboBoxTechnician() {
+        try {
+            String sql = """
+                  SELECT full_name
+                    FROM users, users_roles
+                    where users_roles.role_id = 5 AND users_roles.user_id = users.user_id;
+                    """;
+            ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+            ObservableList<String> oblist = FXCollections.observableArrayList();
+            while (resultSet.next()) {
+                oblist.add(resultSet.getString("full_name"));
+            }
+            roleComboBoxTech.setItems(oblist);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+    public void populateComboBoxPatient() {
+        try {
+            String sql = """
+                  SELECT first_name , last_name
+                    FROM patients;
+                    """;
+            ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+            ObservableList<String> oblist = FXCollections.observableArrayList();
+            while (resultSet.next()) {
+                oblist.add(resultSet.getString("first_name") +" " + resultSet.getString("last_name"));
+            }
+            roleComboBoxPatient.setItems(oblist);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+    public void populateComboBoxRadiologist() {
+        try {
+            String sql = """
+                                        
+                    SELECT full_name
+                    FROM users, users_roles
+                    where users_roles.role_id = 6 AND users_roles.user_id = users.user_id;
+                    """;
+            ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+            ObservableList<String> oblist = FXCollections.observableArrayList();
+            while (resultSet.next()) {
+                oblist.add(resultSet.getString("full_name"));
+            }
+            roleComboBoxRad.setItems(oblist);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public void populateComboBoxModality() {
         try {
             String sql = """
                     select name
@@ -81,19 +140,36 @@ public class AppointmentPopUp implements Initializable {
             while (resultSet.next()) {
                 oblist.add(resultSet.getString("name"));
             }
-            roleComboBox.setItems(oblist);
+            roleComboBoxModality.setItems(oblist);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
     }
 
-    public void insertUserQuery() throws SQLException {
+
+    public void insertAppointmentQuery() throws SQLException {
         String sql = """
                 insert into appointments
-                values (?, ?, ?, ?, ?, ?);
+                values (?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?);
                 """;
+
         PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
-        preparedStatement.setInt(1, Integer.parseInt(patientIdLabel.getText()));
+        preparedStatement.setInt(1, Integer.parseInt(appointmentIdLabel.getText()));
+        preparedStatement.setString(2, lastNameLabel.getText().toLowerCase());
+        preparedStatement.setString(3, FirstNameLabel.getText());
+        preparedStatement.setString(4, priceTextField.getText());
+        preparedStatement.setString(5, dateTextField.getText());
+        preparedStatement.setInt(6, 1);
+        preparedStatement.execute();
+    }
+    public void insertPatientQuery() throws SQLException {
+        String sql = """
+                insert into patients
+                values (?,?,?,null,null,null);
+                """;
+
+        PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+        preparedStatement.setInt(1, Integer.parseInt(appointmentIdLabel.getText()));
         preparedStatement.setString(2, lastNameLabel.getText().toLowerCase());
         preparedStatement.setString(3, FirstNameLabel.getText());
         preparedStatement.setString(4, priceTextField.getText());
@@ -102,7 +178,7 @@ public class AppointmentPopUp implements Initializable {
         preparedStatement.execute();
     }
 
-    public void insertRoleIdQuery() throws SQLException {
+   /* public void insertRoleIdQuery() throws SQLException {
         String sql = """
                 insert into users_roles
                 values (?, ?, ?);
@@ -113,12 +189,12 @@ public class AppointmentPopUp implements Initializable {
         preparedStatement.setInt(3, Integer.parseInt(patientIdLabel.getText()));
         preparedStatement.execute();
     }
-
+*/
     public int getRoleId(String role) throws SQLException {
         String sql = """
-                select role_id
-                from roles
-                where name = ?;
+                  select role_id
+                              from roles
+                              where name = TECHNICIAN , RADIOLOGIST
                 """;
         PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
         preparedStatement.setString(1, role);
@@ -129,7 +205,7 @@ public class AppointmentPopUp implements Initializable {
 
     // Returns false if any input field is invalid
     public boolean validInput() {
-        return roleComboBox.getValue() != null &&
+        return roleComboBoxModality.getValue() != null &&
                 !FirstNameLabel.getText().isBlank() &&
                 !lastNameLabel.getText().isBlank() &&
                 !priceTextField.getText().isBlank() &&
@@ -161,8 +237,8 @@ public class AppointmentPopUp implements Initializable {
     // Onclick for submit button
     public void submitButtonOnclick() throws SQLException {
         if (validInput()) {
-            insertUserQuery();
-            insertRoleIdQuery();
+            insertPatientQuery();
+           // insertRoleIdQuery();
             Appointments.queryData(Appointments.getLastRowStringQuery());
             Popups.getMenuPopupEnum().getPopup().hide();
             Notification.createNotification();

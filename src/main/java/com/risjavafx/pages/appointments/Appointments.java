@@ -49,21 +49,25 @@ public class Appointments implements Initializable {
     Miscellaneous misc = new Miscellaneous();
 
     public TableColumn<AppointmentData, String>
-            patientId = new TableColumn<>("Patient ID"),
+       //     patientId = new TableColumn<>("Patient ID"),
             patient = new TableColumn<>("Patient"),
             modality = new TableColumn<>("Modality"),
-            price = new TableColumn<>("Price"),
+        //    price = new TableColumn<>("Price"),
             dateTime = new TableColumn<>("Date"),
+            phoneNumber = new TableColumn<>("Phone Number"),
+            email = new TableColumn<>("Email"),
             radiologist = new TableColumn<>("Radiologist"),
             technician = new TableColumn<>("Technician"),
             closedFlag = new TableColumn<>("Closed");
 
     public ArrayList<TableColumn<AppointmentData, String>> tableColumnsList = new ArrayList<>() {{
-        add(patientId);
+    //    add(patientId);
         add(patient);
         add(modality);
-        add(price);
+     //   add(price);
+        add(phoneNumber);
         add(dateTime);
+        add(email);
         add(radiologist);
         add(technician);
         add(closedFlag);
@@ -116,14 +120,16 @@ public class Appointments implements Initializable {
             infoTable.setColumns(tableColumnsList);
             infoTable.addColumnsToTable();
 
-            infoTable.setCustomColumnWidth(patientId, .1);
-            infoTable.setCustomColumnWidth(patient, .15);
-            infoTable.setCustomColumnWidth(modality, .13);
-            infoTable.setCustomColumnWidth(price, .12);
-            infoTable.setCustomColumnWidth(dateTime, .15);
-            infoTable.setCustomColumnWidth(radiologist, .12);
-            infoTable.setCustomColumnWidth(technician, .12);
-            infoTable.setCustomColumnWidth(closedFlag, .11);
+            //infoTable.setCustomColumnWidth(patientId, .1);
+            infoTable.setCustomColumnWidth(patient, .125);
+            infoTable.setCustomColumnWidth(modality, .125);
+            infoTable.setCustomColumnWidth(phoneNumber,.125);
+            infoTable.setCustomColumnWidth(email,.125);
+            //infoTable.setCustomColumnWidth(price, .12);
+            infoTable.setCustomColumnWidth(dateTime, .125);
+            infoTable.setCustomColumnWidth(radiologist, .125);
+            infoTable.setCustomColumnWidth(technician, .125);
+            infoTable.setCustomColumnWidth(closedFlag, .125);
 
 
             centerContentContainer.setMaxWidth(misc.getScreenWidth() * .9);
@@ -154,6 +160,7 @@ public class Appointments implements Initializable {
             } else {
                 checkIn = "In Progress";
             }
+            //if (resultSet.getInt("user_id") == resultSet.getInt(role_id))
             observableList.add(new AppointmentData(
                     resultSet.getInt("patients.patient_id"),
                     name,
@@ -168,14 +175,29 @@ public class Appointments implements Initializable {
         //  return observableList;
     }
 
-    public String getAllDataStringQuery() {
+  /*  public String getAllDataStringQuery() {
         return """
                 SELECT *
                 FROM appointments, modalities, patients, users
                 WHERE modality_id = modality AND user_id = radiologist;
                 """;
     }
+*/
+    public String getAllDataStringQuery() {
+        return """
+                        SELECT *
+                FROM appointments, modalities, users, patients
+                WHERE modality_id = modality AND user_id = radiologist;
+                
+                """;
+    }
+   /* """
 
+                    SELECT full_name
+                    FROM users, users_roles
+                    where users_roles.role_id = 6 AND users_roles.user_id = users.user_id;
+                    """
+*/
     public static String getLastRowStringQuery() {
         return """
                      SELECT *
@@ -192,7 +214,7 @@ public class Appointments implements Initializable {
         for (AppointmentData selectedItem : selectedItems) {
             String sql = """
                     DELETE FROM %$
-                    WHERE patientId = ?
+                    WHERE appointmentId = ?
                     """.replace("%$", table);
             PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getPatientId());
@@ -201,10 +223,10 @@ public class Appointments implements Initializable {
     }
 
     public void setCellFactoryValues() {
-        patientId.setCellValueFactory(new PropertyValueFactory<>("patientId"));
+       // patientId.setCellValueFactory(new PropertyValueFactory<>("patientId"));
         patient.setCellValueFactory(new PropertyValueFactory<>("patient"));
         modality.setCellValueFactory(new PropertyValueFactory<>("modality"));
-        price.setCellValueFactory(new PropertyValueFactory<>("price"));
+       // price.setCellValueFactory(new PropertyValueFactory<>("price"));
         dateTime.setCellValueFactory(new PropertyValueFactory<>("date"));
         radiologist.setCellValueFactory(new PropertyValueFactory<>("radiologist"));
         technician.setCellValueFactory(new PropertyValueFactory<>("technician"));
@@ -214,14 +236,16 @@ public class Appointments implements Initializable {
 
     public void setComboBoxItems() {
         ObservableList<String> oblist = FXCollections.observableArrayList(
-                "All",
+                //"All",
                 "Patient ",
                 "Modality",
-                "Price",
+              //  "Price",
                 "Date",
                 "Radiologist",
                 "Technician",
-                "Closed"
+                "Closed",
+                "Email"
+
         );
         tableSearchBar.getComboBox().setItems(oblist);
     }
