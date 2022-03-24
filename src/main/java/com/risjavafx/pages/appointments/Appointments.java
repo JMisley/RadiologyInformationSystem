@@ -141,7 +141,7 @@ public class Appointments implements Initializable {
 
 
     public static void queryData(String sql) throws SQLException {
-        // ObservableList<AppointmentData> observableList = FXCollections.observableArrayList();
+         ObservableList<AppointmentData> observableList = FXCollections.observableArrayList();
         Driver driver = new Driver();
         ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
 
