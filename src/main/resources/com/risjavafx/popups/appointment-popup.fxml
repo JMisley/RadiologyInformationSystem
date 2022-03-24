@@ -26,7 +26,7 @@
         <VBox.margin>
             <Insets left="20.0" right="20.0" top="20.0"/>
         </VBox.margin>
-        <Label text="Patient ID:" textFill="WHITE">
+        <Label text="App ID:" textFill="WHITE">
             <font>
                 <Font name="Century Gothic" size="14.0"/>
             </font>
@@ -34,17 +34,53 @@
                 <Insets right="10.0"/>
             </HBox.margin>
         </Label>
-        <Label fx:id="patientIdLabel" text="101" textFill="#bb86fc">
+        <Label fx:id="appointmentIdLabel" text="101" textFill="#bb86fc">
             <font>
                 <Font name="Century Gothic Bold" size="14.0"/>
             </font>
         </Label>
+
+
+
+    </HBox>
+    <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+    <ComboBox fx:id="roleComboBoxTech" maxHeight="30.0" promptText="Technician">
+        <HBox.margin>
+            <Insets/>
+        </HBox.margin>
+    </ComboBox>
+        <HBox.margin>
+            <Insets right="10.0"/>
+        </HBox.margin>
+    <HBox alignment="CENTER" VBox.vgrow="ALWAYS"/>
+    <ComboBox fx:id="roleComboBoxRad" maxHeight="30.0" promptText="Radiologist">
+        <HBox.margin>
+            <Insets/>
+        </HBox.margin>
+    </ComboBox>
+    </HBox>
+
+    <HBox>
+    <HBox alignment="CENTER" HBox.hgrow="ALWAYS"/>
+    <ComboBox fx:id="roleComboBoxPatient" maxHeight="30.0" promptText="Patient">
+        <HBox.margin>
+            <Insets/>
+        </HBox.margin>
+    </ComboBox>
+    <HBox.margin>
+        <Insets right="10.0"/>
+    </HBox.margin>
+    <HBox alignment="CENTER" VBox.vgrow="ALWAYS"/>
         <HBox HBox.hgrow="ALWAYS"/>
-        <ComboBox fx:id="roleComboBox" maxHeight="30.0" promptText="Select Modalaity">
+        <ComboBox fx:id="roleComboBoxModality" maxHeight="30.0" promptText="Modalaity">
             <HBox.margin>
                 <Insets/>
             </HBox.margin>
         </ComboBox>
+        <HBox.margin>
+            <Insets right="10.0"/>
+        </HBox.margin>
+        <HBox alignment="CENTER" HBox.hgrow="ALWAYS"/>
     </HBox>
     <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
         <VBox.margin>
@@ -92,7 +128,7 @@
         <VBox.margin>
             <Insets left="20.0" right="20.0" top="20.0"/>
         </VBox.margin>
-        <Label text="Price:" textFill="WHITE">
+        <Label text="Phone Number:" textFill="WHITE">
             <HBox.margin>
                 <Insets right="10.0"/>
             </HBox.margin>
@@ -100,7 +136,7 @@
                 <Font name="Century Gothic" size="14.0"/>
             </font>
         </Label>
-        <TextField fx:id="priceTextField" maxHeight="30.0" HBox.hgrow="ALWAYS">
+        <TextField fx:id="phoneNumberTextField" maxHeight="30.0" HBox.hgrow="ALWAYS">
             <font>
                 <Font name="Arial" size="14.0"/>
             </font>
@@ -134,7 +170,7 @@
         <VBox.margin>
             <Insets left="20.0" right="20.0" top="20.0"/>
         </VBox.margin>
-        <Label text="Radiologist:" textFill="WHITE">
+        <Label text="Email:" textFill="WHITE">
             <HBox.margin>
                 <Insets right="10.0"/>
             </HBox.margin>
@@ -142,28 +178,7 @@
                 <Font name="Century Gothic" size="14.0"/>
             </font>
         </Label>
-        <TextField fx:id="radiologistTextField" maxHeight="30.0" HBox.hgrow="ALWAYS">
-            <font>
-                <Font name="Arial" size="14.0"/>
-            </font>
-            <HBox.margin>
-                <Insets/>
-            </HBox.margin>
-        </TextField>
-    </HBox>
-    <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
-        <VBox.margin>
-            <Insets left="20.0" right="20.0" top="20.0"/>
-        </VBox.margin>
-        <Label text="Technician:" textFill="WHITE">
-            <HBox.margin>
-                <Insets right="10.0"/>
-            </HBox.margin>
-            <font>
-                <Font name="Century Gothic" size="14.0"/>
-            </font>
-        </Label>
-        <TextField fx:id="technicianTextField" maxHeight="30.0" HBox.hgrow="ALWAYS">
+        <TextField fx:id="emailTextField" maxHeight="30.0" HBox.hgrow="ALWAYS">
             <font>
                 <Font name="Arial" size="14.0"/>
             </font>
