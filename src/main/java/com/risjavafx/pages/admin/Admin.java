@@ -199,7 +199,7 @@ public class Admin implements Initializable {
     // Listener for Admin TextField and ComboBox
     public void filterData() {
         try {
-            filteredList = new FilteredList<>(Admin.observableList);
+            filteredList = new FilteredList<>(observableList);
 
             tableSearchBar.getTextField().textProperty().addListener((observable, oldValue, newValue) ->
                     filteredList.setPredicate(adminData -> filterDataEvent(newValue, adminData)));

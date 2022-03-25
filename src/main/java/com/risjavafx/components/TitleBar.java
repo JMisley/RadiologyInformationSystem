@@ -19,7 +19,6 @@ public class TitleBar implements javafx.fxml.Initializable {
     public ImageView maxImage;
     public ImageView minImage;
     private static double x = 0, y = 0;
-    static Miscellaneous misc = new Miscellaneous();
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Image close = new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/close.png");
@@ -32,6 +31,7 @@ public class TitleBar implements javafx.fxml.Initializable {
     }
 
     public static void createTitleBar(BorderPane mainContainer, HBox titleBar) {
+        Miscellaneous misc = new Miscellaneous();
         mainContainer.setMinHeight(misc.getScreenHeight());
         mainContainer.setMinWidth(misc.getScreenWidth());
         setDraggable(titleBar);

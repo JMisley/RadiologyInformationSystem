@@ -145,7 +145,6 @@ public class Appointments implements Initializable {
         Driver driver = new Driver();
         ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
 
-
         while (resultSet.next()) {
             String name = resultSet.getString("first_name") + " " + resultSet.getString("last_name");
             String checkIn;
@@ -155,13 +154,13 @@ public class Appointments implements Initializable {
                 checkIn = "In Progress";
             }
             observableList.add(new AppointmentData(
-                    resultSet.getInt("patients.patient_id"),
+                    resultSet.getInt("patient"),
                     name,
-                    resultSet.getString("modalities.name"),
-                    "$" + resultSet.getString("modalities.price"),
-                    resultSet.getString("appointments.date_time"),
-                    resultSet.getString("appointments.radiologist"),
-                    resultSet.getString("appointments.technician"),
+                    resultSet.getString("name"),
+                    "$" + resultSet.getString("price"),
+                    resultSet.getString("date_time"),
+                    resultSet.getString(7),
+                    resultSet.getString(8),
                     checkIn
             ));
         }
@@ -170,9 +169,25 @@ public class Appointments implements Initializable {
 
     public String getAllDataStringQuery() {
         return """
-                SELECT *
-                FROM appointments, modalities, patients, users
-                WHERE modality_id = modality AND user_id = radiologist;
+                SELECT appointments.patient,
+                       patients.first_name,
+                       patients.last_name,
+                       modalities.name,
+                       modalities.price,
+                       appointments.date_time,
+                       u1.full_name,
+                       u2.full_name,
+                       appointments.closed
+                FROM appointments,
+                     users as u1,
+                     users as u2,
+                     patients,
+                     modalities
+                WHERE u1.user_id = appointments.radiologist
+                  AND u2.user_id = appointments.technician
+                  AND patients.patient_id = appointments.patient
+                  AND modalities.modality_id = appointments.modality
+                ORDER BY appointments.patient;
                 """;
     }
 
@@ -206,8 +221,8 @@ public class Appointments implements Initializable {
         modality.setCellValueFactory(new PropertyValueFactory<>("modality"));
         price.setCellValueFactory(new PropertyValueFactory<>("price"));
         dateTime.setCellValueFactory(new PropertyValueFactory<>("date"));
-        radiologist.setCellValueFactory(new PropertyValueFactory<>("radiologist"));
-        technician.setCellValueFactory(new PropertyValueFactory<>("technician"));
+        radiologist.setCellValueFactory(cellData -> cellData.getValue().radiologist);
+        technician.setCellValueFactory(cellData -> cellData.getValue().technician);
         closedFlag.setCellValueFactory(new PropertyValueFactory<>("closedFlag"));
     }
     /////////////
