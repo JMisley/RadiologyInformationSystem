@@ -1,39 +1,54 @@
 package com.risjavafx.pages.orders;
 
-import java.io.IOException;
-import java.net.URL;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.ResourceBundle;
-
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
 import com.risjavafx.components.InfoTable;
 import com.risjavafx.components.NavigationBar;
+import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
+import com.risjavafx.pages.PageManager;
+import com.risjavafx.pages.Pages;
+import com.risjavafx.pages.orders.OrdersData;
+import com.risjavafx.popups.PopupConfirmation;
+import com.risjavafx.popups.PopupManager;
+import com.risjavafx.popups.Popups;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXMLLoader;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
+import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+
 
 public class Orders implements Initializable {
-    public HBox titleBar;
     public BorderPane mainContainer;
+    public HBox topContent, titleBar, tableSearchBarContainer;
+    public StackPane centerContent;
+    public SplitPane centerContentContainer;
+
+    public static ObservableList<OrdersData> observableList = FXCollections.observableArrayList();
+    SortedList<OrdersData> sortedList;
+    FilteredList<OrdersData> filteredList;
+
+    InfoTable<OrdersData, String> infoTable = new InfoTable<>();
+    TableSearchBar tableSearchBar = new TableSearchBar();
     Miscellaneous misc = new Miscellaneous();
 
-    public HBox topContent;
-    public StackPane centerContent;
     public TableColumn<OrdersData, String>
             orderId = new TableColumn("Order ID"),
             patient = new TableColumn("Patient"),
@@ -55,45 +70,80 @@ public class Orders implements Initializable {
     }};
 
     // Load NavigationBar component into home-page.fxml
-    @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Pages.setPage(Pages.ORDERS);
         TitleBar.createTitleBar(mainContainer, titleBar);
         NavigationBar.createNavBar(topContent);
+        createTable();
+        tableViewListener();
+        manageRowSelection();
 
+        // Overrides caching functionality and loads *TableSearchBar* every time page is opened
+        PageManager.getScene().rootProperty().addListener(observable -> {
+            if (Pages.getPage() == Pages.ORDERS) {
+                createTableSearchBar();
+            }
+        });
 
+        /*
         try {
             createTable();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+ */
     }
 
+    public void createTableSearchBar() {
+        tableSearchBar.createSearchBar(tableSearchBarContainer);
+        tableSearchBarAddButtonListener();
+        setComboBoxItems();
+        filterData();
 
-    public void createTable() throws SQLException {
-        queryData();
-        setCellFactoryValues();
-        InfoTable<OrdersData, String> infoTable = new InfoTable<>() {{
-            setColumns(tableColumnsList);
-            addColumnsToTable();
-            centerContent.setMaxWidth(misc.getScreenWidth() * .85);
-            centerContent.setMaxHeight(misc.getScreenHeight() * .75);
-            tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-            tableView.setStyle("styles.css");
-        }};
-        centerContent.getChildren().add(infoTable.tableView);
-        infoTable.tableView.setItems(queryData());
+        if (!infoTable.tableView.getSelectionModel().getSelectedItems().isEmpty()) {
+            tableSearchBar.toggleButtons(false);
+        }
+
     }
 
-    public ObservableList<OrdersData> queryData() throws SQLException {
-        ObservableList<OrdersData> observableList = FXCollections.observableArrayList();
+    public void createTable() {
+        try {
+            setCellFactoryValues();
+
+            infoTable.setColumns(tableColumnsList);
+            infoTable.addColumnsToTable();
+
+            infoTable.setCustomColumnWidth(orderId, .1);
+            infoTable.setCustomColumnWidth(patient, .15);
+            infoTable.setCustomColumnWidth(referralMd, .13);
+            infoTable.setCustomColumnWidth(modality, .13);
+            infoTable.setCustomColumnWidth(appointment, .15);
+            infoTable.setCustomColumnWidth(notes, .15);
+            infoTable.setCustomColumnWidth(status, .11);
+            infoTable.setCustomColumnWidth(report, .15);
+
+
+            centerContentContainer.setMaxWidth(misc.getScreenWidth() * .9);
+            centerContentContainer.setMaxHeight(misc.getScreenHeight() * .85);
+            centerContent.getChildren().add(infoTable.tableView);
+
+            queryData(getAllDataStringQuery());
+            infoTable.tableView.setItems(observableList);
+            infoTable.tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        } catch (
+                Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    public static void queryData(String sql) throws SQLException {
         Driver driver = new Driver();
-        ResultSet resultSet = driver.connection.createStatement().executeQuery("""
-                SELECT * FROM db_ris.orders
-                """);
+        ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
 
         while (resultSet.next()) {
             observableList.add(new OrdersData(
-                    resultSet.getString("order_id"),
+                    resultSet.getInt("order_id"),
                     resultSet.getString("patient"),
                     resultSet.getString("referral_md"),
                     resultSet.getString("modality"),
@@ -103,7 +153,36 @@ public class Orders implements Initializable {
                     resultSet.getString("report")
             ));
         }
-        return observableList;
+    }
+
+    public String getAllDataStringQuery() {
+        return """
+                SELECT *
+                FROM orders 
+                """;
+    }
+
+    public static String getLastRowStringQuery() {
+        return """
+                SELECT *
+                FROM orders
+                DESC LIMIT 1;
+                """;
+    }
+
+    @SuppressWarnings("SqlWithoutWhere")
+    public void deleteSelectedItemsQuery(String table) throws SQLException {
+        Driver driver = new Driver();
+        ObservableList<OrdersData> selectedItems = infoTable.tableView.getSelectionModel().getSelectedItems();
+        for (OrdersData selectedItem : selectedItems) {
+            String sql = """
+                    DELETE FROM %$
+                    WHERE user_id = ?
+                    """.replace("%$", table);
+            PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+            preparedStatement.setInt(1, selectedItem.getOrderIdData());
+            preparedStatement.execute();
+        }
     }
 
     public void setCellFactoryValues() {
@@ -116,4 +195,139 @@ public class Orders implements Initializable {
         status.setCellValueFactory(new PropertyValueFactory<>("statusData"));
         report.setCellValueFactory(new PropertyValueFactory<>("reportData"));
     }
+
+    public void setComboBoxItems() {
+        ObservableList<String> oblist = FXCollections.observableArrayList(
+                "All",
+                "Order ID ",
+                "Patient",
+                "Referral MD",
+                "Modality",
+                "Appointment",
+                "Notes",
+                "Status",
+                "Report"
+        );
+        tableSearchBar.getComboBox().setItems(oblist);
+    }
+
+    public boolean getComboBoxItem(String string) {
+        String selectedComboValue = tableSearchBar.getComboBox().getValue();
+        return string.equals(selectedComboValue) || "All".equals(selectedComboValue);
+    }
+
+    // Listener for Orders TextField and ComboBox
+    public void filterData() {
+        try {
+            filteredList = new FilteredList<>(Orders.observableList);
+
+            tableSearchBar.getTextField().textProperty().addListener((observable, oldValue, newValue) ->
+                    filteredList.setPredicate(ordersData -> filterDataEvent(newValue, ordersData)));
+
+            tableSearchBar.getComboBox().valueProperty().addListener((newValue) -> filteredList.setPredicate(ordersData -> {
+                if (newValue != null) {
+                    return filterDataEvent(tableSearchBar.getTextField().getText(), ordersData);
+                }
+                return false;
+            }));
+
+            sortedList = new SortedList<>(filteredList);
+            sortedList.comparatorProperty().bind(infoTable.tableView.comparatorProperty());
+            infoTable.tableView.setItems(sortedList);
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    // Action to be performed for Admin TextField and ComboBox listener
+    public boolean filterDataEvent(String newValue, OrdersData ordersData) {
+        if (tableSearchBar.getComboBox().getValue() == null) {
+            tableSearchBar.getErrorLabel().setText("Please select a filter");
+        } else {
+            tableSearchBar.getErrorLabel().setText(null);
+        }
+
+        if (newValue.isEmpty() || newValue.isBlank()) {
+            return true;
+        }
+
+        String searchKeyword = newValue.toLowerCase();
+        int searchKeyInt = -1;
+        try {
+            searchKeyInt = Integer.parseInt(newValue);
+        } catch (Exception ignored) {
+        }
+
+        if (ordersData.getOrderIdData() == searchKeyInt && getComboBoxItem("Order ID")) {
+            return true;
+        } else if (ordersData.getPatientData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Patient")) {
+            return true;
+        } else if (ordersData.getReferralMdData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Referral MD")) {
+            return true;
+        } else if (ordersData.getModalityData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Modality")) {
+            return true;
+        } else
+            return ordersData.getStatusData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Status");
+    }
+
+    // Listener for Admin TableView
+    public void tableViewListener() {
+        infoTable.tableView.getSelectionModel().selectedItemProperty().addListener((observableValue, adminData, t1) -> {
+            if (t1 != null) {
+                tableSearchBar.toggleButtons(false);
+                tableSearchBar.getDeleteButton().setOnAction(actionEvent ->
+                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> Popups.getAlertPopupEnum().getPopup().hide()));
+            } else {
+                tableSearchBar.toggleButtons(true);
+            }
+        });
+    }
+
+    // If a selected row is clicked again, it will unselect. TableSearchBar Buttons will also adjust appropriately
+    public void manageRowSelection() {
+        infoTable.tableView.setRowFactory(tableView -> {
+            final TableRow<OrdersData> row = new TableRow<>();
+            row.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+                final int index = row.getIndex();
+                if (index >= 0 && index < infoTable.tableView.getItems().size() &&
+                        infoTable.tableView.getSelectionModel().isSelected(index)) {
+                    infoTable.tableView.getSelectionModel().clearSelection();
+
+                    tableSearchBar.toggleButtons(true);
+                    event.consume();
+                }
+            });
+            return row;
+        });
+    }
+
+    public void customConfirmationPopup(EventHandler<ActionEvent> confirm, EventHandler<ActionEvent> cancel) {
+        PopupManager.createPopup(Popups.CONFIRMATION);
+        new PopupConfirmation() {{
+            setConfirmButtonLabel("Continue");
+            setExitButtonLabel("Cancel");
+            setHeaderLabel("Warning");
+            setContentLabel("This data will be permanently deleted");
+            setConfirmationImage(new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/warning.png"));
+            getConfirmationButton().setOnAction(confirm);
+            getCancelButton().setOnAction(cancel);
+        }};
+    }
+
+    public void confirmDeletion() {
+        try {
+            deleteSelectedItemsQuery("order_id");
+            deleteSelectedItemsQuery("orders");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
+        Popups.getAlertPopupEnum().getPopup().hide();
+    }
+
+    public void tableSearchBarAddButtonListener() {
+        tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.ADMIN));
+    }
 }
+

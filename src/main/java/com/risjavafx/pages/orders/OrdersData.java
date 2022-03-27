@@ -1,10 +1,10 @@
 package com.risjavafx.pages.orders;
 
 import javafx.beans.property.SimpleStringProperty;
-
-
+import javafx.beans.property.SimpleIntegerProperty;
+@SuppressWarnings("unused")
 public class OrdersData {
-    SimpleStringProperty orderIdData;
+    SimpleIntegerProperty orderIdData;
     SimpleStringProperty patientData;
     SimpleStringProperty referralMdData;
     SimpleStringProperty modalityData;
@@ -13,8 +13,8 @@ public class OrdersData {
     SimpleStringProperty statusData;
     SimpleStringProperty reportData;
 
-    public OrdersData(String orderId, String patient, String referralMd, String modality, String appointment, String notes, String status, String report) {
-        this.orderIdData = new SimpleStringProperty(orderId);
+    public OrdersData(int orderId, String patient, String referralMd, String modality, String appointment, String notes, String status, String report) {
+        this.orderIdData = new SimpleIntegerProperty(orderId);
         this.patientData = new SimpleStringProperty(patient);
         this.referralMdData = new SimpleStringProperty(referralMd);
         this.modalityData = new SimpleStringProperty(modality);
@@ -24,12 +24,12 @@ public class OrdersData {
         this.reportData = new SimpleStringProperty(report);
     }
 
-    public String getOrderIdData() {
+    public int getOrderIdData() {
         return orderIdData.get();
     }
 
-    public void setOrderIdData(String ORDERID) {
-        this.orderIdData.set(ORDERID);
+    public void setOrderIdData(int orderId) {
+        this.orderIdData.set(orderId);
     }
 
     public String getPatientData() {

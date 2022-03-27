@@ -8,7 +8,7 @@ public class Driver {
 
     // Set up connection to database
     public Driver() throws SQLException {
-        String MYSQL_URL = "jdbc:mysql://localhost:3306/db_ris";
-        connection = DriverManager.getConnection(MYSQL_URL, "root", "TankEngine36!");
+        String MYSQL_URL = "jdbc:mysql://aws-risdb.cs15pqp4fpnm.us-east-1.rds.amazonaws.com/db_ris";
+        connection = DriverManager.getConnection(MYSQL_URL, "admin", "password");
     }
 }
