@@ -63,6 +63,8 @@ public class Referrals implements Initializable {
     }};
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        observableList.clear();
+
         // Miscellaneous components initialization
         Pages.setPage(Pages.REFERRALS);
         TitleBar.createTitleBar(mainContainer, titleBar);

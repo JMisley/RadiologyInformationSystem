@@ -5,6 +5,7 @@ import com.risjavafx.pages.appointments.Appointments;
 import com.risjavafx.pages.home.Home;
 import com.risjavafx.pages.login.Login;
 import com.risjavafx.pages.orders.Orders;
+import com.risjavafx.pages.loadingPage.LoadingPage;
 import com.risjavafx.pages.referrals.Referrals;
 import com.risjavafx.pages.userInfo.UserInfo;
 
@@ -15,7 +16,8 @@ public enum Pages {
     REFERRALS("referrals-page.fxml", Referrals.class, true),
     APPOINTMENTS("appointments-page.fxml", Appointments.class, true),
     ORDERS("orders-page.fxml", Orders.class, true),
-    LOGIN("login-page.fxml", Login.class, false);
+    LOGIN("login-page.fxml", Login.class, false),
+    PROGRESS("loadingPage/loading-page.fxml", LoadingPage.class, true);
 
     private static Pages page;
     private final String filename;
@@ -38,6 +40,10 @@ public enum Pages {
 
     public boolean isCachable() {
         return isCachable;
+    }
+
+    public static Pages[] getPageArray() {
+        return new Pages[]{HOME, USERINFO, ADMIN, REFERRALS, APPOINTMENTS, ORDERS, LOGIN};
     }
 
     public static Pages getPage() {return page;}

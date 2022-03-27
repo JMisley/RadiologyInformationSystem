@@ -43,6 +43,9 @@ public class Admin implements Initializable {
     public StackPane centerContent;
     public SplitPane centerContentContainer;
 
+    private static StackPane usableCenterContent;
+    private static HBox usableTableSearchBarContainer;
+
     public static ObservableList<AdminData> observableList = FXCollections.observableArrayList();
     SortedList<AdminData> sortedList;
     FilteredList<AdminData> filteredList;
@@ -66,6 +69,9 @@ public class Admin implements Initializable {
     }};
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        usableCenterContent = centerContent;
+        usableTableSearchBarContainer = tableSearchBarContainer;
+        observableList.clear();
         // Miscellaneous components initialization
         Pages.setPage(Pages.ADMIN);
         TitleBar.createTitleBar(mainContainer, titleBar);
@@ -119,6 +125,14 @@ public class Admin implements Initializable {
                 Exception exception) {
             exception.printStackTrace();
         }
+    }
+
+    public static StackPane getTableView() {
+        return usableCenterContent;
+    }
+
+    public static HBox getTableSearchBar() {
+        return usableTableSearchBarContainer;
     }
 
     public static void queryData(String sql) throws SQLException {

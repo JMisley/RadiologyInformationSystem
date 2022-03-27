@@ -5,11 +5,10 @@ import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -35,8 +34,8 @@ public class Login implements Initializable {
         TitleBar.createTitleBar(mainContainer, titleBar);
         resizeElements();
 
-        loginContainer.setOnKeyPressed(e -> {
-            if(e.getCode() == KeyCode.ENTER) {
+        loginContainer.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
                 try {
                     userLogin();
                 } catch (IOException | SQLException ex) {
@@ -49,7 +48,8 @@ public class Login implements Initializable {
     // If entered credentials are authorized, open home page, else return an error message
     public void userLogin() throws IOException, SQLException {
         if (checkCredentials(username.getText(), password.getText())) {
-            PageManager.switchPage(Pages.HOME);
+            LoadingService loginService = new LoadingService();
+            loginService.start();
         } else if (username.getText().isBlank() || password.getText().isEmpty()) {
             errorMessage.setText("Please enter all information");
         } else {
@@ -79,5 +79,20 @@ public class Login implements Initializable {
         loginContainer.setPrefHeight(misc.getScreenHeight() * .7);
 
         loginButton.setStyle("-fx-font-size: 36px");
+    }
+
+    public static class LoadingService extends Service<Void> {
+        public Task<Void> createTask() {
+            Task<Void> task = new Task<>() {
+                @Override
+                protected Void call() {
+                    PageManager.switchPage(Pages.PROGRESS);
+                    PageManager.loadPagesToCache();
+                    return null;
+                }
+            };
+            task.setOnSucceeded(event -> PageManager.switchPage(Pages.HOME));
+            return task;
+        }
     }
 }

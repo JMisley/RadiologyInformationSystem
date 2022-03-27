@@ -48,6 +48,7 @@ public class NavigationBar implements Initializable {
     }
 
     public void userLogout() {
+        PageManager.clearCache();
         switchPage(Pages.LOGIN);
     }
 

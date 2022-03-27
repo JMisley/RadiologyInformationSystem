@@ -73,6 +73,7 @@ public class Appointments implements Initializable {
     // Load NavigationBar component into home-page.fxml
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        observableList.clear();
         Pages.setPage(Pages.APPOINTMENTS);
         TitleBar.createTitleBar(mainContainer, titleBar);
         NavigationBar.createNavBar(topContent);
@@ -116,13 +117,13 @@ public class Appointments implements Initializable {
             infoTable.setColumns(tableColumnsList);
             infoTable.addColumnsToTable();
 
-            infoTable.setCustomColumnWidth(patientId, .1);
+            infoTable.setCustomColumnWidth(patientId, .07);
             infoTable.setCustomColumnWidth(patient, .15);
             infoTable.setCustomColumnWidth(modality, .13);
-            infoTable.setCustomColumnWidth(price, .12);
+            infoTable.setCustomColumnWidth(price, .09);
             infoTable.setCustomColumnWidth(dateTime, .15);
-            infoTable.setCustomColumnWidth(radiologist, .12);
-            infoTable.setCustomColumnWidth(technician, .12);
+            infoTable.setCustomColumnWidth(radiologist, .15);
+            infoTable.setCustomColumnWidth(technician, .15);
             infoTable.setCustomColumnWidth(closedFlag, .11);
 
 
