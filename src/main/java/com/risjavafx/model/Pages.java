@@ -7,7 +7,9 @@ public enum Pages {
     REFERRALS("pages/referrals-page.fxml", true),
     APPOINTMENTS("pages/appointments-page.fxml", true),
     ORDERS("pages/orders-page.fxml", true),
-    LOGIN("pages/login-page.fxml", false);
+    //LOGIN("pages/login-page.fxml", false);
+    IMAGE("pages/image-page.fxml", true);
+
 
     private static Pages page;
     private final String filename;

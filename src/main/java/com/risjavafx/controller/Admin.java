@@ -5,13 +5,24 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.fxml.Initializable;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.StackPane;
+
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
+import java.io.*;
+
 
 import java.net.URL;
 import java.sql.ResultSet;
@@ -23,11 +34,14 @@ public class Admin implements Initializable {
 
     public BorderPane mainContainer;
     public HBox topContent, titleBar, tableSearchBar;
+    //public VBox imgVBox;
     public StackPane centerContent;
     public SplitPane centerContentContainer;
     public static SortedList<AdminData> sortedList;
     public static FilteredList<AdminData> filteredList;
     public static ObservableList<AdminData> observableList = FXCollections.observableArrayList();
+
+
 
     public TableColumn<AdminData, String>
             userId = new TableColumn<>("User ID"),
@@ -36,16 +50,22 @@ public class Admin implements Initializable {
             emailAdr = new TableColumn<>("Email Address"),
             systemRole = new TableColumn<>("System Role");
 
+
     public ArrayList<TableColumn<AdminData, String>> tableColumnsList = new ArrayList<>() {{
         add(userId);
         add(displayName);
         add(username);
         add(emailAdr);
         add(systemRole);
+
     }};
 
     public static InfoTable<AdminData, String> infoTable = new InfoTable<>();
     Miscellaneous misc = new Miscellaneous();
+
+
+
+
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Pages.setPage(Pages.ADMIN);
@@ -55,7 +75,35 @@ public class Admin implements Initializable {
         setComboBoxItems();
         createTable();
         filterData();
+        //uploadImages();
+
+
+
     }
+
+    //public void uploadImages() {
+        //primaryStage.setTitle("upload new image");
+        //FileChooser fileChooser = new FileChooser();
+        //VBox imgBox = new VBox(imgVBox);
+        //Button fileButton = new Button("Select File");
+        //imgBox.getChildren().add(fileButton);
+        //imgBox.setAlignment(Pos.CENTER);
+       // fileButton.setOnAction(e -> {
+            //File selectedFile = fileChooser.showOpenDialog(new Stage());
+       // });
+
+        //VBox imgVBox = new VBox(fileButton);
+        //Scene imgscene = new Scene(imgBox, 250, 250);
+        //imgBox.setAlignment(Pos.CENTER);
+
+        //primaryStage.setScene(imgscene);
+        //primaryStage.show();
+
+
+    //}
+
+
+
 
     public void createTable() {
         try {
@@ -70,19 +118,33 @@ public class Admin implements Initializable {
             infoTable.setCustomColumnWidth(emailAdr, .3);
             infoTable.setCustomColumnWidth(systemRole, .2);
 
+
             centerContentContainer.setMaxWidth(misc.getScreenWidth() * .85);
             centerContentContainer.setMaxHeight(misc.getScreenHeight() * .85);
             centerContent.getChildren().add(infoTable.tableView);
+            //centerContent.getChildren().add(imgVBox);
+
+
 
             queryData(getAllDataStringQuery());
             infoTable.tableView.setItems(observableList);
             infoTable.tableView.refresh();
+
+
+
+
+
         } catch (
                 Exception exception) {
             exception.printStackTrace();
         }
 
     }
+
+
+
+
+
 
     public static void queryData(String sql) throws SQLException {
         Driver driver = new Driver();
@@ -187,4 +249,6 @@ public class Admin implements Initializable {
         String selectedComboValue = TableSearchBar.usableComboBox.getValue();
         return string.equals(selectedComboValue) || "All".equals(selectedComboValue);
     }
+
+
 }

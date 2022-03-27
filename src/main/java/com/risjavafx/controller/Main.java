@@ -6,10 +6,12 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.scene.Node;
 
 import java.io.IOException;
 import java.util.Objects;
@@ -24,10 +26,12 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         usableStage = primaryStage;
-
-        Scene scene = new Scene(new BorderPane());
+        BorderPane pane = new BorderPane();
+        Scene scene = new Scene(pane);
         PageManager.setScene(scene);
-        PageManager.switchPage(Pages.LOGIN);
+        PageManager.switchPage(Pages.IMAGE);
+
+
 
         usableStage.setScene(scene);
         usableStage.setMinWidth(misc.getScreenWidth());

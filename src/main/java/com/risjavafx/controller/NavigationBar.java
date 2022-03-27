@@ -61,7 +61,7 @@ public class NavigationBar implements Initializable {
     }
 
     public void userLogout() {
-        switchPage(Pages.LOGIN);
+        switchPage(Pages.ADMIN);
     }
 
     public Button getPageButton() {
