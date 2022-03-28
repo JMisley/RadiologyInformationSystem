@@ -49,25 +49,21 @@ public class Appointments implements Initializable {
     Miscellaneous misc = new Miscellaneous();
 
     public TableColumn<AppointmentData, String>
-       //     patientId = new TableColumn<>("Patient ID"),
+            patientId = new TableColumn<>("Patient ID"),
             patient = new TableColumn<>("Patient"),
             modality = new TableColumn<>("Modality"),
-        //    price = new TableColumn<>("Price"),
+            price = new TableColumn<>("Price"),
             dateTime = new TableColumn<>("Date"),
-            phoneNumber = new TableColumn<>("Phone Number"),
-            email = new TableColumn<>("Email"),
             radiologist = new TableColumn<>("Radiologist"),
             technician = new TableColumn<>("Technician"),
             closedFlag = new TableColumn<>("Closed");
 
     public ArrayList<TableColumn<AppointmentData, String>> tableColumnsList = new ArrayList<>() {{
-    //    add(patientId);
+        add(patientId);
         add(patient);
         add(modality);
-     //   add(price);
-        add(phoneNumber);
+        add(price);
         add(dateTime);
-        add(email);
         add(radiologist);
         add(technician);
         add(closedFlag);
@@ -77,6 +73,7 @@ public class Appointments implements Initializable {
     // Load NavigationBar component into home-page.fxml
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        observableList.clear();
         Pages.setPage(Pages.APPOINTMENTS);
         TitleBar.createTitleBar(mainContainer, titleBar);
         NavigationBar.createNavBar(topContent);
@@ -120,16 +117,14 @@ public class Appointments implements Initializable {
             infoTable.setColumns(tableColumnsList);
             infoTable.addColumnsToTable();
 
-            //infoTable.setCustomColumnWidth(patientId, .1);
-            infoTable.setCustomColumnWidth(patient, .125);
-            infoTable.setCustomColumnWidth(modality, .125);
-            infoTable.setCustomColumnWidth(phoneNumber,.125);
-            infoTable.setCustomColumnWidth(email,.125);
-            //infoTable.setCustomColumnWidth(price, .12);
-            infoTable.setCustomColumnWidth(dateTime, .125);
-            infoTable.setCustomColumnWidth(radiologist, .125);
-            infoTable.setCustomColumnWidth(technician, .125);
-            infoTable.setCustomColumnWidth(closedFlag, .125);
+            infoTable.setCustomColumnWidth(patientId, .07);
+            infoTable.setCustomColumnWidth(patient, .15);
+            infoTable.setCustomColumnWidth(modality, .13);
+            infoTable.setCustomColumnWidth(price, .09);
+            infoTable.setCustomColumnWidth(dateTime, .15);
+            infoTable.setCustomColumnWidth(radiologist, .15);
+            infoTable.setCustomColumnWidth(technician, .15);
+            infoTable.setCustomColumnWidth(closedFlag, .11);
 
 
             centerContentContainer.setMaxWidth(misc.getScreenWidth() * .9);
@@ -151,7 +146,6 @@ public class Appointments implements Initializable {
         Driver driver = new Driver();
         ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
 
-
         while (resultSet.next()) {
             String name = resultSet.getString("first_name") + " " + resultSet.getString("last_name");
             String checkIn;
@@ -160,44 +154,44 @@ public class Appointments implements Initializable {
             } else {
                 checkIn = "In Progress";
             }
-            //if (resultSet.getInt("user_id") == resultSet.getInt(role_id))
             observableList.add(new AppointmentData(
-                    resultSet.getInt("patients.patient_id"),
+                    resultSet.getInt("patient"),
                     name,
-                    resultSet.getString("modalities.name"),
-                    "$" + resultSet.getString("modalities.price"),
-                    resultSet.getString("appointments.date_time"),
-                    resultSet.getString("appointments.radiologist"),
-                    resultSet.getString("appointments.technician"),
+                    resultSet.getString("name"),
+                    "$" + resultSet.getString("price"),
+                    resultSet.getString("date_time"),
+                    resultSet.getString(7),
+                    resultSet.getString(8),
                     checkIn
             ));
         }
         //  return observableList;
     }
 
-  /*  public String getAllDataStringQuery() {
-        return """
-                SELECT *
-                FROM appointments, modalities, patients, users
-                WHERE modality_id = modality AND user_id = radiologist;
-                """;
-    }
-*/
     public String getAllDataStringQuery() {
         return """
-                        SELECT *
-                FROM appointments, modalities, users, patients
-                WHERE modality_id = modality AND user_id = radiologist;
-                
+                SELECT appointments.patient,
+                       patients.first_name,
+                       patients.last_name,
+                       modalities.name,
+                       modalities.price,
+                       appointments.date_time,
+                       u1.full_name,
+                       u2.full_name,
+                       appointments.closed
+                FROM appointments,
+                     users as u1,
+                     users as u2,
+                     patients,
+                     modalities
+                WHERE u1.user_id = appointments.radiologist
+                  AND u2.user_id = appointments.technician
+                  AND patients.patient_id = appointments.patient
+                  AND modalities.modality_id = appointments.modality
+                ORDER BY appointments.patient;
                 """;
     }
-   /* """
 
-                    SELECT full_name
-                    FROM users, users_roles
-                    where users_roles.role_id = 6 AND users_roles.user_id = users.user_id;
-                    """
-*/
     public static String getLastRowStringQuery() {
         return """
                      SELECT *
@@ -214,7 +208,7 @@ public class Appointments implements Initializable {
         for (AppointmentData selectedItem : selectedItems) {
             String sql = """
                     DELETE FROM %$
-                    WHERE appointmentId = ?
+                    WHERE patientId = ?
                     """.replace("%$", table);
             PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getPatientId());
@@ -223,29 +217,27 @@ public class Appointments implements Initializable {
     }
 
     public void setCellFactoryValues() {
-       // patientId.setCellValueFactory(new PropertyValueFactory<>("patientId"));
+        patientId.setCellValueFactory(new PropertyValueFactory<>("patientId"));
         patient.setCellValueFactory(new PropertyValueFactory<>("patient"));
         modality.setCellValueFactory(new PropertyValueFactory<>("modality"));
-       // price.setCellValueFactory(new PropertyValueFactory<>("price"));
+        price.setCellValueFactory(new PropertyValueFactory<>("price"));
         dateTime.setCellValueFactory(new PropertyValueFactory<>("date"));
-        radiologist.setCellValueFactory(new PropertyValueFactory<>("radiologist"));
-        technician.setCellValueFactory(new PropertyValueFactory<>("technician"));
+        radiologist.setCellValueFactory(cellData -> cellData.getValue().radiologist);
+        technician.setCellValueFactory(cellData -> cellData.getValue().technician);
         closedFlag.setCellValueFactory(new PropertyValueFactory<>("closedFlag"));
     }
     /////////////
 
     public void setComboBoxItems() {
         ObservableList<String> oblist = FXCollections.observableArrayList(
-                //"All",
+                "All",
                 "Patient ",
                 "Modality",
-              //  "Price",
+                "Price",
                 "Date",
                 "Radiologist",
                 "Technician",
-                "Closed",
-                "Email"
-
+                "Closed"
         );
         tableSearchBar.getComboBox().setItems(oblist);
     }
@@ -367,6 +359,6 @@ public class Appointments implements Initializable {
     }
 
     public void tableSearchBarAddButtonListener() {
-        tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.APPOINTMENT));
+        tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.ADMIN));
     }
 }

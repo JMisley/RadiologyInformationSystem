@@ -22,8 +22,11 @@ module com.example.risjavafx {
     opens com.risjavafx.pages.appointments to javafx.fxml;
     exports com.risjavafx.pages.login;
     opens com.risjavafx.pages.login to javafx.fxml;
+    exports com.risjavafx.pages.loadingPage;
+    opens com.risjavafx.pages.loadingPage to javafx.fxml;
     exports com.risjavafx.popups;
     opens com.risjavafx.popups to javafx.fxml;
     exports com.risjavafx;
     opens com.risjavafx to javafx.fxml;
+
 }
