@@ -161,7 +161,6 @@ public class AppointmentPopUp implements Initializable {
         preparedStatement.setInt(6, pullDocComboboxId(roleComboBoxTech.getValue()));
         preparedStatement.setString(7, phoneNumberTextField.getText());
         preparedStatement.setString(8, emailTextField.getText());
-        preparedStatement.setInt(8, 1);
         preparedStatement.execute();
     }
 
