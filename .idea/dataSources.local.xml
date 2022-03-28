@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal" created-in="IU-213.6777.52">
+    <data-source name="db_ris@localhost" uuid="a4240cfe-d9e9-44bf-8e8f-e82fc05f822d">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="MYSQL" exact-version="0" />
+      <schema-mapping />
+    </data-source>
+    <data-source name="grad.jpg" uuid="7ab0a2ba-1900-4db3-8586-099e748b19ca">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" dbms="DERBY" exact-version="0" />
+      <schema-mapping />
+    </data-source>
+  </component>
+</project>
