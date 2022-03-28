@@ -86,48 +86,6 @@
         <VBox.margin>
             <Insets left="20.0" right="20.0" top="20.0"/>
         </VBox.margin>
-        <Label text="First Name:" textFill="WHITE">
-            <HBox.margin>
-                <Insets right="10.0"/>
-            </HBox.margin>
-            <font>
-                <Font name="Century Gothic" size="14.0"/>
-            </font>
-        </Label>
-        <TextField fx:id="FirstNameLabel" maxHeight="30.0" HBox.hgrow="ALWAYS">
-            <font>
-                <Font name="Arial" size="14.0"/>
-            </font>
-            <HBox.margin>
-                <Insets/>
-            </HBox.margin>
-        </TextField>
-    </HBox>
-    <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
-        <VBox.margin>
-            <Insets left="20.0" right="20.0" top="20.0"/>
-        </VBox.margin>
-        <Label text="Last Name:" textFill="WHITE">
-            <HBox.margin>
-                <Insets right="10.0"/>
-            </HBox.margin>
-            <font>
-                <Font name="Century Gothic" size="14.0"/>
-            </font>
-        </Label>
-        <TextField fx:id="lastNameLabel" maxHeight="30.0" HBox.hgrow="ALWAYS">
-            <font>
-                <Font name="Arial" size="14.0"/>
-            </font>
-            <HBox.margin>
-                <Insets/>
-            </HBox.margin>
-        </TextField>
-    </HBox>
-    <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
-        <VBox.margin>
-            <Insets left="20.0" right="20.0" top="20.0"/>
-        </VBox.margin>
         <Label text="Phone Number:" textFill="WHITE">
             <HBox.margin>
                 <Insets right="10.0"/>
@@ -157,6 +115,14 @@
                 <Font name="Century Gothic" size="14.0"/>
             </font>
         </Label>
+        <Label text="(YYYY/MM/DD 24:00:00)" textFill="WHITE">
+            <HBox.margin>
+                <Insets right="10.0"/>
+            </HBox.margin>
+            <font>
+                <Font name="Century Gothic" size="14.0"/>
+            </font>
+        </Label>
         <TextField fx:id="dateTextField" maxHeight="30.0" HBox.hgrow="ALWAYS">
             <font>
                 <Font name="Arial" size="14.0"/>
@@ -165,6 +131,7 @@
                 <Insets/>
             </HBox.margin>
         </TextField>
+
     </HBox>
     <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
         <VBox.margin>

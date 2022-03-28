@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 
 <HBox nodeOrientation="RIGHT_TO_LEFT" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/17"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.risjavafx.controller.TitleBar" HBox.hgrow="ALWAYS" >
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.risjavafx.components.TitleBar" HBox.hgrow="ALWAYS" >
     <Button fx:id="titleBarCloseButton" mnemonicParsing="false" onAction="#closeApp" prefWidth="50" contentDisplay="CENTER" text="✕">
         <graphic>
             <ImageView fx:id="closeImage" fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">

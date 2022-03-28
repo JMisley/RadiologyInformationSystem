@@ -1,6 +1,6 @@
 /*Theme styling-------------------------------------------------------------------------------------------------------*/
 .root {
-    -fx-background-image: url(../images/bg-01.jpg);
+    -fx-background-image: url(src/main/resources/com/risjavafx/images/bg-01.jpg);
     -fx-background-size: cover;
 
 }

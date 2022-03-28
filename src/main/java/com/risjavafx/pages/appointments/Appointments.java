@@ -194,10 +194,26 @@ public class Appointments implements Initializable {
 
     public static String getLastRowStringQuery() {
         return """
-                     SELECT *
-                FROM appointments, modalities, patients, users
-                WHERE modality_id = modality AND user_id = radiologist
-                  DESC LIMIT 1;
+                   SELECT appointments.patient,
+                       patients.first_name,
+                       patients.last_name,
+                       modalities.name,
+                       modalities.price,
+                       appointments.date_time,
+                       u1.full_name,
+                       u2.full_name,
+                       appointments.closed
+                FROM appointments,
+                     users as u1,
+                     users as u2,
+                     patients,
+                     modalities
+                WHERE u1.user_id = appointments.radiologist
+                  AND u2.user_id = appointments.technician
+                  AND patients.patient_id = appointments.patient
+                  AND modalities.modality_id = appointments.modality
+                ORDER BY appointments.patient;
+                 DESC LIMIT 1;
                 """;
     }
 
@@ -359,6 +375,6 @@ public class Appointments implements Initializable {
     }
 
     public void tableSearchBarAddButtonListener() {
-        tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.ADMIN));
+        tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.APPOINTMENT));
     }
 }

@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 
+import javax.xml.transform.Result;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,12 +33,9 @@ public class AppointmentPopUp implements Initializable {
     public ComboBox<String> roleComboBoxRad;
     public ComboBox<String> roleComboBoxTech;
     public ComboBox<String> roleComboBoxPatient;
-    public TextField FirstNameLabel;
-    public TextField lastNameLabel;
-    public TextField priceTextField;
     public TextField dateTextField;
-    public TextField radiologistTextField;
-    public TextField technicianTextField;
+    public TextField phoneNumberTextField;
+    public TextField emailTextField;
     public Button cancelButton;
     public Button submitButton;
 
@@ -150,66 +148,86 @@ public class AppointmentPopUp implements Initializable {
     public void insertAppointmentQuery() throws SQLException {
         String sql = """
                 insert into appointments
-                values (?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?);
+                values (?, ?, null, ?, ?, ?, ?, ?, ?, null,null,null,null,null);
                 """;
+
 
         PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
         preparedStatement.setInt(1, Integer.parseInt(appointmentIdLabel.getText()));
-        preparedStatement.setString(2, lastNameLabel.getText().toLowerCase());
-        preparedStatement.setString(3, FirstNameLabel.getText());
-        preparedStatement.setString(4, priceTextField.getText());
-        preparedStatement.setString(5, dateTextField.getText());
-        preparedStatement.setInt(6, 1);
-        preparedStatement.execute();
-    }
-    public void insertPatientQuery() throws SQLException {
-        String sql = """
-                insert into patients
-                values (?,?,?,null,null,null);
-                """;
-
-        PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
-        preparedStatement.setInt(1, Integer.parseInt(appointmentIdLabel.getText()));
-        preparedStatement.setString(2, lastNameLabel.getText().toLowerCase());
-        preparedStatement.setString(3, FirstNameLabel.getText());
-        preparedStatement.setString(4, priceTextField.getText());
-        preparedStatement.setString(5, dateTextField.getText());
-        preparedStatement.setInt(6, 1);
+        preparedStatement.setInt(2,  pullPatientComboboxId(roleComboBoxPatient.getValue()));
+        preparedStatement.setInt(3, pullModalityComboboxId(roleComboBoxModality.getValue()));
+        preparedStatement.setString(4, dateTextField.getText());
+        preparedStatement.setInt(5, pullDocComboboxId(roleComboBoxRad.getValue()));
+        preparedStatement.setInt(6, pullDocComboboxId(roleComboBoxTech.getValue()));
+        preparedStatement.setString(7, phoneNumberTextField.getText());
+        preparedStatement.setString(8, emailTextField.getText());
+        preparedStatement.setInt(8, 1);
         preparedStatement.execute();
     }
 
-   /* public void insertRoleIdQuery() throws SQLException {
-        String sql = """
-                insert into users_roles
-                values (?, ?, ?);
-                """;
-        PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
-        preparedStatement.setInt(1, Integer.parseInt(patientIdLabel.getText()));
-        preparedStatement.setInt(2, getRoleId(roleComboBox.getValue()));
-        preparedStatement.setInt(3, Integer.parseInt(patientIdLabel.getText()));
-        preparedStatement.execute();
+    public int pullPatientComboboxId(String name) {
+        try {
+            String patientIdFromCombo = """
+                    SELECT patient_id
+                    FROM patients
+                    WHERE ? = CONCAT(first_name, " ", last_name)
+                    """;
+            String patientName = ((roleComboBoxPatient.getValue()));
+            PreparedStatement preparedStatementPatientCombo = driver.connection.prepareStatement(patientIdFromCombo);
+            preparedStatementPatientCombo.setString(1, name);
+            ResultSet resultSetPatientCombo = preparedStatementPatientCombo.executeQuery();
+            return resultSetPatientCombo.getInt(("patient_id"));
+        } catch (Exception exception) {
+            exception.printStackTrace();
+return(97916231);
+
+        }
     }
-*/
-    public int getRoleId(String role) throws SQLException {
-        String sql = """
-                  select role_id
-                              from roles
-                              where name = TECHNICIAN , RADIOLOGIST
-                """;
-        PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
-        preparedStatement.setString(1, role);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        resultSet.next();
-        return resultSet.getInt("role_id");
+    public int pullDocComboboxId(String name) {
+        try {
+            String techIdFromCombo = """
+                    SELECT user_id
+                    FROM users
+                    WHERE ? =  full_name 
+                    """;
+            PreparedStatement preparedStatementTechCombo = driver.connection.prepareStatement(techIdFromCombo);
+            preparedStatementTechCombo.setString(1, name);
+            ResultSet resultSetTechCombo = preparedStatementTechCombo.executeQuery();
+            return resultSetTechCombo.getInt(("user_id"));
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return(97916231);
+
+        }
     }
+    public int pullModalityComboboxId(String name) {
+        try {
+            String modalityIdFromCombo = """
+                    SELECT modality_id
+                    FROM modalities
+                    WHERE ? =  name 
+                    """;
+            PreparedStatement preparedStatementModalityCombo = driver.connection.prepareStatement(modalityIdFromCombo);
+            preparedStatementModalityCombo.setString(1, name);
+            ResultSet resultSetTechCombo = preparedStatementModalityCombo.executeQuery();
+            return resultSetTechCombo.getInt(("modality_id"));
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            return(97916231);
+
+        }
+    }
+
 
     // Returns false if any input field is invalid
     public boolean validInput() {
         return roleComboBoxModality.getValue() != null &&
-                !FirstNameLabel.getText().isBlank() &&
-                !lastNameLabel.getText().isBlank() &&
-                !priceTextField.getText().isBlank() &&
-                !dateTextField.getText().isBlank();
+                roleComboBoxTech.getValue() != null &&
+                roleComboBoxRad.getValue() != null &&
+                roleComboBoxPatient.getValue() != null &&
+                !dateTextField.getText().isBlank() &&
+                !phoneNumberTextField.getText().isBlank() &&
+                !emailTextField.getText().isBlank();
     }
 
     public void resizeElements() {
@@ -237,8 +255,7 @@ public class AppointmentPopUp implements Initializable {
     // Onclick for submit button
     public void submitButtonOnclick() throws SQLException {
         if (validInput()) {
-            insertPatientQuery();
-           // insertRoleIdQuery();
+            insertAppointmentQuery();
             Appointments.queryData(Appointments.getLastRowStringQuery());
             Popups.getMenuPopupEnum().getPopup().hide();
             Notification.createNotification();
