@@ -1,10 +1,10 @@
 package com.risjavafx.pages.orders;
 
 import javafx.beans.property.SimpleStringProperty;
-
-
+import javafx.beans.property.SimpleIntegerProperty;
+@SuppressWarnings("unused")
 public class OrdersData {
-    SimpleStringProperty orderIdData;
+    SimpleIntegerProperty orderIdData;
     SimpleStringProperty patientData;
     SimpleStringProperty referralMdData;
     SimpleStringProperty modalityData;
@@ -13,8 +13,8 @@ public class OrdersData {
     SimpleStringProperty statusData;
     SimpleStringProperty reportData;
 
-    public OrdersData(String orderId, String patient, String referralMd, String modality, String appointment, String notes, String status, String report) {
-        this.orderIdData = new SimpleStringProperty(orderId);
+    public OrdersData(int orderId, String patient, String referralMd, String modality, String appointment, String notes, String status, String report) {
+        this.orderIdData = new SimpleIntegerProperty(orderId);
         this.patientData = new SimpleStringProperty(patient);
         this.referralMdData = new SimpleStringProperty(referralMd);
         this.modalityData = new SimpleStringProperty(modality);
@@ -24,9 +24,13 @@ public class OrdersData {
         this.reportData = new SimpleStringProperty(report);
     }
 
-    public String getOrderIdData() {return orderIdData.get();}
+    public int getOrderIdData() {
+        return orderIdData.get();
+    }
 
-    public void setOrderIdData(String ORDERID) {this.orderIdData.set(ORDERID);}
+    public void setOrderIdData(int orderId) {
+        this.orderIdData.set(orderId);
+    }
 
     public String getPatientData() {
         return patientData.get();
@@ -36,7 +40,7 @@ public class OrdersData {
         this.patientData.set(patientData);
     }
 
-    public String getReferralMdDataData() {
+    public String getReferralMdData() {
         return referralMdData.get();
     }
 
@@ -50,6 +54,14 @@ public class OrdersData {
 
     public void setModalityData(String modalityData) {
         this.modalityData.set(modalityData);
+    }
+
+    public String getAppointmentData() {
+        return appointmentData.get();
+    }
+
+    public void setAppointmentData(String appointmentData) {
+        this.appointmentData.set(appointmentData);
     }
 
     public String getNotesData() {
