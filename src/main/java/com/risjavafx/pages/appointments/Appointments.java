@@ -19,6 +19,7 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -39,10 +40,12 @@ public class Appointments implements Initializable {
     public HBox topContent, titleBar, tableSearchBarContainer;
     public StackPane centerContent;
     public SplitPane centerContentContainer;
+
+    private static StackPane usableCenterContent;
+
     public static ObservableList<AppointmentData> observableList = FXCollections.observableArrayList();
     SortedList<AppointmentData> sortedList;
     FilteredList<AppointmentData> filteredList;
-
 
     InfoTable<AppointmentData, String> infoTable = new InfoTable<>();
     TableSearchBar tableSearchBar = new TableSearchBar();
@@ -73,6 +76,7 @@ public class Appointments implements Initializable {
     // Load NavigationBar component into home-page.fxml
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        usableCenterContent = centerContent;
         observableList.clear();
         Pages.setPage(Pages.APPOINTMENTS);
         TitleBar.createTitleBar(mainContainer, titleBar);
@@ -84,18 +88,10 @@ public class Appointments implements Initializable {
         // Overrides caching functionality and loads *TableSearchBar* every time page is opened
         PageManager.getScene().rootProperty().addListener(observable -> {
             if (Pages.getPage() == Pages.APPOINTMENTS) {
-                 createTableSearchBar();
+                centerContent.setPadding(new Insets(0));
+                createTableSearchBar();
             }
         });
-
-        /*
-        try {
-            createTable();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
- */
     }
 
     public void createTableSearchBar() {
@@ -140,6 +136,9 @@ public class Appointments implements Initializable {
         }
     }
 
+    public static StackPane getTableView() {
+        return usableCenterContent;
+    }
 
     public static void queryData(String sql) throws SQLException {
         // ObservableList<AppointmentData> observableList = FXCollections.observableArrayList();

@@ -1,8 +1,16 @@
 /*Theme styling-------------------------------------------------------------------------------------------------------*/
 .root {
-    /*-fx-background-image: url(../../images/background.jpg);*/
-    /*-fx-background-size: cover;*/
-    -fx-background-color: #121212;
+    -fx-background-image: url(../../images/background.jpg);
+    -fx-background-size: cover;
+}
+
+#root {
+    -fx-background-image: url(../../images/background.jpg);
+    -fx-background-size: cover;
+}
+
+#tableViewList {
+    -fx-background-color: transparent;
 }
 
 #popupContainer {
@@ -14,15 +22,17 @@
 }
 
 #loginContainer {
-    -fx-background-color: transparent;
+    -fx-background-color: #121212;
     -fx-background-insets: 0;
     -fx-border-style: solid solid solid solid;
-    -fx-border-color: white #444444 #444444 white;
-    -fx-border-width: 3px 2px 2px 3px;
+    -fx-border-color: white;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 7px;
+    -fx-background-radius: 8px;
 }
 
 #tableBarContainer {
-    -fx-background-color: transparent;
+    -fx-background-color: #121212;
     -fx-background-insets: 0;
     -fx-border-style: solid solid none solid;
     -fx-border-color: white white transparent white;
@@ -115,6 +125,7 @@
 
 /*Title bar styling---------------------------------------------------------------------------------------------------*/
 #titleBar {
+    -fx-background-color: #121212;
     -fx-border-style: none none solid none;
     -fx-border-color: transparent transparent white transparent;
     -fx-border-width: 0 0 .5 0;

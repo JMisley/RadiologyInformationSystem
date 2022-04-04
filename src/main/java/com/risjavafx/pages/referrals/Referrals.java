@@ -101,8 +101,8 @@ public class Referrals implements Initializable {
             infoTable.setColumns(tableColumnsList);
             infoTable.addColumnsToTable();
 
-            infoTable.setCustomColumnWidth(patientId, .15);
-            infoTable.setCustomColumnWidth(dateOfBirth, .35);
+            infoTable.setCustomColumnWidth(patientId, .25);
+            infoTable.setCustomColumnWidth(dateOfBirth, .25);
             infoTable.setCustomColumnWidth(lastName, .25);
             infoTable.setCustomColumnWidth(firstName, .25);
 
@@ -193,11 +193,11 @@ public class Referrals implements Initializable {
             filteredList = new FilteredList<>(observableList);
 
             tableSearchBar.getTextField().textProperty().addListener((observable, oldValue, newValue) ->
-                    filteredList.setPredicate(adminData -> filterDataEvent(newValue, adminData)));
+                    filteredList.setPredicate(referralData -> filterDataEvent(newValue, referralData)));
 
-            tableSearchBar.getComboBox().valueProperty().addListener((newValue) -> filteredList.setPredicate(adminData -> {
+            tableSearchBar.getComboBox().valueProperty().addListener((newValue) -> filteredList.setPredicate(referralData -> {
                 if (newValue != null) {
-                    return filterDataEvent(tableSearchBar.getTextField().getText(), adminData);
+                    return filterDataEvent(tableSearchBar.getTextField().getText(), referralData);
                 }
                 return false;
             }));

@@ -8,6 +8,7 @@ import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
+import com.risjavafx.pages.TableManager;
 import com.risjavafx.popups.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
@@ -17,10 +18,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -43,9 +41,6 @@ public class Admin implements Initializable {
     public StackPane centerContent;
     public SplitPane centerContentContainer;
 
-    private static StackPane usableCenterContent;
-    private static HBox usableTableSearchBarContainer;
-
     public static ObservableList<AdminData> observableList = FXCollections.observableArrayList();
     SortedList<AdminData> sortedList;
     FilteredList<AdminData> filteredList;
@@ -54,13 +49,13 @@ public class Admin implements Initializable {
     TableSearchBar tableSearchBar = new TableSearchBar();
     Miscellaneous misc = new Miscellaneous();
 
-    public TableColumn<AdminData, String>
+    private static final TableColumn<AdminData, String>
             userId = new TableColumn<>("User ID"),
             displayName = new TableColumn<>("Full Name"),
             username = new TableColumn<>("Username"),
             emailAdr = new TableColumn<>("Email Address"),
             systemRole = new TableColumn<>("System Role");
-    public ArrayList<TableColumn<AdminData, String>> tableColumnsList = new ArrayList<>() {{
+    private static final ArrayList<TableColumn<AdminData, String>> tableColumnsList = new ArrayList<>() {{
         add(userId);
         add(displayName);
         add(username);
@@ -69,8 +64,6 @@ public class Admin implements Initializable {
     }};
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        usableCenterContent = centerContent;
-        usableTableSearchBarContainer = tableSearchBarContainer;
         observableList.clear();
         // Miscellaneous components initialization
         Pages.setPage(Pages.ADMIN);
@@ -105,7 +98,11 @@ public class Admin implements Initializable {
         try {
             setCellFactoryValues();
 
-            infoTable.setColumns(tableColumnsList);
+            centerContentContainer.setMaxWidth(misc.getScreenWidth() * .75);
+            centerContentContainer.setMaxHeight(misc.getScreenHeight() * .85);
+            centerContent.getChildren().add(infoTable.tableView);
+
+            infoTable.setColumns(new ArrayList<>(tableColumnsList));
             infoTable.addColumnsToTable();
 
             infoTable.setCustomColumnWidth(userId, .12);
@@ -114,25 +111,26 @@ public class Admin implements Initializable {
             infoTable.setCustomColumnWidth(emailAdr, .27);
             infoTable.setCustomColumnWidth(systemRole, .2);
 
-            centerContentContainer.setMaxWidth(misc.getScreenWidth() * .9);
-            centerContentContainer.setMaxHeight(misc.getScreenHeight() * .85);
-            centerContent.getChildren().add(infoTable.tableView);
-
             queryData(getAllDataStringQuery());
             infoTable.tableView.setItems(observableList);
             infoTable.tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        } catch (
-                Exception exception) {
-            exception.printStackTrace();
-        }
+
+            TableManager.setAdminTable(new StackPane(infoTable.tableView));
+        } catch(
+    Exception exception)
+
+    {
+        exception.printStackTrace();
     }
 
-    public static StackPane getTableView() {
-        return usableCenterContent;
+}
+
+    public ArrayList<TableColumn<AdminData, String>> getTableColumnsList() {
+        return tableColumnsList;
     }
 
-    public static HBox getTableSearchBar() {
-        return usableTableSearchBarContainer;
+    public ObservableList<AdminData> createObservableList() {
+        return FXCollections.observableArrayList(observableList);
     }
 
     public static void queryData(String sql) throws SQLException {
