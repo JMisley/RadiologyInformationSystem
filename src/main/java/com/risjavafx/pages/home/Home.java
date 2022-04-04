@@ -1,18 +1,12 @@
 package com.risjavafx.pages.home;
 
 import com.risjavafx.Miscellaneous;
-import com.risjavafx.components.InfoTable;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.components.NavigationBar;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.TableManager;
-import com.risjavafx.pages.admin.Admin;
-import com.risjavafx.pages.admin.AdminData;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -59,25 +53,5 @@ public class Home implements Initializable {
         tableViewList.setMinWidth(misc.getScreenWidth());
         tableViewList.setMinHeight(misc.getScreenHeight());
         tableViewList.setId("root");
-    }
-
-    private TableView<AdminData> createAdminTable() {
-        InfoTable<AdminData, String> infoTable = new InfoTable<>();
-        Admin admin = new Admin();
-
-        infoTable.setColumns(admin.getTableColumnsList());
-        infoTable.addColumnsToTable();
-
-        infoTable.setCustomColumnWidth(admin.getTableColumnsList().get(0), .12);
-        infoTable.setCustomColumnWidth(admin.getTableColumnsList().get(1), .24);
-        infoTable.setCustomColumnWidth(admin.getTableColumnsList().get(2), .17);
-        infoTable.setCustomColumnWidth(admin.getTableColumnsList().get(3), .27);
-        infoTable.setCustomColumnWidth(admin.getTableColumnsList().get(4), .2);
-
-        ObservableList<AdminData> oblist = FXCollections.observableArrayList(admin.createObservableList());
-        infoTable.tableView.setItems(oblist);
-        oblist.remove(0);
-
-        return infoTable.tableView;
     }
 }
