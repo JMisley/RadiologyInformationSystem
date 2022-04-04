@@ -30,4 +30,6 @@ public class Home implements Initializable {
         TitleBar.createTitleBar(mainContainer, titleBar);
         NavigationBar.createNavBar(topContent);
     }
+
+
 }

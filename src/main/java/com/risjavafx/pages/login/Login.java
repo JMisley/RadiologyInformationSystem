@@ -50,6 +50,7 @@ public class Login implements Initializable {
         if (checkCredentials(username.getText(), password.getText())) {
             LoadingService loginService = new LoadingService();
             loginService.start();
+            String userName = username.getText();
         } else if (username.getText().isBlank() || password.getText().isEmpty()) {
             errorMessage.setText("Please enter all information");
         } else {
