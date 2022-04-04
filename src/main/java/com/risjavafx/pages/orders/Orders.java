@@ -240,7 +240,7 @@ public class Orders implements Initializable {
         }
     }
 
-    // Action to be performed for Admin TextField and ComboBox listener
+    // Action to be performed for Orders TextField and ComboBox listener
     public boolean filterDataEvent(String newValue, OrdersData ordersData) {
         if (tableSearchBar.getComboBox().getValue() == null) {
             tableSearchBar.getErrorLabel().setText("Please select a filter");
@@ -267,13 +267,18 @@ public class Orders implements Initializable {
             return true;
         } else if (ordersData.getModalityData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Modality")) {
             return true;
+        } else if (ordersData.getNotesData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Notes")) {
+            return true;
+        }
+        else if (ordersData.getStatusData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Status")) {
+            return true;
         } else
-            return ordersData.getStatusData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Status");
+            return ordersData.getReportData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Report");
     }
 
-    // Listener for Admin TableView
+    // Listener for Orders TableView
     public void tableViewListener() {
-        infoTable.tableView.getSelectionModel().selectedItemProperty().addListener((observableValue, adminData, t1) -> {
+        infoTable.tableView.getSelectionModel().selectedItemProperty().addListener((observableValue, ordersData, t1) -> {
             if (t1 != null) {
                 tableSearchBar.toggleButtons(false);
                 tableSearchBar.getDeleteButton().setOnAction(actionEvent ->
@@ -327,7 +332,7 @@ public class Orders implements Initializable {
     }
 
     public void tableSearchBarAddButtonListener() {
-        tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.ADMIN));
+        tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.ORDERS));
     }
 }
 
