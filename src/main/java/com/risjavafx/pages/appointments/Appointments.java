@@ -48,7 +48,7 @@ public class Appointments implements Initializable {
     Miscellaneous misc = new Miscellaneous();
 
     public TableColumn<AppointmentData, String>
-            patientId = new TableColumn<>("ID"),
+            appointmentId = new TableColumn<>("ID"),
             patient = new TableColumn<>("Patient"),
             modality = new TableColumn<>("Modality"),
             price = new TableColumn<>("Price"),
@@ -58,7 +58,7 @@ public class Appointments implements Initializable {
             closedFlag = new TableColumn<>("Closed");
 
     public ArrayList<TableColumn<AppointmentData, String>> tableColumnsList = new ArrayList<>() {{
-        add(patientId);
+        add(appointmentId);
         add(patient);
         add(modality);
         add(price);
@@ -107,7 +107,7 @@ public class Appointments implements Initializable {
             infoTable.setColumns(tableColumnsList);
             infoTable.addColumnsToTable();
 
-            infoTable.setCustomColumnWidth(patientId, .07);
+            infoTable.setCustomColumnWidth(appointmentId, .07);
             infoTable.setCustomColumnWidth(patient, .15);
             infoTable.setCustomColumnWidth(modality, .13);
             infoTable.setCustomColumnWidth(price, .09);
@@ -145,7 +145,7 @@ public class Appointments implements Initializable {
                 checkIn = "In Progress";
             }
             observableList.add(new AppointmentData(
-                    resultSet.getInt("patient"),
+                    resultSet.getInt("appointment_id"),
                     name,
                     resultSet.getString("name"),
                     "$" + resultSet.getString("price"),
@@ -160,7 +160,8 @@ public class Appointments implements Initializable {
 
     public String getAllDataStringQuery() {
         return """
-                SELECT appointments.patient,
+                SELECT
+                        appointments.appointment_id,
                        patients.first_name,
                        patients.last_name,
                        modalities.name,
@@ -178,13 +179,14 @@ public class Appointments implements Initializable {
                   AND u2.user_id = appointments.technician
                   AND patients.patient_id = appointments.patient
                   AND modalities.modality_id = appointments.modality
-                ORDER BY appointments.patient;
+                ORDER BY appointments.appointment_id;
                 """;
     }
 
     public static String getLastRowStringQuery() {
         return """
-                   SELECT appointments.patient,
+                   SELECT
+                   appointments.appointment_id,
                        patients.first_name,
                        patients.last_name,
                        modalities.name,
@@ -202,7 +204,7 @@ public class Appointments implements Initializable {
                   AND u2.user_id = appointments.technician
                   AND patients.patient_id = appointments.patient
                   AND modalities.modality_id = appointments.modality
-                ORDER BY appointments.patient  DESC LIMIT 1;
+                ORDER BY appointments.appointment_id  DESC LIMIT 1;
                 """;
     }
 
@@ -222,7 +224,7 @@ public class Appointments implements Initializable {
     }
 
     public void setCellFactoryValues() {
-        patientId.setCellValueFactory(new PropertyValueFactory<>("patientId"));
+        appointmentId.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
         patient.setCellValueFactory(new PropertyValueFactory<>("patient"));
         modality.setCellValueFactory(new PropertyValueFactory<>("modality"));
         price.setCellValueFactory(new PropertyValueFactory<>("price"));

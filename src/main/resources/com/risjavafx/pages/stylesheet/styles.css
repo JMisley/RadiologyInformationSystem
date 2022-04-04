@@ -1,11 +1,11 @@
 /*Theme styling-------------------------------------------------------------------------------------------------------*/
 .root {
-    -fx-background-image: url(../../images/background.jpg);
+    -fx-background-image: url(../images/bg-01.jpg);
     -fx-background-size: cover;
 }
 
 #root {
-    -fx-background-image: url(../../images/background.jpg);
+    -fx-background-image: url(../images/bg-01.jpg);
     -fx-background-size: cover;
 }
 
