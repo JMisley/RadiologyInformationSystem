@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="db_ris@localhost" uuid="a4240cfe-d9e9-44bf-8e8f-e82fc05f822d">
+    <data-source source="LOCAL" name="AWS-Connection" uuid="1421ba3a-94b2-42be-9d17-ffee8755ab60">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
-      <configured-by-url>true</configured-by-url>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/db_ris</jdbc-url>
+      <jdbc-url>jdbc:mysql://aws-risdb.cs15pqp4fpnm.us-east-1.rds.amazonaws.com:3306</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="grad.jpg" uuid="7ab0a2ba-1900-4db3-8586-099e748b19ca">
+      <driver-ref>derby.embedded</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.apache.derby.jdbc.EmbeddedDriver</jdbc-driver>
+      <jdbc-url>jdbc:derby:$PROJECT_DIR$/src/main/resources/com/risjavafx/images/../../../../../../../../../grad.jpg</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

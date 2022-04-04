@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox alignment="CENTER" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.risjavafx.components.TableSearchBar">
+    <Label fx:id="searchLabel" contentDisplay="CENTER" text="Search:" textFill="WHITE">
+        <font>
+            <Font name="Century Gothic"/>
+        </font>
+    </Label>
+    <TextField fx:id="textField" maxHeight="30.0" maxWidth="250.0">
+        <HBox.margin>
+            <Insets left="10.0"/>
+        </HBox.margin>
+    </TextField>
+    <ComboBox fx:id="comboBox" maxHeight="30.0" maxWidth="300" promptText="Filter by">
+        <HBox.margin>
+            <Insets left="10.0"/>
+        </HBox.margin>
+    </ComboBox>
+    <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+        <Label fx:id="errorLabel" textFill="#cf6679">
+            <HBox.margin>
+                <Insets left="20.0"/>
+            </HBox.margin>
+            <font>
+                <Font name="Arial Bold" size="16.0"/>
+            </font>
+        </Label>
+    </HBox>
+    <Button id="deleteButton" fx:id="deleteButton" maxHeight="40.0" maxWidth="85.0" mnemonicParsing="false"
+            text="Delete" disable="true" opacity="0f"/>
+    <Button id="editButton" fx:id="editButton" maxHeight="40.0" maxWidth="85.0" mnemonicParsing="false" text="Edit"
+            disable="true" opacity="0f">
+        <HBox.margin>
+            <Insets left="10.0"/>
+        </HBox.margin>
+    </Button>
+    <Button id="primaryButton" fx:id="addButton" maxHeight="40.0" maxWidth="85.0" mnemonicParsing="false" text="Add">
+        <HBox.margin>
+            <Insets left="10.0"/>
+        </HBox.margin>
+    </Button>
+    <padding>
+        <Insets left="20.0" right="20.0"/>
+    </padding>
+</HBox>

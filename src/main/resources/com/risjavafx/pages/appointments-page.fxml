@@ -4,8 +4,10 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 
+<?import javafx.scene.control.SplitPane?>
+
 <BorderPane fx:id="mainContainer" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.risjavafx.Orders">
+            fx:controller="com.risjavafx.pages.appointments.Appointments">
     <center>
         <BorderPane>
             <top>
@@ -21,7 +23,13 @@
                 <HBox/>
             </bottom>
             <center>
-                <StackPane fx:id="centerContent"/>
+                <StackPane alignment="BOTTOM_CENTER">
+                    <SplitPane fx:id="centerContentContainer" id="tableBarContainer" dividerPositions="0.1"
+                               orientation="VERTICAL">
+                        <HBox fx:id="tableSearchBarContainer"/>
+                        <StackPane fx:id="centerContent"/>
+                    </SplitPane>
+                </StackPane>
             </center>
         </BorderPane>
     </center>
@@ -29,4 +37,3 @@
         <HBox fx:id="titleBar" nodeOrientation="RIGHT_TO_LEFT" BorderPane.alignment="CENTER"/>
     </top>
 </BorderPane>
-

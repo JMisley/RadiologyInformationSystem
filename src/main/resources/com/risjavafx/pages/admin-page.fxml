@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+
+<?import javafx.scene.control.SplitPane?>
+
+<?import javafx.scene.layout.VBox?>
+<BorderPane fx:id="mainContainer" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.risjavafx.pages.admin.Admin">
+    <top>
+        <VBox>
+            <HBox fx:id="titleBar" nodeOrientation="RIGHT_TO_LEFT" BorderPane.alignment="CENTER"/>
+            <HBox fx:id="topContent"/>
+        </VBox>
+    </top>
+    <center>
+        <StackPane alignment="BOTTOM_CENTER">
+            <SplitPane fx:id="centerContentContainer" id="tableBarContainer" dividerPositions="0.1"
+                       orientation="VERTICAL">
+                <HBox fx:id="tableSearchBarContainer"/>
+                <StackPane fx:id="centerContent"/>
+            </SplitPane>
+        </StackPane>
+    </center>
+</BorderPane>
