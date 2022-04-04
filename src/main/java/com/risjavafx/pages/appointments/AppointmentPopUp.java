@@ -148,7 +148,7 @@ public class AppointmentPopUp implements Initializable {
     public void insertAppointmentQuery() throws SQLException {
         String sql = """
                 insert into appointments
-                values (?, ?, null, ?, ?, ?, ?, ?, ?, null,null,null,1,1);
+                values (?, ?, null, ?, ?, ?, ?, ?, ?, null,null,null,null,null);
                 """;
 
 
@@ -157,8 +157,8 @@ public class AppointmentPopUp implements Initializable {
         preparedStatement.setInt(2,  pullPatientComboboxId(roleComboBoxPatient.getValue()));
         preparedStatement.setInt(3, pullModalityComboboxId(roleComboBoxModality.getValue()));
         preparedStatement.setString(4, dateTextField.getText());
-        preparedStatement.setInt(5, pullDocRadComboboxId(roleComboBoxRad.getValue()));
-        preparedStatement.setInt(6, pullDocTechComboboxId(roleComboBoxTech.getValue()));
+        preparedStatement.setInt(5, pullDocComboboxId(roleComboBoxRad.getValue()));
+        preparedStatement.setInt(6, pullDocComboboxId(roleComboBoxTech.getValue()));
         preparedStatement.setString(7, phoneNumberTextField.getText());
         preparedStatement.setString(8, emailTextField.getText());
         preparedStatement.execute();
@@ -171,21 +171,18 @@ public class AppointmentPopUp implements Initializable {
                     FROM patients
                     WHERE ? = CONCAT(first_name, " ", last_name)
                     """;
+            String patientName = ((roleComboBoxPatient.getValue()));
             PreparedStatement preparedStatementPatientCombo = driver.connection.prepareStatement(patientIdFromCombo);
             preparedStatementPatientCombo.setString(1, name);
             ResultSet resultSetPatientCombo = preparedStatementPatientCombo.executeQuery();
-            int i = 0;
-            while (resultSetPatientCombo.next()) {
-                i = resultSetPatientCombo.getInt(("patient_id"));
-            }
-            return i;
+            return resultSetPatientCombo.getInt(("patient_id"));
         } catch (Exception exception) {
             exception.printStackTrace();
-return(2);
+return(97916231);
 
         }
     }
-    public int pullDocTechComboboxId(String name) {
+    public int pullDocComboboxId(String name) {
         try {
             String techIdFromCombo = """
                     SELECT user_id
@@ -195,59 +192,27 @@ return(2);
             PreparedStatement preparedStatementTechCombo = driver.connection.prepareStatement(techIdFromCombo);
             preparedStatementTechCombo.setString(1, name);
             ResultSet resultSetTechCombo = preparedStatementTechCombo.executeQuery();
-            int i = 0;
-            while (resultSetTechCombo.next()) {
-                i = resultSetTechCombo.getInt(("user_id"));
-            }
-            return i;
+            return resultSetTechCombo.getInt(("user_id"));
         } catch (Exception exception) {
             exception.printStackTrace();
-            return(8);
+            return(97916231);
 
         }
-
     }
-
-    public int pullDocRadComboboxId(String name) {
-        try {
-            String techIdFromCombo = """
-                    SELECT user_id
-                    FROM users
-                    WHERE ? =  full_name 
-                    """;
-            PreparedStatement preparedStatementTechCombo = driver.connection.prepareStatement(techIdFromCombo);
-            preparedStatementTechCombo.setString(1, name);
-            ResultSet resultSetTechCombo = preparedStatementTechCombo.executeQuery();
-            int i = 0;
-            while (resultSetTechCombo.next()) {
-                i = resultSetTechCombo.getInt(("user_id"));
-            }
-            return i;
-        } catch (Exception exception) {
-            exception.printStackTrace();
-            return(8);
-
-        }
-
-    }
-    public int pullModalityComboboxId(String insertName) {
+    public int pullModalityComboboxId(String name) {
         try {
             String modalityIdFromCombo = """
                     SELECT modality_id
                     FROM modalities
-                    WHERE name = ?
+                    WHERE ? =  name 
                     """;
             PreparedStatement preparedStatementModalityCombo = driver.connection.prepareStatement(modalityIdFromCombo);
-            preparedStatementModalityCombo.setString(1, insertName);
+            preparedStatementModalityCombo.setString(1, name);
             ResultSet resultSetTechCombo = preparedStatementModalityCombo.executeQuery();
-            int i = 0;
-            while (resultSetTechCombo.next()) {
-                i = resultSetTechCombo.getInt(("modality_id"));
-            }
-            return i;
+            return resultSetTechCombo.getInt(("modality_id"));
         } catch (Exception exception) {
             exception.printStackTrace();
-            return(1);
+            return(97916231);
 
         }
     }

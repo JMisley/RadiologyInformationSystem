@@ -1,6 +1,6 @@
 /*Theme styling-------------------------------------------------------------------------------------------------------*/
 .root {
-    -fx-background-image: url(../images/bg-01.jpg);
+    -fx-background-image: url(src/main/resources/com/risjavafx/images/bg-01.jpg);
     -fx-background-size: cover;
 
 }
@@ -19,14 +19,6 @@
     -fx-border-style: solid solid solid solid;
     -fx-border-color: white #444444 #444444 white;
     -fx-border-width: 3px 2px 2px 3px;
-}
-
-#tableBarContainer {
-    -fx-background-color: #3c1f41;
-    -fx-background-insets: 0;
-    -fx-border-style: solid solid none solid;
-    -fx-border-color: white white transparent white;
-    -fx-border-width: 3px;
 }
 
 #primaryButton {
@@ -96,14 +88,14 @@
 /*Title bar styling---------------------------------------------------------------------------------------------------*/
 #titleBar {
     -fx-border-style: none none solid none;
-    -fx-background-color: #3c1f41;
+    -fx-background-color: transparent;
     -fx-border-width: 0 0 .5 0;
 }
 
 #titleBarMaxButton,
 #titleBarMinButton,
 #titleBarCloseButton {
-    -fx-background-color: #3c1f41;
+    -fx-background-color: transparent;
 }
 
 #titleBarCloseButton:hover {
@@ -124,7 +116,7 @@
 
 /*Navigation bar styling----------------------------------------------------------------------------------------------*/
 #menuBar {
-    -fx-background-color: #3c1f41;
+    -fx-background-color: #121212;
 }
 
 #menuBarButton {
