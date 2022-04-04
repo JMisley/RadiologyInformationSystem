@@ -29,8 +29,6 @@ public class TableSearchBar implements Initializable {
     private static ComboBox<String> usableComboBox;
     private static Label usableErrorLabel;
 
-    static Miscellaneous misc = new Miscellaneous();
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         initializeUsables();
@@ -51,6 +49,8 @@ public class TableSearchBar implements Initializable {
     }
 
     public void resizeElements() {
+        Miscellaneous misc = new Miscellaneous();
+
         textField.setPrefHeight(misc.getScreenHeight() * .05);
         textField.setPrefWidth(misc.getScreenWidth() * .3);
 
@@ -81,10 +81,11 @@ public class TableSearchBar implements Initializable {
         } else {
             otherOpacity = 1;
         }
-        TableSearchBar.usableEditButton.setDisable(showAddButton);
-        TableSearchBar.usableEditButton.setOpacity(otherOpacity);
-        TableSearchBar.usableDeleteButton.setDisable(showAddButton);
-        TableSearchBar.usableDeleteButton.setOpacity(otherOpacity);
+
+        usableEditButton.setDisable(showAddButton);
+        usableEditButton.setOpacity(otherOpacity);
+        usableDeleteButton.setDisable(showAddButton);
+        usableDeleteButton.setOpacity(otherOpacity);
     }
 
     public TextField getTextField() {return usableTextField;}

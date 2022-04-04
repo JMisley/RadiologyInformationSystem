@@ -14,7 +14,6 @@ public class NavigationBar implements Initializable {
     public HBox menuBar;
     public Button homeButton, userInfoButton, adminButton, referralsButton, appointmentsButton, ordersButton, logoutButton;
     public Button[] buttonArray;
-    Miscellaneous misc = new Miscellaneous();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -49,6 +48,7 @@ public class NavigationBar implements Initializable {
     }
 
     public void userLogout() {
+        PageManager.clearCache();
         switchPage(Pages.LOGIN);
     }
 
@@ -77,6 +77,8 @@ public class NavigationBar implements Initializable {
     }
 
     public void setButtonWidth() {
+        Miscellaneous misc = new Miscellaneous();
+
         for (Button button : buttonArray) {
             button.setPrefWidth((misc.getScreenWidth() / 7) * .8);
             button.setMaxWidth(225);

@@ -12,10 +12,10 @@ import javafx.stage.StageStyle;
 public class Main extends Application {
 
     public static Stage usableStage;
-    Miscellaneous misc = new Miscellaneous();
 
     @Override
     public void start(Stage primaryStage) {
+        Miscellaneous misc = new Miscellaneous();
         usableStage = primaryStage;
 
         Scene scene = new Scene(new BorderPane());

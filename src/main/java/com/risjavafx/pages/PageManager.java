@@ -36,16 +36,34 @@ public class PageManager {
         }
     }
 
+    public static void clearCache() {
+        cache.clear();
+    }
+
     // Use this to override caching functionality for specific methods in an isCachable class
     public static Scene getScene() {
         return scene;
     }
 
-    public static void setScene (Scene scene) {
+    public static void setScene(Scene scene) {
         PageManager.scene = scene;
     }
 
     public static Parent getRoot() {
         return root;
+    }
+
+    public static void loadPagesToCache() {
+        try {
+            for (Pages page : Pages.getPageArray()) {
+                if (page.isCachable()) {
+                    Parent root = FXMLLoader.load(Objects.requireNonNull(PageManager.class.getResource(page.getFilename())));
+                    root.getStylesheets().add(Objects.requireNonNull(PageManager.class.getResource("stylesheet/styles.css")).toExternalForm());
+                    cache.put(page, root);
+                }
+            }
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 }
