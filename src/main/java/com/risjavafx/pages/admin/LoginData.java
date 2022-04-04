@@ -12,6 +12,8 @@ public class LoginData {
     SimpleStringProperty emailAddressData;
     SimpleStringProperty systemRoleData;
 
+    public LoginData(){}
+
     public LoginData(int userId, String displayName, String username, String emailAdr, String systemRole) {
         this.userIdData = new SimpleIntegerProperty(userId);
         this.displayNameData = new SimpleStringProperty(displayName);

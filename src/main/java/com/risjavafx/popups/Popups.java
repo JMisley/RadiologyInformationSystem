@@ -5,6 +5,7 @@ import javafx.stage.Popup;
 
 public enum Popups {
     ADMIN("admin-popup.fxml", PopupManager.popupMenu, "MENU"),
+    APPOINTMENT("appointment-popup.fxml", PopupManager.popupMenu, "MENU"),
     CONFIRMATION("popup-confirmation.fxml", PopupManager.popupAlert, "ALERT"),
     ALERT("popup-alert.fxml", PopupManager.popupAlert, "ALERT");
 

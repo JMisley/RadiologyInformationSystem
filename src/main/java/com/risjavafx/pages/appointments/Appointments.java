@@ -1,4 +1,3 @@
-
 package com.risjavafx.pages.appointments;
 
 import com.risjavafx.Driver;
@@ -19,7 +18,6 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -40,19 +38,17 @@ public class Appointments implements Initializable {
     public HBox topContent, titleBar, tableSearchBarContainer;
     public StackPane centerContent;
     public SplitPane centerContentContainer;
-
-    private static StackPane usableCenterContent;
-
     public static ObservableList<AppointmentData> observableList = FXCollections.observableArrayList();
     SortedList<AppointmentData> sortedList;
     FilteredList<AppointmentData> filteredList;
+
 
     InfoTable<AppointmentData, String> infoTable = new InfoTable<>();
     TableSearchBar tableSearchBar = new TableSearchBar();
     Miscellaneous misc = new Miscellaneous();
 
     public TableColumn<AppointmentData, String>
-            patientId = new TableColumn<>("Patient ID"),
+            patientId = new TableColumn<>("ID"),
             patient = new TableColumn<>("Patient"),
             modality = new TableColumn<>("Modality"),
             price = new TableColumn<>("Price"),
@@ -76,7 +72,6 @@ public class Appointments implements Initializable {
     // Load NavigationBar component into home-page.fxml
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        usableCenterContent = centerContent;
         observableList.clear();
         Pages.setPage(Pages.APPOINTMENTS);
         TitleBar.createTitleBar(mainContainer, titleBar);
@@ -88,7 +83,6 @@ public class Appointments implements Initializable {
         // Overrides caching functionality and loads *TableSearchBar* every time page is opened
         PageManager.getScene().rootProperty().addListener(observable -> {
             if (Pages.getPage() == Pages.APPOINTMENTS) {
-                centerContent.setPadding(new Insets(0));
                 createTableSearchBar();
             }
         });
@@ -136,9 +130,6 @@ public class Appointments implements Initializable {
         }
     }
 
-    public static StackPane getTableView() {
-        return usableCenterContent;
-    }
 
     public static void queryData(String sql) throws SQLException {
         // ObservableList<AppointmentData> observableList = FXCollections.observableArrayList();
@@ -193,10 +184,25 @@ public class Appointments implements Initializable {
 
     public static String getLastRowStringQuery() {
         return """
-                     SELECT *
-                FROM appointments, modalities, patients, users
-                WHERE modality_id = modality AND user_id = radiologist
-                  DESC LIMIT 1;
+                   SELECT appointments.patient,
+                       patients.first_name,
+                       patients.last_name,
+                       modalities.name,
+                       modalities.price,
+                       appointments.date_time,
+                       u1.full_name,
+                       u2.full_name,
+                       appointments.closed
+                FROM appointments,
+                     users as u1,
+                     users as u2,
+                     patients,
+                     modalities
+                WHERE u1.user_id = appointments.radiologist
+                  AND u2.user_id = appointments.technician
+                  AND patients.patient_id = appointments.patient
+                  AND modalities.modality_id = appointments.modality
+                ORDER BY appointments.patient  DESC LIMIT 1;
                 """;
     }
 
@@ -207,7 +213,7 @@ public class Appointments implements Initializable {
         for (AppointmentData selectedItem : selectedItems) {
             String sql = """
                     DELETE FROM %$
-                    WHERE patientId = ?
+                    WHERE appointment_id = ?
                     """.replace("%$", table);
             PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getPatientId());
@@ -289,7 +295,7 @@ public class Appointments implements Initializable {
         } catch (Exception ignored) {
         }
 
-        if (appointmentData.getPatientId() == searchKeyInt && getComboBoxItem("User ID")) {
+        if (appointmentData.getPatientId() == searchKeyInt && getComboBoxItem("ID")) {
             return true;
         } else if (appointmentData.getPatient().toLowerCase().contains(searchKeyword) && getComboBoxItem("Patient")) {
             return true;
@@ -347,17 +353,22 @@ public class Appointments implements Initializable {
     }
 
     public void confirmDeletion() {
+        /*
         try {
             deleteSelectedItemsQuery("users_roles");
             deleteSelectedItemsQuery("users");
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        */
+
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
         Popups.getAlertPopupEnum().getPopup().hide();
     }
 
     public void tableSearchBarAddButtonListener() {
-        tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.ADMIN));
+
+        tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.APPOINTMENT));
+
     }
 }

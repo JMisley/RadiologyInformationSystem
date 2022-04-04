@@ -12,6 +12,10 @@ public class AdminData {
     SimpleStringProperty emailAddressData;
     SimpleStringProperty systemRoleData;
 
+    public AdminData() {
+
+    }
+
     public AdminData(int userId, String displayName, String username, String emailAdr, String systemRole) {
         this.userIdData = new SimpleIntegerProperty(userId);
         this.displayNameData = new SimpleStringProperty(displayName);
