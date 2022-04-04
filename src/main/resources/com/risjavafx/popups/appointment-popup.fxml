@@ -44,33 +44,33 @@
 
     </HBox>
     <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
-    <ComboBox fx:id="roleComboBoxTech" maxHeight="30.0" promptText="Technician">
-        <HBox.margin>
-            <Insets/>
-        </HBox.margin>
-    </ComboBox>
+        <ComboBox fx:id="roleComboBoxTech" maxHeight="30.0" promptText="Technician">
+            <HBox.margin>
+                <Insets/>
+            </HBox.margin>
+        </ComboBox>
         <HBox.margin>
             <Insets right="10.0"/>
         </HBox.margin>
-    <HBox alignment="CENTER" VBox.vgrow="ALWAYS"/>
-    <ComboBox fx:id="roleComboBoxRad" maxHeight="30.0" promptText="Radiologist">
-        <HBox.margin>
-            <Insets/>
-        </HBox.margin>
-    </ComboBox>
+        <HBox alignment="CENTER" VBox.vgrow="ALWAYS"/>
+        <ComboBox fx:id="roleComboBoxRad" maxHeight="30.0" promptText="Radiologist">
+            <HBox.margin>
+                <Insets/>
+            </HBox.margin>
+        </ComboBox>
     </HBox>
 
     <HBox>
-    <HBox alignment="CENTER" HBox.hgrow="ALWAYS"/>
-    <ComboBox fx:id="roleComboBoxPatient" maxHeight="30.0" promptText="Patient">
+        <HBox alignment="CENTER" HBox.hgrow="ALWAYS"/>
+        <ComboBox fx:id="roleComboBoxPatient" maxHeight="30.0" promptText="Patient">
+            <HBox.margin>
+                <Insets/>
+            </HBox.margin>
+        </ComboBox>
         <HBox.margin>
-            <Insets/>
+            <Insets right="10.0"/>
         </HBox.margin>
-    </ComboBox>
-    <HBox.margin>
-        <Insets right="10.0"/>
-    </HBox.margin>
-    <HBox alignment="CENTER" VBox.vgrow="ALWAYS"/>
+        <HBox alignment="CENTER" VBox.vgrow="ALWAYS"/>
         <HBox HBox.hgrow="ALWAYS"/>
         <ComboBox fx:id="roleComboBoxModality" maxHeight="30.0" promptText="Modalaity">
             <HBox.margin>

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
-
-<?import javafx.scene.control.SplitPane?>
-
 <?import javafx.scene.layout.VBox?>
-<BorderPane fx:id="mainContainer" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+
+<BorderPane fx:id="mainContainer" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.risjavafx.pages.admin.Admin">
     <top>
         <VBox>
@@ -17,7 +17,7 @@
     </top>
     <center>
         <StackPane alignment="BOTTOM_CENTER">
-            <SplitPane fx:id="centerContentContainer" id="tableBarContainer" dividerPositions="0.1"
+            <SplitPane id="tableBarContainer" fx:id="centerContentContainer" dividerPositions="0.1"
                        orientation="VERTICAL">
                 <HBox fx:id="tableSearchBarContainer"/>
                 <StackPane fx:id="centerContent"/>

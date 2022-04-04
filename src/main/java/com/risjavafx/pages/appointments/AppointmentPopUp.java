@@ -1,11 +1,11 @@
 package com.risjavafx.pages.appointments;
 
-import com.risjavafx.popups.PopupAlert;
-import com.risjavafx.popups.Notification;
 import com.risjavafx.pages.PageManager;
-import com.risjavafx.popups.PopupManager;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
+import com.risjavafx.popups.Notification;
+import com.risjavafx.popups.PopupAlert;
+import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,7 +17,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 
-import javax.xml.transform.Result;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -148,7 +147,7 @@ public class AppointmentPopUp implements Initializable {
     public void insertAppointmentQuery() throws SQLException {
         String sql = """
                 insert into appointments
-                values (?, ?, null, ?, ?, ?, ?, ?, ?, null,null,null,null,null);
+                values (?, ?, null, ?, ?, ?, ?, ?, ?, null,null,null,1,1);
                 """;
 
 
@@ -171,62 +170,73 @@ public class AppointmentPopUp implements Initializable {
                     FROM patients
                     WHERE ? = CONCAT(first_name, " ", last_name)
                     """;
-            String patientName = ((roleComboBoxPatient.getValue()));
             PreparedStatement preparedStatementPatientCombo = driver.connection.prepareStatement(patientIdFromCombo);
             preparedStatementPatientCombo.setString(1, name);
             ResultSet resultSetPatientCombo = preparedStatementPatientCombo.executeQuery();
-            return resultSetPatientCombo.getInt(("patient_id"));
+
+            int i = 0;
+            while (resultSetPatientCombo.next()) {
+                i = resultSetPatientCombo.getInt(("patient_id"));
+            }
+            return i;
         } catch (Exception exception) {
             exception.printStackTrace();
-return(97916231);
-
         }
+        return -1;
     }
     public int pullDocComboboxId(String name) {
         try {
             String techIdFromCombo = """
                     SELECT user_id
                     FROM users
-                    WHERE ? =  full_name 
+                    WHERE ? =  full_name
                     """;
             PreparedStatement preparedStatementTechCombo = driver.connection.prepareStatement(techIdFromCombo);
             preparedStatementTechCombo.setString(1, name);
             ResultSet resultSetTechCombo = preparedStatementTechCombo.executeQuery();
-            return resultSetTechCombo.getInt(("user_id"));
+
+            int i = 0;
+            while (resultSetTechCombo.next()) {
+                i = resultSetTechCombo.getInt(("user_id"));
+            }
+            return i;
         } catch (Exception exception) {
             exception.printStackTrace();
-            return(97916231);
-
         }
+        return -1;
     }
-    public int pullModalityComboboxId(String name) {
+    public int pullModalityComboboxId(String insertName) {
         try {
             String modalityIdFromCombo = """
                     SELECT modality_id
                     FROM modalities
-                    WHERE ? =  name 
+                    WHERE name = ?
                     """;
             PreparedStatement preparedStatementModalityCombo = driver.connection.prepareStatement(modalityIdFromCombo);
-            preparedStatementModalityCombo.setString(1, name);
+            preparedStatementModalityCombo.setString(1, insertName);
             ResultSet resultSetTechCombo = preparedStatementModalityCombo.executeQuery();
-            return resultSetTechCombo.getInt(("modality_id"));
+
+            int i = 0;
+            while (resultSetTechCombo.next()) {
+                i = resultSetTechCombo.getInt(("modality_id"));
+            }
+            return i;
         } catch (Exception exception) {
             exception.printStackTrace();
-            return(97916231);
-
         }
+        return -1;
     }
 
 
     // Returns false if any input field is invalid
     public boolean validInput() {
         return roleComboBoxModality.getValue() != null &&
-                roleComboBoxTech.getValue() != null &&
-                roleComboBoxRad.getValue() != null &&
-                roleComboBoxPatient.getValue() != null &&
-                !dateTextField.getText().isBlank() &&
-                !phoneNumberTextField.getText().isBlank() &&
-                !emailTextField.getText().isBlank();
+               roleComboBoxTech.getValue() != null &&
+               roleComboBoxRad.getValue() != null &&
+               roleComboBoxPatient.getValue() != null &&
+               !dateTextField.getText().isBlank() &&
+               !phoneNumberTextField.getText().isBlank() &&
+               !emailTextField.getText().isBlank();
     }
 
     public void resizeElements() {

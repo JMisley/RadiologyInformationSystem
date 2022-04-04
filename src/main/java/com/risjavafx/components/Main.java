@@ -20,15 +20,13 @@ public class Main extends Application {
 
         Scene scene = new Scene(new BorderPane());
         PageManager.setScene(scene);
-        //PageManager.switchPage(Pages.LOGIN);
-
-         PageManager.switchPage(Pages.APPOINTMENTS);
+        PageManager.switchPage(Pages.LOGIN);
 
         usableStage.setScene(scene);
         usableStage.setMinWidth(misc.getScreenWidth());
         usableStage.setMinHeight(misc.getScreenHeight());
         usableStage.setMaximized(false);
-        usableStage.initStyle(StageStyle.UNDECORATED);
+        usableStage.initStyle(StageStyle.TRANSPARENT);
         usableStage.show();
     }
 

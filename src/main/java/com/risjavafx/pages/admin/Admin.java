@@ -8,6 +8,7 @@ import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
+import com.risjavafx.pages.TableManager;
 import com.risjavafx.popups.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
@@ -17,10 +18,7 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
@@ -43,9 +41,6 @@ public class Admin implements Initializable {
     public StackPane centerContent;
     public SplitPane centerContentContainer;
 
-    private static StackPane usableCenterContent;
-    private static HBox usableTableSearchBarContainer;
-
     public static ObservableList<AdminData> observableList = FXCollections.observableArrayList();
     SortedList<AdminData> sortedList;
     FilteredList<AdminData> filteredList;
@@ -54,13 +49,13 @@ public class Admin implements Initializable {
     TableSearchBar tableSearchBar = new TableSearchBar();
     Miscellaneous misc = new Miscellaneous();
 
-    public TableColumn<AdminData, String>
+    private static final TableColumn<AdminData, String>
             userId = new TableColumn<>("User ID"),
             displayName = new TableColumn<>("Full Name"),
             username = new TableColumn<>("Username"),
             emailAdr = new TableColumn<>("Email Address"),
             systemRole = new TableColumn<>("System Role");
-    public ArrayList<TableColumn<AdminData, String>> tableColumnsList = new ArrayList<>() {{
+    private static final ArrayList<TableColumn<AdminData, String>> tableColumnsList = new ArrayList<>() {{
         add(userId);
         add(displayName);
         add(username);
@@ -69,8 +64,6 @@ public class Admin implements Initializable {
     }};
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        usableCenterContent = centerContent;
-        usableTableSearchBarContainer = tableSearchBarContainer;
         observableList.clear();
         // Miscellaneous components initialization
         Pages.setPage(Pages.ADMIN);
@@ -78,7 +71,9 @@ public class Admin implements Initializable {
         NavigationBar.createNavBar(topContent);
 
         // *TableView* initialization
-        createTable();
+        createTable(tableColumnsList, infoTable, observableList);
+        resizeTable();
+        cloneAdminTable();
         tableViewListener();
         manageRowSelection();
 
@@ -101,22 +96,20 @@ public class Admin implements Initializable {
         }
     }
 
-    public void createTable() {
+    public <T,K> void createTable(ArrayList<TableColumn<T, K>> tableColumnsList,
+                            InfoTable<T, K> infoTable,
+                            ObservableList<T> observableList) {
         try {
-            setCellFactoryValues();
+            setCellFactoryValues(tableColumnsList);
 
             infoTable.setColumns(tableColumnsList);
             infoTable.addColumnsToTable();
 
-            infoTable.setCustomColumnWidth(userId, .12);
-            infoTable.setCustomColumnWidth(displayName, .24);
-            infoTable.setCustomColumnWidth(username, .17);
-            infoTable.setCustomColumnWidth(emailAdr, .27);
-            infoTable.setCustomColumnWidth(systemRole, .2);
-
-            centerContentContainer.setMaxWidth(misc.getScreenWidth() * .9);
-            centerContentContainer.setMaxHeight(misc.getScreenHeight() * .85);
-            centerContent.getChildren().add(infoTable.tableView);
+            infoTable.setCustomColumnWidth(tableColumnsList.get(0), .12);
+            infoTable.setCustomColumnWidth(tableColumnsList.get(1), .24);
+            infoTable.setCustomColumnWidth(tableColumnsList.get(2), .17);
+            infoTable.setCustomColumnWidth(tableColumnsList.get(3), .27);
+            infoTable.setCustomColumnWidth(tableColumnsList.get(4), .2);
 
             queryData(getAllDataStringQuery());
             infoTable.tableView.setItems(observableList);
@@ -127,12 +120,34 @@ public class Admin implements Initializable {
         }
     }
 
-    public static StackPane getTableView() {
-        return usableCenterContent;
+    private void resizeTable() {
+        centerContentContainer.setMaxWidth(misc.getScreenWidth() * .75);
+        centerContentContainer.setMaxHeight(misc.getScreenHeight() * .85);
+        centerContent.getChildren().add(infoTable.tableView);
     }
 
-    public static HBox getTableSearchBar() {
-        return usableTableSearchBarContainer;
+    private void cloneAdminTable() {
+        TableColumn<LoginData, String>
+                userId = new TableColumn<>("User ID"),
+                displayName = new TableColumn<>("Full Name"),
+                username = new TableColumn<>("Username"),
+                emailAdr = new TableColumn<>("Email Address"),
+                systemRole = new TableColumn<>("System Role");
+        ArrayList<TableColumn<LoginData, String>> copyCatColumns = new ArrayList<>() {{
+            add(userId);
+            add(displayName);
+            add(username);
+            add(emailAdr);
+            add(systemRole);
+        }};
+        InfoTable<LoginData, String> copyCatInfo = new InfoTable<>();
+        ObservableList<LoginData> copyCatList = FXCollections.observableArrayList();
+        try {
+            queryData1(getAllDataStringQuery(), copyCatList);
+        }catch (Exception e) {e.printStackTrace();}
+        createTable(copyCatColumns, copyCatInfo, copyCatList);
+        TableManager.setAdminTable(copyCatInfo.tableView);
+        System.out.println(copyCatInfo.tableView.getItems());
     }
 
     public static void queryData(String sql) throws SQLException {
@@ -141,6 +156,21 @@ public class Admin implements Initializable {
 
         while (resultSet.next()) {
             observableList.add(new AdminData(
+                    resultSet.getInt("user_id"),
+                    resultSet.getString("full_name"),
+                    resultSet.getString("username"),
+                    resultSet.getString("email"),
+                    resultSet.getString("name")
+            ));
+        }
+    }
+
+    public static void queryData1(String sql, ObservableList<LoginData> observableList) throws SQLException {
+        Driver driver = new Driver();
+        ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+
+        while (resultSet.next()) {
+            observableList.add(new LoginData(
                     resultSet.getInt("user_id"),
                     resultSet.getString("full_name"),
                     resultSet.getString("username"),
@@ -185,12 +215,12 @@ public class Admin implements Initializable {
         }
     }
 
-    public void setCellFactoryValues() {
-        userId.setCellValueFactory(new PropertyValueFactory<>("userIdData"));
-        displayName.setCellValueFactory(new PropertyValueFactory<>("displayNameData"));
-        username.setCellValueFactory(new PropertyValueFactory<>("usernameData"));
-        emailAdr.setCellValueFactory(new PropertyValueFactory<>("emailAddressData"));
-        systemRole.setCellValueFactory(new PropertyValueFactory<>("systemRoleData"));
+    public <T,K> void setCellFactoryValues(ArrayList<TableColumn<T, K>> columnList) {
+        columnList.get(0).setCellValueFactory(new PropertyValueFactory<>("userIdData"));
+        columnList.get(1).setCellValueFactory(new PropertyValueFactory<>("displayNameData"));
+        columnList.get(2).setCellValueFactory(new PropertyValueFactory<>("usernameData"));
+        columnList.get(3).setCellValueFactory(new PropertyValueFactory<>("emailAddressData"));
+        columnList.get(4).setCellValueFactory(new PropertyValueFactory<>("systemRoleData"));
     }
 
     public void setComboBoxItems() {

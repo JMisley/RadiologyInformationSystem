@@ -1,4 +1,3 @@
-
 package com.risjavafx.pages.appointments;
 
 import com.risjavafx.Driver;
@@ -49,7 +48,7 @@ public class Appointments implements Initializable {
     Miscellaneous misc = new Miscellaneous();
 
     public TableColumn<AppointmentData, String>
-            patientId = new TableColumn<>("Patient ID"),
+            patientId = new TableColumn<>("ID"),
             patient = new TableColumn<>("Patient"),
             modality = new TableColumn<>("Modality"),
             price = new TableColumn<>("Price"),
@@ -84,18 +83,9 @@ public class Appointments implements Initializable {
         // Overrides caching functionality and loads *TableSearchBar* every time page is opened
         PageManager.getScene().rootProperty().addListener(observable -> {
             if (Pages.getPage() == Pages.APPOINTMENTS) {
-                 createTableSearchBar();
+                createTableSearchBar();
             }
         });
-
-        /*
-        try {
-            createTable();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
- */
     }
 
     public void createTableSearchBar() {
@@ -212,8 +202,7 @@ public class Appointments implements Initializable {
                   AND u2.user_id = appointments.technician
                   AND patients.patient_id = appointments.patient
                   AND modalities.modality_id = appointments.modality
-                ORDER BY appointments.patient;
-                 DESC LIMIT 1;
+                ORDER BY appointments.patient  DESC LIMIT 1;
                 """;
     }
 
@@ -224,7 +213,7 @@ public class Appointments implements Initializable {
         for (AppointmentData selectedItem : selectedItems) {
             String sql = """
                     DELETE FROM %$
-                    WHERE patientId = ?
+                    WHERE appointment_id = ?
                     """.replace("%$", table);
             PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getPatientId());
@@ -306,7 +295,7 @@ public class Appointments implements Initializable {
         } catch (Exception ignored) {
         }
 
-        if (appointmentData.getPatientId() == searchKeyInt && getComboBoxItem("User ID")) {
+        if (appointmentData.getPatientId() == searchKeyInt && getComboBoxItem("ID")) {
             return true;
         } else if (appointmentData.getPatient().toLowerCase().contains(searchKeyword) && getComboBoxItem("Patient")) {
             return true;
@@ -364,12 +353,15 @@ public class Appointments implements Initializable {
     }
 
     public void confirmDeletion() {
+        /*
         try {
             deleteSelectedItemsQuery("users_roles");
             deleteSelectedItemsQuery("users");
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        */
+
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
         Popups.getAlertPopupEnum().getPopup().hide();
     }

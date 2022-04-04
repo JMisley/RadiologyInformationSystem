@@ -1,8 +1,16 @@
 /*Theme styling-------------------------------------------------------------------------------------------------------*/
 .root {
-    -fx-background-image: url(src/main/resources/com/risjavafx/images/bg-01.jpg);
+    -fx-background-image: url(../../images/background.jpg);
     -fx-background-size: cover;
+}
 
+#root {
+    -fx-background-image: url(../../images/background.jpg);
+    -fx-background-size: cover;
+}
+
+#tableViewList {
+    -fx-background-color: transparent;
 }
 
 #popupContainer {
@@ -14,11 +22,21 @@
 }
 
 #loginContainer {
-    -fx-background-color: whitesmoke;
+    -fx-background-color: #121212;
     -fx-background-insets: 0;
     -fx-border-style: solid solid solid solid;
-    -fx-border-color: white #444444 #444444 white;
-    -fx-border-width: 3px 2px 2px 3px;
+    -fx-border-color: white;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 7px;
+    -fx-background-radius: 8px;
+}
+
+#tableBarContainer {
+    -fx-background-color: #121212;
+    -fx-background-insets: 0;
+    -fx-border-style: solid solid none solid;
+    -fx-border-color: white white transparent white;
+    -fx-border-width: 3px;
 }
 
 #primaryButton {
@@ -29,6 +47,26 @@
 
 #primaryButton:hover {
     -fx-background-color: #BB86FC73;
+}
+
+#editButton {
+    -fx-background-color: #00a293;
+    -fx-text-fill: white;
+    -fx-font-family: "Century Gothic";
+}
+
+#editButton:hover {
+    -fx-background-color: #00a29373;
+}
+
+#deleteButton {
+    -fx-background-color: #CF6676;
+    -fx-text-fill: white;
+    -fx-font-family: "Century Gothic";
+}
+
+#deleteButton:hover {
+    -fx-background-color: #CF667673;
 }
 
 
@@ -87,8 +125,9 @@
 
 /*Title bar styling---------------------------------------------------------------------------------------------------*/
 #titleBar {
+    -fx-background-color: #121212;
     -fx-border-style: none none solid none;
-    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent white transparent;
     -fx-border-width: 0 0 .5 0;
 }
 
@@ -100,9 +139,6 @@
 
 #titleBarCloseButton:hover {
     -fx-background-color: #d5747445;
-    -fx-text:"x";
-    -fx-text-fill: #121212;
-
 }
 
 #titleBarMaxButton:hover {
@@ -170,7 +206,7 @@
 
 .table-cell {
     -fx-text-fill: white;
-    -fx-font-size: 18px;
+    -fx-font-size: 17px;
     -fx-font-family: Arial;
     -fx-alignment: top-left;
     -fx-padding: 18px 0 18px 18px;
@@ -230,7 +266,6 @@
 #alertBox-content {
     -fx-text-fill: white;
 }
-
 
 .dialog-pane > *.button-bar > *.container {
     -fx-background-color: #121212;

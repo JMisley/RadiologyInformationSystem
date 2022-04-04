@@ -3,8 +3,8 @@ package com.risjavafx.pages.admin;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-
-public class AdminData {
+@SuppressWarnings("unused")
+public class LoginData {
 
     SimpleIntegerProperty userIdData;
     SimpleStringProperty displayNameData;
@@ -12,11 +12,9 @@ public class AdminData {
     SimpleStringProperty emailAddressData;
     SimpleStringProperty systemRoleData;
 
-    public AdminData() {
+    public LoginData(){}
 
-    }
-
-    public AdminData(int userId, String displayName, String username, String emailAdr, String systemRole) {
+    public LoginData(int userId, String displayName, String username, String emailAdr, String systemRole) {
         this.userIdData = new SimpleIntegerProperty(userId);
         this.displayNameData = new SimpleStringProperty(displayName);
         this.usernameData = new SimpleStringProperty(username);
