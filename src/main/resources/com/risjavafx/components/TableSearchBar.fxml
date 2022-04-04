@@ -48,6 +48,11 @@
             <Insets left="10.0"/>
         </HBox.margin>
     </Button>
+    <Button id="checkInButton" fx:id="checkInButton" maxHeight="40.0" maxWidth="120.0" mnemonicParsing="false" text="Check In">
+        <HBox.margin>
+            <Insets left="10.0"/>
+        </HBox.margin>
+    </Button>
     <padding>
         <Insets left="20.0" right="20.0"/>
     </padding>

@@ -222,7 +222,16 @@ public class Appointments implements Initializable {
             preparedStatement.execute();
         }
     }
-
+    @SuppressWarnings("SqlWithoutWhere")
+public void changeCheckIn(String table) throws SQLException {
+        Driver driver = new Driver();
+        ObservableList<AppointmentData> selectedItems = infoTable.tableView.getSelectionModel().getSelectedItems();
+        String sql = """
+                UPDATE FROM appointments
+                WHERE checked_in = 0
+                
+                """
+    }
     public void setCellFactoryValues() {
         appointmentId.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
         patient.setCellValueFactory(new PropertyValueFactory<>("patient"));
@@ -312,15 +321,21 @@ public class Appointments implements Initializable {
 
     // Listener for Admin TableView
     public void tableViewListener() {
-        infoTable.tableView.getSelectionModel().selectedItemProperty().addListener((observableValue, adminData, t1) -> {
+        infoTable.tableView.getSelectionModel().selectedItemProperty().addListener((observableValue, appointmentData, t1) -> {
             if (t1 != null) {
                 tableSearchBar.toggleButtons(false);
                 tableSearchBar.getDeleteButton().setOnAction(actionEvent ->
                         customConfirmationPopup(confirm -> confirmDeletion(), cancel -> Popups.getAlertPopupEnum().getPopup().hide()));
+                tableSearchBar.getCheckInButton().setOnAction(actionEvent ->
+                        customCheckInConfirmationPopup(confirm -> confirmCheckIn(), cancel -> Popups.getAlertPopupEnum().getPopup().hide()));
             } else {
                 tableSearchBar.toggleButtons(true);
             }
         });
+    }
+
+    private void confirmCheckIn() {
+        //need to make method where clickign button toggles the check in in database
     }
 
     // If a selected row is clicked again, it will unselect. TableSearchBar Buttons will also adjust appropriately
@@ -353,9 +368,21 @@ public class Appointments implements Initializable {
             getCancelButton().setOnAction(cancel);
         }};
     }
+    public void customCheckInConfirmationPopup(EventHandler<ActionEvent> confirm, EventHandler<ActionEvent> cancel) {
+        PopupManager.createPopup(Popups.CONFIRMATION);
+        new PopupConfirmation() {{
+            setConfirmButtonLabel("Yes");
+            setExitButtonLabel("No");
+            setHeaderLabel("Notice");
+            setContentLabel("This Person is done with their appointment");
+            setConfirmationImage(new Image("file:C:/User/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/warning.png"));
+            getConfirmationButton().setOnAction(confirm);
+            getCancelButton().setOnAction(cancel);
+        }};
+    }
 
     public void confirmDeletion() {
-        /*
+
         try {
             deleteSelectedItemsQuery("users_roles");
             deleteSelectedItemsQuery("users");

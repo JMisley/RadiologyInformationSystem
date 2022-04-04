@@ -24,7 +24,7 @@
             </bottom>
             <center>
                 <StackPane alignment="BOTTOM_CENTER">
-                    <SplitPane fx:id="centerContentContainer" id="tableBarContainer" dividerPositions="0.1"
+                    <SplitPane fx:id="centerContentContainer" id="AppointmentsTableBarContainer" dividerPositions="0.1"
                                orientation="VERTICAL">
                         <HBox fx:id="tableSearchBarContainer"/>
                         <StackPane fx:id="centerContent"/>
