@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
 <?import javafx.scene.image.ImageView?>
-
-<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-           prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="com.risjavafx.pages.loadingPage.LoadingPage">
-    <ImageView fx:id="progressSpinner" />
-</StackPane>
+<BorderPane fx:id="mainContainer" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.risjavafx.pages.loadingPage.LoadingPage">
+    <top>
+        <VBox>
+            <HBox fx:id="titleBar" nodeOrientation="RIGHT_TO_LEFT" BorderPane.alignment="CENTER"/>
+        </VBox>
+    </top>
+    <center>
+        <StackPane>
+            <ImageView fx:id="progressSpinner" fitWidth="200" fitHeight="200"/>
+        </StackPane>
+    </center>
+</BorderPane>

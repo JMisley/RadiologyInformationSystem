@@ -9,7 +9,7 @@ import com.risjavafx.components.TitleBar;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.TableManager;
-import com.risjavafx.popups.PopupConfirmation;
+import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
 import javafx.collections.FXCollections;
@@ -20,7 +20,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -71,9 +70,7 @@ public class Admin implements Initializable {
         NavigationBar.createNavBar(topContent);
 
         // *TableView* initialization
-        createTable(tableColumnsList, infoTable, observableList);
-        resizeTable();
-        cloneAdminTable();
+        createTable();
         tableViewListener();
         manageRowSelection();
 
@@ -81,6 +78,7 @@ public class Admin implements Initializable {
         PageManager.getScene().rootProperty().addListener(observable -> {
             if (Pages.getPage() == Pages.ADMIN) {
                 createTableSearchBar();
+                refreshTable();
             }
         });
     }
@@ -96,14 +94,16 @@ public class Admin implements Initializable {
         }
     }
 
-    public <T,K> void createTable(ArrayList<TableColumn<T, K>> tableColumnsList,
-                            InfoTable<T, K> infoTable,
-                            ObservableList<T> observableList) {
+    public void createTable() {
         try {
-            setCellFactoryValues(tableColumnsList);
+            setCellFactoryValues();
 
             infoTable.setColumns(tableColumnsList);
             infoTable.addColumnsToTable();
+
+            centerContentContainer.setMaxWidth(misc.getScreenWidth() * .75);
+            centerContentContainer.setMaxHeight(misc.getScreenHeight() * .85);
+            centerContent.getChildren().add(infoTable.tableView);
 
             infoTable.setCustomColumnWidth(tableColumnsList.get(0), .12);
             infoTable.setCustomColumnWidth(tableColumnsList.get(1), .24);
@@ -114,40 +114,18 @@ public class Admin implements Initializable {
             queryData(getAllDataStringQuery());
             infoTable.tableView.setItems(observableList);
             infoTable.tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+            TableManager.setAdminTable(infoTable.tableView);
         } catch (
                 Exception exception) {
             exception.printStackTrace();
         }
     }
 
-    private void resizeTable() {
-        centerContentContainer.setMaxWidth(misc.getScreenWidth() * .75);
-        centerContentContainer.setMaxHeight(misc.getScreenHeight() * .85);
-        centerContent.getChildren().add(infoTable.tableView);
-    }
-
-    private void cloneAdminTable() {
-        TableColumn<LoginData, String>
-                userId = new TableColumn<>("User ID"),
-                displayName = new TableColumn<>("Full Name"),
-                username = new TableColumn<>("Username"),
-                emailAdr = new TableColumn<>("Email Address"),
-                systemRole = new TableColumn<>("System Role");
-        ArrayList<TableColumn<LoginData, String>> copyCatColumns = new ArrayList<>() {{
-            add(userId);
-            add(displayName);
-            add(username);
-            add(emailAdr);
-            add(systemRole);
-        }};
-        InfoTable<LoginData, String> copyCatInfo = new InfoTable<>();
-        ObservableList<LoginData> copyCatList = FXCollections.observableArrayList();
-        try {
-            queryData1(getAllDataStringQuery(), copyCatList);
-        }catch (Exception e) {e.printStackTrace();}
-        createTable(copyCatColumns, copyCatInfo, copyCatList);
-        TableManager.setAdminTable(copyCatInfo.tableView);
-        System.out.println(copyCatInfo.tableView.getItems());
+    private void refreshTable() {
+        if (!centerContent.getChildren().contains(TableManager.getAdminTable())) {
+            centerContent.getChildren().add(TableManager.getAdminTable());
+        }
     }
 
     public static void queryData(String sql) throws SQLException {
@@ -156,21 +134,6 @@ public class Admin implements Initializable {
 
         while (resultSet.next()) {
             observableList.add(new AdminData(
-                    resultSet.getInt("user_id"),
-                    resultSet.getString("full_name"),
-                    resultSet.getString("username"),
-                    resultSet.getString("email"),
-                    resultSet.getString("name")
-            ));
-        }
-    }
-
-    public static void queryData1(String sql, ObservableList<LoginData> observableList) throws SQLException {
-        Driver driver = new Driver();
-        ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
-
-        while (resultSet.next()) {
-            observableList.add(new LoginData(
                     resultSet.getInt("user_id"),
                     resultSet.getString("full_name"),
                     resultSet.getString("username"),
@@ -215,12 +178,12 @@ public class Admin implements Initializable {
         }
     }
 
-    public <T,K> void setCellFactoryValues(ArrayList<TableColumn<T, K>> columnList) {
-        columnList.get(0).setCellValueFactory(new PropertyValueFactory<>("userIdData"));
-        columnList.get(1).setCellValueFactory(new PropertyValueFactory<>("displayNameData"));
-        columnList.get(2).setCellValueFactory(new PropertyValueFactory<>("usernameData"));
-        columnList.get(3).setCellValueFactory(new PropertyValueFactory<>("emailAddressData"));
-        columnList.get(4).setCellValueFactory(new PropertyValueFactory<>("systemRoleData"));
+    public void setCellFactoryValues() {
+        userId.setCellValueFactory(new PropertyValueFactory<>("userIdData"));
+        displayName.setCellValueFactory(new PropertyValueFactory<>("displayNameData"));
+        username.setCellValueFactory(new PropertyValueFactory<>("usernameData"));
+        emailAdr.setCellValueFactory(new PropertyValueFactory<>("emailAddressData"));
+        systemRole.setCellValueFactory(new PropertyValueFactory<>("systemRoleData"));
     }
 
     public void setComboBoxItems() {
@@ -301,7 +264,7 @@ public class Admin implements Initializable {
             if (t1 != null) {
                 tableSearchBar.toggleButtons(false);
                 tableSearchBar.getDeleteButton().setOnAction(actionEvent ->
-                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> Popups.getAlertPopupEnum().getPopup().hide()));
+                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> PopupManager.removePopup("ALERT")));
             } else {
                 tableSearchBar.toggleButtons(true);
             }
@@ -333,7 +296,6 @@ public class Admin implements Initializable {
             setExitButtonLabel("Cancel");
             setHeaderLabel("Warning");
             setContentLabel("This data will be permanently deleted");
-            setConfirmationImage(new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/warning.png"));
             getConfirmationButton().setOnAction(confirm);
             getCancelButton().setOnAction(cancel);
         }};

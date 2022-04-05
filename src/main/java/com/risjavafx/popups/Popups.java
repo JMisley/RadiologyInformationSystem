@@ -23,6 +23,14 @@ public enum Popups {
         this.type = type;
     }
 
+    public static Popups[] getPopupsArray() {
+        return new Popups[]{ADMIN, APPOINTMENT, CONFIRMATION, ALERT};
+    }
+
+    public static Popups[] getAlertPopupsArray() {
+        return new Popups[]{CONFIRMATION, ALERT};
+    }
+
     public String getFilename() {
         return filename;
     }

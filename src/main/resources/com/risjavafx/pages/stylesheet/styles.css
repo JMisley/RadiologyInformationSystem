@@ -70,6 +70,34 @@
 }
 
 
+
+/*Images--------------------------------------------------------------------------------------------------------------*/
+#successImage {
+    -fx-image: url(../../images/success.png);
+}
+
+#warningImage {
+    -fx-image: url(../../images/warning.png);
+}
+
+#errorImage {
+    -fx-image: url(../../images/error.png);
+}
+
+#closeImage {
+    -fx-image: url(../../images/close.png);
+}
+
+#maximizeImage {
+    -fx-image: url(../../images/circle.png);
+}
+
+#minimizeImage {
+    -fx-image: url(../../images/minus.png);
+}
+
+
+
 /*Combo box styling---------------------------------------------------------------------------------------------------*/
 /*Combo box header*/
 .combo-box-base {

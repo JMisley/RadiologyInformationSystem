@@ -66,4 +66,14 @@ public class PageManager {
             exception.printStackTrace();
         }
     }
+
+    public static void loadPageToCache(Pages page) {
+        try {
+            if (page.isCachable()) {
+                Parent root = FXMLLoader.load(Objects.requireNonNull(PageManager.class.getResource(page.getFilename())));
+                root.getStylesheets().add(Objects.requireNonNull(PageManager.class.getResource("stylesheet/styles.css")).toExternalForm());
+                cache.put(page, root);
+            }
+        } catch (Exception e) {e.printStackTrace();}
+    }
 }

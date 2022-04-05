@@ -1,11 +1,12 @@
 package com.risjavafx.components;
 
 import com.risjavafx.Miscellaneous;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -21,16 +22,12 @@ public class TitleBar implements javafx.fxml.Initializable {
     private static double x = 0, y = 0;
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Image close = new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/close.png");
-        Image max = new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/circle.png");
-        Image min = new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/minus.png");
-
-        closeImage.setImage(close);
-        maxImage.setImage(max);
-        minImage.setImage(min);
+        closeImage.setId("closeImage");
+        maxImage.setId("maximizeImage");
+        minImage.setId("minimizeImage");
     }
 
-    public static void createTitleBar(BorderPane mainContainer, HBox titleBar) {
+    public static void createTitleBar(Pane mainContainer, HBox titleBar) {
         Miscellaneous misc = new Miscellaneous();
         mainContainer.setMinHeight(misc.getScreenHeight());
         mainContainer.setMinWidth(misc.getScreenWidth());

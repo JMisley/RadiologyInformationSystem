@@ -8,7 +8,8 @@ import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
-import com.risjavafx.popups.PopupConfirmation;
+import com.risjavafx.pages.TableManager;
+import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
 import javafx.collections.FXCollections;
@@ -20,7 +21,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -84,6 +84,7 @@ public class Appointments implements Initializable {
         PageManager.getScene().rootProperty().addListener(observable -> {
             if (Pages.getPage() == Pages.APPOINTMENTS) {
                 createTableSearchBar();
+                refreshTable();
             }
         });
     }
@@ -124,12 +125,19 @@ public class Appointments implements Initializable {
             queryData(getAllDataStringQuery());
             infoTable.tableView.setItems(observableList);
             infoTable.tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+            TableManager.setAppointmentsTable(infoTable.tableView);
         } catch (
                 Exception exception) {
             exception.printStackTrace();
         }
     }
 
+    private void refreshTable() {
+        if (!centerContent.getChildren().contains(TableManager.getAdminTable())) {
+            centerContent.getChildren().add(TableManager.getAdminTable());
+        }
+    }
 
     public static void queryData(String sql) throws SQLException {
         // ObservableList<AppointmentData> observableList = FXCollections.observableArrayList();
@@ -314,7 +322,7 @@ public class Appointments implements Initializable {
             if (t1 != null) {
                 tableSearchBar.toggleButtons(false);
                 tableSearchBar.getDeleteButton().setOnAction(actionEvent ->
-                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> Popups.getAlertPopupEnum().getPopup().hide()));
+                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> PopupManager.removePopup("ALERT")));
             } else {
                 tableSearchBar.toggleButtons(true);
             }
@@ -346,7 +354,6 @@ public class Appointments implements Initializable {
             setExitButtonLabel("Cancel");
             setHeaderLabel("Warning");
             setContentLabel("This data will be permanently deleted");
-            setConfirmationImage(new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/warning.png"));
             getConfirmationButton().setOnAction(confirm);
             getCancelButton().setOnAction(cancel);
         }};

@@ -3,6 +3,7 @@ package com.risjavafx.pages.home;
 import com.risjavafx.Miscellaneous;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.components.NavigationBar;
+import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.TableManager;
 import javafx.fxml.Initializable;
@@ -13,6 +14,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class Home implements Initializable {
@@ -29,21 +31,38 @@ public class Home implements Initializable {
         TitleBar.createTitleBar(mainContainer, titleBar);
         NavigationBar.createNavBar(topContent);
 
-        StackPane[] stackPanes = {TableManager.getAdminTable()};
+        StackPane[] stackPanes = {
+                new StackPane(TableManager.getAdminTable()),
+                new StackPane(TableManager.getAppointmentsTable())};
         createScrollView(tableViewList, stackPanes);
+
+        PageManager.getScene().rootProperty().addListener(observable -> {
+            if (Pages.getPage() == Pages.HOME) {
+                refreshTables();
+            }
+        });
     }
 
-    // BIG PROBLEMS!!!!!
     private void createScrollView(VBox tableViewList, StackPane[] stackPanes) {
-        Miscellaneous misc = new Miscellaneous();
-
         for (StackPane stackPane : stackPanes) {
-            tableViewList.getChildren().add(stackPane);
-            stackPane.setMaxWidth(misc.getScreenWidth() * .75);
-            stackPane.setMaxHeight(misc.getScreenHeight() * .85);
+            addToScrollView(stackPane);
+            resizeElements();
+            scrollPane.setContent(tableViewList);
         }
-        resizeElements();
-        scrollPane.setContent(tableViewList);
+    }
+
+    private void addToScrollView(StackPane stackPane) {
+        Miscellaneous misc = new Miscellaneous();
+        tableViewList.getChildren().add(stackPane);
+        stackPane.setMaxWidth(misc.getScreenWidth() * .75);
+        stackPane.setMaxHeight(misc.getScreenHeight() * .85);
+    }
+
+    private void refreshTables() {
+        tableViewList.getChildren().clear();
+        addToScrollView(new StackPane(TableManager.getAdminTable()));
+        addToScrollView(new StackPane(TableManager.getAppointmentsTable()));
+        System.out.println(Arrays.toString(tableViewList.getChildren().toArray()));
     }
 
     private void resizeElements() {
