@@ -10,12 +10,18 @@ public class ReferralData {
     SimpleStringProperty dateOfBirthData;
     SimpleStringProperty lastNameData;
     SimpleStringProperty firstNameData;
+    SimpleStringProperty sexData;
+    SimpleStringProperty raceData;
+    SimpleStringProperty ethnicityData;
 
-    public ReferralData(int patientId, String dateOfBirth, String lastName, String firstName) {
+    public ReferralData(int patientId, String dateOfBirth, String lastName, String firstName, String sex, String race, String ethnicity) {
         this.patientIdData = new SimpleIntegerProperty(patientId);
         this.dateOfBirthData = new SimpleStringProperty(dateOfBirth);
         this.lastNameData = new SimpleStringProperty(lastName);
         this.firstNameData = new SimpleStringProperty(firstName);
+        this.sexData = new SimpleStringProperty(sex);
+        this.raceData = new SimpleStringProperty(race);
+        this.ethnicityData = new SimpleStringProperty(ethnicity);
     }
 
     public int getPatientIdData() {
@@ -48,5 +54,29 @@ public class ReferralData {
 
     public void setFirstNameData(String firstNameData) {
         this.firstNameData.set(firstNameData);
+    }
+
+    public String getSexData() {
+        return sexData.get();
+    }
+
+    public void setSexData(String sexData) {
+        this.sexData.set(sexData);
+    }
+
+    public String getRaceData() {
+        return raceData.get();
+    }
+
+    public void setRaceData(String raceData) {
+        this.raceData.set(raceData);
+    }
+
+    public String getEthnicityData() {
+        return ethnicityData.get();
+    }
+
+    public void setEthnicityData(String ethnicityData) {
+        this.ethnicityData.set(ethnicityData);
     }
 }

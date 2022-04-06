@@ -29,6 +29,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.layout.StackPane;
 
 import java.net.URL;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -53,12 +54,19 @@ public class Referrals implements Initializable {
             patientId = new TableColumn<>("Patient ID"),
             dateOfBirth = new TableColumn<>("Date of Birth"),
             lastName = new TableColumn<>("Last Name"),
-            firstName = new TableColumn<>("First Name");
+            firstName = new TableColumn<>("First Name"),
+            sex = new TableColumn<>("Sex"),
+            race = new TableColumn<>("Race"),
+            ethnicity = new TableColumn<>("Ethnicity");
+
     public ArrayList<TableColumn<ReferralData, String>> tableColumnsList = new ArrayList<>() {{
         add(patientId);
         add(dateOfBirth);
         add(lastName);
         add(firstName);
+        add(sex);
+        add(race);
+        add(ethnicity);
     }};
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -100,10 +108,13 @@ public class Referrals implements Initializable {
             infoTable.setColumns(tableColumnsList);
             infoTable.addColumnsToTable();
 
-            infoTable.setCustomColumnWidth(patientId, .25);
-            infoTable.setCustomColumnWidth(dateOfBirth, .25);
-            infoTable.setCustomColumnWidth(lastName, .25);
-            infoTable.setCustomColumnWidth(firstName, .25);
+            infoTable.setCustomColumnWidth(patientId, .142);
+            infoTable.setCustomColumnWidth(dateOfBirth, .142);
+            infoTable.setCustomColumnWidth(lastName, .142);
+            infoTable.setCustomColumnWidth(firstName, .142);
+            infoTable.setCustomColumnWidth(sex, .142);
+            infoTable.setCustomColumnWidth(race, .142);
+            infoTable.setCustomColumnWidth(ethnicity, .142);
 
             centerContentContainer.setMaxWidth(misc.getScreenWidth() * .9);
             centerContentContainer.setMaxHeight(misc.getScreenHeight() * .85);
@@ -127,14 +138,17 @@ public class Referrals implements Initializable {
                     resultSet.getInt("patient_id"),
                     resultSet.getString("dob"),
                     resultSet.getString("last_name"),
-                    resultSet.getString("first_name")
+                    resultSet.getString("first_name"),
+                    resultSet.getString("sex"),
+                    resultSet.getString("race"),
+                    resultSet.getString("ethnicity")
             ));
         }
     }
 
     public String getAllDataStringQuery() {
         return """
-                SELECT patient_id, dob, first_name, last_name
+                SELECT patient_id, dob, first_name, last_name, sex, race, ethnicity
                 FROM patients
                 ORDER BY patient_id
                 """;
@@ -142,7 +156,7 @@ public class Referrals implements Initializable {
 
     public static String getLastRowStringQuery() {
         return """
-                SELECT patient_id, dob, first_name, last_name
+                SELECT patient_id, dob, first_name, last_name, sex, race, ethnicity
                 FROM patients
                 ORDER BY patient_id DESC LIMIT 1;
                 """;
@@ -155,11 +169,11 @@ public class Referrals implements Initializable {
         for (ReferralData selectedItem : selectedItems) {
             String sql = """
                     DELETE FROM %$
-                    WHERE user_id = ?
+                    WHERE patient_id = ?
                     """.replace("%$", table);
-//            PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
-//            preparedStatement.setInt(1, selectedItem.getDateOfBirthData());
-//            preparedStatement.execute();
+            PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+            preparedStatement.setInt(1, selectedItem.getPatientIdData());
+            preparedStatement.execute();
         }
     }
 
@@ -168,6 +182,9 @@ public class Referrals implements Initializable {
         dateOfBirth.setCellValueFactory(new PropertyValueFactory<>("dateOfBirthData"));
         lastName.setCellValueFactory(new PropertyValueFactory<>("lastNameData"));
         firstName.setCellValueFactory(new PropertyValueFactory<>("firstNameData"));
+        sex.setCellValueFactory(new PropertyValueFactory<>("sexData"));
+        race.setCellValueFactory(new PropertyValueFactory<>("raceData"));
+        ethnicity.setCellValueFactory(new PropertyValueFactory<>("ethnicityData"));
     }
 
     public void setComboBoxItems() {
@@ -176,7 +193,10 @@ public class Referrals implements Initializable {
                 "Patient ID",
                 "Date of birth",
                 "Last name",
-                "First name"
+                "First name",
+                "Sex",
+                "Race",
+                "Ethnicity"
         );
         tableSearchBar.getComboBox().setItems(oblist);
     }
@@ -243,7 +263,7 @@ public class Referrals implements Initializable {
 
     // Listener for Admin TableView
     public void tableViewListener() {
-        infoTable.tableView.getSelectionModel().selectedItemProperty().addListener((observableValue, adminData, t1) -> {
+        infoTable.tableView.getSelectionModel().selectedItemProperty().addListener((observableValue, ReferralData, t1) -> {
             if (t1 != null) {
                 tableSearchBar.toggleButtons(false);
                 tableSearchBar.getDeleteButton().setOnAction(actionEvent ->
@@ -286,7 +306,7 @@ public class Referrals implements Initializable {
 
     public void confirmDeletion() {
         try {
-            deleteSelectedItemsQuery("users");
+            deleteSelectedItemsQuery("patients");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -295,6 +315,6 @@ public class Referrals implements Initializable {
     }
 
     public void tableSearchBarAddButtonListener() {
-        tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.ADMIN));
+        tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.REFERRALS));
     }
 }
