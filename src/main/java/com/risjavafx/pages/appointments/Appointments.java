@@ -392,7 +392,11 @@ public class Appointments implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        Popups.getAlertPopupEnum().getPopup().hide();
+
+
+        observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
+        observableList.addAll(infoTable.tableView.getSelectionModel().getSelectedItems());
+        PopupManager.removePopup("ALERT");
     }
 
     public void confirmDeletion() {
@@ -406,7 +410,7 @@ public class Appointments implements Initializable {
 
          */
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
-        Popups.getAlertPopupEnum().getPopup().hide();
+    PopupManager.removePopup("ALERT");
     }
 
     public void tableSearchBarAddButtonListener() {

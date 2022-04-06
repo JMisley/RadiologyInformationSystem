@@ -310,7 +310,7 @@ public class Admin implements Initializable {
             e.printStackTrace();
         }
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
-        Popups.getAlertPopupEnum().getPopup().hide();
+        PopupManager.removePopup("ALERT");
     }
 
     public void tableSearchBarAddButtonListener() {
