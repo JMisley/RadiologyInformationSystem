@@ -223,10 +223,10 @@ public class Appointments implements Initializable {
         for (AppointmentData selectedItem : selectedItems) {
             String sql = """
                     DELETE FROM %$
-                    WHERE patientId = ?
+                    WHERE appointment_id = ?
                     """.replace("%$", table);
             PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
-            preparedStatement.setInt(1, selectedItem.getPatientId());
+            preparedStatement.setInt(1, selectedItem.getAppointmentId());
             preparedStatement.execute();
         }
     }
@@ -246,7 +246,7 @@ public class Appointments implements Initializable {
     }
 
     public void setCellFactoryValues() {
-        appointmentId.setCellValueFactory(new PropertyValueFactory<>("appointment_id"));
+        appointmentId.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
         patient.setCellValueFactory(new PropertyValueFactory<>("patient"));
         modality.setCellValueFactory(new PropertyValueFactory<>("modality"));
         price.setCellValueFactory(new PropertyValueFactory<>("price"));
@@ -319,7 +319,7 @@ public class Appointments implements Initializable {
         } catch (Exception ignored) {
         }
 
-        if (appointmentData.getPatientId() == searchKeyInt && getComboBoxItem("User ID")) {
+        if (appointmentData.getAppointmentId() == searchKeyInt && getComboBoxItem("User ID")) {
             return true;
         } else if (appointmentData.getPatient().toLowerCase().contains(searchKeyword) && getComboBoxItem("Patient")) {
             return true;
@@ -396,12 +396,15 @@ public class Appointments implements Initializable {
     }
 
     public void confirmDeletion() {
+        /*
         try {
             deleteSelectedItemsQuery("users_roles");
             deleteSelectedItemsQuery("users");
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+         */
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
         Popups.getAlertPopupEnum().getPopup().hide();
     }

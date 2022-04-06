@@ -19,6 +19,7 @@ public class AppointmentData {
         return patientId;
     }
 
+
     public AppointmentData(int appointmentId, String patient, String modality, String price, String dateTime, String radiologist, String technician, String closedFlag) {
         this.appointmentId = new SimpleIntegerProperty(appointmentId);
         this.patient = new SimpleStringProperty(patient);
