@@ -50,7 +50,7 @@ public class Appointments implements Initializable {
     Miscellaneous misc = new Miscellaneous();
 
     public TableColumn<AppointmentData, String>
-            patientId = new TableColumn<>("Patient ID"),
+            appointmentId = new TableColumn<>("ID"),
             patient = new TableColumn<>("Patient"),
             modality = new TableColumn<>("Modality"),
             price = new TableColumn<>("Price"),
@@ -60,7 +60,7 @@ public class Appointments implements Initializable {
             closedFlag = new TableColumn<>("Closed");
 
     public ArrayList<TableColumn<AppointmentData, String>> tableColumnsList = new ArrayList<>() {{
-        add(patientId);
+        add(appointmentId);
         add(patient);
         add(modality);
         add(price);
@@ -109,8 +109,7 @@ public class Appointments implements Initializable {
 
             infoTable.setColumns(tableColumnsList);
             infoTable.addColumnsToTable();
-
-            infoTable.setCustomColumnWidth(patientId, .07);
+            infoTable.setCustomColumnWidth(appointmentId, .07);
             infoTable.setCustomColumnWidth(patient, .15);
             infoTable.setCustomColumnWidth(modality, .13);
             infoTable.setCustomColumnWidth(price, .09);
@@ -148,14 +147,14 @@ public class Appointments implements Initializable {
 
         while (resultSet.next()) {
             String name = resultSet.getString("first_name") + " " + resultSet.getString("last_name");
-            String checkIn;
-            if (resultSet.getByte("closed") == 1) {
-                checkIn = "concluded";
-            } else {
+            String checkIn = "";
+            if (resultSet.getInt("closed") == 0) {
                 checkIn = "In Progress";
+            } else if (resultSet.getInt("closed") == 1) {
+                checkIn = "Concluded";
             }
             observableList.add(new AppointmentData(
-                    resultSet.getInt("patient"),
+                    resultSet.getInt("appointment_id"),
                     name,
                     resultSet.getString("name"),
                     "$" + resultSet.getString("price"),
@@ -170,7 +169,7 @@ public class Appointments implements Initializable {
 
     public String getAllDataStringQuery() {
         return """
-                SELECT appointments.patient,
+                SELECT appointments.appointment_id,
                        patients.first_name,
                        patients.last_name,
                        modalities.name,
@@ -188,15 +187,31 @@ public class Appointments implements Initializable {
                   AND u2.user_id = appointments.technician
                   AND patients.patient_id = appointments.patient
                   AND modalities.modality_id = appointments.modality
-                ORDER BY appointments.patient;
+                ORDER BY appointments.appointment_id;
                 """;
     }
 
     public static String getLastRowStringQuery() {
         return """
-                     SELECT *
-                FROM appointments, modalities, patients, users
-                WHERE modality_id = modality AND user_id = radiologist
+                    SELECT appointments.appointment_id,
+                       patients.first_name,
+                       patients.last_name,
+                       modalities.name,
+                       modalities.price,
+                       appointments.date_time,
+                       u1.full_name,
+                       u2.full_name,
+                       appointments.closed
+                FROM appointments,
+                     users as u1,
+                     users as u2,
+                     patients,
+                     modalities
+                WHERE u1.user_id = appointments.radiologist
+                  AND u2.user_id = appointments.technician
+                  AND patients.patient_id = appointments.patient
+                  AND modalities.modality_id = appointments.modality
+                ORDER BY appointments.appointment_id
                   DESC LIMIT 1;
                 """;
     }
@@ -215,9 +230,23 @@ public class Appointments implements Initializable {
             preparedStatement.execute();
         }
     }
+    public void changeCheckIn(String table) throws SQLException {
+        Driver driver = new Driver();
+        ObservableList<AppointmentData> selectedItems = infoTable.tableView.getSelectionModel().getSelectedItems();
+        for (AppointmentData selectedItem : selectedItems) {
+            String sql = """
+                    UPDATE appointments
+                    SET closed = !closed
+                    WHERE appointment_id = ?;
+                    """;
+            PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+            preparedStatement.setInt(1, selectedItem.getAppointmentId());
+            preparedStatement.execute();
+        }
+    }
 
     public void setCellFactoryValues() {
-        patientId.setCellValueFactory(new PropertyValueFactory<>("patientId"));
+        appointmentId.setCellValueFactory(new PropertyValueFactory<>("appointment_id"));
         patient.setCellValueFactory(new PropertyValueFactory<>("patient"));
         modality.setCellValueFactory(new PropertyValueFactory<>("modality"));
         price.setCellValueFactory(new PropertyValueFactory<>("price"));
@@ -313,6 +342,8 @@ public class Appointments implements Initializable {
             } else {
                 tableSearchBar.toggleButtons(true);
             }
+            tableSearchBar.getCheckInButton().setOnAction(actionEvent ->
+                    customCheckInConfirmationPopup(confirm -> confirmCheckIn(), cancel -> Popups.getAlertPopupEnum().getPopup().hide()));
         });
     }
 
@@ -333,7 +364,6 @@ public class Appointments implements Initializable {
             return row;
         });
     }
-
     public void customConfirmationPopup(EventHandler<ActionEvent> confirm, EventHandler<ActionEvent> cancel) {
         PopupManager.createPopup(Popups.CONFIRMATION);
         new PopupConfirmation() {{
@@ -341,10 +371,28 @@ public class Appointments implements Initializable {
             setExitButtonLabel("Cancel");
             setHeaderLabel("Warning");
             setContentLabel("This data will be permanently deleted");
-            //setConfirmationImage(new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/warning.png"));
             getConfirmationButton().setOnAction(confirm);
             getCancelButton().setOnAction(cancel);
         }};
+    }
+    public void customCheckInConfirmationPopup(EventHandler<ActionEvent> confirm, EventHandler<ActionEvent> cancel) {
+        PopupManager.createPopup(Popups.CONFIRMATION);
+        new PopupConfirmation() {{
+            setConfirmButtonLabel("Yes");
+            setExitButtonLabel("No");
+            setHeaderLabel("Notice");
+            setContentLabel("This Person is done with their appointment");
+            getConfirmationButton().setOnAction(confirm);
+            getCancelButton().setOnAction(cancel);
+        }};
+    }
+    private void confirmCheckIn() {
+        try {
+            changeCheckIn("appointments");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        Popups.getAlertPopupEnum().getPopup().hide();
     }
 
     public void confirmDeletion() {
@@ -359,6 +407,6 @@ public class Appointments implements Initializable {
     }
 
     public void tableSearchBarAddButtonListener() {
-        tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.ADMIN));
+        tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.APPOINTMENT));
     }
 }

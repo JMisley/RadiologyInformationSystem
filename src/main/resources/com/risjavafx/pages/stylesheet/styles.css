@@ -1,11 +1,11 @@
 /*Theme styling-------------------------------------------------------------------------------------------------------*/
 .root {
-    -fx-background-image: url(../images/bg-01.jpg);
+    -fx-background-image: url(../../images/bg-01.jpg);
     -fx-background-size: cover;
 }
 
 #root {
-    -fx-background-image: url(../images/bg-01.jpg);
+    -fx-background-image: url(../../images/bg-01.jpg);
     -fx-background-size: cover;
 }
 
@@ -69,6 +69,17 @@
     -fx-background-color: #CF667673;
 }
 
+#checkInButton {
+    -fx-background-color: #660066;
+    -fx-text-fill: white;
+    -fx-font-family: "Century Gothic";
+
+}
+#checkInButton:hover {
+
+fx-background-color: #CF667673;
+
+}
 
 /*Images--------------------------------------------------------------------------------------------------------------*/
 #successImage {
