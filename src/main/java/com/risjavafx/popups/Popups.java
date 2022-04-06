@@ -5,10 +5,16 @@ import javafx.stage.Popup;
 
 public enum Popups {
     ADMIN("admin-popup.fxml", PopupManager.popupMenu, "MENU"),
+<<<<<<<<< Temporary merge branch 1
+    APPOINTMENT("appointment-popup.fxml", PopupManager.popupMenu, "MENU"),
+    ORDERS("orders-popup.fxml", PopupManager.popupMenu, "MENU"),
+=========
     ORDERS("orders-popup.fxml", PopupManager.popupMenu, "MENU"),
     APPOINTMENT("appointment-popup.fxml", PopupManager.popupMenu, "MENU"),
+>>>>>>>>> Temporary merge branch 2
     CONFIRMATION("popup-confirmation.fxml", PopupManager.popupAlert, "ALERT"),
-    ALERT("popup-alert.fxml", PopupManager.popupAlert, "ALERT");
+    ALERT("popup-alert.fxml", PopupManager.popupAlert, "ALERT"),
+    REFERRALS("referral-popup.fxml", PopupManager.popupMenu, "MENU");
 
     private static Popups menuPopups;
     private static Popups alertPopups;
@@ -25,7 +31,7 @@ public enum Popups {
     }
 
     public static Popups[] getPopupsArray() {
-        return new Popups[]{ADMIN, APPOINTMENT, CONFIRMATION, ALERT};
+        return new Popups[]{ADMIN, APPOINTMENT, CONFIRMATION, ALERT, REFERRALS};
     }
 
     public static Popups[] getAlertPopupsArray() {
