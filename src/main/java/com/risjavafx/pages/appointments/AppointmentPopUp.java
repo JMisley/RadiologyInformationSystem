@@ -3,8 +3,8 @@ package com.risjavafx.pages.appointments;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
-import com.risjavafx.popups.Notification;
-import com.risjavafx.popups.PopupAlert;
+import com.risjavafx.popups.models.Notification;
+import com.risjavafx.popups.models.PopupError;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
 import javafx.collections.FXCollections;
@@ -14,7 +14,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -266,17 +265,15 @@ public class AppointmentPopUp implements Initializable {
         if (validInput()) {
             insertAppointmentQuery();
             Appointments.queryData(Appointments.getLastRowStringQuery());
-            Popups.getMenuPopupEnum().getPopup().hide();
+            PopupManager.removePopup("MENU");
             Notification.createNotification();
         } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);
-            new PopupAlert() {{
-                setAlertImage(new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/error.png"));
+            new PopupError() {{
                 setHeaderLabel("Submission Failed");
                 setContentLabel("Please make sure you filled out all fields");
                 setExitButtonLabel("Retry");
             }};
-
         }
     }
 
@@ -284,6 +281,7 @@ public class AppointmentPopUp implements Initializable {
     public void cancelButtonOnclick() {
         Popups.APPOINTMENT.getPopup().hide();
         try {
-            Popups.ALERT.getPopup().hide();} catch (Exception ignore) {}
+            PopupManager.removePopup("MENU");
+        } catch (Exception ignore) {}
     }
 }

@@ -8,8 +8,9 @@ import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
+import com.risjavafx.pages.TableManager;
 import com.risjavafx.pages.orders.OrdersData;
-import com.risjavafx.popups.PopupConfirmation;
+import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
 import javafx.collections.FXCollections;
@@ -82,17 +83,10 @@ public class Orders implements Initializable {
         PageManager.getScene().rootProperty().addListener(observable -> {
             if (Pages.getPage() == Pages.ORDERS) {
                 createTableSearchBar();
+                refreshTable();
             }
         });
 
-        /*
-        try {
-            createTable();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
- */
     }
 
     public void createTableSearchBar() {
@@ -131,9 +125,16 @@ public class Orders implements Initializable {
             queryData(getAllDataStringQuery());
             infoTable.tableView.setItems(observableList);
             infoTable.tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+            TableManager.setOrdersTable(infoTable.tableView);
         } catch (
                 Exception exception) {
             exception.printStackTrace();
+        }
+    }
+
+    private void refreshTable() {
+        if (!centerContent.getChildren().contains(TableManager.getOrdersTable())) {
+            centerContent.getChildren().add(TableManager.getOrdersTable());
         }
     }
 
@@ -314,7 +315,7 @@ public class Orders implements Initializable {
             setExitButtonLabel("Cancel");
             setHeaderLabel("Warning");
             setContentLabel("This data will be permanently deleted");
-            setConfirmationImage(new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/warning.png"));
+            //setConfirmationImage(new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/warning.png"));
             getConfirmationButton().setOnAction(confirm);
             getCancelButton().setOnAction(cancel);
         }};

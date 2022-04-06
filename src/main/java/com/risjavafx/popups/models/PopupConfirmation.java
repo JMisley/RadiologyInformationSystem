@@ -1,11 +1,12 @@
-package com.risjavafx.popups;
+package com.risjavafx.popups.models;
 
 import com.risjavafx.pages.PageManager;
+import com.risjavafx.popups.PopupBlueprint;
+import com.risjavafx.popups.Popups;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
@@ -32,6 +33,7 @@ public class PopupConfirmation extends PopupBlueprint implements Initializable {
         Button[] buttons = {confirmButton, cancelButton};
         resizeElements(popupContainer, confirmationImage, buttons, headerLabel, contentLabel);
         initializeUsables();
+        setElementID();
 
         try {
             Popups.getMenuPopupEnum().getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
@@ -50,6 +52,10 @@ public class PopupConfirmation extends PopupBlueprint implements Initializable {
         usableCancelButton = cancelButton;
     }
 
+    public void setElementID() {
+        usableConfirmationImage.setId("warningImage");
+    }
+
     public void setConfirmButtonLabel(String text) {usableConfirmButton.setText(text);}
 
     public void setExitButtonLabel(String text) {usableCancelButton.setText(text);}
@@ -57,8 +63,6 @@ public class PopupConfirmation extends PopupBlueprint implements Initializable {
     public void setHeaderLabel(String header) {usableHeaderLabel.setText(header);}
 
     public void setContentLabel(String content) {usableContentLabel.setText(content);}
-
-    public void setConfirmationImage(Image image) {usableConfirmationImage.setImage(image);}
 
     public Button getConfirmationButton() {return usableConfirmButton;}
 

@@ -1,3 +1,4 @@
+
 package com.risjavafx.pages.appointments;
 
 import com.risjavafx.Driver;
@@ -8,7 +9,8 @@ import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
-import com.risjavafx.popups.PopupConfirmation;
+import com.risjavafx.pages.TableManager;
+import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
 import javafx.collections.FXCollections;
@@ -48,7 +50,7 @@ public class Appointments implements Initializable {
     Miscellaneous misc = new Miscellaneous();
 
     public TableColumn<AppointmentData, String>
-            appointmentId = new TableColumn<>("ID"),
+            patientId = new TableColumn<>("Patient ID"),
             patient = new TableColumn<>("Patient"),
             modality = new TableColumn<>("Modality"),
             price = new TableColumn<>("Price"),
@@ -58,7 +60,7 @@ public class Appointments implements Initializable {
             closedFlag = new TableColumn<>("Closed");
 
     public ArrayList<TableColumn<AppointmentData, String>> tableColumnsList = new ArrayList<>() {{
-        add(appointmentId);
+        add(patientId);
         add(patient);
         add(modality);
         add(price);
@@ -83,7 +85,8 @@ public class Appointments implements Initializable {
         // Overrides caching functionality and loads *TableSearchBar* every time page is opened
         PageManager.getScene().rootProperty().addListener(observable -> {
             if (Pages.getPage() == Pages.APPOINTMENTS) {
-                createTableSearchBar();
+                 createTableSearchBar();
+                refreshTable();
             }
         });
     }
@@ -107,7 +110,7 @@ public class Appointments implements Initializable {
             infoTable.setColumns(tableColumnsList);
             infoTable.addColumnsToTable();
 
-            infoTable.setCustomColumnWidth(appointmentId, .07);
+            infoTable.setCustomColumnWidth(patientId, .07);
             infoTable.setCustomColumnWidth(patient, .15);
             infoTable.setCustomColumnWidth(modality, .13);
             infoTable.setCustomColumnWidth(price, .09);
@@ -124,9 +127,16 @@ public class Appointments implements Initializable {
             queryData(getAllDataStringQuery());
             infoTable.tableView.setItems(observableList);
             infoTable.tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+            TableManager.setAppointmentsTable(infoTable.tableView);
         } catch (
                 Exception exception) {
             exception.printStackTrace();
+        }
+    }
+
+    private void refreshTable() {
+        if (!centerContent.getChildren().contains(TableManager.getAppointmentsTable())) {
+            centerContent.getChildren().add(TableManager.getAppointmentsTable());
         }
     }
 
@@ -145,7 +155,7 @@ public class Appointments implements Initializable {
                 checkIn = "In Progress";
             }
             observableList.add(new AppointmentData(
-                    resultSet.getInt("appointment_id"),
+                    resultSet.getInt("patient"),
                     name,
                     resultSet.getString("name"),
                     "$" + resultSet.getString("price"),
@@ -160,8 +170,7 @@ public class Appointments implements Initializable {
 
     public String getAllDataStringQuery() {
         return """
-                SELECT
-                        appointments.appointment_id,
+                SELECT appointments.patient,
                        patients.first_name,
                        patients.last_name,
                        modalities.name,
@@ -179,32 +188,16 @@ public class Appointments implements Initializable {
                   AND u2.user_id = appointments.technician
                   AND patients.patient_id = appointments.patient
                   AND modalities.modality_id = appointments.modality
-                ORDER BY appointments.appointment_id;
+                ORDER BY appointments.patient;
                 """;
     }
 
     public static String getLastRowStringQuery() {
         return """
-                   SELECT
-                   appointments.appointment_id,
-                       patients.first_name,
-                       patients.last_name,
-                       modalities.name,
-                       modalities.price,
-                       appointments.date_time,
-                       u1.full_name,
-                       u2.full_name,
-                       appointments.closed
-                FROM appointments,
-                     users as u1,
-                     users as u2,
-                     patients,
-                     modalities
-                WHERE u1.user_id = appointments.radiologist
-                  AND u2.user_id = appointments.technician
-                  AND patients.patient_id = appointments.patient
-                  AND modalities.modality_id = appointments.modality
-                ORDER BY appointments.appointment_id  DESC LIMIT 1;
+                     SELECT *
+                FROM appointments, modalities, patients, users
+                WHERE modality_id = modality AND user_id = radiologist
+                  DESC LIMIT 1;
                 """;
     }
 
@@ -215,25 +208,16 @@ public class Appointments implements Initializable {
         for (AppointmentData selectedItem : selectedItems) {
             String sql = """
                     DELETE FROM %$
-                    WHERE appointment_id = ?
+                    WHERE patientId = ?
                     """.replace("%$", table);
             PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getPatientId());
             preparedStatement.execute();
         }
     }
-    @SuppressWarnings("SqlWithoutWhere")
-public void changeCheckIn(String table) throws SQLException {
-        Driver driver = new Driver();
-        ObservableList<AppointmentData> selectedItems = infoTable.tableView.getSelectionModel().getSelectedItems();
-        String sql = """
-                UPDATE FROM appointments
-                WHERE checked_in = 0
-                
-                """
-    }
+
     public void setCellFactoryValues() {
-        appointmentId.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
+        patientId.setCellValueFactory(new PropertyValueFactory<>("patientId"));
         patient.setCellValueFactory(new PropertyValueFactory<>("patient"));
         modality.setCellValueFactory(new PropertyValueFactory<>("modality"));
         price.setCellValueFactory(new PropertyValueFactory<>("price"));
@@ -306,7 +290,7 @@ public void changeCheckIn(String table) throws SQLException {
         } catch (Exception ignored) {
         }
 
-        if (appointmentData.getPatientId() == searchKeyInt && getComboBoxItem("ID")) {
+        if (appointmentData.getPatientId() == searchKeyInt && getComboBoxItem("User ID")) {
             return true;
         } else if (appointmentData.getPatient().toLowerCase().contains(searchKeyword) && getComboBoxItem("Patient")) {
             return true;
@@ -321,21 +305,15 @@ public void changeCheckIn(String table) throws SQLException {
 
     // Listener for Admin TableView
     public void tableViewListener() {
-        infoTable.tableView.getSelectionModel().selectedItemProperty().addListener((observableValue, appointmentData, t1) -> {
+        infoTable.tableView.getSelectionModel().selectedItemProperty().addListener((observableValue, adminData, t1) -> {
             if (t1 != null) {
                 tableSearchBar.toggleButtons(false);
                 tableSearchBar.getDeleteButton().setOnAction(actionEvent ->
                         customConfirmationPopup(confirm -> confirmDeletion(), cancel -> Popups.getAlertPopupEnum().getPopup().hide()));
-                tableSearchBar.getCheckInButton().setOnAction(actionEvent ->
-                        customCheckInConfirmationPopup(confirm -> confirmCheckIn(), cancel -> Popups.getAlertPopupEnum().getPopup().hide()));
             } else {
                 tableSearchBar.toggleButtons(true);
             }
         });
-    }
-
-    private void confirmCheckIn() {
-        //need to make method where clickign button toggles the check in in database
     }
 
     // If a selected row is clicked again, it will unselect. TableSearchBar Buttons will also adjust appropriately
@@ -363,41 +341,24 @@ public void changeCheckIn(String table) throws SQLException {
             setExitButtonLabel("Cancel");
             setHeaderLabel("Warning");
             setContentLabel("This data will be permanently deleted");
-            setConfirmationImage(new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/warning.png"));
-            getConfirmationButton().setOnAction(confirm);
-            getCancelButton().setOnAction(cancel);
-        }};
-    }
-    public void customCheckInConfirmationPopup(EventHandler<ActionEvent> confirm, EventHandler<ActionEvent> cancel) {
-        PopupManager.createPopup(Popups.CONFIRMATION);
-        new PopupConfirmation() {{
-            setConfirmButtonLabel("Yes");
-            setExitButtonLabel("No");
-            setHeaderLabel("Notice");
-            setContentLabel("This Person is done with their appointment");
-            setConfirmationImage(new Image("file:C:/User/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/warning.png"));
+            //setConfirmationImage(new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/warning.png"));
             getConfirmationButton().setOnAction(confirm);
             getCancelButton().setOnAction(cancel);
         }};
     }
 
     public void confirmDeletion() {
-/*
         try {
             deleteSelectedItemsQuery("users_roles");
             deleteSelectedItemsQuery("users");
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        */
-
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
         Popups.getAlertPopupEnum().getPopup().hide();
     }
 
     public void tableSearchBarAddButtonListener() {
-
-        tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.APPOINTMENT));
-
+        tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.ADMIN));
     }
 }
