@@ -8,7 +8,7 @@ import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
-import com.risjavafx.popups.PopupConfirmation;
+import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
 import javafx.collections.FXCollections;
@@ -22,7 +22,6 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -101,8 +100,8 @@ public class Referrals implements Initializable {
             infoTable.setColumns(tableColumnsList);
             infoTable.addColumnsToTable();
 
-            infoTable.setCustomColumnWidth(patientId, .15);
-            infoTable.setCustomColumnWidth(dateOfBirth, .35);
+            infoTable.setCustomColumnWidth(patientId, .25);
+            infoTable.setCustomColumnWidth(dateOfBirth, .25);
             infoTable.setCustomColumnWidth(lastName, .25);
             infoTable.setCustomColumnWidth(firstName, .25);
 
@@ -193,11 +192,11 @@ public class Referrals implements Initializable {
             filteredList = new FilteredList<>(observableList);
 
             tableSearchBar.getTextField().textProperty().addListener((observable, oldValue, newValue) ->
-                    filteredList.setPredicate(adminData -> filterDataEvent(newValue, adminData)));
+                    filteredList.setPredicate(referralData -> filterDataEvent(newValue, referralData)));
 
-            tableSearchBar.getComboBox().valueProperty().addListener((newValue) -> filteredList.setPredicate(adminData -> {
+            tableSearchBar.getComboBox().valueProperty().addListener((newValue) -> filteredList.setPredicate(referralData -> {
                 if (newValue != null) {
-                    return filterDataEvent(tableSearchBar.getTextField().getText(), adminData);
+                    return filterDataEvent(tableSearchBar.getTextField().getText(), referralData);
                 }
                 return false;
             }));
@@ -248,7 +247,7 @@ public class Referrals implements Initializable {
             if (t1 != null) {
                 tableSearchBar.toggleButtons(false);
                 tableSearchBar.getDeleteButton().setOnAction(actionEvent ->
-                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> Popups.getAlertPopupEnum().getPopup().hide()));
+                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> PopupManager.removePopup("ALERT")));
             } else {
                 tableSearchBar.toggleButtons(true);
             }
@@ -280,7 +279,6 @@ public class Referrals implements Initializable {
             setExitButtonLabel("Cancel");
             setHeaderLabel("Warning");
             setContentLabel("This data will be permanently deleted");
-            setConfirmationImage(new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/warning.png"));
             getConfirmationButton().setOnAction(confirm);
             getCancelButton().setOnAction(cancel);
         }};

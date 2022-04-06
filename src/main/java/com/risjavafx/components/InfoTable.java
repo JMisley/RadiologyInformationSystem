@@ -31,4 +31,11 @@ public class InfoTable<T, K> {
     public void setCustomColumnWidth(TableColumn<T, K> column, double width) {
         column.prefWidthProperty().bind(tableView.widthProperty().multiply(width));
     }
+
+    // Set all columns to equal width
+    public void setEvenColumnWidth(ArrayList<TableColumn<T, K>> columns) {
+        for (int i = 0; i < columns.size(); i++) {
+            columns.get(i).prefWidthProperty().bind(tableView.widthProperty().multiply(1 / columns.size()));
+        }
+    }
 }

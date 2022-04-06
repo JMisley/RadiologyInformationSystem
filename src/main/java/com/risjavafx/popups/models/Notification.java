@@ -1,4 +1,4 @@
-package com.risjavafx.popups;
+package com.risjavafx.popups.models;
 
 import com.risjavafx.pages.PageManager;
 import javafx.geometry.Pos;
@@ -9,7 +9,7 @@ import org.controlsfx.control.Notifications;
 
 public class Notification {
     public static void createNotification() {
-        ImageView imageView = new ImageView(new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/success.png"));
+        ImageView imageView = new ImageView(new Image("C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/success.png"));
         imageView.setFitHeight(50);
         imageView.setFitWidth(50);
         Notifications

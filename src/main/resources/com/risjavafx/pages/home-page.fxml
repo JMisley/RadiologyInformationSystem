@@ -5,14 +5,17 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="mainContainer" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.risjavafx.pages.home.Home">
+<BorderPane fx:id="mainContainer" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.risjavafx.pages.home.Home">
     <top>
         <VBox>
-            <HBox fx:id="titleBar" />
-            <HBox fx:id="topContent" />
+            <HBox fx:id="titleBar"/>
+            <HBox fx:id="topContent"/>
         </VBox>
     </top>
     <center>
-        <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" scaleShape="false" vbarPolicy="NEVER" BorderPane.alignment="CENTER" />
+        <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER">
+            <VBox id="root" fx:id="tableViewList" alignment="TOP_CENTER"/>
+        </ScrollPane>
     </center>
 </BorderPane>

@@ -43,7 +43,7 @@ public enum Pages {
     }
 
     public static Pages[] getPageArray() {
-        return new Pages[]{HOME, USERINFO, ADMIN, REFERRALS, APPOINTMENTS, ORDERS, LOGIN};
+        return new Pages[]{USERINFO, ADMIN, REFERRALS, APPOINTMENTS, ORDERS, LOGIN, HOME};
     }
 
     public static Pages getPage() {return page;}

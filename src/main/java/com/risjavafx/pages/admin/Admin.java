@@ -1,5 +1,6 @@
 package com.risjavafx.pages.admin;
 
+import com.risjavafx.UserStates;
 import com.risjavafx.components.InfoTable;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
@@ -8,7 +9,8 @@ import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
-import com.risjavafx.popups.PopupConfirmation;
+import com.risjavafx.pages.TableManager;
+import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
 import javafx.collections.FXCollections;
@@ -17,12 +19,8 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -43,9 +41,6 @@ public class Admin implements Initializable {
     public StackPane centerContent;
     public SplitPane centerContentContainer;
 
-    private static StackPane usableCenterContent;
-    private static HBox usableTableSearchBarContainer;
-
     public static ObservableList<AdminData> observableList = FXCollections.observableArrayList();
     SortedList<AdminData> sortedList;
     FilteredList<AdminData> filteredList;
@@ -54,13 +49,13 @@ public class Admin implements Initializable {
     TableSearchBar tableSearchBar = new TableSearchBar();
     Miscellaneous misc = new Miscellaneous();
 
-    public TableColumn<AdminData, String>
+    private static final TableColumn<AdminData, String>
             userId = new TableColumn<>("User ID"),
             displayName = new TableColumn<>("Full Name"),
             username = new TableColumn<>("Username"),
             emailAdr = new TableColumn<>("Email Address"),
             systemRole = new TableColumn<>("System Role");
-    public ArrayList<TableColumn<AdminData, String>> tableColumnsList = new ArrayList<>() {{
+    private static final ArrayList<TableColumn<AdminData, String>> tableColumnsList = new ArrayList<>() {{
         add(userId);
         add(displayName);
         add(username);
@@ -69,8 +64,6 @@ public class Admin implements Initializable {
     }};
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        usableCenterContent = centerContent;
-        usableTableSearchBarContainer = tableSearchBarContainer;
         observableList.clear();
         // Miscellaneous components initialization
         Pages.setPage(Pages.ADMIN);
@@ -86,6 +79,7 @@ public class Admin implements Initializable {
         PageManager.getScene().rootProperty().addListener(observable -> {
             if (Pages.getPage() == Pages.ADMIN) {
                 createTableSearchBar();
+                refreshTable();
             }
         });
     }
@@ -108,31 +102,31 @@ public class Admin implements Initializable {
             infoTable.setColumns(tableColumnsList);
             infoTable.addColumnsToTable();
 
-            infoTable.setCustomColumnWidth(userId, .12);
-            infoTable.setCustomColumnWidth(displayName, .24);
-            infoTable.setCustomColumnWidth(username, .17);
-            infoTable.setCustomColumnWidth(emailAdr, .27);
-            infoTable.setCustomColumnWidth(systemRole, .2);
-
-            centerContentContainer.setMaxWidth(misc.getScreenWidth() * .9);
+            centerContentContainer.setMaxWidth(misc.getScreenWidth() * .75);
             centerContentContainer.setMaxHeight(misc.getScreenHeight() * .85);
             centerContent.getChildren().add(infoTable.tableView);
+
+            infoTable.setCustomColumnWidth(tableColumnsList.get(0), .12);
+            infoTable.setCustomColumnWidth(tableColumnsList.get(1), .24);
+            infoTable.setCustomColumnWidth(tableColumnsList.get(2), .17);
+            infoTable.setCustomColumnWidth(tableColumnsList.get(3), .27);
+            infoTable.setCustomColumnWidth(tableColumnsList.get(4), .2);
 
             queryData(getAllDataStringQuery());
             infoTable.tableView.setItems(observableList);
             infoTable.tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+            TableManager.setAdminTable(infoTable.tableView);
         } catch (
                 Exception exception) {
             exception.printStackTrace();
         }
     }
 
-    public static StackPane getTableView() {
-        return usableCenterContent;
-    }
-
-    public static HBox getTableSearchBar() {
-        return usableTableSearchBarContainer;
+    private void refreshTable() {
+        if (!centerContent.getChildren().contains(TableManager.getAdminTable())) {
+            centerContent.getChildren().add(TableManager.getAdminTable());
+        }
     }
 
     public static void queryData(String sql) throws SQLException {
@@ -271,7 +265,7 @@ public class Admin implements Initializable {
             if (t1 != null) {
                 tableSearchBar.toggleButtons(false);
                 tableSearchBar.getDeleteButton().setOnAction(actionEvent ->
-                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> Popups.getAlertPopupEnum().getPopup().hide()));
+                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> PopupManager.removePopup("ALERT")));
             } else {
                 tableSearchBar.toggleButtons(true);
             }
@@ -303,7 +297,6 @@ public class Admin implements Initializable {
             setExitButtonLabel("Cancel");
             setHeaderLabel("Warning");
             setContentLabel("This data will be permanently deleted");
-            setConfirmationImage(new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/warning.png"));
             getConfirmationButton().setOnAction(confirm);
             getCancelButton().setOnAction(cancel);
         }};

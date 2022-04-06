@@ -1,8 +1,16 @@
 /*Theme styling-------------------------------------------------------------------------------------------------------*/
 .root {
-    /*-fx-background-image: url(../../images/background.jpg);*/
-    /*-fx-background-size: cover;*/
-    -fx-background-color: #121212;
+    -fx-background-image: url(../../images/background.jpg);
+    -fx-background-size: cover;
+}
+
+#root {
+    -fx-background-image: url(../../images/background.jpg);
+    -fx-background-size: cover;
+}
+
+#tableViewList {
+    -fx-background-color: transparent;
 }
 
 #popupContainer {
@@ -14,15 +22,17 @@
 }
 
 #loginContainer {
-    -fx-background-color: transparent;
+    -fx-background-color: #121212;
     -fx-background-insets: 0;
     -fx-border-style: solid solid solid solid;
-    -fx-border-color: white #444444 #444444 white;
-    -fx-border-width: 3px 2px 2px 3px;
+    -fx-border-color: white;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 7px;
+    -fx-background-radius: 8px;
 }
 
 #tableBarContainer {
-    -fx-background-color: transparent;
+    -fx-background-color: #121212;
     -fx-background-insets: 0;
     -fx-border-style: solid solid none solid;
     -fx-border-color: white white transparent white;
@@ -57,6 +67,32 @@
 
 #deleteButton:hover {
     -fx-background-color: #CF667673;
+}
+
+
+/*Images--------------------------------------------------------------------------------------------------------------*/
+#successImage {
+    -fx-image: url(../../images/success.png);
+}
+
+#warningImage {
+    -fx-image: url(../../images/warning.png);
+}
+
+#errorImage {
+    -fx-image: url(../../images/error.png);
+}
+
+#closeImage {
+    -fx-image: url(../../images/close.png);
+}
+
+#maximizeImage {
+    -fx-image: url(../../images/circle.png);
+}
+
+#minimizeImage {
+    -fx-image: url(../../images/minus.png);
 }
 
 
@@ -115,6 +151,7 @@
 
 /*Title bar styling---------------------------------------------------------------------------------------------------*/
 #titleBar {
+    -fx-background-color: #121212;
     -fx-border-style: none none solid none;
     -fx-border-color: transparent transparent white transparent;
     -fx-border-width: 0 0 .5 0;
@@ -274,4 +311,36 @@
     -fx-font-size: 18px;
     -fx-font-style: italic;
     -fx-text-fill: #cf6679;
+}
+
+
+/*Scroll Pane Styling-------------------------------------------------------------------------------------------------*/
+.scroll-pane {
+    -fx-background-color: black;
+}
+
+.scroll-bar:horizontal, .scroll-bar:vertical {
+    -fx-background-color: linear-gradient(#f0d53c, #e8834c, #f2b97f);
+}
+
+.increment-button, .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0em;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color: white;
+    -fx-background-radius: 5em;
+}
+
+.scroll-pane > .corner {
+    -fx-background-color: black;
 }
