@@ -1,6 +1,7 @@
 package com.risjavafx.components;
 
 import com.risjavafx.Miscellaneous;
+import com.risjavafx.UserStates;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import javafx.fxml.Initializable;
@@ -14,6 +15,7 @@ public class NavigationBar implements Initializable {
     public HBox menuBar;
     public Button homeButton, userInfoButton, adminButton, referralsButton, appointmentsButton, ordersButton, logoutButton;
     public Button[] buttonArray;
+    Miscellaneous misc = new Miscellaneous();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -21,6 +23,7 @@ public class NavigationBar implements Initializable {
                 ordersButton, logoutButton};
         getPageButton().setId("menuBarButtonClicked");
         setButtonWidth();
+        adjustButtonsToUserRole();
     }
 
     public static void createNavBar(HBox topContent) {
@@ -48,7 +51,6 @@ public class NavigationBar implements Initializable {
     }
 
     public void userLogout() {
-        PageManager.clearCache();
         switchPage(Pages.LOGIN);
     }
 
@@ -77,8 +79,6 @@ public class NavigationBar implements Initializable {
     }
 
     public void setButtonWidth() {
-        Miscellaneous misc = new Miscellaneous();
-
         for (Button button : buttonArray) {
             button.setPrefWidth((misc.getScreenWidth() / 7) * .8);
             button.setMaxWidth(225);
@@ -97,6 +97,23 @@ public class NavigationBar implements Initializable {
         if (Pages.getPage() != page) {
             Pages.setPage(page);
             PageManager.switchPage(page);
+        }
+    }
+
+    // Adjust buttons to  display or to be hidden based on the user role
+    public void adjustButtonsToUserRole() {
+        switch (UserStates.getUserState()) {
+            case ADMIN -> {}
+            case USER -> disableSelectedButtons(new Button[]{adminButton, referralsButton, appointmentsButton, ordersButton});
+            case REFERRAL_MD -> disableSelectedButtons(new Button[]{adminButton, appointmentsButton, ordersButton});
+            case RECEPTIONIST, RADIOLOGIST -> disableSelectedButtons(new Button[]{adminButton, referralsButton});
+            case TECHNICIAN -> disableSelectedButtons(new Button[]{adminButton, referralsButton, ordersButton});
+        }
+    }
+
+    public void disableSelectedButtons(Button[] buttons) {
+        for (Button button : buttons) {
+            menuBar.getChildren().remove(button);
         }
     }
 }

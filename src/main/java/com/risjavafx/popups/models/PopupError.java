@@ -1,18 +1,20 @@
-package com.risjavafx.popups;
+package com.risjavafx.popups.models;
 
 import com.risjavafx.pages.PageManager;
+import com.risjavafx.popups.PopupBlueprint;
+import com.risjavafx.popups.PopupManager;
+import com.risjavafx.popups.Popups;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class PopupAlert extends PopupBlueprint implements Initializable {
+public class PopupError extends PopupBlueprint implements Initializable {
     
     @FXML private VBox popupContainer;
     @FXML private ImageView alertImage;
@@ -30,6 +32,7 @@ public class PopupAlert extends PopupBlueprint implements Initializable {
         Button[] buttons = {exitButton};
         resizeElements(popupContainer, alertImage, buttons, headerLabel, contentLabel);
         initializeUsables();
+        setElementID();
 
         Popups.getMenuPopupEnum().getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
             if (!Popups.getMenuPopupEnum().getPopup().isShowing()) {
@@ -45,13 +48,17 @@ public class PopupAlert extends PopupBlueprint implements Initializable {
         usableAlertImage = alertImage;
     }
 
+    public void setElementID() {
+        usableAlertImage.setId("errorImage");
+    }
+
     public void setExitButtonLabel(String text) {usableExitButton.setText(text);}
 
     public void setHeaderLabel(String header) {usableHeaderLabel.setText(header);}
 
     public void setContentLabel(String content) {usableContentLabel.setText(content);}
 
-    public void setAlertImage(Image image) {usableAlertImage.setImage(image);}
-
-    public void exitPopup() {Popups.getAlertPopupEnum().getPopup().hide();}
+    public void exitPopup() {
+        PopupManager.removePopup("ALERT");
+    }
 }

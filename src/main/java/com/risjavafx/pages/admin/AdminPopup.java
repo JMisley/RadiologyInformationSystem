@@ -1,7 +1,7 @@
 package com.risjavafx.pages.admin;
 
-import com.risjavafx.popups.PopupAlert;
-import com.risjavafx.popups.Notification;
+import com.risjavafx.popups.models.PopupError;
+import com.risjavafx.popups.models.Notification;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.Driver;
@@ -14,10 +14,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -46,27 +44,34 @@ public class AdminPopup implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         resizeElements();
-        setUserIDLabel();
         populateComboBox();
-        Popups.ADMIN.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) ->
-                PageManager.getRoot().setDisable(!aBoolean));
+
+        // Overrides caching functionality
+        Popups.ADMIN.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
+            PageManager.getRoot().setDisable(!aBoolean);
+
+            if (Popups.ADMIN.getPopup().isShowing()) {
+                userIDLabel.setText(String.valueOf(getNextUserId()));
+                refreshTextFields();
+            }
+        });
         usablePopupContainer = popupContainer;
     }
 
-    public void setUserIDLabel() {
+    public int getNextUserId() {
         try {
             String sql = """
                     select MAX(user_id)
                     from users;
                     """;
             ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
-            while (resultSet.next()) {
-                userIDLabel.setText(String.valueOf(resultSet.getInt("MAX(user_id)") + 1));
+            if (resultSet.next()) {
+                return resultSet.getInt("MAX(user_id)") + 1;
             }
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-
+        return -1;
     }
 
     public void populateComboBox() {
@@ -135,7 +140,7 @@ public class AdminPopup implements Initializable {
                 !passwordTextField.getText().isBlank();
     }
 
-    public void resizeElements() {
+    private void resizeElements() {
         popupContainer.setPrefHeight(Popups.getMenuDimensions()[0]);
         popupContainer.setPrefWidth(Popups.getMenuDimensions()[1]);
         popupContainer.setMaxHeight(Popups.getMenuDimensions()[0]);
@@ -156,6 +161,13 @@ public class AdminPopup implements Initializable {
         submitButton.setStyle("-fx-font-size: " + fontSize);
     }
 
+    private void refreshTextFields() {
+        fullNameTextField.clear();
+        emailTextField.clear();
+        usernameTextField.clear();
+        passwordTextField.clear();
+    }
+
     //Button Onclicks
     // Onclick for submit button
     public void submitButtonOnclick() throws SQLException {
@@ -163,24 +175,23 @@ public class AdminPopup implements Initializable {
             insertUserQuery();
             insertRoleIdQuery();
             Admin.queryData(Admin.getLastRowStringQuery());
-            Popups.getMenuPopupEnum().getPopup().hide();
+            PopupManager.removePopup("MENU");
             Notification.createNotification();
         } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);
-            new PopupAlert() {{
-                setAlertImage(new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/error.png"));
+            new PopupError() {{
                 setHeaderLabel("Submission Failed");
                 setContentLabel("Please make sure you filled out all fields");
                 setExitButtonLabel("Retry");
             }};
-
         }
     }
 
     // Onclick for cancel button
     public void cancelButtonOnclick() {
-        Popups.ADMIN.getPopup().hide();
         try {
-            Popups.ALERT.getPopup().hide();} catch (Exception ignore) {}
+            PopupManager.removePopup("MENU");
+        }
+        catch (Exception ignore) {}
     }
 }

@@ -5,11 +5,13 @@ import javafx.stage.Popup;
 
 public enum Popups {
     ADMIN("admin-popup.fxml", PopupManager.popupMenu, "MENU"),
-    APPOINTMENT("appointment-popup.fxml", PopupManager.popupMenu, "MENU"),
+<<<<<<<<< Temporary merge branch 1
     ORDERS("orders-popup.fxml", PopupManager.popupMenu, "MENU"),
+=========
+    APPOINTMENT("appointment-popup.fxml", PopupManager.popupMenu, "MENU"),
+>>>>>>>>> Temporary merge branch 2
     CONFIRMATION("popup-confirmation.fxml", PopupManager.popupAlert, "ALERT"),
     ALERT("popup-alert.fxml", PopupManager.popupAlert, "ALERT");
-
     private static Popups menuPopups;
     private static Popups alertPopups;
     private final String filename;

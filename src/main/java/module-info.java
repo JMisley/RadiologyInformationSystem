@@ -28,5 +28,7 @@ module com.example.risjavafx {
     opens com.risjavafx.popups to javafx.fxml;
     exports com.risjavafx;
     opens com.risjavafx to javafx.fxml;
+    exports com.risjavafx.popups.models;
+    opens com.risjavafx.popups.models to javafx.fxml;
 
 }
