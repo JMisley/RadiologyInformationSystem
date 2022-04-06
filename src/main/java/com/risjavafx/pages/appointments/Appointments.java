@@ -382,7 +382,7 @@ public void changeCheckIn(String table) throws SQLException {
     }
 
     public void confirmDeletion() {
-
+/*
         try {
             deleteSelectedItemsQuery("users_roles");
             deleteSelectedItemsQuery("users");
