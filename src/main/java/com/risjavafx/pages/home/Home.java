@@ -1,12 +1,14 @@
 package com.risjavafx.pages.home;
 
 import com.risjavafx.Miscellaneous;
+import com.risjavafx.UserStates;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.components.NavigationBar;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.TableManager;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -14,7 +16,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class Home implements Initializable {
@@ -27,6 +28,7 @@ public class Home implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        System.out.println(UserStates.getUserState());
         Pages.setPage(Pages.HOME);
         TitleBar.createTitleBar(mainContainer, titleBar);
         NavigationBar.createNavBar(topContent);
@@ -56,21 +58,23 @@ public class Home implements Initializable {
         tableViewList.getChildren().add(stackPane);
         stackPane.setMaxWidth(misc.getScreenWidth() * .75);
         stackPane.setMaxHeight(misc.getScreenHeight() * .85);
+        stackPane.setMinWidth(misc.getScreenWidth() * .75);
+        stackPane.setMinHeight(misc.getScreenHeight() * .85);
     }
 
     private void refreshTables() {
         tableViewList.getChildren().clear();
         addToScrollView(new StackPane(TableManager.getAdminTable()));
         addToScrollView(new StackPane(TableManager.getAppointmentsTable()));
-        System.out.println(Arrays.toString(tableViewList.getChildren().toArray()));
     }
 
     private void resizeElements() {
         Miscellaneous misc = new Miscellaneous();
         tableViewList.setMaxWidth(misc.getScreenWidth());
-        tableViewList.setMaxHeight(misc.getScreenHeight());
         tableViewList.setMinWidth(misc.getScreenWidth());
         tableViewList.setMinHeight(misc.getScreenHeight());
+        tableViewList.setSpacing(100);
+        tableViewList.setPadding(new Insets(100, 0, 100, 0));
         tableViewList.setId("root");
     }
 }

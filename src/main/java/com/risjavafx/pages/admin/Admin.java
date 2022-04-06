@@ -1,5 +1,6 @@
 package com.risjavafx.pages.admin;
 
+import com.risjavafx.UserStates;
 import com.risjavafx.components.InfoTable;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;

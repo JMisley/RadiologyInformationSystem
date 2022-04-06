@@ -134,8 +134,8 @@ public class Appointments implements Initializable {
     }
 
     private void refreshTable() {
-        if (!centerContent.getChildren().contains(TableManager.getAdminTable())) {
-            centerContent.getChildren().add(TableManager.getAdminTable());
+        if (!centerContent.getChildren().contains(TableManager.getAppointmentsTable())) {
+            centerContent.getChildren().add(TableManager.getAppointmentsTable());
         }
     }
 

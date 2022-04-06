@@ -1,5 +1,6 @@
 package com.risjavafx.pages.login;
 
+import com.risjavafx.UserStates;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
@@ -63,7 +64,7 @@ public class Login implements Initializable {
         Driver driver = new Driver();
         PreparedStatement preparedStatement;
         final String sql = """
-                SELECT username, password
+                SELECT username, password, user_id
                 FROM users
                 WHERE BINARY username = ? AND BINARY password = ?
                 """;
@@ -72,7 +73,11 @@ public class Login implements Initializable {
         preparedStatement.setString(2, password);
         ResultSet resultSet = preparedStatement.executeQuery();
 
-        return resultSet.next();
+        if (resultSet.next()) {
+            UserStates.setUserId(resultSet.getInt("user_id"));
+            return true;
+        }
+        return false;
     }
 
     private void resizeElements() {
@@ -88,6 +93,7 @@ public class Login implements Initializable {
                 @Override
                 protected Void call() {
                     PageManager.switchPage(Pages.PROGRESS);
+                    UserStates.setUserState();
                     PageManager.loadPagesToCache();
                     PopupManager.loadPopupsToCache();
                     return null;

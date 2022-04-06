@@ -70,7 +70,6 @@
 }
 
 
-
 /*Images--------------------------------------------------------------------------------------------------------------*/
 #successImage {
     -fx-image: url(../../images/success.png);
@@ -95,7 +94,6 @@
 #minimizeImage {
     -fx-image: url(../../images/minus.png);
 }
-
 
 
 /*Combo box styling---------------------------------------------------------------------------------------------------*/
@@ -313,4 +311,36 @@
     -fx-font-size: 18px;
     -fx-font-style: italic;
     -fx-text-fill: #cf6679;
+}
+
+
+/*Scroll Pane Styling-------------------------------------------------------------------------------------------------*/
+.scroll-pane {
+    -fx-background-color: black;
+}
+
+.scroll-bar:horizontal, .scroll-bar:vertical {
+    -fx-background-color: linear-gradient(#f0d53c, #e8834c, #f2b97f);
+}
+
+.increment-button, .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0em;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color: white;
+    -fx-background-radius: 5em;
+}
+
+.scroll-pane > .corner {
+    -fx-background-color: black;
 }
