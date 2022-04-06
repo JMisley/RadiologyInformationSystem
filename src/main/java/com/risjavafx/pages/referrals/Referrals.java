@@ -252,8 +252,8 @@ public class Referrals implements Initializable {
         if (referralData.getPatientIdData() == searchKeyInt && getComboBoxItem("Patient ID")) {
             return true;
         } else if (referralData.getDateOfBirthData().toLowerCase().contains(searchKeyword) ||
-                   referralData.getDateOfBirthData().toLowerCase().contains(String.valueOf(searchKeyInt)) &&
-                   getComboBoxItem("Date of birth")) {
+                referralData.getDateOfBirthData().toLowerCase().contains(String.valueOf(searchKeyInt)) &&
+                        getComboBoxItem("Date of birth")) {
             return true;
         } else if (referralData.getLastNameData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Last name")) {
             return true;
@@ -281,7 +281,7 @@ public class Referrals implements Initializable {
             row.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
                 final int index = row.getIndex();
                 if (index >= 0 && index < infoTable.tableView.getItems().size() &&
-                    infoTable.tableView.getSelectionModel().isSelected(index)) {
+                        infoTable.tableView.getSelectionModel().isSelected(index)) {
                     infoTable.tableView.getSelectionModel().clearSelection();
 
                     tableSearchBar.toggleButtons(true);
@@ -311,7 +311,7 @@ public class Referrals implements Initializable {
             e.printStackTrace();
         }
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
-        Popups.getAlertPopupEnum().getPopup().hide();
+        PopupManager.removePopup("ALERT");
     }
 
     public void tableSearchBarAddButtonListener() {
