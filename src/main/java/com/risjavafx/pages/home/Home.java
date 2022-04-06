@@ -35,7 +35,8 @@ public class Home implements Initializable {
 
         StackPane[] stackPanes = {
                 new StackPane(TableManager.getAdminTable()),
-                new StackPane(TableManager.getAppointmentsTable())};
+                new StackPane(TableManager.getAppointmentsTable()),
+                new StackPane(TableManager.getOrdersTable())};
         createScrollView(tableViewList, stackPanes);
 
         PageManager.getScene().rootProperty().addListener(observable -> {
@@ -66,6 +67,7 @@ public class Home implements Initializable {
         tableViewList.getChildren().clear();
         addToScrollView(new StackPane(TableManager.getAdminTable()));
         addToScrollView(new StackPane(TableManager.getAppointmentsTable()));
+        addToScrollView(new StackPane(TableManager.getOrdersTable()));
     }
 
     private void resizeElements() {
