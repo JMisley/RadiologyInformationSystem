@@ -9,7 +9,7 @@ import org.controlsfx.control.Notifications;
 
 public class Notification {
     public static void createNotification() {
-        ImageView imageView = new ImageView(new Image("C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/success.png"));
+        ImageView imageView = new ImageView(new Image("C:/Users/couss/Documents/GitHub/RISJavaFXProject/src/main/resources/com/risjavafx/images/success.png"));
         imageView.setFitHeight(50);
         imageView.setFitWidth(50);
         Notifications

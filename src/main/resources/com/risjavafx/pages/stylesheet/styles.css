@@ -1,15 +1,15 @@
 /*Theme styling-------------------------------------------------------------------------------------------------------*/
 .root {
-    -fx-background-image: url(../../images/bg-01.jpg);
+    -fx-background-image: url(../../images/background.jpg);
     -fx-background-size: cover;
 }
 
 #root {
-    -fx-background-image: url(../../images/bg-01.jpg);
+    -fx-background-image: url(../../images/background.jpg);
     -fx-background-size: cover;
 }
 
-#tableViewList {
+#transparent {
     -fx-background-color: transparent;
 }
 
@@ -36,6 +36,14 @@
     -fx-background-insets: 0;
     -fx-border-style: solid solid none solid;
     -fx-border-color: white white transparent white;
+    -fx-border-width: 3px;
+}
+
+#tableContainer {
+    -fx-background-color: #121212;
+    -fx-background-insets: 0;
+    -fx-border-style: solid solid solid solid;
+    -fx-border-color: white white white white;
     -fx-border-width: 3px;
 }
 
@@ -330,8 +338,12 @@ fx-background-color: #CF667673;
     -fx-background-color: black;
 }
 
-.scroll-bar:horizontal, .scroll-bar:vertical {
-    -fx-background-color: linear-gradient(#f0d53c, #e8834c, #f2b97f);
+.scroll-bar:vertical {
+    -fx-background-color: #8692fc;
+}
+
+.scroll-bar:horizontal {
+    -fx-background-color: transparent;
 }
 
 .increment-button, .decrement-button {

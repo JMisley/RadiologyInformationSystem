@@ -61,6 +61,7 @@ public class Home implements Initializable {
         stackPane.setMaxHeight(misc.getScreenHeight() * .85);
         stackPane.setMinWidth(misc.getScreenWidth() * .75);
         stackPane.setMinHeight(misc.getScreenHeight() * .85);
+        stackPane.setId("tableContainer");
     }
 
     private void refreshTables() {
