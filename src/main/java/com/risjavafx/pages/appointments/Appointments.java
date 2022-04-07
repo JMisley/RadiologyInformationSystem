@@ -22,7 +22,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -119,7 +118,7 @@ public class Appointments implements Initializable {
             infoTable.setCustomColumnWidth(closedFlag, .11);
 
 
-            centerContentContainer.setMaxWidth(misc.getScreenWidth() * .9);
+            centerContentContainer.setMaxWidth(misc.getScreenWidth() * .75);
             centerContentContainer.setMaxHeight(misc.getScreenHeight() * .85);
             centerContent.getChildren().add(infoTable.tableView);
 
@@ -338,12 +337,12 @@ public class Appointments implements Initializable {
             if (t1 != null) {
                 tableSearchBar.toggleButtons(false);
                 tableSearchBar.getDeleteButton().setOnAction(actionEvent ->
-                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> Popups.getAlertPopupEnum().getPopup().hide()));
+                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> PopupManager.removePopup("ALERT")));
             } else {
                 tableSearchBar.toggleButtons(true);
             }
             tableSearchBar.getCheckInButton().setOnAction(actionEvent ->
-                    customCheckInConfirmationPopup(confirm -> confirmCheckIn(), cancel -> Popups.getAlertPopupEnum().getPopup().hide()));
+                    customCheckInConfirmationPopup(confirm -> confirmCheckIn(), cancel -> PopupManager.removePopup("ALERT")));
         });
     }
 

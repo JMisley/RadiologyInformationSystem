@@ -142,7 +142,7 @@ public class ReferralPopup implements Initializable {
             insertPatientQuery();
             Referrals.queryData(Referrals.getLastRowStringQuery());
             PopupManager.removePopup("MENU");
-            Notification.createNotification();
+            Notification.createNotification("Submission Complete", "You have successfully created a new appointment");
 
         } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);

@@ -82,12 +82,10 @@
     -fx-background-color: #660066;
     -fx-text-fill: white;
     -fx-font-family: "Century Gothic";
-
 }
+
 #checkInButton:hover {
-
-fx-background-color: #CF667673;
-
+    -fx-background-color: rgba(102, 0, 102, 0.68);
 }
 
 /*Images--------------------------------------------------------------------------------------------------------------*/
@@ -166,6 +164,26 @@ fx-background-color: #CF667673;
 
 .combo-box-popup .list-view .list-cell:filled:selected {
     -fx-background-color: #BB86FC;
+}
+
+.combo-box *.scroll-bar:vertical {
+    -fx-background-color: #8692fc;
+    -fx-font-size: 7px;
+}
+
+.combo-box *.scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0em;
+}
+
+.combo-box *.scroll-bar:vertical .thumb {
+    -fx-background-color: white;
+    -fx-background-radius: 5em;
+}
+
+.combo-box > .corner {
+    -fx-background-color: black;
 }
 
 
@@ -283,7 +301,9 @@ fx-background-color: #CF667673;
 .table-view > .virtual-flow > .scroll-bar:vertical,
 .table-view > .virtual-flow > .scroll-bar:vertical > .track,
 .table-view > .virtual-flow > .scroll-bar:vertical > .track-background {
-    -fx-background-color: #2a2a2a;
+    -fx-padding: 0;
+    -fx-background-color: #8692fc;
+    -fx-font-size: 2ex;
 }
 
 .table-view *.scroll-bar:horizontal *.increment-button,
@@ -339,28 +359,29 @@ fx-background-color: #CF667673;
     -fx-background-color: black;
 }
 
-.scroll-bar:vertical {
+.scroll-pane *.scroll-bar:vertical {
     -fx-background-color: #8692fc;
+    -fx-font-size: 2ex;
 }
 
-.scroll-bar:horizontal {
+.scroll-pane *.scroll-bar:horizontal {
     -fx-background-color: transparent;
 }
 
-.increment-button, .decrement-button {
+.scroll-pane *.increment-button, .decrement-button {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
 }
 
-.scroll-bar:horizontal .track,
-.scroll-bar:vertical .track {
+.scroll-pane *.scroll-bar:horizontal .track,
+.scroll-pane *.scroll-bar:vertical .track {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
     -fx-background-radius: 0em;
 }
 
-.scroll-bar:horizontal .thumb,
-.scroll-bar:vertical .thumb {
+.scroll-pane *.scroll-bar:horizontal .thumb,
+.scroll-pane *.scroll-bar:vertical .thumb {
     -fx-background-color: white;
     -fx-background-radius: 5em;
 }

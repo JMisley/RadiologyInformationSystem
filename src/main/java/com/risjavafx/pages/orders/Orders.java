@@ -118,7 +118,7 @@ public class Orders implements Initializable {
             infoTable.setCustomColumnWidth(report, .15);
 
 
-            centerContentContainer.setMaxWidth(misc.getScreenWidth() * .9);
+            centerContentContainer.setMaxWidth(misc.getScreenWidth() * .75);
             centerContentContainer.setMaxHeight(misc.getScreenHeight() * .85);
             centerContent.getChildren().add(infoTable.tableView);
 
@@ -270,8 +270,7 @@ public class Orders implements Initializable {
             return true;
         } else if (ordersData.getNotesData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Notes")) {
             return true;
-        }
-        else if (ordersData.getStatusData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Status")) {
+        } else if (ordersData.getStatusData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Status")) {
             return true;
         } else
             return ordersData.getReportData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Report");
@@ -297,7 +296,7 @@ public class Orders implements Initializable {
             row.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
                 final int index = row.getIndex();
                 if (index >= 0 && index < infoTable.tableView.getItems().size() &&
-                        infoTable.tableView.getSelectionModel().isSelected(index)) {
+                    infoTable.tableView.getSelectionModel().isSelected(index)) {
                     infoTable.tableView.getSelectionModel().clearSelection();
 
                     tableSearchBar.toggleButtons(true);

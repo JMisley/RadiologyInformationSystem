@@ -10,19 +10,19 @@
 
 <HBox nodeOrientation="RIGHT_TO_LEFT" BorderPane.alignment="CENTER" xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.risjavafx.components.TitleBar" HBox.hgrow="ALWAYS" >
-    <Button fx:id="titleBarCloseButton" mnemonicParsing="false" onAction="#closeApp" prefWidth="50" contentDisplay="CENTER" text="✕">
+    <Button fx:id="titleBarCloseButton" mnemonicParsing="false" onAction="#closeApp" prefWidth="50" contentDisplay="CENTER">
         <graphic>
             <ImageView fx:id="closeImage" fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
             </ImageView>
         </graphic>
     </Button>
-    <Button fx:id="titleBarMaxButton" mnemonicParsing="false" onAction="#maxApp" prefWidth="50.0" contentDisplay="CENTER" text="❐">
+    <Button fx:id="titleBarMaxButton" mnemonicParsing="false" onAction="#maxApp" prefWidth="50.0" contentDisplay="CENTER">
         <graphic>
             <ImageView fx:id="maxImage" fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
             </ImageView>
         </graphic>
     </Button>
-    <Button fx:id="titleBarMinButton" mnemonicParsing="false" onMouseClicked="#minApp" prefWidth="50.0" contentDisplay="CENTER" text="━">
+    <Button fx:id="titleBarMinButton" mnemonicParsing="false" onMouseClicked="#minApp" prefWidth="50.0" contentDisplay="CENTER">
         <graphic>
             <ImageView fx:id="minImage" fitHeight="17.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
             </ImageView>

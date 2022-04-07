@@ -50,9 +50,7 @@ public class OrdersPopup implements Initializable {
         populateComboBoxModality();
         populateComboBoxAppointment();
         populateComboBoxStatus();
-        Popups.ORDERS.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
-            PageManager.getRoot().setDisable(!aBoolean);
-        });
+        Popups.ORDERS.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> PageManager.getRoot().setDisable(!aBoolean));
         usablePopupContainer = this.popupContainer;
     }
 
@@ -323,12 +321,7 @@ public class OrdersPopup implements Initializable {
         this.cancelButton.setPrefWidth(this.misc.getScreenWidth() * 0.11D);
         this.submitButton.setPrefHeight(this.misc.getScreenWidth() * 0.033D);
         this.submitButton.setPrefWidth(this.misc.getScreenWidth() * 0.11D);
-        double fontSize;
-        if (this.misc.getScreenWidth() / 80.0D < 20.0D) {
-            fontSize = this.misc.getScreenWidth() / 80.0D;
-        } else {
-            fontSize = 20.0D;
-        }
+        double fontSize = Math.min(this.misc.getScreenWidth() / 80.0D, 20.0D);
 
         this.cancelButton.setStyle("-fx-font-size: " + fontSize);
         this.submitButton.setStyle("-fx-font-size: " + fontSize);
@@ -340,7 +333,7 @@ public class OrdersPopup implements Initializable {
             //this.insertOrderIdQuery();
             Orders.queryData(Orders.getLastRowStringQuery());
             Popups.getMenuPopupEnum().getPopup().hide();
-            Notification.createNotification();
+            Notification.createNotification("Submission Complete", "You have successfully added a new order");
         } else if (!this.validInput()) {
             PopupManager.createPopup(Popups.ALERT);
             PopupAlert var10001 = new PopupAlert() {
@@ -359,8 +352,8 @@ public class OrdersPopup implements Initializable {
         Popups.ORDERS.getPopup().hide();
 
         try {
-            Popups.ALERT.getPopup().hide();
-        } catch (Exception var2) {
+            PopupManager.removePopup("MENU");
+        } catch (Exception ignored) {
         }
 
     }

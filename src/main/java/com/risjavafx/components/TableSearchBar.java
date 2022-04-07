@@ -1,6 +1,7 @@
 package com.risjavafx.components;
 
 import com.risjavafx.Miscellaneous;
+import com.risjavafx.pages.Pages;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -89,9 +90,11 @@ public class TableSearchBar implements Initializable {
         usableEditButton.setOpacity(otherOpacity);
         usableDeleteButton.setDisable(showAddButton);
         usableDeleteButton.setOpacity(otherOpacity);
-        usableCheckInButton.setDisable(showAddButton);
-        usableCheckInButton.setOpacity(otherOpacity);
 
+        if (Pages.getPage().equals(Pages.APPOINTMENTS)) {
+            usableCheckInButton.setDisable(showAddButton);
+            usableCheckInButton.setOpacity(otherOpacity);
+        }
     }
 
     public TextField getTextField() {return usableTextField;}

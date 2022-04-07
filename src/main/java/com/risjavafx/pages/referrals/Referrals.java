@@ -116,7 +116,7 @@ public class Referrals implements Initializable {
             infoTable.setCustomColumnWidth(race, .142);
             infoTable.setCustomColumnWidth(ethnicity, .142);
 
-            centerContentContainer.setMaxWidth(misc.getScreenWidth() * .9);
+            centerContentContainer.setMaxWidth(misc.getScreenWidth() * .75);
             centerContentContainer.setMaxHeight(misc.getScreenHeight() * .85);
             centerContent.getChildren().add(infoTable.tableView);
 
