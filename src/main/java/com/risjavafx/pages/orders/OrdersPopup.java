@@ -13,6 +13,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
+
+import com.risjavafx.popups.models.PopupError;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -166,12 +168,12 @@ public class OrdersPopup implements Initializable {
         """;
         PreparedStatement preparedStatement = this.driver.connection.prepareStatement(sql);
         preparedStatement.setInt(1, Integer.parseInt(this.orderIDLabel.getText()));
-        preparedStatement.setInt(2,  pullPatientComboboxId(patientNameComboBox.getValue()));
-        preparedStatement.setInt(3, pullDocComboBoxId(referralMdComboBox.getValue()));
-        preparedStatement.setInt(4, pullModalityComboBoxId(modalityComboBox.getValue()));
-        preparedStatement.setInt(5, pullAppointmentComboBoxId(appointmentComboBox.getValue()));
+        preparedStatement.setString(2, patientNameComboBox.getValue());
+        preparedStatement.setString(3, referralMdComboBox.getValue());
+        preparedStatement.setString(4, modalityComboBox.getValue());
+        preparedStatement.setString(5, appointmentComboBox.getValue());
         preparedStatement.setString(6, this.notesTextField.getText());
-        preparedStatement.setInt(7, pullStatusComboBoxId(statusComboBox.getValue()));
+        preparedStatement.setString(7, statusComboBox.getValue());
         preparedStatement.setString(8, this.reportTextField.getText());
         preparedStatement.execute();
     }
@@ -200,115 +202,115 @@ public class OrdersPopup implements Initializable {
 //        return resultSet.getInt("order_id");
 //    }
 
-    public int pullPatientComboboxId(String name) {
-        try {
-            String patientIdFromCombo = """
-                    SELECT patient_id
-                    FROM patients
-                    WHERE ? = CONCAT(first_name, " ", last_name)
-                    """;
-            PreparedStatement preparedStatementPatientCombo = driver.connection.prepareStatement(patientIdFromCombo);
-            preparedStatementPatientCombo.setString(1, name);
-            ResultSet resultSetPatientCombo = preparedStatementPatientCombo.executeQuery();
-
-            int i = 0;
-            while (resultSetPatientCombo.next()) {
-                i = resultSetPatientCombo.getInt(("patient_id"));
-            }
-            return i;
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-        return -1;
-    }
-
-    public int pullDocComboBoxId(String name) {
-        try {
-            String techIdFromCombo = """
-                    SELECT user_id
-                    FROM users
-                    WHERE ? =  full_name
-                    """;
-            PreparedStatement preparedStatementTechCombo = driver.connection.prepareStatement(techIdFromCombo);
-            preparedStatementTechCombo.setString(1, name);
-            ResultSet resultSetTechCombo = preparedStatementTechCombo.executeQuery();
-
-            int i = 0;
-            while (resultSetTechCombo.next()) {
-                i = resultSetTechCombo.getInt(("user_id"));
-            }
-            return i;
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-        return -1;
-    }
-
-    public int pullModalityComboBoxId(String insertName) {
-        try {
-            String modalityIdFromCombo = """
-                    SELECT modality_id
-                    FROM modalities
-                    WHERE name = ?
-                    """;
-            PreparedStatement preparedStatementModalityCombo = driver.connection.prepareStatement(modalityIdFromCombo);
-            preparedStatementModalityCombo.setString(1, insertName);
-            ResultSet resultSetTechCombo = preparedStatementModalityCombo.executeQuery();
-
-            int i = 0;
-            while (resultSetTechCombo.next()) {
-                i = resultSetTechCombo.getInt(("modality_id"));
-            }
-            return i;
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-        return -1;
-    }
-
-    public int pullAppointmentComboBoxId(String insertName) {
-        try {
-            String modalityIdFromCombo = """
-                    SELECT appointment_id
-                    FROM appointments
-                    WHERE name = ?
-                    """;
-            PreparedStatement preparedStatementModalityCombo = driver.connection.prepareStatement(modalityIdFromCombo);
-            preparedStatementModalityCombo.setString(1, insertName);
-            ResultSet resultSetTechCombo = preparedStatementModalityCombo.executeQuery();
-
-            int i = 0;
-            while (resultSetTechCombo.next()) {
-                i = resultSetTechCombo.getInt(("appointment_id"));
-            }
-            return i;
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-        return -1;
-    }
-
-    public int pullStatusComboBoxId(String insertName) {
-        try {
-            String modalityIdFromCombo = """
-                    SELECT closed
-                    FROM appointments
-                    WHERE name = ?
-                    """;
-            PreparedStatement preparedStatementModalityCombo = driver.connection.prepareStatement(modalityIdFromCombo);
-            preparedStatementModalityCombo.setString(1, insertName);
-            ResultSet resultSetTechCombo = preparedStatementModalityCombo.executeQuery();
-
-            int i = 0;
-            while (resultSetTechCombo.next()) {
-                i = resultSetTechCombo.getInt(("closed"));
-            }
-            return i;
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-        return -1;
-    }
+//    public int pullPatientComboboxId(String name) {
+//        try {
+//            String patientIdFromCombo = """
+//                    SELECT patient_id
+//                    FROM patients
+//                    WHERE ? = CONCAT(first_name, " ", last_name)
+//                    """;
+//            PreparedStatement preparedStatementPatientCombo = driver.connection.prepareStatement(patientIdFromCombo);
+//            preparedStatementPatientCombo.setString(1, name);
+//            ResultSet resultSetPatientCombo = preparedStatementPatientCombo.executeQuery();
+//
+//            int i = 0;
+//            while (resultSetPatientCombo.next()) {
+//                i = resultSetPatientCombo.getInt(("patient_id"));
+//            }
+//            return i;
+//        } catch (Exception exception) {
+//            exception.printStackTrace();
+//        }
+//        return -1;
+//    }
+//
+//    public int pullDocComboBoxId(String name) {
+//        try {
+//            String techIdFromCombo = """
+//                    SELECT user_id
+//                    FROM users
+//                    WHERE ? =  full_name
+//                    """;
+//            PreparedStatement preparedStatementTechCombo = driver.connection.prepareStatement(techIdFromCombo);
+//            preparedStatementTechCombo.setString(1, name);
+//            ResultSet resultSetTechCombo = preparedStatementTechCombo.executeQuery();
+//
+//            int i = 0;
+//            while (resultSetTechCombo.next()) {
+//                i = resultSetTechCombo.getInt(("user_id"));
+//            }
+//            return i;
+//        } catch (Exception exception) {
+//            exception.printStackTrace();
+//        }
+//        return -1;
+//    }
+//
+//    public int pullModalityComboBoxId(String insertName) {
+//        try {
+//            String modalityIdFromCombo = """
+//                    SELECT modality_id
+//                    FROM modalities
+//                    WHERE name = ?
+//                    """;
+//            PreparedStatement preparedStatementModalityCombo = driver.connection.prepareStatement(modalityIdFromCombo);
+//            preparedStatementModalityCombo.setString(1, insertName);
+//            ResultSet resultSetTechCombo = preparedStatementModalityCombo.executeQuery();
+//
+//            int i = 0;
+//            while (resultSetTechCombo.next()) {
+//                i = resultSetTechCombo.getInt(("modality_id"));
+//            }
+//            return i;
+//        } catch (Exception exception) {
+//            exception.printStackTrace();
+//        }
+//        return -1;
+//    }
+//
+//    public int pullAppointmentComboBoxId(String insertName) {
+//        try {
+//            String modalityIdFromCombo = """
+//                    SELECT appointment_id
+//                    FROM appointments
+//                    WHERE name = ?
+//                    """;
+//            PreparedStatement preparedStatementModalityCombo = driver.connection.prepareStatement(modalityIdFromCombo);
+//            preparedStatementModalityCombo.setString(1, insertName);
+//            ResultSet resultSetTechCombo = preparedStatementModalityCombo.executeQuery();
+//
+//            int i = 0;
+//            while (resultSetTechCombo.next()) {
+//                i = resultSetTechCombo.getInt(("appointment_id"));
+//            }
+//            return i;
+//        } catch (Exception exception) {
+//            exception.printStackTrace();
+//        }
+//        return -1;
+//    }
+//
+//    public int pullStatusComboBoxId(String insertName) {
+//        try {
+//            String modalityIdFromCombo = """
+//                    SELECT closed
+//                    FROM appointments
+//                    WHERE name = ?
+//                    """;
+//            PreparedStatement preparedStatementModalityCombo = driver.connection.prepareStatement(modalityIdFromCombo);
+//            preparedStatementModalityCombo.setString(1, insertName);
+//            ResultSet resultSetTechCombo = preparedStatementModalityCombo.executeQuery();
+//
+//            int i = 0;
+//            while (resultSetTechCombo.next()) {
+//                i = resultSetTechCombo.getInt(("closed"));
+//            }
+//            return i;
+//        } catch (Exception exception) {
+//            exception.printStackTrace();
+//        }
+//        return -1;
+//    }
 
     public boolean validInput() {
         return this.patientNameComboBox.getValue() != null && this.referralMdComboBox.getValue() != null && this.modalityComboBox.getValue() != null && !this.notesTextField.getText().isBlank() && this.statusComboBox != null && !this.reportTextField.getText().isBlank();
@@ -339,18 +341,15 @@ public class OrdersPopup implements Initializable {
             this.insertOrderQuery();
             //this.insertOrderIdQuery();
             Orders.queryData(Orders.getLastRowStringQuery());
-            Popups.getMenuPopupEnum().getPopup().hide();
+            PopupManager.removePopup("MENU");
             Notification.createNotification();
-        } else if (!this.validInput()) {
+        } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);
-            PopupAlert var10001 = new PopupAlert() {
-                {
-                    this.setAlertImage(new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/error.png"));
-                    this.setHeaderLabel("Submission Failed");
-                    this.setContentLabel("Please make sure you filled out all fields");
-                    this.setExitButtonLabel("Retry");
-                }
-            };
+            new PopupError() {{
+                setHeaderLabel("Submission Failed");
+                setContentLabel("Please make sure you filled out all fields");
+                setExitButtonLabel("Retry");
+            }};
         }
 
     }

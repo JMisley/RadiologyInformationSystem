@@ -25,7 +25,7 @@ public enum Popups {
     }
 
     public static Popups[] getPopupsArray() {
-        return new Popups[]{ADMIN, APPOINTMENT, CONFIRMATION, ALERT};
+        return new Popups[]{ADMIN, ORDERS, APPOINTMENT, CONFIRMATION, ALERT};
     }
 
     public static Popups[] getAlertPopupsArray() {
