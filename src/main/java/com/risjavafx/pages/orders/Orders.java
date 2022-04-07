@@ -9,7 +9,6 @@ import com.risjavafx.components.TitleBar;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.TableManager;
-import com.risjavafx.pages.orders.OrdersData;
 import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
@@ -22,7 +21,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -51,14 +49,14 @@ public class Orders implements Initializable {
     Miscellaneous misc = new Miscellaneous();
 
     public TableColumn<OrdersData, String>
-            orderId = new TableColumn("Order ID"),
-            patient = new TableColumn("Patient"),
-            referralMd = new TableColumn("Referral MD"),
-            modality = new TableColumn("Modality"),
-            appointment = new TableColumn("Appointment"),
-            notes = new TableColumn("Notes"),
-            status = new TableColumn("Status"),
-            report = new TableColumn("Report");
+            orderId = new TableColumn<>("Order ID"),
+            patient = new TableColumn<>("Patient"),
+            referralMd = new TableColumn<>("Referral MD"),
+            modality = new TableColumn<>("Modality"),
+            appointment = new TableColumn<>("Appointment"),
+            notes = new TableColumn<>("Notes"),
+            status = new TableColumn<>("Status"),
+            report = new TableColumn<>("Report");
     public ArrayList<TableColumn<OrdersData, String>> tableColumnsList = new ArrayList<>() {{
         add(orderId);
         add(patient);
@@ -159,7 +157,7 @@ public class Orders implements Initializable {
     public String getAllDataStringQuery() {
         return """
                 SELECT *
-                FROM orders 
+                FROM orders
                 """;
     }
 
