@@ -39,7 +39,7 @@ public class PopupManager {
 
     public static void loadPopupsToCache() {
         try {
-            for (Popups popup : Popups.getPopupsArray()) {
+            for (Popups popup : Popups.values()) {
                 Parent root = FXMLLoader.load(Objects.requireNonNull(PopupManager.class.getResource(popup.getFilename())));
                 root.getStylesheets().add(Objects.requireNonNull(PageManager.class.getResource("stylesheet/styles.css")).toExternalForm());
 
@@ -61,7 +61,7 @@ public class PopupManager {
 
     public static void removePopup(String type) {
         if (type.equals("MENU")) {
-            for (Popups popups : Popups.getPopupsArray()) {
+            for (Popups popups : Popups.values()) {
                 popups.getPopup().hide();
                 popups.getPopup().getContent().clear();
             }

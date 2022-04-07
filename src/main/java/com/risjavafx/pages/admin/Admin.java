@@ -1,6 +1,5 @@
 package com.risjavafx.pages.admin;
 
-import com.risjavafx.UserStates;
 import com.risjavafx.components.InfoTable;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
@@ -310,7 +309,7 @@ public class Admin implements Initializable {
             e.printStackTrace();
         }
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
-        Popups.getAlertPopupEnum().getPopup().hide();
+        PopupManager.removePopup("ALERT");
     }
 
     public void tableSearchBarAddButtonListener() {

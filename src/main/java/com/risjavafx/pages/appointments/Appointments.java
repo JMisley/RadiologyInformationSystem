@@ -42,7 +42,6 @@ public class Appointments implements Initializable {
     SortedList<AppointmentData> sortedList;
     FilteredList<AppointmentData> filteredList;
 
-
     InfoTable<AppointmentData, String> infoTable = new InfoTable<>();
     TableSearchBar tableSearchBar = new TableSearchBar();
     Miscellaneous misc = new Miscellaneous();
@@ -370,12 +369,10 @@ public class Appointments implements Initializable {
         */
 
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
-        Popups.getAlertPopupEnum().getPopup().hide();
+        PopupManager.removePopup("ALERT");
     }
 
     public void tableSearchBarAddButtonListener() {
-
         tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.APPOINTMENT));
-
     }
 }

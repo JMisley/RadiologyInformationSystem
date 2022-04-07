@@ -1,10 +1,8 @@
 package com.risjavafx.components;
 
 import com.risjavafx.Miscellaneous;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
@@ -31,7 +29,6 @@ public class TitleBar implements javafx.fxml.Initializable {
         Miscellaneous misc = new Miscellaneous();
         mainContainer.setMinHeight(misc.getScreenHeight());
         mainContainer.setMinWidth(misc.getScreenWidth());
-        setDraggable(titleBar);
         ComponentsManager.createComponent(Components.TITLE_BAR, titleBar);
     }
 

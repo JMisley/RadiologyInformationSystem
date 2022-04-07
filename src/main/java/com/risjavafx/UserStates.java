@@ -46,4 +46,8 @@ public enum UserStates {
     public static void setUserId(int userId) {
         UserStates.userId = userId;
     }
+
+    public static int getUserId() {
+        return userId;
+    }
 }

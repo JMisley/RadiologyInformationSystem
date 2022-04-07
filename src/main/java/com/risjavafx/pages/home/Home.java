@@ -57,9 +57,10 @@ public class Home implements Initializable {
         Miscellaneous misc = new Miscellaneous();
         tableViewList.getChildren().add(stackPane);
         stackPane.setMaxWidth(misc.getScreenWidth() * .75);
-        stackPane.setMaxHeight(misc.getScreenHeight() * .85);
+        stackPane.setMaxHeight(misc.getScreenHeight() * .5);
         stackPane.setMinWidth(misc.getScreenWidth() * .75);
-        stackPane.setMinHeight(misc.getScreenHeight() * .85);
+        stackPane.setMinHeight(misc.getScreenHeight() * .5);
+        stackPane.setId("tableContainer");
     }
 
     private void refreshTables() {

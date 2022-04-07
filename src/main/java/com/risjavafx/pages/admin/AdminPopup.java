@@ -170,14 +170,21 @@ public class AdminPopup implements Initializable {
 
     //Button Onclicks
     // Onclick for submit button
-    public void submitButtonOnclick() throws SQLException {
+    public void submitButtonOnclick() {
+        boolean exception = false;
         if (validInput()) {
-            insertUserQuery();
-            insertRoleIdQuery();
-            Admin.queryData(Admin.getLastRowStringQuery());
-            PopupManager.removePopup("MENU");
-            Notification.createNotification();
-        } else if (!validInput()) {
+            try {
+                insertUserQuery();
+                insertRoleIdQuery();
+                Admin.queryData(Admin.getLastRowStringQuery());
+                PopupManager.removePopup("MENU");
+                Notification.createNotification("Submission Complete", "You successfully added a new user");
+            } catch (Exception e) {
+                exception = true;
+            }
+
+        }
+        if (!validInput() || exception) {
             PopupManager.createPopup(Popups.ALERT);
             new PopupError() {{
                 setHeaderLabel("Submission Failed");

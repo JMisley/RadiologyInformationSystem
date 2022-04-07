@@ -266,7 +266,7 @@ public class AppointmentPopUp implements Initializable {
             insertAppointmentQuery();
             Appointments.queryData(Appointments.getLastRowStringQuery());
             PopupManager.removePopup("MENU");
-            Notification.createNotification();
+            Notification.createNotification("Submission Complete", "You successfully added a new user");
         } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);
             new PopupError() {{
