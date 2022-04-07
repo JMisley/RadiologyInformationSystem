@@ -270,7 +270,8 @@ public class Orders implements Initializable {
             return true;
         } else if (ordersData.getNotesData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Notes")) {
             return true;
-        } else if (ordersData.getStatusData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Status")) {
+        }
+        else if (ordersData.getStatusData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Status")) {
             return true;
         } else
             return ordersData.getReportData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Report");
@@ -327,11 +328,10 @@ public class Orders implements Initializable {
             e.printStackTrace();
         }
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
-        Popups.getAlertPopupEnum().getPopup().hide();
+        PopupManager.removePopup("ALERT");
     }
 
     public void tableSearchBarAddButtonListener() {
         tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.ORDERS));
     }
 }
-

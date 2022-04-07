@@ -3,9 +3,7 @@ package com.risjavafx.pages.orders;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
 import com.risjavafx.pages.PageManager;
-import com.risjavafx.pages.orders.Orders;
 import com.risjavafx.popups.models.Notification;
-import com.risjavafx.popups.models.PopupAlert;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
 import java.net.URL;
@@ -14,7 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import com.risjavafx.popups.models.PopupError;
+import com.risjavafx.popups.models.PopupAlert;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -22,7 +20,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 
 public class OrdersPopup implements Initializable {
@@ -48,15 +45,22 @@ public class OrdersPopup implements Initializable {
         resizeElements();
         setOrderIDLabel();
         populateComboBoxPatient();
-        populateComboBoxreferralMd();
+        populateComboBoxReferralMd();
         populateComboBoxModality();
         populateComboBoxAppointment();
         populateComboBoxStatus();
-        Popups.ORDERS.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> PageManager.getRoot().setDisable(!aBoolean));
+        Popups.ORDERS.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
+            PageManager.getRoot().setDisable(!aBoolean);
+
+            if (Popups.ORDERS.getPopup().isShowing()) {
+                orderIDLabel.setText(String.valueOf(setOrderIDLabel()));
+                refreshTextFields();
+            }
+        });
         usablePopupContainer = this.popupContainer;
     }
 
-    public void setOrderIDLabel() {
+    public int setOrderIDLabel() {
         try {
             String sql = """
                     select MAX(order_id)
@@ -64,13 +68,13 @@ public class OrdersPopup implements Initializable {
                     """;
             ResultSet resultSet = this.driver.connection.createStatement().executeQuery(sql);
 
-            while(resultSet.next()) {
-                this.orderIDLabel.setText(String.valueOf(resultSet.getInt("MAX(order_id)") + 1));
+            if (resultSet.next()) {
+                return resultSet.getInt("MAX(order_id)") + 1;
             }
         } catch (Exception var3) {
             var3.printStackTrace();
         }
-
+        return -1;
     }
 
     public void populateComboBoxPatient() {
@@ -90,7 +94,7 @@ public class OrdersPopup implements Initializable {
         }
     }
 
-    public void populateComboBoxreferralMd() {
+    public void populateComboBoxReferralMd() {
         try {
             String sql = """               
                     SELECT full_name
@@ -329,16 +333,26 @@ public class OrdersPopup implements Initializable {
         this.submitButton.setStyle("-fx-font-size: " + fontSize);
     }
 
+    private void refreshTextFields() {
+        patientNameComboBox.getSelectionModel().clearSelection();
+        modalityComboBox.getSelectionModel().clearSelection();
+        referralMdComboBox.getSelectionModel().clearSelection();
+        statusComboBox.getSelectionModel().clearSelection();
+        appointmentComboBox.getSelectionModel().clearSelection();
+        reportTextField.clear();
+        notesTextField.clear();
+    }
+
     public void submitButtonOnclick() throws SQLException {
         if (this.validInput()) {
             this.insertOrderQuery();
             //this.insertOrderIdQuery();
             Orders.queryData(Orders.getLastRowStringQuery());
-            Popups.getMenuPopupEnum().getPopup().hide();
+            PopupManager.removePopup("MENU");
             Notification.createNotification("Submission Complete", "You have successfully added a new order");
-        } else if (!this.validInput()) {
+        } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);
-            new PopupError() {{
+            new PopupAlert() {{
                 setHeaderLabel("Submission Failed");
                 setContentLabel("Please make sure you filled out all fields");
                 setExitButtonLabel("Retry");
@@ -348,12 +362,9 @@ public class OrdersPopup implements Initializable {
     }
 
     public void cancelButtonOnclick() {
-        Popups.ORDERS.getPopup().hide();
-
         try {
             PopupManager.removePopup("MENU");
         } catch (Exception ignored) {
         }
-
     }
 }

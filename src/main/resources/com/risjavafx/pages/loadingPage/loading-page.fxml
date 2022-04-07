@@ -15,7 +15,7 @@
     </top>
     <center>
         <StackPane>
-            <ImageView fx:id="progressSpinner" fitWidth="200" fitHeight="200"/>
+            <ImageView fx:id="progressSpinner" fitWidth="175" fitHeight="175"/>
         </StackPane>
     </center>
 </BorderPane>

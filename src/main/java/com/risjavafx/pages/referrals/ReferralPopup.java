@@ -8,17 +8,13 @@
         import com.risjavafx.Driver;
         import com.risjavafx.Miscellaneous;
         import com.risjavafx.popups.Popups;
-        import javafx.collections.FXCollections;
-        import javafx.collections.ObservableList;
         import javafx.fxml.Initializable;
         import javafx.scene.control.Button;
-        import javafx.scene.control.ComboBox;
         import javafx.scene.control.Label;
         import javafx.scene.control.TextField;
         import javafx.scene.image.Image;
         import javafx.scene.layout.VBox;
 
-        import java.io.IOException;
         import java.net.URL;
         import java.sql.PreparedStatement;
         import java.sql.ResultSet;
@@ -54,13 +50,13 @@ public class ReferralPopup implements Initializable {
 
             if (Popups.APPOINTMENT.getPopup().isShowing()) {
                 patientIDLabel.setText(String.valueOf(setPatientIDLabel()));
-                refreshTextFields();
+                refreshElements();
             }
         });
         usablePopupContainer = popupContainer;
     }
 
-    public void refreshTextFields() {
+    public void refreshElements() {
         firstNameTextField.clear();
         lastNameTextField.clear();
         birthDateTextField.clear();
@@ -158,8 +154,8 @@ public class ReferralPopup implements Initializable {
 
     // Onclick for cancel button
     public void cancelButtonOnclick() {
-        Popups.REFERRALS.getPopup().hide();
         try {
-            Popups.ALERT.getPopup().hide();} catch (Exception ignore) {}
+            PopupManager.removePopup("MENU");
+        } catch (Exception ignore) {}
     }
 }

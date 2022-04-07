@@ -10,7 +10,7 @@
 
 <VBox fx:id="popupContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
       prefWidth="400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.risjavafx.popups.models.PopupError">
+      fx:controller="com.risjavafx.popups.models.PopupAlert">
     <HBox alignment="CENTER">
         <VBox.margin>
             <Insets top="20.0"/>
