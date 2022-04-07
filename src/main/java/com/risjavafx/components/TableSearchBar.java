@@ -18,6 +18,7 @@ public class TableSearchBar implements Initializable {
     @FXML private Button addButton;
     @FXML private Button deleteButton;
     @FXML private Button editButton;
+    @FXML private Button checkInButton;
     @FXML private TextField textField;
     @FXML private ComboBox<String> comboBox;
     @FXML private Label errorLabel;
@@ -25,6 +26,7 @@ public class TableSearchBar implements Initializable {
     private static Button usableAddButton;
     private static Button usableDeleteButton;
     private static Button usableEditButton;
+    private static Button usableCheckInButton;
     private static TextField usableTextField;
     private static ComboBox<String> usableComboBox;
     private static Label usableErrorLabel;
@@ -42,6 +44,7 @@ public class TableSearchBar implements Initializable {
         usableAddButton = addButton;
         usableEditButton = editButton;
         usableDeleteButton = deleteButton;
+        usableCheckInButton = checkInButton;
     }
 
     public void createSearchBar(HBox tableSearchBar) {
@@ -66,7 +69,7 @@ public class TableSearchBar implements Initializable {
         searchLabel.setStyle("-fx-font-size: " + fontSize);
         textField.setStyle("-fx-font-size: " + (fontSize - 2) + "; -fx-font-family: 'Arial'");
 
-        Button[] buttons = {addButton, editButton, deleteButton};
+        Button[] buttons = {addButton, editButton, deleteButton, checkInButton};
         for (Button button : buttons) {
             button.setPrefHeight(misc.getScreenHeight() * .05);
             button.setPrefWidth(misc.getScreenWidth() * .1);
@@ -86,6 +89,9 @@ public class TableSearchBar implements Initializable {
         usableEditButton.setOpacity(otherOpacity);
         usableDeleteButton.setDisable(showAddButton);
         usableDeleteButton.setOpacity(otherOpacity);
+        usableCheckInButton.setDisable(showAddButton);
+        usableCheckInButton.setOpacity(otherOpacity);
+
     }
 
     public TextField getTextField() {return usableTextField;}
@@ -97,6 +103,8 @@ public class TableSearchBar implements Initializable {
     public Button getAddButton() {return usableAddButton;}
 
     public Button getEditButton() {return usableEditButton;}
+
+    public Button getCheckInButton() {return  usableCheckInButton;}
 
     public Button getDeleteButton() {return usableDeleteButton;}
 }

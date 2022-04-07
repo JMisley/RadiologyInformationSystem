@@ -78,6 +78,17 @@
     -fx-background-color: #CF667673;
 }
 
+#checkInButton {
+    -fx-background-color: #660066;
+    -fx-text-fill: white;
+    -fx-font-family: "Century Gothic";
+
+}
+#checkInButton:hover {
+
+fx-background-color: #CF667673;
+
+}
 
 /*Images--------------------------------------------------------------------------------------------------------------*/
 #successImage {

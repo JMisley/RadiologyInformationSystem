@@ -12,22 +12,23 @@ import javafx.stage.StageStyle;
 public class Main extends Application {
 
     public static Stage usableStage;
+    Miscellaneous misc = new Miscellaneous();
 
     @Override
     public void start(Stage primaryStage) {
-        Miscellaneous misc = new Miscellaneous();
         usableStage = primaryStage;
 
         Scene scene = new Scene(new BorderPane());
         PageManager.setScene(scene);
         PageManager.switchPage(Pages.LOGIN);
-        PageManager.loadPageToCache(Pages.PROGRESS);
+
+        //  PageManager.switchPage(Pages.ADMIN);
 
         usableStage.setScene(scene);
         usableStage.setMinWidth(misc.getScreenWidth());
         usableStage.setMinHeight(misc.getScreenHeight());
         usableStage.setMaximized(false);
-        usableStage.initStyle(StageStyle.TRANSPARENT);
+        usableStage.initStyle(StageStyle.UNDECORATED);
         usableStage.show();
     }
 

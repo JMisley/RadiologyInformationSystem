@@ -3,7 +3,7 @@ package com.risjavafx.pages.admin;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-@SuppressWarnings("unused")
+
 public class AdminData {
 
     SimpleIntegerProperty userIdData;

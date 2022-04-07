@@ -35,7 +35,8 @@ public class Home implements Initializable {
 
         StackPane[] stackPanes = {
                 new StackPane(TableManager.getAdminTable()),
-                new StackPane(TableManager.getAppointmentsTable())};
+                new StackPane(TableManager.getAppointmentsTable()),
+                new StackPane(TableManager.getOrdersTable())};
         createScrollView(tableViewList, stackPanes);
 
         PageManager.getScene().rootProperty().addListener(observable -> {
@@ -57,9 +58,9 @@ public class Home implements Initializable {
         Miscellaneous misc = new Miscellaneous();
         tableViewList.getChildren().add(stackPane);
         stackPane.setMaxWidth(misc.getScreenWidth() * .75);
-        stackPane.setMaxHeight(misc.getScreenHeight() * .5);
+        stackPane.setMaxHeight(misc.getScreenHeight() * .85);
         stackPane.setMinWidth(misc.getScreenWidth() * .75);
-        stackPane.setMinHeight(misc.getScreenHeight() * .5);
+        stackPane.setMinHeight(misc.getScreenHeight() * .85);
         stackPane.setId("tableContainer");
     }
 
@@ -67,6 +68,7 @@ public class Home implements Initializable {
         tableViewList.getChildren().clear();
         addToScrollView(new StackPane(TableManager.getAdminTable()));
         addToScrollView(new StackPane(TableManager.getAppointmentsTable()));
+        addToScrollView(new StackPane(TableManager.getOrdersTable()));
     }
 
     private void resizeElements() {

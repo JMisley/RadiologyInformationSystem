@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 public class AppointmentData {
 
     SimpleIntegerProperty patientId;
+    SimpleIntegerProperty appointmentId;
     SimpleStringProperty patient;
     SimpleStringProperty modality;
     SimpleStringProperty price;
@@ -14,8 +15,13 @@ public class AppointmentData {
     SimpleStringProperty technician;
     SimpleStringProperty closedFlag;
 
-    public AppointmentData(int patientId, String patient, String modality, String price, String dateTime, String radiologist, String technician, String closedFlag) {
-        this.patientId = new SimpleIntegerProperty(patientId);
+    public SimpleIntegerProperty patientIdProperty() {
+        return patientId;
+    }
+
+
+    public AppointmentData(int appointmentId, String patient, String modality, String price, String dateTime, String radiologist, String technician, String closedFlag) {
+        this.appointmentId = new SimpleIntegerProperty(appointmentId);
         this.patient = new SimpleStringProperty(patient);
         this.modality = new SimpleStringProperty(modality);
         this.price = new SimpleStringProperty(price);
@@ -31,6 +37,14 @@ public class AppointmentData {
 
     public void setPatientId(int patientId) {
         this.patientId.set(patientId);
+    }
+
+    public int getAppointmentId() {
+        return appointmentId.get();
+    }
+
+    public void setAppointmentId(int appointmentId) {
+        this.appointmentId.set(appointmentId);
     }
 
     public String getPatient() {

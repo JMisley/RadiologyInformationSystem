@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:mysql://aws-risdb.cs15pqp4fpnm.us-east-1.rds.amazonaws.com:3306</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="grad.jpg" uuid="7ab0a2ba-1900-4db3-8586-099e748b19ca">
+      <driver-ref>derby.embedded</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.apache.derby.jdbc.EmbeddedDriver</jdbc-driver>
+      <jdbc-url>jdbc:derby:$PROJECT_DIR$/src/main/resources/com/risjavafx/images/../../../../../../../../../grad.jpg</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

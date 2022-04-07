@@ -51,25 +51,36 @@ public class AppointmentPopUp implements Initializable {
         populateComboBoxRadiologist();
         populateComboBoxTechnician();
         populateComboBoxPatient();
-        Popups.APPOINTMENT.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) ->
-                PageManager.getRoot().setDisable(!aBoolean));
+        Popups.APPOINTMENT.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
+            PageManager.getRoot().setDisable(!aBoolean);
+
+            if (Popups.APPOINTMENT.getPopup().isShowing()) {
+                appointmentIdLabel.setText(String.valueOf(setAppointmentIdLabel()));
+                refreshTextFields();
+            }
+        });
         usablePopupContainer = popupContainer;
     }
+public void refreshTextFields() {
+phoneNumberTextField.clear();
+emailTextField.clear();
+dateTextField.clear();
+    }
 
-    public void setAppointmentIdLabel() {
+    public int setAppointmentIdLabel() {
         try {
             String sql = """
                     select MAX(appointment_id)
                     from appointments;
                     """;
             ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
-            while (resultSet.next()) {
-                appointmentIdLabel.setText(String.valueOf(resultSet.getInt("MAX(appointment_id)") + 1));
+            if (resultSet.next()) {
+               return  (resultSet.getInt("MAX(appointment_id)") + 1);
             }
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-
+            return -1;
     }
 
 

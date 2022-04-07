@@ -1,3 +1,4 @@
+
 package com.risjavafx.pages.appointments;
 
 import com.risjavafx.Driver;
@@ -21,6 +22,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -42,12 +44,13 @@ public class Appointments implements Initializable {
     SortedList<AppointmentData> sortedList;
     FilteredList<AppointmentData> filteredList;
 
+
     InfoTable<AppointmentData, String> infoTable = new InfoTable<>();
     TableSearchBar tableSearchBar = new TableSearchBar();
     Miscellaneous misc = new Miscellaneous();
 
     public TableColumn<AppointmentData, String>
-            patientId = new TableColumn<>("ID"),
+            appointmentId = new TableColumn<>("ID"),
             patient = new TableColumn<>("Patient"),
             modality = new TableColumn<>("Modality"),
             price = new TableColumn<>("Price"),
@@ -57,7 +60,7 @@ public class Appointments implements Initializable {
             closedFlag = new TableColumn<>("Closed");
 
     public ArrayList<TableColumn<AppointmentData, String>> tableColumnsList = new ArrayList<>() {{
-        add(patientId);
+        add(appointmentId);
         add(patient);
         add(modality);
         add(price);
@@ -82,7 +85,7 @@ public class Appointments implements Initializable {
         // Overrides caching functionality and loads *TableSearchBar* every time page is opened
         PageManager.getScene().rootProperty().addListener(observable -> {
             if (Pages.getPage() == Pages.APPOINTMENTS) {
-                createTableSearchBar();
+                 createTableSearchBar();
                 refreshTable();
             }
         });
@@ -106,8 +109,7 @@ public class Appointments implements Initializable {
 
             infoTable.setColumns(tableColumnsList);
             infoTable.addColumnsToTable();
-
-            infoTable.setCustomColumnWidth(patientId, .07);
+            infoTable.setCustomColumnWidth(appointmentId, .07);
             infoTable.setCustomColumnWidth(patient, .15);
             infoTable.setCustomColumnWidth(modality, .13);
             infoTable.setCustomColumnWidth(price, .09);
@@ -124,7 +126,6 @@ public class Appointments implements Initializable {
             queryData(getAllDataStringQuery());
             infoTable.tableView.setItems(observableList);
             infoTable.tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
             TableManager.setAppointmentsTable(infoTable.tableView);
         } catch (
                 Exception exception) {
@@ -138,6 +139,7 @@ public class Appointments implements Initializable {
         }
     }
 
+
     public static void queryData(String sql) throws SQLException {
         // ObservableList<AppointmentData> observableList = FXCollections.observableArrayList();
         Driver driver = new Driver();
@@ -145,14 +147,14 @@ public class Appointments implements Initializable {
 
         while (resultSet.next()) {
             String name = resultSet.getString("first_name") + " " + resultSet.getString("last_name");
-            String checkIn;
-            if (resultSet.getByte("closed") == 1) {
-                checkIn = "concluded";
-            } else {
+            String checkIn = "";
+            if (resultSet.getInt("closed") == 0) {
                 checkIn = "In Progress";
+            } else if (resultSet.getInt("closed") == 1) {
+                checkIn = "Concluded";
             }
             observableList.add(new AppointmentData(
-                    resultSet.getInt("patient"),
+                    resultSet.getInt("appointment_id"),
                     name,
                     resultSet.getString("name"),
                     "$" + resultSet.getString("price"),
@@ -167,7 +169,7 @@ public class Appointments implements Initializable {
 
     public String getAllDataStringQuery() {
         return """
-                SELECT appointments.patient,
+                SELECT appointments.appointment_id,
                        patients.first_name,
                        patients.last_name,
                        modalities.name,
@@ -185,13 +187,13 @@ public class Appointments implements Initializable {
                   AND u2.user_id = appointments.technician
                   AND patients.patient_id = appointments.patient
                   AND modalities.modality_id = appointments.modality
-                ORDER BY appointments.patient;
+                ORDER BY appointments.appointment_id;
                 """;
     }
 
     public static String getLastRowStringQuery() {
         return """
-                   SELECT appointments.patient,
+                    SELECT appointments.appointment_id,
                        patients.first_name,
                        patients.last_name,
                        modalities.name,
@@ -209,7 +211,8 @@ public class Appointments implements Initializable {
                   AND u2.user_id = appointments.technician
                   AND patients.patient_id = appointments.patient
                   AND modalities.modality_id = appointments.modality
-                ORDER BY appointments.patient  DESC LIMIT 1;
+                ORDER BY appointments.appointment_id
+                  DESC LIMIT 1;
                 """;
     }
 
@@ -223,13 +226,27 @@ public class Appointments implements Initializable {
                     WHERE appointment_id = ?
                     """.replace("%$", table);
             PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
-            preparedStatement.setInt(1, selectedItem.getPatientId());
+            preparedStatement.setInt(1, selectedItem.getAppointmentId());
+            preparedStatement.execute();
+        }
+    }
+    public void changeCheckIn(String table) throws SQLException {
+        Driver driver = new Driver();
+        ObservableList<AppointmentData> selectedItems = infoTable.tableView.getSelectionModel().getSelectedItems();
+        for (AppointmentData selectedItem : selectedItems) {
+            String sql = """
+                    UPDATE appointments
+                    SET closed = !closed
+                    WHERE appointment_id = ?;
+                    """;
+            PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+            preparedStatement.setInt(1, selectedItem.getAppointmentId());
             preparedStatement.execute();
         }
     }
 
     public void setCellFactoryValues() {
-        patientId.setCellValueFactory(new PropertyValueFactory<>("patientId"));
+        appointmentId.setCellValueFactory(new PropertyValueFactory<>("appointmentId"));
         patient.setCellValueFactory(new PropertyValueFactory<>("patient"));
         modality.setCellValueFactory(new PropertyValueFactory<>("modality"));
         price.setCellValueFactory(new PropertyValueFactory<>("price"));
@@ -302,7 +319,7 @@ public class Appointments implements Initializable {
         } catch (Exception ignored) {
         }
 
-        if (appointmentData.getPatientId() == searchKeyInt && getComboBoxItem("ID")) {
+        if (appointmentData.getAppointmentId() == searchKeyInt && getComboBoxItem("User ID")) {
             return true;
         } else if (appointmentData.getPatient().toLowerCase().contains(searchKeyword) && getComboBoxItem("Patient")) {
             return true;
@@ -321,10 +338,12 @@ public class Appointments implements Initializable {
             if (t1 != null) {
                 tableSearchBar.toggleButtons(false);
                 tableSearchBar.getDeleteButton().setOnAction(actionEvent ->
-                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> PopupManager.removePopup("ALERT")));
+                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> Popups.getAlertPopupEnum().getPopup().hide()));
             } else {
                 tableSearchBar.toggleButtons(true);
             }
+            tableSearchBar.getCheckInButton().setOnAction(actionEvent ->
+                    customCheckInConfirmationPopup(confirm -> confirmCheckIn(), cancel -> Popups.getAlertPopupEnum().getPopup().hide()));
         });
     }
 
@@ -345,7 +364,6 @@ public class Appointments implements Initializable {
             return row;
         });
     }
-
     public void customConfirmationPopup(EventHandler<ActionEvent> confirm, EventHandler<ActionEvent> cancel) {
         PopupManager.createPopup(Popups.CONFIRMATION);
         new PopupConfirmation() {{
@@ -357,6 +375,29 @@ public class Appointments implements Initializable {
             getCancelButton().setOnAction(cancel);
         }};
     }
+    public void customCheckInConfirmationPopup(EventHandler<ActionEvent> confirm, EventHandler<ActionEvent> cancel) {
+        PopupManager.createPopup(Popups.CONFIRMATION);
+        new PopupConfirmation() {{
+            setConfirmButtonLabel("Yes");
+            setExitButtonLabel("No");
+            setHeaderLabel("Notice");
+            setContentLabel("This Person is done with their appointment");
+            getConfirmationButton().setOnAction(confirm);
+            getCancelButton().setOnAction(cancel);
+        }};
+    }
+    private void confirmCheckIn() {
+        try {
+            changeCheckIn("appointments");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
+        observableList.addAll(infoTable.tableView.getSelectionModel().getSelectedItems());
+        PopupManager.removePopup("ALERT");
+    }
 
     public void confirmDeletion() {
         /*
@@ -366,10 +407,10 @@ public class Appointments implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        */
 
+         */
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
-        PopupManager.removePopup("ALERT");
+    PopupManager.removePopup("ALERT");
     }
 
     public void tableSearchBarAddButtonListener() {
