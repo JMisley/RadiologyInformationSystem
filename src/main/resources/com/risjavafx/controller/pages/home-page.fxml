@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<BorderPane fx:id="mainContainer" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.risjavafx.controller.Home">
+   <center>
+      <BorderPane>
+         <top>
+            <HBox fx:id="topContent"/>
+         </top>
+         <left>
+            <HBox/>
+         </left>
+         <right>
+            <HBox/>
+         </right>
+         <bottom>
+            <HBox/>
+         </bottom>
+         <center>
+         </center>
+      </BorderPane>
+   </center>
+   <top>
+      <HBox fx:id="titleBar"/>
+   </top>
+</BorderPane>
+
