@@ -73,6 +73,7 @@ public class Orders implements Initializable {
         Pages.setPage(Pages.ORDERS);
         TitleBar.createTitleBar(mainContainer, titleBar);
         NavigationBar.createNavBar(topContent);
+
         createTable();
         tableViewListener();
         manageRowSelection();
@@ -165,6 +166,7 @@ public class Orders implements Initializable {
         return """
                 SELECT *
                 FROM orders
+                ORDER BY order_id
                 DESC LIMIT 1;
                 """;
     }
@@ -176,7 +178,7 @@ public class Orders implements Initializable {
         for (OrdersData selectedItem : selectedItems) {
             String sql = """
                     DELETE FROM %$
-                    WHERE user_id = ?
+                    WHERE order_id = ?
                     """.replace("%$", table);
             PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getOrderIdData());
@@ -268,7 +270,8 @@ public class Orders implements Initializable {
             return true;
         } else if (ordersData.getNotesData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Notes")) {
             return true;
-        } else if (ordersData.getStatusData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Status")) {
+        }
+        else if (ordersData.getStatusData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Status")) {
             return true;
         } else
             return ordersData.getReportData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Report");
@@ -280,7 +283,7 @@ public class Orders implements Initializable {
             if (t1 != null) {
                 tableSearchBar.toggleButtons(false);
                 tableSearchBar.getDeleteButton().setOnAction(actionEvent ->
-                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> Popups.getAlertPopupEnum().getPopup().hide()));
+                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> PopupManager.removePopup("ALERT")));
             } else {
                 tableSearchBar.toggleButtons(true);
             }
@@ -312,7 +315,6 @@ public class Orders implements Initializable {
             setExitButtonLabel("Cancel");
             setHeaderLabel("Warning");
             setContentLabel("This data will be permanently deleted");
-            //setConfirmationImage(new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/warning.png"));
             getConfirmationButton().setOnAction(confirm);
             getCancelButton().setOnAction(cancel);
         }};
@@ -321,16 +323,15 @@ public class Orders implements Initializable {
     public void confirmDeletion() {
         try {
             deleteSelectedItemsQuery("order_id");
-            deleteSelectedItemsQuery("orders");
+            //deleteSelectedItemsQuery("orders");
         } catch (SQLException e) {
             e.printStackTrace();
         }
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
-        Popups.getAlertPopupEnum().getPopup().hide();
+        PopupManager.removePopup("ALERT");
     }
 
     public void tableSearchBarAddButtonListener() {
         tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.ORDERS));
     }
 }
-

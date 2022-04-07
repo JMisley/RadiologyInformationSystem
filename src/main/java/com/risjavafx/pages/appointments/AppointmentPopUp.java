@@ -4,7 +4,7 @@ import com.risjavafx.pages.PageManager;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
 import com.risjavafx.popups.models.Notification;
-import com.risjavafx.popups.models.PopupError;
+import com.risjavafx.popups.models.PopupAlert;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
 import javafx.collections.FXCollections;
@@ -56,15 +56,16 @@ public class AppointmentPopUp implements Initializable {
 
             if (Popups.APPOINTMENT.getPopup().isShowing()) {
                 appointmentIdLabel.setText(String.valueOf(setAppointmentIdLabel()));
-                refreshTextFields();
+                refreshElements();
             }
         });
         usablePopupContainer = popupContainer;
     }
-public void refreshTextFields() {
-phoneNumberTextField.clear();
-emailTextField.clear();
-dateTextField.clear();
+
+    public void refreshElements() {
+        phoneNumberTextField.clear();
+        emailTextField.clear();
+        dateTextField.clear();
     }
 
     public int setAppointmentIdLabel() {
@@ -75,22 +76,22 @@ dateTextField.clear();
                     """;
             ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
             if (resultSet.next()) {
-               return  (resultSet.getInt("MAX(appointment_id)") + 1);
+                return (resultSet.getInt("MAX(appointment_id)") + 1);
             }
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-            return -1;
+        return -1;
     }
 
 
     public void populateComboBoxTechnician() {
         try {
             String sql = """
-                  SELECT full_name
-                    FROM users, users_roles
-                    where users_roles.role_id = 5 AND users_roles.user_id = users.user_id;
-                    """;
+                    SELECT full_name
+                      FROM users, users_roles
+                      where users_roles.role_id = 5 AND users_roles.user_id = users.user_id;
+                      """;
             ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
             ObservableList<String> oblist = FXCollections.observableArrayList();
             while (resultSet.next()) {
@@ -101,22 +102,24 @@ dateTextField.clear();
             exception.printStackTrace();
         }
     }
+
     public void populateComboBoxPatient() {
         try {
             String sql = """
-                  SELECT first_name , last_name
-                    FROM patients;
-                    """;
+                    SELECT first_name , last_name
+                      FROM patients;
+                      """;
             ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
             ObservableList<String> oblist = FXCollections.observableArrayList();
             while (resultSet.next()) {
-                oblist.add(resultSet.getString("first_name") +" " + resultSet.getString("last_name"));
+                oblist.add(resultSet.getString("first_name") + " " + resultSet.getString("last_name"));
             }
             roleComboBoxPatient.setItems(oblist);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
     }
+
     public void populateComboBoxRadiologist() {
         try {
             String sql = """
@@ -163,7 +166,7 @@ dateTextField.clear();
 
         PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
         preparedStatement.setInt(1, Integer.parseInt(appointmentIdLabel.getText()));
-        preparedStatement.setInt(2,  pullPatientComboboxId(roleComboBoxPatient.getValue()));
+        preparedStatement.setInt(2, pullPatientComboboxId(roleComboBoxPatient.getValue()));
         preparedStatement.setInt(3, pullModalityComboboxId(roleComboBoxModality.getValue()));
         preparedStatement.setString(4, dateTextField.getText());
         preparedStatement.setInt(5, pullDocComboboxId(roleComboBoxRad.getValue()));
@@ -194,6 +197,7 @@ dateTextField.clear();
         }
         return -1;
     }
+
     public int pullDocComboboxId(String name) {
         try {
             String techIdFromCombo = """
@@ -215,6 +219,7 @@ dateTextField.clear();
         }
         return -1;
     }
+
     public int pullModalityComboboxId(String insertName) {
         try {
             String modalityIdFromCombo = """
@@ -261,8 +266,8 @@ dateTextField.clear();
         submitButton.setPrefWidth(misc.getScreenWidth() * .11);
 
         double fontSize;
-        if ((misc.getScreenWidth()/80) < 20) {
-            fontSize = misc.getScreenWidth()/80;
+        if ((misc.getScreenWidth() / 80) < 20) {
+            fontSize = misc.getScreenWidth() / 80;
         } else {
             fontSize = 20;
         }
@@ -280,7 +285,7 @@ dateTextField.clear();
             Notification.createNotification("Submission Complete", "You successfully added a new user");
         } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);
-            new PopupError() {{
+            new PopupAlert() {{
                 setHeaderLabel("Submission Failed");
                 setContentLabel("Please make sure you filled out all fields");
                 setExitButtonLabel("Retry");
@@ -290,9 +295,9 @@ dateTextField.clear();
 
     // Onclick for cancel button
     public void cancelButtonOnclick() {
-        Popups.APPOINTMENT.getPopup().hide();
         try {
             PopupManager.removePopup("MENU");
-        } catch (Exception ignore) {}
+        } catch (Exception ignore) {
+        }
     }
 }

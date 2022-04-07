@@ -2,6 +2,7 @@ package com.risjavafx.popups.models;
 
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.popups.PopupBlueprint;
+import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,6 +32,7 @@ public class PopupAlert extends PopupBlueprint implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Button[] buttons = {exitButton};
         resizeElements(popupContainer, alertImage, buttons, headerLabel, contentLabel);
+        alertImage.setId("errorImage");
         initializeUsables();
 
         Popups.getMenuPopupEnum().getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
@@ -56,5 +58,6 @@ public class PopupAlert extends PopupBlueprint implements Initializable {
     public void setAlertImage(Image image) {usableAlertImage.setImage(image);}
 
     public void exitPopup() {
-        Popups.getAlertPopupEnum().getPopup().hide();}
+        PopupManager.removePopup("ALERT");
+    }
 }

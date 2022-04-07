@@ -1,6 +1,6 @@
 package com.risjavafx.pages.admin;
 
-import com.risjavafx.popups.models.PopupError;
+import com.risjavafx.popups.models.PopupAlert;
 import com.risjavafx.popups.models.Notification;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.popups.PopupManager;
@@ -52,7 +52,7 @@ public class AdminPopup implements Initializable {
 
             if (Popups.ADMIN.getPopup().isShowing()) {
                 userIDLabel.setText(String.valueOf(getNextUserId()));
-                refreshTextFields();
+                refreshElements();
             }
         });
         usablePopupContainer = popupContainer;
@@ -161,7 +161,8 @@ public class AdminPopup implements Initializable {
         submitButton.setStyle("-fx-font-size: " + fontSize);
     }
 
-    private void refreshTextFields() {
+    private void refreshElements() {
+        roleComboBox.setPromptText("Select Role");
         fullNameTextField.clear();
         emailTextField.clear();
         usernameTextField.clear();
@@ -186,7 +187,7 @@ public class AdminPopup implements Initializable {
         }
         if (!validInput() || exception) {
             PopupManager.createPopup(Popups.ALERT);
-            new PopupError() {{
+            new PopupAlert() {{
                 setHeaderLabel("Submission Failed");
                 setContentLabel("Please make sure you filled out all fields");
                 setExitButtonLabel("Retry");
