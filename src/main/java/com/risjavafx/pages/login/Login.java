@@ -4,11 +4,8 @@ import com.risjavafx.UserStates;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
-import com.risjavafx.pages.PageManager;
+import com.risjavafx.pages.LoadingService;
 import com.risjavafx.pages.Pages;
-import com.risjavafx.popups.PopupManager;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -52,7 +49,7 @@ public class Login implements Initializable {
         if (username.getText().isBlank() || password.getText().isEmpty()) {
             errorMessage.setText("Please enter all information");
         } else if (checkCredentials(username.getText(), password.getText())) {
-            LoadingService loginService = new LoadingService();
+            LoadingService loginService = new LoadingService(Pages.HOME);
             loginService.start();
         } else {
             errorMessage.setText("Incorrect login information");
@@ -85,22 +82,5 @@ public class Login implements Initializable {
         loginContainer.setPrefHeight(misc.getScreenHeight() * .7);
 
         loginButton.setStyle("-fx-font-size: 36px");
-    }
-
-    public static class LoadingService extends Service<Void> {
-        public Task<Void> createTask() {
-            Task<Void> task = new Task<>() {
-                @Override
-                protected Void call() {
-                    PageManager.switchPage(Pages.PROGRESS);
-                    UserStates.setUserState();
-                    PageManager.loadPagesToCache();
-                    PopupManager.loadPopupsToCache();
-                    return null;
-                }
-            };
-            task.setOnSucceeded(event -> PageManager.switchPage(Pages.HOME));
-            return task;
-        }
     }
 }

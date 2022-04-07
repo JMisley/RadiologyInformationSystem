@@ -4,7 +4,10 @@ import com.risjavafx.Driver;
 import com.risjavafx.UserStates;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.components.NavigationBar;
+import com.risjavafx.pages.LoadingService;
+import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
+import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.models.Notification;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -40,6 +43,23 @@ public class UserInfo implements Initializable {
         confirmButton.setStyle("-fx-font-size: 24px");
         createTooltip(idTextField);
         setElements();
+
+        TextField[] textFields = {idTextField, fullNameTextField, usernameTextField, emailAdrTextField, passwordTextField};
+        toggleButtonListener(textFields);
+    }
+
+    // Determines whether button should be enabled or disabled
+    private void toggleButtonListener(TextField[] textFields) {
+        for (TextField textField : textFields) {
+            textField.textProperty().addListener((observableValue, s, t1) -> {
+                if (t1 != null && !textField.getText().isBlank() && !textField.getText().equals(textField.getPromptText())) {
+                    confirmButton.setDisable(false);
+                }
+                if (textField.getText().isBlank() || textField.getText().equals(textField.getPromptText())) {
+                    confirmButton.setDisable(true);
+                }
+            });
+        }
     }
 
     private void setElements() {
@@ -68,12 +88,6 @@ public class UserInfo implements Initializable {
         }
     }
 
-    private void createTooltip(Control element) {
-        Tooltip tooltip = new Tooltip("This cannot be changed");
-        tooltip.setShowDelay(new Duration(0));
-        element.setTooltip(tooltip);
-    }
-
     // Confirm button onClick
     public void confirmChanges() {
         try {
@@ -92,6 +106,7 @@ public class UserInfo implements Initializable {
             preparedStatement.setInt(5, UserStates.getUserId());
             preparedStatement.execute();
 
+            reloadSystem();
             resetTextFields();
             welcomeLabel.setText("Welcome " + getText(fullNameTextField));
 
@@ -115,5 +130,18 @@ public class UserInfo implements Initializable {
         passwordTextField.clear();
         emailAdrTextField.clear();
         fullNameTextField.clear();
+    }
+
+    private void reloadSystem() {
+        PageManager.clearCache();
+        PopupManager.clearCache();
+        LoadingService reloadService = new LoadingService(Pages.USERINFO);
+        reloadService.start();
+    }
+
+    private void createTooltip(Control element) {
+        Tooltip tooltip = new Tooltip("This cannot be changed");
+        tooltip.setShowDelay(new Duration(0));
+        element.setTooltip(tooltip);
     }
 }

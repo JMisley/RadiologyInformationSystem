@@ -40,7 +40,22 @@
                                HBox.hgrow="ALWAYS">
                             <graphic>
                                 <TextField fx:id="idTextField" alignment="CENTER" editable="false" prefHeight="40.0"
-                                           prefWidth="50.0" promptText="id" style="-fx-prompt-text-fill: #BB86FC">
+                                           prefWidth="50.0" promptText="id"
+                                           style="-fx-prompt-text-fill: #5e497f; -fx-background-color: #848484; -fx-cursor: default">
+                                    <font>
+                                        <Font name="Arial Bold" size="16.0"/>
+                                    </font>
+                                </TextField>
+                            </graphic>
+                            <font>
+                                <Font name="Arial" size="18.0"/>
+                            </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="BOTTOM" text="Full Name" textFill="WHITE"
+                               HBox.hgrow="ALWAYS">
+                            <graphic>
+                                <TextField fx:id="fullNameTextField" alignment="CENTER" prefHeight="40.0"
+                                           prefWidth="275.0" promptText="name" style="-fx-prompt-text-fill: #BB86FC">
                                     <font>
                                         <Font name="Arial Bold" size="16.0"/>
                                     </font>
@@ -56,20 +71,6 @@
                                 <TextField fx:id="usernameTextField" alignment="CENTER" prefHeight="40.0"
                                            prefWidth="225.0" promptText="username"
                                            style="-fx-prompt-text-fill: #BB86FC">
-                                    <font>
-                                        <Font name="Arial Bold" size="16.0"/>
-                                    </font>
-                                </TextField>
-                            </graphic>
-                            <font>
-                                <Font name="Arial" size="18.0"/>
-                            </font>
-                        </Label>
-                        <Label alignment="CENTER" contentDisplay="BOTTOM" text="Full Name" textFill="WHITE"
-                               HBox.hgrow="ALWAYS">
-                            <graphic>
-                                <TextField fx:id="fullNameTextField" alignment="CENTER" prefHeight="40.0"
-                                           prefWidth="275.0" promptText="name" style="-fx-prompt-text-fill: #BB86FC">
                                     <font>
                                         <Font name="Arial Bold" size="16.0"/>
                                     </font>
@@ -114,7 +115,7 @@
                 </VBox>
                 <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
                     <Button id="primaryButton" fx:id="confirmButton" mnemonicParsing="false" prefHeight="40.0"
-                            prefWidth="200.0" text="Confirm Info" onAction="#confirmChanges">
+                            prefWidth="200.0" text="Confirm Info" disable="true" onAction="#confirmChanges">
                         <font>
                             <Font size="24.0"/>
                         </font>
