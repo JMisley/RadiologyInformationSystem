@@ -9,6 +9,7 @@
 <?import javafx.scene.text.Font?>
 
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextArea?>
 <VBox fx:id="popupContainer" maxHeight="570.0" maxWidth="500.0"
       xmlns="http://javaf x.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.risjavafx.pages.orders.OrdersPopup">
@@ -117,26 +118,26 @@
             </HBox.margin>
         </ComboBox>
     </HBox>
+    <Label text="Notes:" textFill="WHITE">
+        <VBox.margin>
+            <Insets left="250.0" top="20.0"/>
+        </VBox.margin>
+        <font>
+            <Font name="Century Gothic" size="14.0"/>
+        </font>
+    </Label>
     <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
         <VBox.margin>
-            <Insets left="20.0" right="20.0" top="20.0"/>
+            <Insets left="20.0" right="20.0"/>
         </VBox.margin>
-        <Label text="Notes:" textFill="WHITE">
-            <HBox.margin>
-                <Insets right="10.0"/>
-            </HBox.margin>
-            <font>
-                <Font name="Century Gothic" size="14.0"/>
-            </font>
-        </Label>
-        <TextField fx:id="notesTextField" maxHeight="30.0" HBox.hgrow="ALWAYS">
+        <TextArea fx:id="notesTextArea" maxHeight="30.0" HBox.hgrow="ALWAYS">
             <font>
                 <Font name="Arial" size="14.0"/>
             </font>
             <HBox.margin>
                 <Insets/>
             </HBox.margin>
-        </TextField>
+        </TextArea>
     </HBox>
     <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
         <VBox.margin>
@@ -157,26 +158,26 @@
             </HBox.margin>
         </ComboBox>
     </HBox>
+    <Label text="Report:" textFill="WHITE">
+        <VBox.margin>
+            <Insets left="250.0" top="20.0"/>
+        </VBox.margin>
+        <font>
+            <Font name="Century Gothic" size="14.0"/>
+        </font>
+    </Label>
     <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
         <VBox.margin>
-            <Insets left="20.0" right="20.0" top="20.0"/>
+            <Insets left="20.0" right="20.0"/>
         </VBox.margin>
-        <Label text="Report:" textFill="WHITE">
-            <HBox.margin>
-                <Insets right="10.0"/>
-            </HBox.margin>
-            <font>
-                <Font name="Century Gothic" size="14.0"/>
-            </font>
-        </Label>
-        <TextField fx:id="reportTextField" maxHeight="30.0" HBox.hgrow="ALWAYS">
+        <TextArea fx:id="reportTextArea" maxHeight="30.0" HBox.hgrow="ALWAYS">
             <font>
                 <Font name="Arial" size="14.0"/>
             </font>
             <HBox.margin>
                 <Insets/>
             </HBox.margin>
-        </TextField>
+        </TextArea>
     </HBox>
     <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
         <VBox.margin>

@@ -16,10 +16,7 @@ import com.risjavafx.popups.models.PopupAlert;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
 public class OrdersPopup implements Initializable {
@@ -30,9 +27,9 @@ public class OrdersPopup implements Initializable {
     public ComboBox<String> referralMdComboBox;
     public ComboBox<String> modalityComboBox;
     public ComboBox<String> appointmentComboBox;
-    public TextField notesTextField;
+    public TextArea notesTextArea;
     public ComboBox<String> statusComboBox;
-    public TextField reportTextField;
+    public TextArea reportTextArea;
     public Button cancelButton;
     public Button submitButton;
     Driver driver = new Driver();
@@ -174,148 +171,14 @@ public class OrdersPopup implements Initializable {
         preparedStatement.setString(3, referralMdComboBox.getValue());
         preparedStatement.setString(4, modalityComboBox.getValue());
         preparedStatement.setString(5, appointmentComboBox.getValue());
-        preparedStatement.setString(6, this.notesTextField.getText());
+        preparedStatement.setString(6, this.notesTextArea.getText());
         preparedStatement.setString(7, statusComboBox.getValue());
-        preparedStatement.setString(8, this.reportTextField.getText());
+        preparedStatement.setString(8, this.reportTextArea.getText());
         preparedStatement.execute();
     }
 
-//    public void insertOrderIdQuery() throws SQLException {
-//        String sql = """
-//                insert into orders
-//                values (?, ?);
-//                """;
-//        PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
-//        preparedStatement.setInt(1, Integer.parseInt(orderIDLabel.getText()));
-//        preparedStatement.setInt(2, getOrderId(orderIDLabel.getValue()));
-//        preparedStatement.setInt(2, Integer.parseInt(orderIDLabel.getText()));
-//        preparedStatement.execute();
-//    }
-//
-//    public int getOrderId(String order) throws SQLException {
-//        String sql = """
-//                select order_id
-//                from orders;
-//                """;
-//        PreparedStatement preparedStatement = this.driver.connection.prepareStatement(sql);
-//        preparedStatement.setString(1, order);
-//        ResultSet resultSet = preparedStatement.executeQuery();
-//        resultSet.next();
-//        return resultSet.getInt("order_id");
-//    }
-
-//    public int pullPatientComboboxId(String name) {
-//        try {
-//            String patientIdFromCombo = """
-//                    SELECT patient_id
-//                    FROM patients
-//                    WHERE ? = CONCAT(first_name, " ", last_name)
-//                    """;
-//            PreparedStatement preparedStatementPatientCombo = driver.connection.prepareStatement(patientIdFromCombo);
-//            preparedStatementPatientCombo.setString(1, name);
-//            ResultSet resultSetPatientCombo = preparedStatementPatientCombo.executeQuery();
-//
-//            int i = 0;
-//            while (resultSetPatientCombo.next()) {
-//                i = resultSetPatientCombo.getInt(("patient_id"));
-//            }
-//            return i;
-//        } catch (Exception exception) {
-//            exception.printStackTrace();
-//        }
-//        return -1;
-//    }
-//
-//    public int pullDocComboBoxId(String name) {
-//        try {
-//            String techIdFromCombo = """
-//                    SELECT user_id
-//                    FROM users
-//                    WHERE ? =  full_name
-//                    """;
-//            PreparedStatement preparedStatementTechCombo = driver.connection.prepareStatement(techIdFromCombo);
-//            preparedStatementTechCombo.setString(1, name);
-//            ResultSet resultSetTechCombo = preparedStatementTechCombo.executeQuery();
-//
-//            int i = 0;
-//            while (resultSetTechCombo.next()) {
-//                i = resultSetTechCombo.getInt(("user_id"));
-//            }
-//            return i;
-//        } catch (Exception exception) {
-//            exception.printStackTrace();
-//        }
-//        return -1;
-//    }
-//
-//    public int pullModalityComboBoxId(String insertName) {
-//        try {
-//            String modalityIdFromCombo = """
-//                    SELECT modality_id
-//                    FROM modalities
-//                    WHERE name = ?
-//                    """;
-//            PreparedStatement preparedStatementModalityCombo = driver.connection.prepareStatement(modalityIdFromCombo);
-//            preparedStatementModalityCombo.setString(1, insertName);
-//            ResultSet resultSetTechCombo = preparedStatementModalityCombo.executeQuery();
-//
-//            int i = 0;
-//            while (resultSetTechCombo.next()) {
-//                i = resultSetTechCombo.getInt(("modality_id"));
-//            }
-//            return i;
-//        } catch (Exception exception) {
-//            exception.printStackTrace();
-//        }
-//        return -1;
-//    }
-//
-//    public int pullAppointmentComboBoxId(String insertName) {
-//        try {
-//            String modalityIdFromCombo = """
-//                    SELECT appointment_id
-//                    FROM appointments
-//                    WHERE name = ?
-//                    """;
-//            PreparedStatement preparedStatementModalityCombo = driver.connection.prepareStatement(modalityIdFromCombo);
-//            preparedStatementModalityCombo.setString(1, insertName);
-//            ResultSet resultSetTechCombo = preparedStatementModalityCombo.executeQuery();
-//
-//            int i = 0;
-//            while (resultSetTechCombo.next()) {
-//                i = resultSetTechCombo.getInt(("appointment_id"));
-//            }
-//            return i;
-//        } catch (Exception exception) {
-//            exception.printStackTrace();
-//        }
-//        return -1;
-//    }
-//
-//    public int pullStatusComboBoxId(String insertName) {
-//        try {
-//            String modalityIdFromCombo = """
-//                    SELECT closed
-//                    FROM appointments
-//                    WHERE name = ?
-//                    """;
-//            PreparedStatement preparedStatementModalityCombo = driver.connection.prepareStatement(modalityIdFromCombo);
-//            preparedStatementModalityCombo.setString(1, insertName);
-//            ResultSet resultSetTechCombo = preparedStatementModalityCombo.executeQuery();
-//
-//            int i = 0;
-//            while (resultSetTechCombo.next()) {
-//                i = resultSetTechCombo.getInt(("closed"));
-//            }
-//            return i;
-//        } catch (Exception exception) {
-//            exception.printStackTrace();
-//        }
-//        return -1;
-//    }
-
     public boolean validInput() {
-        return this.patientNameComboBox.getValue() != null && this.referralMdComboBox.getValue() != null && this.modalityComboBox.getValue() != null && !this.notesTextField.getText().isBlank() && this.statusComboBox != null && !this.reportTextField.getText().isBlank();
+        return this.patientNameComboBox.getValue() != null && this.referralMdComboBox.getValue() != null && this.modalityComboBox.getValue() != null && !this.notesTextArea.getText().isBlank() && this.statusComboBox != null && !this.reportTextArea.getText().isBlank();
     }
 
     public void resizeElements() {
@@ -339,8 +202,8 @@ public class OrdersPopup implements Initializable {
         referralMdComboBox.getSelectionModel().clearSelection();
         statusComboBox.getSelectionModel().clearSelection();
         appointmentComboBox.getSelectionModel().clearSelection();
-        reportTextField.clear();
-        notesTextField.clear();
+        reportTextArea.clear();
+        notesTextArea.clear();
     }
 
     public void submitButtonOnclick() throws SQLException {
