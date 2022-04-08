@@ -135,8 +135,8 @@ public class UserInfo implements Initializable {
     private void reloadSystem() {
         PageManager.clearCache();
         PopupManager.clearCache();
-        LoadingService reloadService = new LoadingService(Pages.USERINFO);
-        reloadService.start();
+        LoadingService.GlobalReset globalReset = new LoadingService.GlobalReset(Pages.USERINFO);
+        globalReset.start();
     }
 
     private void createTooltip(Control element) {

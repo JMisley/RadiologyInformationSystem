@@ -49,8 +49,8 @@ public class Login implements Initializable {
         if (username.getText().isBlank() || password.getText().isEmpty()) {
             errorMessage.setText("Please enter all information");
         } else if (checkCredentials(username.getText(), password.getText())) {
-            LoadingService loginService = new LoadingService(Pages.HOME);
-            loginService.start();
+            LoadingService.GlobalReset globalReset = new LoadingService.GlobalReset(Pages.HOME);
+            globalReset.start();
         } else {
             errorMessage.setText("Incorrect login information");
         }

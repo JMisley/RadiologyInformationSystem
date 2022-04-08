@@ -47,11 +47,16 @@ public class PopupManager {
                     popup.getPopup().setY(misc.getScreenHeight() / 2 - Popups.getMenuDimensions()[0] / 2);
                     popup.getPopup().setX(misc.getScreenWidth() / 2 - Popups.getMenuDimensions()[1] / 2);
                     Popups.setMenuPopupEnum(popup);
+                } else if (popup.getType().equals("LARGE_MENU")) {
+                    popup.getPopup().setY(misc.getScreenHeight() / 2 - Popups.getLargeMenuDimensions()[0] / 2);
+                    popup.getPopup().setX(misc.getScreenWidth() / 2 - Popups.getLargeMenuDimensions()[1] / 2);
+                    Popups.setMenuPopupEnum(popup);
                 } else if (popup.getType().equals("ALERT")) {
                     popup.getPopup().setY(misc.getScreenHeight() / 2 - Popups.getAlertDimensions()[0] / 2);
                     popup.getPopup().setX(misc.getScreenWidth() / 2 - Popups.getAlertDimensions()[1] / 2);
                     Popups.setAlertPopupEnum(popup);
                 }
+
                 cache.put(popup, root);
             }
         } catch (Exception e) {
