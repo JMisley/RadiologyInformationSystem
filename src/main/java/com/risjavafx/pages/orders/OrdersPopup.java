@@ -16,10 +16,7 @@ import com.risjavafx.popups.models.PopupAlert;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
 public class OrdersPopup implements Initializable {
@@ -30,9 +27,9 @@ public class OrdersPopup implements Initializable {
     public ComboBox<String> referralMdComboBox;
     public ComboBox<String> modalityComboBox;
     public ComboBox<String> appointmentComboBox;
-    public TextField notesTextField;
+    public TextArea notesTextArea;
     public ComboBox<String> statusComboBox;
-    public TextField reportTextField;
+    public TextArea reportTextArea;
     public Button cancelButton;
     public Button submitButton;
     Driver driver = new Driver();
@@ -174,9 +171,9 @@ public class OrdersPopup implements Initializable {
         preparedStatement.setString(3, referralMdComboBox.getValue());
         preparedStatement.setString(4, modalityComboBox.getValue());
         preparedStatement.setString(5, appointmentComboBox.getValue());
-        preparedStatement.setString(6, this.notesTextField.getText());
+        preparedStatement.setString(6, this.notesTextArea.getText());
         preparedStatement.setString(7, statusComboBox.getValue());
-        preparedStatement.setString(8, this.reportTextField.getText());
+        preparedStatement.setString(8, this.reportTextArea.getText());
         preparedStatement.execute();
     }
 
@@ -315,7 +312,7 @@ public class OrdersPopup implements Initializable {
 //    }
 
     public boolean validInput() {
-        return this.patientNameComboBox.getValue() != null && this.referralMdComboBox.getValue() != null && this.modalityComboBox.getValue() != null && !this.notesTextField.getText().isBlank() && this.statusComboBox != null && !this.reportTextField.getText().isBlank();
+        return this.patientNameComboBox.getValue() != null && this.referralMdComboBox.getValue() != null && this.modalityComboBox.getValue() != null && !this.notesTextArea.getText().isBlank() && this.statusComboBox != null && !this.reportTextArea.getText().isBlank();
     }
 
     public void resizeElements() {
@@ -339,8 +336,8 @@ public class OrdersPopup implements Initializable {
         referralMdComboBox.getSelectionModel().clearSelection();
         statusComboBox.getSelectionModel().clearSelection();
         appointmentComboBox.getSelectionModel().clearSelection();
-        reportTextField.clear();
-        notesTextField.clear();
+        reportTextArea.clear();
+        notesTextArea.clear();
     }
 
     public void submitButtonOnclick() throws SQLException {
