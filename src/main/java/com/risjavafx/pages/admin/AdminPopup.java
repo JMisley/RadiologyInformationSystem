@@ -38,8 +38,7 @@ public class AdminPopup implements Initializable {
     Driver driver = new Driver();
     Miscellaneous misc = new Miscellaneous();
 
-    public AdminPopup() throws SQLException {
-    }
+    public AdminPopup() throws SQLException {}
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
