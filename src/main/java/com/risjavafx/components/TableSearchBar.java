@@ -19,6 +19,7 @@ public class TableSearchBar implements Initializable {
     @FXML private Button addButton;
     @FXML private Button deleteButton;
     @FXML private Button editButton;
+    @FXML private Button viewButton;
     @FXML private Button checkInButton;
     @FXML private TextField textField;
     @FXML private ComboBox<String> comboBox;
@@ -28,6 +29,7 @@ public class TableSearchBar implements Initializable {
     private static Button usableDeleteButton;
     private static Button usableEditButton;
     private static Button usableCheckInButton;
+    private static Button usableViewButton;
     private static TextField usableTextField;
     private static ComboBox<String> usableComboBox;
     private static Label usableErrorLabel;
@@ -46,6 +48,7 @@ public class TableSearchBar implements Initializable {
         usableEditButton = editButton;
         usableDeleteButton = deleteButton;
         usableCheckInButton = checkInButton;
+        usableViewButton = viewButton;
     }
 
     public void createSearchBar(HBox tableSearchBar) {
@@ -70,7 +73,7 @@ public class TableSearchBar implements Initializable {
         searchLabel.setStyle("-fx-font-size: " + fontSize);
         textField.setStyle("-fx-font-size: " + (fontSize - 2) + "; -fx-font-family: 'Arial'");
 
-        Button[] buttons = {addButton, editButton, deleteButton, checkInButton};
+        Button[] buttons = {addButton, editButton, deleteButton, checkInButton, viewButton};
         for (Button button : buttons) {
             button.setPrefHeight(misc.getScreenHeight() * .05);
             button.setPrefWidth(misc.getScreenWidth() * .1);
@@ -79,21 +82,22 @@ public class TableSearchBar implements Initializable {
     }
 
     public void toggleButtons(boolean showAddButton) {
-        int otherOpacity;
-        if (showAddButton) {
-            otherOpacity = 0;
-        } else {
-            otherOpacity = 1;
-        }
-
         usableEditButton.setDisable(showAddButton);
-        usableEditButton.setOpacity(otherOpacity);
+        usableEditButton.setVisible(!showAddButton);
         usableDeleteButton.setDisable(showAddButton);
-        usableDeleteButton.setOpacity(otherOpacity);
+        usableDeleteButton.setVisible(!showAddButton);
 
         if (Pages.getPage().equals(Pages.APPOINTMENTS)) {
             usableCheckInButton.setDisable(showAddButton);
-            usableCheckInButton.setOpacity(otherOpacity);
+            usableCheckInButton.setVisible(!showAddButton);
+        }
+
+        if (Pages.getPage().equals(Pages.REFERRALS)) {
+            usableCheckInButton.setManaged(false);
+            usableCheckInButton.setVisible(false);
+
+            usableViewButton.setDisable(showAddButton);
+            usableViewButton.setVisible(!showAddButton);
         }
     }
 
@@ -110,4 +114,8 @@ public class TableSearchBar implements Initializable {
     public Button getCheckInButton() {return  usableCheckInButton;}
 
     public Button getDeleteButton() {return usableDeleteButton;}
+
+    public Button getViewButton() {
+        return usableViewButton;
+    }
 }

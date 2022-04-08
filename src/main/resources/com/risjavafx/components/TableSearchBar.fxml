@@ -35,16 +35,22 @@
             </font>
         </Label>
     </HBox>
-    <Button id="checkInButton" fx:id="checkInButton" disable="true" maxHeight="40.0" maxWidth="100.0"
-            mnemonicParsing="false" opacity="0f" text="Check In"/>
+    <Button id="viewButton" fx:id="viewButton" disable="true" mnemonicParsing="false" visible="false" maxWidth="85.0"
+            maxHeight="40.0" text="View"/>
+    <Button id="checkInButton" fx:id="checkInButton" disable="true" mnemonicParsing="false" visible="false"
+            maxWidth="100.0" maxHeight="40.0" text="Check In">
+        <HBox.margin>
+            <Insets left="10.0"/>
+        </HBox.margin>
+    </Button>
     <Button id="deleteButton" fx:id="deleteButton" disable="true" maxHeight="40.0" maxWidth="85.0"
-            mnemonicParsing="false" opacity="0f" text="Delete">
+            mnemonicParsing="false" text="Delete" visible="false">
         <HBox.margin>
             <Insets left="10.0"/>
         </HBox.margin>
     </Button>
     <Button id="editButton" fx:id="editButton" disable="true" maxHeight="40.0" maxWidth="85.0" mnemonicParsing="false"
-            opacity="0f" text="Edit">
+            text="Edit" visible="false">
         <HBox.margin>
             <Insets left="10.0"/>
         </HBox.margin>

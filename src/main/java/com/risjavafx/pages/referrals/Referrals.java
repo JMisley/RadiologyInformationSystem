@@ -93,6 +93,7 @@ public class Referrals implements Initializable {
     public void createTableSearchBar() {
         tableSearchBar.createSearchBar(tableSearchBarContainer);
         tableSearchBarAddButtonListener();
+        tableSearchBarViewButtonListener();
         setComboBoxItems();
         filterData();
 
@@ -316,5 +317,9 @@ public class Referrals implements Initializable {
 
     public void tableSearchBarAddButtonListener() {
         tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.REFERRALS));
+    }
+
+    public void tableSearchBarViewButtonListener() {
+        tableSearchBar.getViewButton().setOnAction(event -> PopupManager.createPopup(Popups.VIEW_REFERRALS));
     }
 }

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox id="popupContainer" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+      minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" spacing="50.0" xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.risjavafx.pages.referrals.ViewReferralsPopup">
+    <padding>
+        <Insets bottom="50.0" left="20.0" right="20.0" top="50.0"/>
+    </padding>
+    <HBox alignment="CENTER" prefWidth="200.0">
+        <Label text="View Patient Information" textFill="WHITE" underline="true">
+            <font>
+                <Font name="Century Gothic" size="24.0"/>
+            </font>
+        </Label>
+    </HBox>
+    <VBox alignment="CENTER" prefWidth="100.0" spacing="20.0">
+        <ComboBox prefWidth="175.0" promptText="Select Appointment"/>
+        <Button id="viewButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="175.0" text="View Images">
+            <font>
+                <Font name="Century Gothic" size="14.0"/>
+            </font>
+        </Button>
+    </VBox>
+    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+        <TextArea wrapText="true">
+            <font>
+                <Font name="Arial" size="12.0"/>
+            </font>
+        </TextArea>
+    </HBox>
+    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+        <TextArea wrapText="true"/>
+    </HBox>
+</VBox>
