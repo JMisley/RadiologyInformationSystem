@@ -70,6 +70,7 @@ public class Orders implements Initializable {
 
     // Load NavigationBar component into home-page.fxml
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        observableList.clear();
         Pages.setPage(Pages.ORDERS);
         TitleBar.createTitleBar(mainContainer, titleBar);
         NavigationBar.createNavBar(topContent);

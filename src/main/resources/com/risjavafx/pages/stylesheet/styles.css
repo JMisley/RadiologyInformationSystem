@@ -88,6 +88,17 @@
     -fx-background-color: rgba(102, 0, 102, 0.68);
 }
 
+#viewButton {
+    -fx-background-color: #2994c1;
+    -fx-text-fill: white;
+    -fx-font-family: "Century Gothic";
+}
+
+#viewButton:hover {
+    -fx-background-color: #2994C173;
+}
+
+
 /*Images--------------------------------------------------------------------------------------------------------------*/
 #successImage {
     -fx-image: url(../../images/success.png);

@@ -105,8 +105,8 @@ public class NavigationBar implements Initializable {
         switch (UserStates.getUserState()) {
             case ADMIN -> {}
             case USER -> disableSelectedButtons(new Button[]{adminButton, referralsButton, appointmentsButton, ordersButton});
-            case REFERRAL_MD -> disableSelectedButtons(new Button[]{adminButton, appointmentsButton, ordersButton});
-            case RECEPTIONIST, RADIOLOGIST -> disableSelectedButtons(new Button[]{adminButton, referralsButton});
+            case REFERRAL_MD, RADIOLOGIST -> disableSelectedButtons(new Button[]{adminButton});
+            case RECEPTIONIST -> disableSelectedButtons(new Button[]{adminButton, referralsButton});
             case TECHNICIAN -> disableSelectedButtons(new Button[]{adminButton, referralsButton, ordersButton});
         }
     }
