@@ -43,6 +43,12 @@
             <Insets left="10.0"/>
         </HBox.margin>
     </Button>
+    <Button id="billingButton" fx:id="billingButton" disable="true" mnemonicParsing="false" visible="false"
+            maxWidth="100.0" maxHeight="40.0" text="Billing">
+        <HBox.margin>
+            <Insets left="10.0"/>
+        </HBox.margin>
+    </Button>
     <Button id="deleteButton" fx:id="deleteButton" disable="true" maxHeight="40.0" maxWidth="85.0"
             mnemonicParsing="false" text="Delete" visible="false">
         <HBox.margin>

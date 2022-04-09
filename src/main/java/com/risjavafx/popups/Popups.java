@@ -9,6 +9,7 @@ public enum Popups {
     ORDERS("orders-popup.fxml", PopupManager.popupMenu, "MENU"),
     CONFIRMATION("popup-confirmation.fxml", PopupManager.popupAlert, "ALERT"),
     ALERT("popup-alert.fxml", PopupManager.popupAlert, "ALERT"),
+   // BILLING("referrals/billing-popup.fxml", PopupManager.popupMenu, "MENU"),
     REFERRALS("referrals/referral-popup.fxml", PopupManager.popupMenu, "MENU"),
     VIEW_REFERRALS("referrals/view-referral-popup.fxml", PopupManager.popupMenu, "LARGE_MENU");
 

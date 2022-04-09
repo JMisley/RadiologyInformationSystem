@@ -108,7 +108,7 @@
                 <Font name="Century Gothic" size="14.0"/>
             </font>
         </Label>
-        <Label text="(YYYY/MM/DD 24:00:00)" textFill="WHITE">
+        <Label text="(YYYY/MM/DD 00:00 am/pm)" textFill="WHITE">
             <HBox.margin>
                 <Insets right="10.0"/>
             </HBox.margin>

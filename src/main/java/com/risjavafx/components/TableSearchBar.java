@@ -21,6 +21,7 @@ public class TableSearchBar implements Initializable {
     @FXML private Button editButton;
     @FXML private Button viewButton;
     @FXML private Button checkInButton;
+    @FXML private Button billingButton;
     @FXML private TextField textField;
     @FXML private ComboBox<String> comboBox;
     @FXML private Label errorLabel;
@@ -30,6 +31,7 @@ public class TableSearchBar implements Initializable {
     private static Button usableEditButton;
     private static Button usableCheckInButton;
     private static Button usableViewButton;
+    private static Button usableBillingButton;
     private static TextField usableTextField;
     private static ComboBox<String> usableComboBox;
     private static Label usableErrorLabel;
@@ -48,6 +50,7 @@ public class TableSearchBar implements Initializable {
         usableEditButton = editButton;
         usableDeleteButton = deleteButton;
         usableCheckInButton = checkInButton;
+        usableBillingButton = billingButton;
         usableViewButton = viewButton;
     }
 
@@ -73,7 +76,7 @@ public class TableSearchBar implements Initializable {
         searchLabel.setStyle("-fx-font-size: " + fontSize);
         textField.setStyle("-fx-font-size: " + (fontSize - 2) + "; -fx-font-family: 'Arial'");
 
-        Button[] buttons = {addButton, editButton, deleteButton, checkInButton, viewButton};
+        Button[] buttons = {addButton, editButton, deleteButton, checkInButton, viewButton, billingButton};
         for (Button button : buttons) {
             button.setPrefHeight(misc.getScreenHeight() * .05);
             button.setPrefWidth(misc.getScreenWidth() * .1);
@@ -98,6 +101,8 @@ public class TableSearchBar implements Initializable {
 
             usableViewButton.setDisable(showAddButton);
             usableViewButton.setVisible(!showAddButton);
+            usableBillingButton.setDisable(showAddButton);
+            usableBillingButton.setVisible(!showAddButton);
         }
     }
 
@@ -118,4 +123,6 @@ public class TableSearchBar implements Initializable {
     public Button getViewButton() {
         return usableViewButton;
     }
+
+    public Button getBillingButton() { return usableBillingButton;}
 }

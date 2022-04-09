@@ -335,4 +335,5 @@ public class Orders implements Initializable {
     public void tableSearchBarAddButtonListener() {
         tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.ORDERS));
     }
+
 }
