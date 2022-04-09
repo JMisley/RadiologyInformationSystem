@@ -24,6 +24,7 @@
     </HBox>
     <VBox alignment="CENTER" prefWidth="100.0" spacing="20.0">
         <ComboBox fx:id="appointmentsComboBox" prefWidth="175.0" promptText="Select Appointment"/>
+        <ComboBox fx:id="ordersComboBox" prefWidth="175.0" promptText="Select an Order"/>
         <Button fx:id="viewImagesButton" id="viewButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="175.0"
                 text="View Images">
             <font>
@@ -31,15 +32,29 @@
             </font>
         </Button>
     </VBox>
+    <HBox alignment="CENTER" prefWidth="200.0">
+        <Label text="Patient Notes" textFill="WHITE" underline="true">
+            <font>
+                <Font name="Century Gothic" size="24.0"/>
+            </font>
+        </Label>
+    </HBox>
     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-        <TextArea wrapText="true">
+        <TextArea wrapText="true" fx:id="notesTextArea">
             <font>
                 <Font name="Arial" size="14.0"/>
             </font>
         </TextArea>
     </HBox>
+    <HBox alignment="CENTER" prefWidth="200.0">
+        <Label text="Patient Report" textFill="WHITE" underline="true">
+            <font>
+                <Font name="Century Gothic" size="24.0"/>
+            </font>
+        </Label>
+    </HBox>
     <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-        <TextArea wrapText="true">
+        <TextArea wrapText="true" fx:id="reportTextArea">
             <font>
                 <Font name="Arial" size="14.0"/>
             </font>
