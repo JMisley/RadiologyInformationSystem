@@ -99,7 +99,7 @@ public class UserInfo implements Initializable {
                     WHERE user_id = ?;
                     """;
             preparedStatement = driver.connection.prepareStatement(sql);
-            preparedStatement.setString(1, getText(usernameTextField));
+            preparedStatement.setString(1, getText(idTextField));
             preparedStatement.setString(2, getText(passwordTextField));
             preparedStatement.setString(3, getText(fullNameTextField));
             preparedStatement.setString(4, getText(emailAdrTextField));

@@ -186,9 +186,9 @@ public class Orders implements Initializable {
         ObservableList<OrdersData> selectedItems = infoTable.tableView.getSelectionModel().getSelectedItems();
         for (OrdersData selectedItem : selectedItems) {
             String sql = """
-                    DELETE FROM %$
+                    DELETE FROM orders
                     WHERE order_id = ?
-                    """.replace("%$", table);
+                    """.replace("orders", table);
             PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getOrderIdData());
             preparedStatement.execute();
