@@ -93,6 +93,7 @@ public class Appointments implements Initializable {
     public void createTableSearchBar() {
         tableSearchBar.createSearchBar(tableSearchBarContainer);
         tableSearchBarAddButtonListener();
+        tableSearchBarEditButtonListener();
         setComboBoxItems();
         filterData();
 
@@ -343,6 +344,7 @@ public class Appointments implements Initializable {
             }
             tableSearchBar.getCheckInButton().setOnAction(actionEvent ->
                     customCheckInConfirmationPopup(confirm -> confirmCheckIn(), cancel -> PopupManager.removePopup("ALERT")));
+            AppointmentEditPopup.setAppointmentClickedId(infoTable.tableView.getSelectionModel().getSelectedItem().appointmentId.get());
         });
     }
 
@@ -414,5 +416,9 @@ public class Appointments implements Initializable {
 
     public void tableSearchBarAddButtonListener() {
         tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.APPOINTMENT));
+    }
+
+    public void tableSearchBarEditButtonListener() {
+        tableSearchBar.getEditButton().setOnAction(event -> PopupManager.createPopup(Popups.APPOINTMENT_EDIT));
     }
 }

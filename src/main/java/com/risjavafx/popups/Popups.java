@@ -6,11 +6,13 @@ import javafx.stage.Popup;
 public enum Popups {
     ADMIN("admin-popup.fxml", PopupManager.popupMenu, "MENU"),
     APPOINTMENT("appointment-popup.fxml", PopupManager.popupMenu, "MENU"),
+    APPOINTMENT_EDIT("edit-appointment-popup.fxml", PopupManager.popupMenu, "MENU"),
     ORDERS("orders-popup.fxml", PopupManager.popupMenu, "MENU"),
     ADMINEDIT("edit-admin-popup.fxml", PopupManager.popupMenu, "MENU"),
     CONFIRMATION("popup-confirmation.fxml", PopupManager.popupAlert, "ALERT"),
     ALERT("popup-alert.fxml", PopupManager.popupAlert, "ALERT"),
     REFERRALS("referrals/referral-popup.fxml", PopupManager.popupMenu, "MENU"),
+    REFERRALS_EDIT("referrals/edit-referral-popup.fxml", PopupManager.popupMenu, "MENU"),
     VIEW_REFERRALS("referrals/view-referral-popup.fxml", PopupManager.popupMenu, "LARGE_MENU");
 
     private static Popups menuPopups;

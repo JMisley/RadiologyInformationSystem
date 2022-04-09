@@ -94,6 +94,7 @@ public class Referrals implements Initializable {
         tableSearchBar.createSearchBar(tableSearchBarContainer);
         tableSearchBarAddButtonListener();
         tableSearchBarViewButtonListener();
+        tableSearchBarEditButtonListener();
         setComboBoxItems();
         filterData();
 
@@ -272,6 +273,7 @@ public class Referrals implements Initializable {
             } else {
                 tableSearchBar.toggleButtons(true);
             }
+            ReferralEditPopup.setPatientClickedId(infoTable.tableView.getSelectionModel().getSelectedItem().patientIdData.get());
         });
     }
 
@@ -321,5 +323,9 @@ public class Referrals implements Initializable {
 
     public void tableSearchBarViewButtonListener() {
         tableSearchBar.getViewButton().setOnAction(event -> PopupManager.createPopup(Popups.VIEW_REFERRALS));
+    }
+
+    public void tableSearchBarEditButtonListener() {
+        tableSearchBar.getEditButton().setOnAction(event -> PopupManager.createPopup(Popups.REFERRALS_EDIT));
     }
 }
