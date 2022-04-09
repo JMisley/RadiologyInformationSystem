@@ -55,7 +55,7 @@ public class PageManager {
 
     public static void loadPagesToCache() {
         try {
-            for (Pages page : Pages.getPageArray()) {
+            for (Pages page : Pages.values()) {
                 if (page.isCachable()) {
                     Parent root = FXMLLoader.load(Objects.requireNonNull(PageManager.class.getResource(page.getFilename())));
                     root.getStylesheets().add(Objects.requireNonNull(PageManager.class.getResource("stylesheet/styles.css")).toExternalForm());

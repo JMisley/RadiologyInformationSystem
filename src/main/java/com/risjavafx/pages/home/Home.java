@@ -1,12 +1,13 @@
 package com.risjavafx.pages.home;
 
 import com.risjavafx.Miscellaneous;
-import com.risjavafx.UserStates;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.components.NavigationBar;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.TableManager;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
@@ -28,7 +29,6 @@ public class Home implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println(UserStates.getUserState());
         Pages.setPage(Pages.HOME);
         TitleBar.createTitleBar(mainContainer, titleBar);
         NavigationBar.createNavBar(topContent);

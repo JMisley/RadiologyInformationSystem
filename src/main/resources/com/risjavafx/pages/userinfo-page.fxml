@@ -19,7 +19,7 @@
         </VBox>
     </top>
     <center>
-        <StackPane BorderPane.alignment="CENTER">
+        <StackPane fx:id="centerContent" BorderPane.alignment="CENTER">
             <BorderPane.margin>
                 <Insets/>
             </BorderPane.margin>

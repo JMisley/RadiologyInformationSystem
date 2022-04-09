@@ -21,8 +21,7 @@ public class Main extends Application {
         Scene scene = new Scene(new BorderPane());
         PageManager.setScene(scene);
         PageManager.switchPage(Pages.LOGIN);
-
-        //  PageManager.switchPage(Pages.ADMIN);
+        PageManager.loadPageToCache(Pages.PROGRESS);
 
         usableStage.setScene(scene);
         usableStage.setMinWidth(misc.getScreenWidth());

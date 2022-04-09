@@ -5,14 +5,13 @@ import com.risjavafx.UserStates;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.components.NavigationBar;
 import com.risjavafx.pages.LoadingService;
-import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
-import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.models.Notification;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 import java.net.URL;
@@ -32,6 +31,7 @@ public class UserInfo implements Initializable {
     public TextField emailAdrTextField;
     public TextField passwordTextField;
     public Label welcomeLabel;
+    public StackPane centerContent;
 
     // Load NavigationBar component into home-page.fxml
     @Override
@@ -133,9 +133,7 @@ public class UserInfo implements Initializable {
     }
 
     private void reloadSystem() {
-        PageManager.clearCache();
-        PopupManager.clearCache();
-        LoadingService.GlobalReset globalReset = new LoadingService.GlobalReset(Pages.USERINFO);
+        LoadingService.GlobalResetDefault globalReset = new LoadingService.GlobalResetDefault();
         globalReset.start();
     }
 
