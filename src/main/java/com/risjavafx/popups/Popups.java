@@ -8,6 +8,7 @@ public enum Popups {
     APPOINTMENT("appointment-popup.fxml", PopupManager.popupMenu, "MENU"),
     APPOINTMENT_EDIT("edit-appointment-popup.fxml", PopupManager.popupMenu, "MENU"),
     ORDERS("orders-popup.fxml", PopupManager.popupMenu, "MENU"),
+    ORDERS_EDIT("edit-orders-popup.fxml", PopupManager.popupMenu, "MENU"),
     ADMINEDIT("edit-admin-popup.fxml", PopupManager.popupMenu, "MENU"),
     CONFIRMATION("popup-confirmation.fxml", PopupManager.popupAlert, "ALERT"),
     ALERT("popup-alert.fxml", PopupManager.popupAlert, "ALERT"),
