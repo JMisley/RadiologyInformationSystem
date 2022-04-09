@@ -11,6 +11,7 @@ import com.risjavafx.pages.Pages;
 import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -270,10 +271,14 @@ public class Referrals implements Initializable {
                 tableSearchBar.getDeleteButton().setOnAction(actionEvent ->
                         customConfirmationPopup(confirm -> confirmDeletion(), cancel -> PopupManager.removePopup("ALERT")));
             } else {
+
                 tableSearchBar.toggleButtons(true);
             }
+             ViewReferralsPopup.setPatientClickedId(infoTable.tableView.getSelectionModel().getSelectedItem().patientIdData.get());
+
         });
     }
+
 
     // If a selected row is clicked again, it will unselect. TableSearchBar Buttons will also adjust appropriately
     public void manageRowSelection() {

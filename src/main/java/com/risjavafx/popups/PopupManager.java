@@ -59,6 +59,7 @@ public class PopupManager {
 
                 cache.put(popup, root);
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

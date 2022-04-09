@@ -136,6 +136,7 @@ public class Appointments implements Initializable {
         if (!centerContent.getChildren().contains(TableManager.getAppointmentsTable())) {
             centerContent.getChildren().add(TableManager.getAppointmentsTable());
         }
+
     }
 
 
@@ -241,6 +242,7 @@ public class Appointments implements Initializable {
             PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getAppointmentId());
             preparedStatement.execute();
+
         }
     }
 
@@ -342,7 +344,8 @@ public class Appointments implements Initializable {
                 tableSearchBar.toggleButtons(true);
             }
             tableSearchBar.getCheckInButton().setOnAction(actionEvent ->
-                    customCheckInConfirmationPopup(confirm -> confirmCheckIn(), cancel -> PopupManager.removePopup("ALERT")));
+                    customCheckInConfirmationPopup(confirm -> confirmCheckIn() , cancel -> PopupManager.removePopup("ALERT")));
+                    refreshTable();
         });
     }
 
@@ -388,31 +391,22 @@ public class Appointments implements Initializable {
     private void confirmCheckIn() {
         try {
             changeCheckIn("appointments");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
-        observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
-        observableList.addAll(infoTable.tableView.getSelectionModel().getSelectedItems());
+        closedFlag.setCellValueFactory(new PropertyValueFactory<>("closedFlag"));
         PopupManager.removePopup("ALERT");
+        refreshTable();
     }
 
     public void confirmDeletion() {
-        /*
-        try {
-            deleteSelectedItemsQuery("users_roles");
-            deleteSelectedItemsQuery("users");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-         */
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
-    PopupManager.removePopup("ALERT");
+        PopupManager.removePopup("ALERT");
     }
 
     public void tableSearchBarAddButtonListener() {
         tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.APPOINTMENT));
+
     }
 }
