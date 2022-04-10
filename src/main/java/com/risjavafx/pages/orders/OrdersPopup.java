@@ -7,10 +7,12 @@ import com.risjavafx.popups.models.Notification;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -19,8 +21,12 @@ import com.risjavafx.popups.models.PopupAlert;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 public class OrdersPopup implements Initializable {
     public VBox popupContainer;
@@ -35,6 +41,15 @@ public class OrdersPopup implements Initializable {
     public TextArea reportTextArea;
     public Button cancelButton;
     public Button submitButton;
+
+    public HBox imgVBox;
+    public FileInputStream fis;
+    public TextArea textArea;
+    public Connection con;
+    public PreparedStatement pst;
+    public PreparedStatement id;
+    public File file;
+
     Driver driver = new Driver();
     Miscellaneous misc = new Miscellaneous();
 
@@ -44,6 +59,7 @@ public class OrdersPopup implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         resizeElements();
         setOrderIDLabel();
+        uploadImages();
         populateComboBoxReferralMd();
         populateComboBoxAppointment();
         setAppointmentComboBoxListener();
@@ -141,6 +157,25 @@ public class OrdersPopup implements Initializable {
     */
     }
 
+    public void uploadImages() {
+        FileChooser fileChooser = new FileChooser();
+        HBox imgBox = new HBox();
+        Button fileButton = new Button("Select File");
+        //Button add = new Button("Add Image");
+        imgBox.getChildren().add(fileButton);
+        //imgBox.getChildren().add(add);
+        imgBox.setAlignment(Pos.CENTER);
+        imgVBox.getChildren().add(imgBox);
+        fileButton.setOnAction(e -> {
+            file = fileChooser.showOpenDialog(new Stage());
+            // add.setOnAction(f ->{
+
+        });
+        // });
+    }
+
+
+
     public String[] getDataToInsert() throws SQLException {
 
 
@@ -220,9 +255,28 @@ public class OrdersPopup implements Initializable {
         notesTextArea.clear();
     }
 
+    public void insertImage(){
+        try {
+            String query = "INSERT INTO imaging_info (image, orders) VALUES (?, ?);";
+            con = DriverManager.getConnection("jdbc:mysql://aws-ris-db.cs15pqp4fpnm.us-east-1.rds.amazonaws.com/db_ris","pleasedonthackme","itsreallyinconvenient");
+            pst = con.prepareStatement(query);
+            fis = new FileInputStream(file);
+            pst.setBinaryStream(1, (InputStream)fis, (int)file.length() );
+            pst.setInt(2, Integer.parseInt(this.orderIDLabel.getText()));
+            pst.execute();
+            pst.close();
+
+
+        } catch (SQLException | FileNotFoundException ex) {
+            ex.printStackTrace();
+            throw new RuntimeException("Cannot connect to database", ex);
+        }
+    }
+
     public void submitButtonOnclick() throws SQLException {
         if (this.validInput()) {
             this.insertOrderQuery();
+            this.insertImage();
             //this.insertOrderIdQuery();
             Orders.queryData(Orders.getLastRowStringQuery());
             PopupManager.removePopup("MENU");

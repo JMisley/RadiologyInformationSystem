@@ -3,19 +3,24 @@ package com.risjavafx.pages.referrals;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
 import com.risjavafx.pages.PageManager;
-import com.risjavafx.pages.appointments.AppointmentData;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+
+import java.io.*;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,6 +38,13 @@ public class ViewReferralsPopup implements Initializable  {
     public static int  clickedPatientId;
     public TextArea notesTextArea;
     public TextArea reportTextArea;
+    public ImageView view;
+    public Image image;
+
+    public File file;
+    public BorderPane layout;
+    public ImageView imageView1;
+
 
     Driver driver = new Driver();
     Miscellaneous misc = new Miscellaneous();
@@ -50,6 +62,7 @@ public class ViewReferralsPopup implements Initializable  {
             populateComboBoxOrder();
             populateNotesTextArea();
             populateReportTextArea();
+            setViewImagesButton();
 
 
         });
@@ -120,7 +133,56 @@ public class ViewReferralsPopup implements Initializable  {
 
     }
 
-   public void populateNotesTextArea(){
+
+
+    public void setViewImagesButton() {
+        viewImagesButton.setOnAction(actionEvent -> {
+            try {
+                ResultSet rs;
+                String query = "SELECT * FROM imaging_info, orders WHERE orders = order_id;";
+                PreparedStatement preparedStatement = driver.connection.prepareStatement(query);
+                rs = preparedStatement.executeQuery();
+
+                while(rs.next()){
+                InputStream is = rs.getBinaryStream("Image");
+                OutputStream os = new FileOutputStream(new File("photo.jpg"));
+                byte[] content = new byte[2024];
+                int size = 0;
+                while ((size = is.read(content)) != -1) {
+                    os.write(content, 0, size);
+                }
+
+                os.close();
+                is.close();
+
+                image = new Image("file:photo.jpg", 100, 150, true, true);
+                imageView1 = new ImageView(image);
+                imageView1.setFitWidth(100);
+                imageView1.setFitHeight(150);
+                imageView1.setPreserveRatio(true);
+
+                layout = new BorderPane();
+                layout.setCenter(imageView1);
+                BorderPane.setAlignment(imageView1, Pos.CENTER);
+
+
+
+            }
+                preparedStatement.close();
+                rs.close();
+
+        } catch (SQLException e) {
+                e.printStackTrace();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+    });
+    }
+
+    public void populateNotesTextArea(){
         ordersComboBox.valueProperty().addListener(observable -> {
 
 
@@ -200,6 +262,8 @@ public class ViewReferralsPopup implements Initializable  {
 
         return str;
     }
+
+
 
     public void setAppointmentsComboBoxListener() {
         appointmentsComboBox.valueProperty().addListener(observable -> {

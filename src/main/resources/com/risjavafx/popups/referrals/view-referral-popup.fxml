@@ -9,9 +9,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.image.ImageView?>
 <VBox fx:id="popupContainer" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
       minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" spacing="50.0" xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.risjavafx.pages.referrals.ViewReferralsPopup">
+
     <padding>
         <Insets bottom="50.0" left="50.0" right="50.0" top="50.0"/>
     </padding>
@@ -30,7 +33,15 @@
             <font>
                 <Font name="Century Gothic" size="14.0"/>
             </font>
+            <BorderPane fx:id="layout">
+                <ImageView fx:id="imageView1" >
+
+                </ImageView>
+
+            </BorderPane>
         </Button>
+
+
     </VBox>
     <HBox alignment="CENTER" prefWidth="200.0">
         <Label text="Patient Notes" textFill="WHITE" underline="true">
@@ -69,4 +80,8 @@
                 prefHeight="40.0" prefWidth="225.0"
                 text="Submit Changes" disable="true" onAction="#submitChanges"/>
     </HBox>
+
+
+
 </VBox>
+
