@@ -1,7 +1,6 @@
 package com.risjavafx.pages.home;
 
 import com.risjavafx.Miscellaneous;
-import com.risjavafx.UserStates;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.components.NavigationBar;
 import com.risjavafx.pages.PageManager;
@@ -28,7 +27,6 @@ public class Home implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println(UserStates.getUserState());
         Pages.setPage(Pages.HOME);
         TitleBar.createTitleBar(mainContainer, titleBar);
         NavigationBar.createNavBar(topContent);

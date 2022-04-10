@@ -11,7 +11,6 @@ import com.risjavafx.pages.Pages;
 import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -274,8 +273,9 @@ public class Referrals implements Initializable {
 
                 tableSearchBar.toggleButtons(true);
             }
-             ViewReferralsPopup.setPatientClickedId(infoTable.tableView.getSelectionModel().getSelectedItem().patientIdData.get());
-
+            if (infoTable.tableView.getSelectionModel().getSelectedItem() != null) {
+                ViewReferralsPopup.setPatientClickedId(infoTable.tableView.getSelectionModel().getSelectedItem().patientIdData.get());
+            }
         });
     }
 

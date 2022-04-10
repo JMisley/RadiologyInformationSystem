@@ -16,6 +16,7 @@ public class PopupManager {
     private static Popups currentPopup;
 
     public static Popup popupMenu = new Popup();
+    public static Popup largePopupMenu = new Popup();
     public static Popup popupAlert = new Popup();
     static Miscellaneous misc = new Miscellaneous();
 
@@ -43,23 +44,26 @@ public class PopupManager {
                 Parent root = FXMLLoader.load(Objects.requireNonNull(PopupManager.class.getResource(popup.getFilename())));
                 root.getStylesheets().add(Objects.requireNonNull(PageManager.class.getResource("stylesheet/styles.css")).toExternalForm());
 
-                if (popup.getType().equals("MENU")) {
-                    popup.getPopup().setY(misc.getScreenHeight() / 2 - Popups.getMenuDimensions()[0] / 2);
-                    popup.getPopup().setX(misc.getScreenWidth() / 2 - Popups.getMenuDimensions()[1] / 2);
-                    Popups.setMenuPopupEnum(popup);
-                } else if (popup.getType().equals("LARGE_MENU")) {
-                    popup.getPopup().setY(misc.getScreenHeight() / 2 - Popups.getLargeMenuDimensions()[0] / 2);
-                    popup.getPopup().setX(misc.getScreenWidth() / 2 - Popups.getLargeMenuDimensions()[1] / 2);
-                    Popups.setMenuPopupEnum(popup);
-                } else if (popup.getType().equals("ALERT")) {
-                    popup.getPopup().setY(misc.getScreenHeight() / 2 - Popups.getAlertDimensions()[0] / 2);
-                    popup.getPopup().setX(misc.getScreenWidth() / 2 - Popups.getAlertDimensions()[1] / 2);
-                    Popups.setAlertPopupEnum(popup);
+                switch (popup.getType()) {
+                    case "MENU" -> {
+                        popup.getPopup().setY(misc.getScreenHeight() / 2 - Popups.getMenuDimensions()[0] / 2);
+                        popup.getPopup().setX(misc.getScreenWidth() / 2 - Popups.getMenuDimensions()[1] / 2);
+                        Popups.setMenuPopupEnum(popup);
+                    }
+                    case "LARGE_MENU" -> {
+                        popup.getPopup().setY(misc.getScreenHeight() / 2 - Popups.getLargeMenuDimensions()[0] / 2);
+                        popup.getPopup().setX(misc.getScreenWidth() / 2 - Popups.getLargeMenuDimensions()[1] / 2);
+                        Popups.setLargeMenuPopupEnum(popup);
+                    }
+                    case "ALERT" -> {
+                        popup.getPopup().setY(misc.getScreenHeight() / 2 - Popups.getAlertDimensions()[0] / 2);
+                        popup.getPopup().setX(misc.getScreenWidth() / 2 - Popups.getAlertDimensions()[1] / 2);
+                        Popups.setAlertPopupEnum(popup);
+                    }
                 }
 
                 cache.put(popup, root);
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }

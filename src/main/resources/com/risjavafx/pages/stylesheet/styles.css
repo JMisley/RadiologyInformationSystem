@@ -4,6 +4,10 @@
     -fx-background-size: cover;
 }
 
+.root:disabled {
+    -fx-opacity: .7;
+}
+
 #root {
     -fx-background-image: url(../../images/background.jpg);
     -fx-background-size: cover;

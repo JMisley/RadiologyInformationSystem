@@ -49,7 +49,7 @@ public class Login implements Initializable {
         if (username.getText().isBlank() || password.getText().isEmpty()) {
             errorMessage.setText("Please enter all information");
         } else if (checkCredentials(username.getText(), password.getText())) {
-            LoadingService.GlobalReset globalReset = new LoadingService.GlobalReset(Pages.HOME);
+            LoadingService.GlobalResetPageSwitch globalReset = new LoadingService.GlobalResetPageSwitch(Pages.HOME);
             globalReset.start();
         } else {
             errorMessage.setText("Incorrect login information");
