@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox fx:id="menuBar" alignment="CENTER" prefHeight="60" HBox.hgrow="ALWAYS" xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.risjavafx.controller.NavigationBar">
+    <Button id="menuBarButton" fx:id="homeButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+            onAction="#openHome" prefHeight="65.0" prefWidth="150.0" text="Home" textFill="WHITE">
+        <font>
+            <Font name="Century Gothic"/>
+        </font>
+    </Button>
+    <Button id="menuBarButton" fx:id="userInfoButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+            onAction="#openUserInfo" prefHeight="65.0" prefWidth="150.0" text="User Info" textFill="WHITE">
+        <font>
+            <Font name="Century Gothic"/>
+        </font>
+    </Button>
+    <Button id="menuBarButton" fx:id="adminButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+            onAction="#openAdmin" prefHeight="65.0" prefWidth="150.0" text="Admin" textFill="WHITE">
+        <font>
+            <Font name="Century Gothic"/>
+        </font>
+    </Button>
+    <Button id="menuBarButton" fx:id="referralsButton" alignment="CENTER" contentDisplay="CENTER"
+            mnemonicParsing="false" onAction="#openReferrals" prefHeight="65.0" prefWidth="150.0" text="Referrals"
+            textFill="WHITE">
+        <font>
+            <Font name="Century Gothic"/>
+        </font>
+    </Button>
+    <Button id="menuBarButton" fx:id="appointmentsButton" alignment="CENTER" contentDisplay="CENTER"
+            mnemonicParsing="false" onAction="#openAppointments" prefHeight="65.0" prefWidth="150.0" text="Appointments"
+            textFill="WHITE">
+        <font>
+            <Font name="Century Gothic"/>
+        </font>
+    </Button>
+    <Button id="menuBarButton" fx:id="ordersButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+            onAction="#openOrders" prefHeight="65.0" prefWidth="150.0" text="Orders" textFill="WHITE">
+        <font>
+            <Font name="Century Gothic"/>
+        </font>
+    </Button>
+    <HBox prefHeight="100.0" HBox.hgrow="ALWAYS"/>
+    <Button id="menuBarButton" fx:id="logoutButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+            onAction="#userLogout" prefHeight="65.0" prefWidth="150.0" text="Logout" textFill="WHITE">
+        <font>
+            <Font name="Century Gothic"/>
+        </font>
+    </Button>
+</HBox>
