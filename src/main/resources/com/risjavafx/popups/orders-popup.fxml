@@ -54,6 +54,7 @@
             </HBox.margin>
         </ComboBox>
     </HBox>
+    <!--
     <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
         <VBox.margin>
             <Insets left="20.0" right="20.0" top="20.0" />
@@ -72,6 +73,45 @@
                 <Insets />
             </HBox.margin>
         </ComboBox>
+    //</HBox>
+    -->
+    <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
+        <VBox.margin>
+            <Insets left="20.0" right="20.0" top="20.0" />
+        </VBox.margin>
+        <Label text="Modality:" textFill="WHITE">
+            <HBox.margin>
+                <Insets right="10.0" />
+            </HBox.margin>
+            <font>
+                <Font name="Century Gothic" size="14.0" />
+            </font>
+        </Label>
+        <HBox HBox.hgrow="ALWAYS" />
+        <ComboBox fx:id="modalityComboBox" maxHeight="30.0" HBox.hgrow="ALWAYS">
+            <HBox.margin>
+                <Insets />
+            </HBox.margin>
+        </ComboBox>
+    </HBox>
+    <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
+        <VBox.margin>
+            <Insets left="20.0" right="20.0" top="20.0" />
+        </VBox.margin>
+        <Label text="Patient:" textFill="WHITE">
+            <HBox.margin>
+                <Insets right="10.0" />
+            </HBox.margin>
+            <font>
+                <Font name="Century Gothic" size="14.0" />
+            </font>
+        </Label>
+        <HBox HBox.hgrow="ALWAYS" />
+        <ComboBox fx:id="patientComboBox" maxHeight="30.0" HBox.hgrow="ALWAYS">
+            <HBox.margin>
+                <Insets />
+            </HBox.margin>
+        </ComboBox>
     </HBox>
     <HBox VBox.vgrow="ALWAYS"><Label alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="522.0" text="Notes:" textAlignment="CENTER" textFill="WHITE">
         <HBox.margin>
@@ -86,7 +126,7 @@
             <Insets left="20.0" right="20.0" top="20.0" />
         </VBox.margin>
 
-        <TextArea fx:id="notesTextArea" maxHeight="30.0" HBox.hgrow="ALWAYS">
+        <TextArea fx:id="notesTextArea" maxHeight="30.0" HBox.hgrow="ALWAYS" >
             <font>
                 <Font name="Arial" size="14.0" />
             </font>
