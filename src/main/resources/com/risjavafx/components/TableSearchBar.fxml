@@ -35,37 +35,28 @@
             </font>
         </Label>
     </HBox>
-    <Button id="viewButton" fx:id="viewButton" disable="true" mnemonicParsing="false" visible="false" maxWidth="85.0"
-            maxHeight="40.0" text="View"/>
-    <Button id="checkInButton" fx:id="checkInButton" disable="true" mnemonicParsing="false" visible="false"
-            maxWidth="100.0" maxHeight="40.0" text="Check In">
-        <HBox.margin>
-            <Insets left="10.0"/>
-        </HBox.margin>
-    </Button>
-    <Button id="billingButton" fx:id="billingButton" disable="true" mnemonicParsing="false" visible="false"
-            maxWidth="100.0" maxHeight="40.0" text="Billing">
-        <HBox.margin>
-            <Insets left="10.0"/>
-        </HBox.margin>
-    </Button>
-    <Button id="deleteButton" fx:id="deleteButton" disable="true" maxHeight="40.0" maxWidth="85.0"
-            mnemonicParsing="false" text="Delete" visible="false">
-        <HBox.margin>
-            <Insets left="10.0"/>
-        </HBox.margin>
-    </Button>
-    <Button id="editButton" fx:id="editButton" disable="true" maxHeight="40.0" maxWidth="85.0" mnemonicParsing="false"
-            text="Edit" visible="false">
-        <HBox.margin>
-            <Insets left="10.0"/>
-        </HBox.margin>
-    </Button>
-    <Button id="primaryButton" fx:id="addButton" maxHeight="40.0" maxWidth="85.0" mnemonicParsing="false" text="Add">
-        <HBox.margin>
-            <Insets left="10.0"/>
-        </HBox.margin>
-    </Button>
+    <HBox alignment="CENTER" spacing="10.0" HBox.hgrow="ALWAYS">
+        <Button id="viewButton" fx:id="addImageButton" disable="true" maxHeight="40.0" maxWidth="100.0"
+                mnemonicParsing="false" text="+Image" visible="false"/>
+
+        <Button id="viewButton" fx:id="viewButton" disable="true" maxHeight="40.0" maxWidth="85.0"
+                mnemonicParsing="false" text="View" visible="false"/>
+
+        <Button id="checkInButton" fx:id="checkInButton" disable="true" maxHeight="40.0" maxWidth="100.0"
+                mnemonicParsing="false" text="Check In" visible="false"/>
+
+        <Button id="billingButton" fx:id="billingButton" disable="true" maxHeight="40.0" maxWidth="100.0"
+                mnemonicParsing="false" text="Billing" visible="false"/>
+
+        <Button id="deleteButton" fx:id="deleteButton" disable="true" maxHeight="40.0" maxWidth="85.0"
+                mnemonicParsing="false" text="Delete" visible="false"/>
+
+        <Button id="editButton" fx:id="editButton" disable="true" maxHeight="40.0" maxWidth="85.0"
+                mnemonicParsing="false" text="Edit" visible="false"/>
+
+        <Button id="primaryButton" fx:id="addButton" maxHeight="40.0" maxWidth="85.0" mnemonicParsing="false"
+                text="Add"/>
+    </HBox>
 
     <padding>
         <Insets left="20.0" right="20.0"/>
