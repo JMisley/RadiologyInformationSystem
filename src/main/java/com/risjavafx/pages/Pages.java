@@ -3,6 +3,7 @@ package com.risjavafx.pages;
 import com.risjavafx.pages.admin.Admin;
 import com.risjavafx.pages.appointments.Appointments;
 import com.risjavafx.pages.home.Home;
+import com.risjavafx.pages.images.ImagesPage;
 import com.risjavafx.pages.login.Login;
 import com.risjavafx.pages.orders.Orders;
 import com.risjavafx.pages.loadingPage.LoadingPage;
@@ -17,7 +18,8 @@ public enum Pages {
     USERINFO("userinfo-page.fxml", UserInfo.class, true),
     HOME("home-page.fxml", Home.class, true),
     PROGRESS("loadingPage/loading-page.fxml", LoadingPage.class, true),
-    LOGIN("login-page.fxml", Login.class, false);
+    LOGIN("login-page.fxml", Login.class, false),
+    IMAGE("images-page.fxml", ImagesPage.class, false);
 
     private static Pages page;
     private final String filename;

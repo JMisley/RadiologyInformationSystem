@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 
 <VBox fx:id="popupContainer" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-      minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" spacing="50.0" xmlns="http://javafx.com/javafx/17"
+      minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" spacing="20.0" xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.risjavafx.pages.referrals.ViewReferralsPopup">
     <padding>
         <Insets bottom="50.0" left="50.0" right="50.0" top="50.0"/>
@@ -23,50 +23,49 @@
         </Label>
     </HBox>
     <VBox alignment="CENTER" prefWidth="100.0" spacing="20.0">
-        <ComboBox fx:id="appointmentsComboBox" prefWidth="175.0" promptText="Select Appointment"/>
-        <ComboBox fx:id="ordersComboBox" prefWidth="175.0" promptText="Select an Order"/>
-        <Button fx:id="viewImagesButton" id="viewButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="175.0"
-                text="View Images">
+        <ComboBox fx:id="appointmentsComboBox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0"
+                  prefWidth="175.0" promptText="Select Appointment"/>
+        <ComboBox fx:id="ordersComboBox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="175.0"
+                  promptText="Select an Order"/>
+        <Button id="viewButton" fx:id="viewImagesButton" minHeight="-Infinity" minWidth="-Infinity"
+                mnemonicParsing="false" onAction="#viewImageButtonOnClick" prefHeight="40.0" prefWidth="175.0"
+                text="View Image" disable="true">
             <font>
                 <Font name="Century Gothic" size="14.0"/>
             </font>
         </Button>
     </VBox>
-    <HBox alignment="CENTER" prefWidth="200.0">
+    <VBox alignment="CENTER" maxHeight="150.0" VBox.vgrow="ALWAYS">
         <Label text="Patient Notes" textFill="WHITE" underline="true">
             <font>
                 <Font name="Century Gothic" size="24.0"/>
             </font>
         </Label>
-    </HBox>
-    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-        <TextArea wrapText="true" fx:id="notesTextArea">
+        <TextArea fx:id="notesTextArea" wrapText="true" VBox.vgrow="ALWAYS">
             <font>
                 <Font name="Arial" size="14.0"/>
             </font>
         </TextArea>
-    </HBox>
-    <HBox alignment="CENTER" prefWidth="200.0">
+    </VBox>
+    <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
         <Label text="Patient Report" textFill="WHITE" underline="true">
             <font>
                 <Font name="Century Gothic" size="24.0"/>
             </font>
         </Label>
-    </HBox>
-    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-        <TextArea wrapText="true" fx:id="reportTextArea">
+        <TextArea fx:id="reportTextArea" wrapText="true" VBox.vgrow="ALWAYS">
             <font>
                 <Font name="Arial" size="14.0"/>
             </font>
         </TextArea>
-    </HBox>
+    </VBox>
     <HBox alignment="CENTER">
-        <Button fx:id="returnButton" id="primaryButton" contentDisplay="CENTER" mnemonicParsing="false"
-                prefHeight="40.0" prefWidth="225.0"
-                text="Return to Page" onAction="#returnToPage"/>
+        <Button id="primaryButton" fx:id="returnButton" contentDisplay="CENTER" minHeight="-Infinity"
+                minWidth="-Infinity" mnemonicParsing="false" onAction="#returnToPage" prefHeight="40.0"
+                prefWidth="225.0" text="Return to Page"/>
         <HBox alignment="CENTER" HBox.hgrow="ALWAYS"/>
-        <Button fx:id="submitButton" id="primaryButton" contentDisplay="CENTER" mnemonicParsing="false"
-                prefHeight="40.0" prefWidth="225.0"
-                text="Submit Changes" disable="true" onAction="#submitChanges"/>
+        <Button id="primaryButton" fx:id="submitButton" contentDisplay="CENTER" disable="true" minHeight="-Infinity"
+                minWidth="-Infinity" mnemonicParsing="false" onAction="#submitChanges" prefHeight="40.0"
+                prefWidth="225.0" text="Submit Changes"/>
     </HBox>
 </VBox>

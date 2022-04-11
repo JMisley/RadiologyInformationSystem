@@ -2,7 +2,10 @@ package com.risjavafx.pages.referrals;
 
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
+import com.risjavafx.components.Main;
 import com.risjavafx.pages.PageManager;
+import com.risjavafx.pages.Pages;
+import com.risjavafx.pages.images.ImagesPage;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
 import javafx.collections.FXCollections;
@@ -43,26 +46,12 @@ public class ViewReferralsPopup implements Initializable {
         setAppointmentsComboBoxListener();
         Popups.VIEW_REFERRALS.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
             PageManager.getRoot().setDisable(!aBoolean);
+            refreshElements();
             populateComboBoxAppointment();
             populateComboBoxOrder();
             populateNotesTextArea();
             populateReportTextArea();
         });
-    }
-
-    private void resizeElements() {
-        Miscellaneous misc = new Miscellaneous();
-
-        popupContainer.setPrefHeight(Popups.getLargeMenuDimensions()[0]);
-        popupContainer.setPrefWidth(Popups.getLargeMenuDimensions()[1]);
-        popupContainer.setMaxHeight(Popups.getLargeMenuDimensions()[0]);
-        popupContainer.setMaxWidth(Popups.getLargeMenuDimensions()[1]);
-
-        for (Control control : new Control[]{returnButton, submitButton, viewImagesButton, appointmentsComboBox}) {
-            control.setPrefHeight(40);
-            control.setPrefWidth(misc.getScreenWidth() * .15);
-            control.setStyle("-fx-font-size: 14px");
-        }
     }
 
     public static void setPatientClickedId(int clickedPatientId) {
@@ -150,6 +139,8 @@ public class ViewReferralsPopup implements Initializable {
                 while (resultSet.next()) {
                     reportTextArea.setText(resultSet.getString("report"));
                 }
+
+                viewImagesButton.setDisable(false);
             } catch (Exception ignored) {
             }
         });
@@ -182,6 +173,28 @@ public class ViewReferralsPopup implements Initializable {
         });
     }
 
+    private void resizeElements() {
+        Miscellaneous misc = new Miscellaneous();
+
+        popupContainer.setPrefHeight(Popups.getLargeMenuDimensions()[0]);
+        popupContainer.setPrefWidth(Popups.getLargeMenuDimensions()[1]);
+        popupContainer.setMaxHeight(Popups.getLargeMenuDimensions()[0]);
+        popupContainer.setMaxWidth(Popups.getLargeMenuDimensions()[1]);
+
+        for (Control control : new Control[]{returnButton, submitButton, viewImagesButton, appointmentsComboBox, ordersComboBox}) {
+            control.setPrefHeight(40);
+            control.setPrefWidth(misc.getScreenWidth() * .15);
+            control.setStyle("-fx-font-size: 14px");
+        }
+    }
+
+    public void refreshElements() {
+        reportTextArea.clear();
+        notesTextArea.clear();
+        viewImagesButton.setDisable(true);
+    }
+
+    // OnClick listeners
     public void returnToPage() {
         try {
             PopupManager.removePopup("MENU");
@@ -194,5 +207,10 @@ public class ViewReferralsPopup implements Initializable {
             PopupManager.removePopup("MENU");
         } catch (Exception ignore) {
         }
+    }
+
+    public void viewImageButtonOnClick() {
+        ImagesPage.setOrderId(ordersComboBox.getValue());
+        Main.createNewWindow(Pages.IMAGE);
     }
 }

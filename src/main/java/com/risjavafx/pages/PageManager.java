@@ -4,6 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -53,6 +54,7 @@ public class PageManager {
         return root;
     }
 
+    // Loads all pages to cache
     public static void loadPagesToCache() {
         try {
             for (Pages page : Pages.values()) {
@@ -67,6 +69,7 @@ public class PageManager {
         }
     }
 
+    // Loads a single desired page to cache
     public static void loadPageToCache(Pages page) {
         try {
             if (page.isCachable()) {
@@ -74,6 +77,15 @@ public class PageManager {
                 root.getStylesheets().add(Objects.requireNonNull(PageManager.class.getResource("stylesheet/styles.css")).toExternalForm());
                 cache.put(page, root);
             }
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Returns root of a page that is not loaded into cache
+    public static Parent getRootFromUnloadedPage(Pages page) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(PageManager.class.getResource(page.getFilename())));
+        root.getStylesheets().add(Objects.requireNonNull(PageManager.class.getResource("stylesheet/styles.css")).toExternalForm());
+        return root;
     }
 }
