@@ -1,6 +1,7 @@
 
         package com.risjavafx.pages.referrals;
 
+        import com.risjavafx.pages.LoadingService;
         import com.risjavafx.popups.models.PopupAlert;
         import com.risjavafx.popups.models.Notification;
         import com.risjavafx.pages.PageManager;
@@ -96,6 +97,10 @@ public class ReferralPopup implements Initializable {
         preparedStatement.setString(6, raceTextField.getText());
         preparedStatement.setString(7, ethnicityTextField.getText());
         preparedStatement.execute();
+        String notiHeader = "Submission Complete";
+        String notiText = "You have successfully changed your information";
+        LoadingService.GlobalResetDefault globalReset = new LoadingService.GlobalResetDefault(notiHeader, notiText);
+        globalReset.start();
     }
 
 

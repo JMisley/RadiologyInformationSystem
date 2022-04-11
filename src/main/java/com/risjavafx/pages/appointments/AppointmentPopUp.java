@@ -1,5 +1,6 @@
 package com.risjavafx.pages.appointments;
 
+import com.risjavafx.pages.LoadingService;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
@@ -174,6 +175,7 @@ public class AppointmentPopUp implements Initializable {
         preparedStatement.setString(7, phoneNumberTextField.getText());
         preparedStatement.setString(8, emailTextField.getText());
         preparedStatement.execute();
+
     }
 
     public int pullPatientComboboxId(String name) {
