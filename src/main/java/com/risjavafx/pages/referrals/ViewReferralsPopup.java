@@ -8,6 +8,7 @@ import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.images.ImagesPage;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
+import com.risjavafx.popups.models.Notification;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -146,6 +147,27 @@ public class ViewReferralsPopup implements Initializable {
         });
     }
 
+    public int getOrderId() {
+        int value = ordersComboBox.getValue();
+        return value;
+    }
+
+    public void updateTextArea() throws SQLException {
+        try {
+            String sql = """
+                    UPDATE orders
+                    SET notes = ?, report = ?
+                    WHERE orders.order_id = ?
+                    """;
+            PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+            preparedStatement.setString(1, notesTextArea.getText());
+            preparedStatement.setString(2, reportTextArea.getText());
+            preparedStatement.setInt(3, getOrderId());
+            preparedStatement.execute();
+        } catch (Exception ignored) {
+        }
+    }
+
     public String[] getDataToInsert() throws SQLException {
         String sql = """
                     SELECT patients.first_name, patients.last_name, modalities.name
@@ -204,7 +226,9 @@ public class ViewReferralsPopup implements Initializable {
 
     public void submitChanges() {
         try {
+            this.updateTextArea();
             PopupManager.removePopup("MENU");
+            Notification.createNotification("Submission Complete", "You have successfully added a new order");
         } catch (Exception ignore) {
         }
     }
@@ -214,3 +238,5 @@ public class ViewReferralsPopup implements Initializable {
         Main.createNewWindow(Pages.IMAGE);
     }
 }
+
+
