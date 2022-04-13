@@ -72,51 +72,46 @@ public class TableSearchBar implements Initializable {
 
         int fontSize = 16;
 
-        searchLabel.setStyle("-fx-font-size: " + fontSize);
-        textField.setStyle("-fx-font-size: " + (fontSize - 2) + "; -fx-font-family: 'Arial'");
+        searchLabel.setStyle("-fx-font-size: " + fontSize + "px");
+        textField.setStyle("-fx-font-size: " + (fontSize - 2) + "px ; -fx-font-family: 'Arial'");
 
         Button[] buttons = {addButton, editButton, deleteButton, checkInButton, viewButton, billingButton, addImageButton};
         for (Button button : buttons) {
-            button.setPrefHeight(misc.getScreenHeight() * .05);
-            button.setPrefWidth(misc.getScreenWidth() * .1);
+            button.setPrefWidth(misc.getScreenWidth() * .05);
             button.setStyle("-fx-font-size: " + (fontSize - 2) + "px");
         }
     }
 
-    public void toggleButtons(boolean showAddButton) {
-        usableEditButton.setDisable(showAddButton);
-        usableEditButton.setVisible(!showAddButton);
-        usableDeleteButton.setDisable(showAddButton);
-        usableDeleteButton.setVisible(!showAddButton);
+    public void toggleButtons(boolean showButtons) {
+        showButtons(new Button[] {usableEditButton, usableDeleteButton}, showButtons);
 
         if (Pages.getPage().equals(Pages.APPOINTMENTS)) {
-            removeButtonsFromView(new Button[] {usableBillingButton});
-
-            usableCheckInButton.setDisable(showAddButton);
-            usableCheckInButton.setVisible(!showAddButton);
+            hideButtons(new Button[] {usableBillingButton});
+            showButtons(new Button[] {usableCheckInButton}, showButtons);
         }
 
         if (Pages.getPage().equals(Pages.REFERRALS)) {
-            removeButtonsFromView(new Button[] {usableCheckInButton});
-
-            usableViewButton.setDisable(showAddButton);
-            usableViewButton.setVisible(!showAddButton);
-            usableBillingButton.setDisable(showAddButton);
-            usableBillingButton.setVisible(!showAddButton);
+            hideButtons(new Button[] {usableCheckInButton});
+            showButtons(new Button[] {usableViewButton, usableBillingButton}, showButtons);
         }
 
         if (Pages.getPage().equals(Pages.ORDERS)) {
-            removeButtonsFromView(new Button[] {usableCheckInButton, usableViewButton, usableBillingButton});
-
-            usableAddImageButton.setDisable(showAddButton);
-            usableAddImageButton.setVisible(!showAddButton);
+            hideButtons(new Button[] {usableCheckInButton, usableViewButton, usableBillingButton});
+            showButtons(new Button[] {usableAddImageButton}, showButtons);
         }
     }
 
-    private void removeButtonsFromView(Button[] buttons) {
+    private void hideButtons(Button[] buttons) {
         for (Button button : buttons) {
             button.setManaged(false);
             button.setVisible(false);
+        }
+    }
+
+    private void showButtons(Button[] buttons, boolean bool) {
+        for (Button button : buttons) {
+            button.setManaged(!bool);
+            button.setVisible(!bool);
         }
     }
 

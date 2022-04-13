@@ -62,9 +62,9 @@ public class Orders implements Initializable {
         add(patient);
         add(referralMd);
         add(modality);
-        add(appointment);
+       // add(appointment);
         add(notes);
-        add(status);
+     //   add(status);
         add(report);
     }};
 
@@ -84,6 +84,7 @@ public class Orders implements Initializable {
             if (Pages.getPage() == Pages.ORDERS) {
                 createTableSearchBar();
                 refreshTable();
+
             }
         });
 
@@ -113,9 +114,9 @@ public class Orders implements Initializable {
             infoTable.setCustomColumnWidth(referralMd, .13);
             infoTable.setCustomColumnWidth(modality, .13);
             infoTable.setCustomColumnWidth(appointment, .15);
-            infoTable.setCustomColumnWidth(notes, .15);
+            infoTable.setCustomColumnWidth(notes, .28);
             infoTable.setCustomColumnWidth(status, .11);
-            infoTable.setCustomColumnWidth(report, .15);
+            infoTable.setCustomColumnWidth(report, .28);
 
 
             centerContentContainer.setMaxWidth(misc.getScreenWidth() * .75);
@@ -322,12 +323,16 @@ public class Orders implements Initializable {
     }
 
     public void confirmDeletion() {
+
         try {
-            deleteSelectedItemsQuery("order_id");
-            //deleteSelectedItemsQuery("orders");
+           //deleteSelectedItemsQuery("order_id");
+            deleteSelectedItemsQuery("orders");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
         PopupManager.removePopup("ALERT");
     }

@@ -9,18 +9,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="popupContainer" maxHeight="570.0" maxWidth="500.0" spacing="20.0" xmlns="http://javafx.com/javafx/17"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.risjavafx.pages.appointments.AppointmentPopUp">
-    <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
-        <VBox.margin>
-            <Insets top="20.0"/>
-        </VBox.margin>
-        <Label text="New Appointment" textFill="WHITE" underline="true">
-            <font>
-                <Font name="Century Gothic" size="24.0"/>
-            </font>
-        </Label>
-    </HBox>
+<VBox fx:id="popupContainer" alignment="CENTER" maxHeight="570.0" maxWidth="500.0" spacing="20.0"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.risjavafx.pages.appointments.AppointmentPopUp">
+    <Label text="New Appointment" textFill="WHITE" underline="true">
+        <font>
+            <Font name="Century Gothic" size="24.0"/>
+        </font>
+    </Label>
     <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
         <VBox.margin>
             <Insets left="20.0" right="20.0" top="20.0"/>
@@ -41,6 +37,31 @@
 
 
     </HBox>
+    <HBox alignment="CENTER" spacing="20.0">
+        <ComboBox fx:id="roleComboBoxPatient" maxHeight="30.0" prefWidth="120.0" promptText="Patient">
+            <HBox.margin>
+                <Insets/>
+            </HBox.margin>
+        </ComboBox>
+        <ComboBox fx:id="orderIdComboBox" maxHeight="30.0" prefWidth="120.0" promptText="Order ID">
+            <HBox.margin>
+                <Insets/>
+            </HBox.margin>
+        </ComboBox>
+        <!--
+        <ComboBox fx:id="roleComboBoxModality" maxHeight="30.0" prefWidth="120.0" promptText="Modality">
+            <HBox.margin>
+                <Insets/>
+            </HBox.margin>
+        </ComboBox>
+        -->
+        <HBox.margin>
+            <Insets right="10.0"/>
+        </HBox.margin>
+        <HBox.margin>
+            <Insets right="10.0"/>
+        </HBox.margin>
+    </HBox>
     <HBox alignment="CENTER" spacing="20.0" VBox.vgrow="ALWAYS">
         <ComboBox fx:id="roleComboBoxTech" maxHeight="30.0" prefWidth="120.0" promptText="Technician">
             <HBox.margin>
@@ -57,24 +78,7 @@
         </HBox.margin>
     </HBox>
 
-    <HBox alignment="CENTER" spacing="20.0">
-        <ComboBox fx:id="roleComboBoxPatient" maxHeight="30.0" prefWidth="120.0" promptText="Patient">
-            <HBox.margin>
-                <Insets/>
-            </HBox.margin>
-        </ComboBox>
-        <ComboBox fx:id="roleComboBoxModality" maxHeight="30.0" prefWidth="120.0" promptText="Modality">
-            <HBox.margin>
-                <Insets/>
-            </HBox.margin>
-        </ComboBox>
-        <HBox.margin>
-            <Insets right="10.0"/>
-        </HBox.margin>
-        <HBox.margin>
-            <Insets right="10.0"/>
-        </HBox.margin>
-    </HBox>
+
     <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
         <VBox.margin>
             <Insets left="20.0" right="20.0" top="20.0"/>
@@ -113,7 +117,7 @@
                 <Insets right="10.0"/>
             </HBox.margin>
             <font>
-                <Font name="Century Gothic" size="14.0"/>
+                <Font name="Century Gothic" size="11.0"/>
             </font>
         </Label>
         <TextField fx:id="dateTextField" maxHeight="30.0" HBox.hgrow="ALWAYS">
@@ -157,4 +161,7 @@
         <Button id="primaryButton" fx:id="submitButton" alignment="CENTER" maxHeight="60.0" maxWidth="200.0"
                 mnemonicParsing="false" onAction="#submitButtonOnclick" text="Submit"/>
     </HBox>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
 </VBox>
