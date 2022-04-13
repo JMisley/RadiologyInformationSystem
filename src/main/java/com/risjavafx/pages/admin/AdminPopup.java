@@ -1,5 +1,6 @@
 package com.risjavafx.pages.admin;
 
+import com.risjavafx.PromptButtonCell;
 import com.risjavafx.popups.models.PopupAlert;
 import com.risjavafx.popups.models.Notification;
 import com.risjavafx.pages.PageManager;
@@ -149,6 +150,8 @@ public class AdminPopup implements Initializable {
         cancelButton.setPrefWidth(misc.getScreenWidth() * .11);
         submitButton.setPrefHeight(misc.getScreenWidth() * .033);
         submitButton.setPrefWidth(misc.getScreenWidth() * .11);
+
+        roleComboBox.setButtonCell(new PromptButtonCell<>("Select Role"));
 
         double fontSize;
         if ((misc.getScreenWidth()/80) < 20) {

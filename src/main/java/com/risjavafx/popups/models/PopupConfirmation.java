@@ -1,12 +1,11 @@
 package com.risjavafx.popups.models;
 
-import com.risjavafx.pages.PageManager;
 import com.risjavafx.popups.PopupBlueprint;
-import com.risjavafx.popups.Popups;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
@@ -15,12 +14,18 @@ import java.util.ResourceBundle;
 
 public class PopupConfirmation extends PopupBlueprint implements Initializable {
 
-    @FXML private VBox popupContainer;
-    @FXML private ImageView confirmationImage;
-    @FXML private Label headerLabel;
-    @FXML private Label contentLabel;
-    @FXML private Button confirmButton;
-    @FXML private Button cancelButton;
+    @FXML
+    private VBox popupContainer;
+    @FXML
+    private ImageView confirmationImage;
+    @FXML
+    private Label headerLabel;
+    @FXML
+    private Label contentLabel;
+    @FXML
+    private Button confirmButton;
+    @FXML
+    private Button cancelButton;
 
     private static ImageView usableConfirmationImage;
     private static Label usableHeaderLabel;
@@ -33,15 +38,11 @@ public class PopupConfirmation extends PopupBlueprint implements Initializable {
         Button[] buttons = {confirmButton, cancelButton};
         resizeElements(popupContainer, confirmationImage, buttons, headerLabel, contentLabel);
         initializeUsables();
-        setElementID();
+        refreshElements();
+        initializeUsables();
 
-        try {
-            Popups.getMenuPopupEnum().getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
-                if (!Popups.getMenuPopupEnum().getPopup().isShowing()) {
-                    PageManager.getRoot().setDisable(!aBoolean);
-                }
-            });
-        } catch (Exception ignored) {}
+        if (headerLabel.getText().isBlank())
+            popupContainer.getChildren().remove(headerLabel);
     }
 
     public void initializeUsables() {
@@ -52,19 +53,46 @@ public class PopupConfirmation extends PopupBlueprint implements Initializable {
         usableCancelButton = cancelButton;
     }
 
-    public void setElementID() {
+    public void refreshElements() {
+        usableConfirmationImage.setFitHeight(90);
+        usableConfirmationImage.setFitWidth(75);
         usableConfirmationImage.setId("warningImage");
+        usableHeaderLabel.setManaged(true);
     }
 
-    public void setConfirmButtonLabel(String text) {usableConfirmButton.setText(text);}
+    public void setConfirmButtonLabel(String text) {
+        usableConfirmButton.setText(text);
+    }
 
-    public void setExitButtonLabel(String text) {usableCancelButton.setText(text);}
+    public void setExitButtonLabel(String text) {
+        usableCancelButton.setText(text);
+    }
 
-    public void setHeaderLabel(String header) {usableHeaderLabel.setText(header);}
+    public void setHeaderLabel(String header) {
+        usableHeaderLabel.setText(header);
+    }
 
-    public void setContentLabel(String content) {usableContentLabel.setText(content);}
+    public void setContentLabel(String content) {
+        usableContentLabel.setText(content);
+    }
 
-    public Button getConfirmationButton() {return usableConfirmButton;}
+    public void setConfirmationImage(Image image) {
+        usableConfirmationImage.setImage(image);
+    }
 
-    public Button getCancelButton() {return usableCancelButton;}
+    public Label getHeaderLabel() {
+        return usableHeaderLabel;
+    }
+
+    public ImageView getConfirmationImageView() {
+        return usableConfirmationImage;
+    }
+
+    public Button getConfirmationButton() {
+        return usableConfirmButton;
+    }
+
+    public Button getCancelButton() {
+        return usableCancelButton;
+    }
 }

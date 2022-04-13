@@ -13,7 +13,6 @@ import java.util.Objects;
 
 public class PopupManager {
     private static final Map<Popups, Parent> cache = new HashMap<>();
-    private static Popups currentPopup;
 
     public static Popup popupMenu = new Popup();
     public static Popup largePopupMenu = new Popup();
@@ -23,15 +22,19 @@ public class PopupManager {
     // Method to create a popup menu. Input a decimals to represent a percentage of the screen height and width
     public static void createPopup(Popups popups) {
         try {
-            currentPopup = popups;
-            Parent popupRoot = cache.get(currentPopup);
-
-            currentPopup.getPopup().getContent().add(popupRoot);
-            currentPopup.getPopup().show(Main.usableStage);
+            Parent popupRoot;
+            if (popups.isCachable())
+                popupRoot = cache.get(popups);
+            else {
+                popupRoot = FXMLLoader.load(Objects.requireNonNull(PopupManager.class.getResource(popups.getFilename())));
+                popupRoot.getStylesheets().add(Objects.requireNonNull(PageManager.class.getResource("stylesheet/styles.css")).toExternalForm());
+            }
+            popups.getPopup().getContent().add(popupRoot);
+            popups.getPopup().show(Main.usableStage);
 
             Main.usableStage.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
-                if (aBoolean) currentPopup.getPopup().setOpacity(0f);
-                else currentPopup.getPopup().setOpacity(1f);
+                if (aBoolean) popups.getPopup().setOpacity(0f);
+                else popups.getPopup().setOpacity(1f);
             });
         } catch (Exception exception) {
             exception.printStackTrace();
@@ -81,9 +84,5 @@ public class PopupManager {
                 popups.getPopup().getContent().clear();
             }
         }
-    }
-
-    public static void clearCache() {
-        cache.clear();
     }
 }

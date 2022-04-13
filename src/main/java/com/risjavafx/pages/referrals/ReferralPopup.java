@@ -1,25 +1,25 @@
+package com.risjavafx.pages.referrals;
 
-        package com.risjavafx.pages.referrals;
+import com.risjavafx.pages.LoadingService;
+import com.risjavafx.popups.models.PopupAlert;
+import com.risjavafx.popups.models.Notification;
+import com.risjavafx.pages.PageManager;
+import com.risjavafx.popups.PopupManager;
+import com.risjavafx.Driver;
+import com.risjavafx.Miscellaneous;
+import com.risjavafx.popups.Popups;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.layout.VBox;
 
-        import com.risjavafx.popups.models.PopupAlert;
-        import com.risjavafx.popups.models.Notification;
-        import com.risjavafx.pages.PageManager;
-        import com.risjavafx.popups.PopupManager;
-        import com.risjavafx.Driver;
-        import com.risjavafx.Miscellaneous;
-        import com.risjavafx.popups.Popups;
-        import javafx.fxml.Initializable;
-        import javafx.scene.control.Button;
-        import javafx.scene.control.Label;
-        import javafx.scene.control.TextField;
-        import javafx.scene.image.Image;
-        import javafx.scene.layout.VBox;
-
-        import java.net.URL;
-        import java.sql.PreparedStatement;
-        import java.sql.ResultSet;
-        import java.sql.SQLException;
-        import java.util.ResourceBundle;
+import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 public class ReferralPopup implements Initializable {
     public VBox popupContainer;
@@ -64,6 +64,7 @@ public class ReferralPopup implements Initializable {
         sexTextField.clear();
         ethnicityTextField.clear();
     }
+
     public int setPatientIDLabel() {
         try {
             String sql = """
@@ -77,9 +78,8 @@ public class ReferralPopup implements Initializable {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-    return -1;
+        return -1;
     }
-
 
 
     public void insertPatientQuery() throws SQLException {
@@ -96,6 +96,10 @@ public class ReferralPopup implements Initializable {
         preparedStatement.setString(6, raceTextField.getText());
         preparedStatement.setString(7, ethnicityTextField.getText());
         preparedStatement.execute();
+        String notiHeader = "Submission Complete";
+        String notiText = "You have successfully changed your information";
+        LoadingService.GlobalResetDefault globalReset = new LoadingService.GlobalResetDefault(notiHeader, notiText);
+        globalReset.start();
     }
 
 
@@ -103,11 +107,11 @@ public class ReferralPopup implements Initializable {
     public boolean validInput() {
         return
                 !firstNameTextField.getText().isBlank() &&
-                        !birthDateTextField.getText().isBlank() &&
-                        !lastNameTextField.getText().isBlank() &&
-                        !sexTextField.getText().isBlank() &&
-                        !raceTextField.getText().isBlank() &&
-                        !ethnicityTextField.getText().isBlank();
+                !birthDateTextField.getText().isBlank() &&
+                !lastNameTextField.getText().isBlank() &&
+                !sexTextField.getText().isBlank() &&
+                !raceTextField.getText().isBlank() &&
+                !ethnicityTextField.getText().isBlank();
     }
 
     public void resizeElements() {
@@ -122,8 +126,8 @@ public class ReferralPopup implements Initializable {
         submitButton.setPrefWidth(misc.getScreenWidth() * .11);
 
         double fontSize;
-        if ((misc.getScreenWidth()/80) < 20) {
-            fontSize = misc.getScreenWidth()/80;
+        if ((misc.getScreenWidth() / 80) < 20) {
+            fontSize = misc.getScreenWidth() / 80;
         } else {
             fontSize = 20;
         }
@@ -143,7 +147,6 @@ public class ReferralPopup implements Initializable {
         } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);
             new PopupAlert() {{
-                setAlertImage(new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/error.png"));
                 setHeaderLabel("Submission Failed");
                 setContentLabel("Please make sure you filled out all fields");
                 setExitButtonLabel("Retry");
@@ -156,6 +159,7 @@ public class ReferralPopup implements Initializable {
     public void cancelButtonOnclick() {
         try {
             PopupManager.removePopup("MENU");
-        } catch (Exception ignore) {}
+        } catch (Exception ignore) {
+        }
     }
 }

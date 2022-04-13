@@ -7,6 +7,7 @@ import com.risjavafx.components.InfoTable;
 import com.risjavafx.components.NavigationBar;
 import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
+import com.risjavafx.pages.LoadingService;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.TableManager;
@@ -244,7 +245,10 @@ public class Appointments implements Initializable {
             PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getAppointmentId());
             preparedStatement.execute();
-
+            String notiHeader = "Submission Complete";
+            String notiText = "You have successfully changed your information";
+            LoadingService.GlobalResetDefault globalReset = new LoadingService.GlobalResetDefault(notiHeader, notiText);
+            globalReset.start();
         }
     }
 
@@ -412,6 +416,7 @@ public class Appointments implements Initializable {
         closedFlag.setCellValueFactory(new PropertyValueFactory<>("closedFlag"));
         PopupManager.removePopup("ALERT");
         refreshTable();
+
     }
 
     public void confirmDeletion() {

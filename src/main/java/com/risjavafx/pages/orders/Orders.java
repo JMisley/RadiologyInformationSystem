@@ -6,6 +6,7 @@ import com.risjavafx.components.InfoTable;
 import com.risjavafx.components.NavigationBar;
 import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
+import com.risjavafx.pages.LoadingService;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.TableManager;
@@ -21,11 +22,16 @@ import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -39,6 +45,7 @@ public class Orders implements Initializable {
     public HBox topContent, titleBar, tableSearchBarContainer;
     public StackPane centerContent;
     public SplitPane centerContentContainer;
+    private File file;
 
     public static ObservableList<OrdersData> observableList = FXCollections.observableArrayList();
     SortedList<OrdersData> sortedList;
@@ -62,9 +69,7 @@ public class Orders implements Initializable {
         add(patient);
         add(referralMd);
         add(modality);
-        add(appointment);
         add(notes);
-        add(status);
         add(report);
     }};
 
@@ -84,6 +89,7 @@ public class Orders implements Initializable {
             if (Pages.getPage() == Pages.ORDERS) {
                 createTableSearchBar();
                 refreshTable();
+
             }
         });
 
@@ -92,7 +98,7 @@ public class Orders implements Initializable {
     public void createTableSearchBar() {
         tableSearchBar.createSearchBar(tableSearchBarContainer);
         tableSearchBarAddButtonListener();
-        tableSearchBarEditButtonListener();
+        tableSearchBarAddImageButtonListener();
         setComboBoxItems();
         filterData();
 
@@ -114,9 +120,9 @@ public class Orders implements Initializable {
             infoTable.setCustomColumnWidth(referralMd, .13);
             infoTable.setCustomColumnWidth(modality, .13);
             infoTable.setCustomColumnWidth(appointment, .15);
-            infoTable.setCustomColumnWidth(notes, .15);
+            infoTable.setCustomColumnWidth(notes, .28);
             infoTable.setCustomColumnWidth(status, .11);
-            infoTable.setCustomColumnWidth(report, .15);
+            infoTable.setCustomColumnWidth(report, .28);
 
 
             centerContentContainer.setMaxWidth(misc.getScreenWidth() * .75);
@@ -289,7 +295,6 @@ public class Orders implements Initializable {
             } else {
                 tableSearchBar.toggleButtons(true);
             }
-            OrdersEditPopup.setOrderClickedId(infoTable.tableView.getSelectionModel().getSelectedItem().orderIdData.get());
         });
     }
 
@@ -325,11 +330,13 @@ public class Orders implements Initializable {
 
     public void confirmDeletion() {
         try {
-            deleteSelectedItemsQuery("order_id");
-            //deleteSelectedItemsQuery("orders");
+           //deleteSelectedItemsQuery("order_id");
+            deleteSelectedItemsQuery("orders");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
         PopupManager.removePopup("ALERT");
     }
@@ -338,8 +345,53 @@ public class Orders implements Initializable {
         tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.ORDERS));
     }
 
-    public void tableSearchBarEditButtonListener() {
-        tableSearchBar.getEditButton().setOnAction(event -> PopupManager.createPopup(Popups.ORDERS_EDIT));
+    public void tableSearchBarAddImageButtonListener() {
+        FileChooser fileChooser = new FileChooser();
+        tableSearchBar.getAddImageButton().setOnAction(e -> {
+             file = fileChooser.showOpenDialog(new Stage());
+             createConfirmationPopup(confirm -> uploadImageToDatabase(), cancel -> PopupManager.removePopup("ALERT"));
+        });
     }
 
+    private void createConfirmationPopup(EventHandler<ActionEvent> confirm, EventHandler<ActionEvent> cancel) {
+        PopupManager.createPopup(Popups.CONFIRMATION);
+        new PopupConfirmation() {{
+            setConfirmationImage(new Image(String.valueOf(file)));
+            getHeaderLabel().setManaged(false);
+            getConfirmationImageView().setFitHeight(150);
+            getConfirmationImageView().setFitWidth(200);
+            setConfirmButtonLabel("Yes");
+            setExitButtonLabel("No");
+            setHeaderLabel("");
+            setContentLabel("Is this the image you wish to add?");
+            getConfirmationButton().setOnAction(confirm);
+            getCancelButton().setOnAction(cancel);
+        }};
+    }
+
+    private void uploadImageToDatabase() {
+        try {
+            Driver driver = new Driver();
+            String query = """
+                UPDATE imaging_info
+                SET Image = ?
+                WHERE order_id = ?;
+                """;
+
+            PreparedStatement preparedStatement = driver.connection.prepareStatement(query);
+            FileInputStream fileInputStream = new FileInputStream(file);
+            preparedStatement.setBinaryStream(1, fileInputStream, (int)file.length());
+            preparedStatement.setInt(2, infoTable.tableView.getSelectionModel().getSelectedItem().getOrderIdData());
+            preparedStatement.execute();
+            preparedStatement.close();
+            PopupManager.removePopup("ALERT");
+
+            String notiHeader = "Submission Complete";
+            String notBody = "You have successfully added an image";
+            LoadingService.GlobalResetDefault globalResetDefault = new LoadingService.GlobalResetDefault(notiHeader, notBody);
+            globalResetDefault.start();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
 }

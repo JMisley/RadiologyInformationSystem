@@ -64,7 +64,7 @@
                 minWidth="-Infinity" mnemonicParsing="false" onAction="#returnToPage" prefHeight="40.0"
                 prefWidth="225.0" text="Return to Page"/>
         <HBox alignment="CENTER" HBox.hgrow="ALWAYS"/>
-        <Button id="primaryButton" fx:id="submitButton" contentDisplay="CENTER" disable="true" minHeight="-Infinity"
+        <Button id="primaryButton" fx:id="submitButton" contentDisplay="CENTER" minHeight="-Infinity"
                 minWidth="-Infinity" mnemonicParsing="false" onAction="#submitChanges" prefHeight="40.0"
                 prefWidth="225.0" text="Submit Changes"/>
     </HBox>

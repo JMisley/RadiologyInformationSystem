@@ -2,6 +2,7 @@ package com.risjavafx.pages.orders;
 
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
+import com.risjavafx.pages.LoadingService;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.popups.models.Notification;
 import com.risjavafx.popups.PopupManager;
@@ -30,6 +31,7 @@ public class OrdersPopup implements Initializable {
     public ComboBox<String> referralMdComboBox;
     public ComboBox<String> modalityComboBox;
     public ComboBox<String> appointmentComboBox;
+    public ComboBox<String> patientComboBox;
     public TextArea notesTextArea;
     public ComboBox<String> statusComboBox;
     public TextArea reportTextArea;
@@ -45,14 +47,20 @@ public class OrdersPopup implements Initializable {
         resizeElements();
         setOrderIDLabel();
         populateComboBoxReferralMd();
-        populateComboBoxAppointment();
-        setAppointmentComboBoxListener();
+       // populateComboBoxAppointment();
+        populateComboBoxPatient();
+        populateComboBoxModality();
+        //setAppointmentComboBoxListener();
+
         Popups.ORDERS.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
             PageManager.getRoot().setDisable(!aBoolean);
 
             if (Popups.ORDERS.getPopup().isShowing()) {
                 orderIDLabel.setText(String.valueOf(setOrderIDLabel()));
                 refreshTextFields();
+
+
+
             }
         });
         usablePopupContainer = this.popupContainer;
@@ -75,7 +83,22 @@ public class OrdersPopup implements Initializable {
         return -1;
     }
 
-
+    public void populateComboBoxModality() {
+        try {
+            String sql = """
+                    select name
+                    from modalities;
+                    """;
+            ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+            ObservableList<String> oblist = FXCollections.observableArrayList();
+            while (resultSet.next()) {
+                oblist.add(resultSet.getString("name"));
+            }
+            modalityComboBox.setItems(oblist);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
     public void populateComboBoxReferralMd() {
         try {
             String sql = """               
@@ -89,6 +112,22 @@ public class OrdersPopup implements Initializable {
                 oblist.add(resultSet.getString("full_name"));
             }
             referralMdComboBox.setItems(oblist);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+    public void populateComboBoxPatient() {
+        try {
+            String sql = """               
+                    SELECT first_name, last_name
+                    FROM patients
+                    """;
+            ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+            ObservableList<String> oblist = FXCollections.observableArrayList();
+            while (resultSet.next()) {
+                oblist.add(resultSet.getString("first_name") + " " + resultSet.getString("last_name"));
+            }
+            patientComboBox.setItems(oblist);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -123,10 +162,10 @@ public class OrdersPopup implements Initializable {
                 """;
         PreparedStatement preparedStatement = this.driver.connection.prepareStatement(sql);
         preparedStatement.setInt(1, Integer.parseInt(this.orderIDLabel.getText()));
-        preparedStatement.setString(2, getDataToInsert()[0]);
+        preparedStatement.setString(2, patientComboBox.getValue());
         preparedStatement.setString(3, referralMdComboBox.getValue());
-        preparedStatement.setString(4, getDataToInsert()[1]);
-        preparedStatement.setInt(5, getDataToInsertAppointmentId());
+        preparedStatement.setString(4, modalityComboBox.getValue());
+        preparedStatement.setInt(5,  /* getDataToInsertAppointmentId())*/ 0);
         preparedStatement.setString(6, this.notesTextArea.getText());
         preparedStatement.setString(7, null);
         preparedStatement.setString(8, this.reportTextArea.getText());
@@ -215,7 +254,7 @@ public class OrdersPopup implements Initializable {
 
     private void refreshTextFields() {
         referralMdComboBox.getSelectionModel().clearSelection();
-        appointmentComboBox.getSelectionModel().clearSelection();
+        // appointmentComboBox.getSelectionModel().clearSelection();
         reportTextArea.clear();
         notesTextArea.clear();
     }
