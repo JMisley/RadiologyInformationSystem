@@ -60,17 +60,14 @@ public class Orders implements Initializable {
             patient = new TableColumn<>("Patient"),
             referralMd = new TableColumn<>("Referral MD"),
             modality = new TableColumn<>("Modality"),
-            appointment = new TableColumn<>("Appointment"),
             notes = new TableColumn<>("Notes"),
-            status = new TableColumn<>("Status"),
-            report = new TableColumn<>("Report");
+            status = new TableColumn<>("Status");
     public ArrayList<TableColumn<OrdersData, String>> tableColumnsList = new ArrayList<>() {{
         add(orderId);
         add(patient);
         add(referralMd);
         add(modality);
         add(notes);
-        add(report);
     }};
 
     // Load NavigationBar component into home-page.fxml
@@ -115,15 +112,11 @@ public class Orders implements Initializable {
             infoTable.setColumns(tableColumnsList);
             infoTable.addColumnsToTable();
 
-            infoTable.setCustomColumnWidth(orderId, .1);
-            infoTable.setCustomColumnWidth(patient, .15);
-            infoTable.setCustomColumnWidth(referralMd, .13);
-            infoTable.setCustomColumnWidth(modality, .13);
-            infoTable.setCustomColumnWidth(appointment, .15);
-            infoTable.setCustomColumnWidth(notes, .28);
-            infoTable.setCustomColumnWidth(status, .11);
-            infoTable.setCustomColumnWidth(report, .28);
-
+            infoTable.setCustomColumnWidth(orderId, .12);
+            infoTable.setCustomColumnWidth(patient, .2);
+            infoTable.setCustomColumnWidth(referralMd, .17);
+            infoTable.setCustomColumnWidth(modality, .17);
+            infoTable.setCustomColumnWidth(notes, .35);
 
             centerContentContainer.setMaxWidth(misc.getScreenWidth() * .75);
             centerContentContainer.setMaxHeight(misc.getScreenHeight() * .85);
@@ -155,10 +148,8 @@ public class Orders implements Initializable {
                     resultSet.getString("patient"),
                     resultSet.getString("referral_md"),
                     resultSet.getString("modality"),
-                    resultSet.getString("appointment"),
                     resultSet.getString("notes"),
-                    resultSet.getString("status"),
-                    resultSet.getString("report")
+                    resultSet.getString("status")
             ));
         }
     }
@@ -199,10 +190,8 @@ public class Orders implements Initializable {
         patient.setCellValueFactory(new PropertyValueFactory<>("patientData"));
         referralMd.setCellValueFactory(new PropertyValueFactory<>("referralMdData"));
         modality.setCellValueFactory(new PropertyValueFactory<>("modalityData"));
-        appointment.setCellValueFactory(new PropertyValueFactory<>("appointmentData"));
         notes.setCellValueFactory(new PropertyValueFactory<>("notesData"));
         status.setCellValueFactory(new PropertyValueFactory<>("statusData"));
-        report.setCellValueFactory(new PropertyValueFactory<>("reportData"));
     }
 
     public void setComboBoxItems() {
@@ -212,7 +201,6 @@ public class Orders implements Initializable {
                 "Patient",
                 "Referral MD",
                 "Modality",
-                "Appointment",
                 "Notes",
                 "Status",
                 "Report"
@@ -279,10 +267,7 @@ public class Orders implements Initializable {
         } else if (ordersData.getNotesData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Notes")) {
             return true;
         }
-        else if (ordersData.getStatusData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Status")) {
-            return true;
-        } else
-            return ordersData.getReportData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Report");
+        else return ordersData.getStatusData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Status");
     }
 
     // Listener for Orders TableView
@@ -349,25 +334,26 @@ public class Orders implements Initializable {
         FileChooser fileChooser = new FileChooser();
         tableSearchBar.getAddImageButton().setOnAction(e -> {
              file = fileChooser.showOpenDialog(new Stage());
-             createConfirmationPopup(confirm -> uploadImageToDatabase(), cancel -> PopupManager.removePopup("ALERT"));
+             if (file != null)
+                 createConfirmationPopup(confirm -> uploadImageToDatabase(), cancel -> PopupManager.removePopup("ALERT"));
         });
     }
 
     private void createConfirmationPopup(EventHandler<ActionEvent> confirm, EventHandler<ActionEvent> cancel) {
         PopupManager.createPopup(Popups.CONFIRMATION);
-        new PopupConfirmation() {{
-            setConfirmationImage(new Image(String.valueOf(file)));
-            getHeaderLabel().setManaged(false);
-            getConfirmationImageView().setFitHeight(150);
-            getConfirmationImageView().setFitWidth(200);
-            setConfirmButtonLabel("Yes");
-            setExitButtonLabel("No");
-            setHeaderLabel("");
-            setContentLabel("Is this the image you wish to add?");
-            getConfirmationButton().setOnAction(confirm);
-            getCancelButton().setOnAction(cancel);
-        }};
-    }
+            new PopupConfirmation() {{
+                setConfirmationImage(new Image(String.valueOf(file)));
+                getHeaderLabel().setManaged(false);
+                getConfirmationImageView().setFitHeight(150);
+                getConfirmationImageView().setFitWidth(200);
+                setConfirmButtonLabel("Yes");
+                setExitButtonLabel("No");
+                setHeaderLabel("");
+                setContentLabel("Is this the image you wish to add?");
+                getConfirmationButton().setOnAction(confirm);
+                getCancelButton().setOnAction(cancel);
+            }};
+        }
 
     private void uploadImageToDatabase() {
         try {

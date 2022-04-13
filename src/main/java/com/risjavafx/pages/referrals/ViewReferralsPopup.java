@@ -81,13 +81,14 @@ public class ViewReferralsPopup implements Initializable {
         appointmentsComboBox.valueProperty().addListener(observable -> {
             try {
                 String sql = """
-                        SELECT orders.order_id
-                        FROM orders, appointments
-                        WHERE orders.appointment = appointment_id AND appointments.date_time = ?
+                        SELECT order_id
+                        FROM appointments
+                        WHERE appointments.date_time = ? AND patient = ?
                          """;
                 ObservableList<Integer> oblist = FXCollections.observableArrayList();
                 PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
                 preparedStatement.setString(1, appointmentsComboBox.getValue());
+                preparedStatement.setInt(2, clickedPatientId);
                 ResultSet resultSet = preparedStatement.executeQuery();
 
                 while (resultSet.next()) {
