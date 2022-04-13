@@ -184,19 +184,20 @@ public class AppointmentPopUp implements Initializable {
     public void insertAppointmentQuery() throws SQLException {
         String sql = """
                 insert into appointments
-                values (?, ?, null, ?, ?, ?, ?, ?, ?, null,null,null,1,1);
+                values (?, ?,  ?, ?, ?, ?, ?, ?,? ,0);
                 """;
 
 
         PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
         preparedStatement.setInt(1, Integer.parseInt(appointmentIdLabel.getText()));
         preparedStatement.setInt(2, pullPatientComboboxId(roleComboBoxPatient.getValue()));
-        preparedStatement.setInt(3, pullModalityComboboxId(roleComboBoxModality.getValue()));
-        preparedStatement.setString(4, dateTextField.getText());
-        preparedStatement.setInt(5, pullDocComboboxId(roleComboBoxRad.getValue()));
-        preparedStatement.setInt(6, pullDocComboboxId(roleComboBoxTech.getValue()));
-        preparedStatement.setString(7, phoneNumberTextField.getText());
-        preparedStatement.setString(8, emailTextField.getText());
+        preparedStatement.setInt(3,orderIdComboBox.getValue());
+        preparedStatement.setInt(4, pullModalityComboboxId());
+        preparedStatement.setString(5, dateTextField.getText());
+        preparedStatement.setInt(6, pullDocComboboxId(roleComboBoxRad.getValue()));
+        preparedStatement.setInt(7, pullDocComboboxId(roleComboBoxTech.getValue()));
+        preparedStatement.setString(8, phoneNumberTextField.getText());
+        preparedStatement.setString(9, emailTextField.getText());
         preparedStatement.execute();
 
     }
@@ -276,15 +277,15 @@ public class AppointmentPopUp implements Initializable {
         });
     }
 
-    public int pullModalityComboboxId(String insertName) {
+    public int pullModalityComboboxId() {
         try {
             String modalityIdFromCombo = """
                     SELECT modality_id
-                    FROM modalities
-                    WHERE name = ?
+                    FROM modalities, orders
+                    WHERE modalities.name = orders.modality AND orders.order_id = ?
                     """;
             PreparedStatement preparedStatementModalityCombo = driver.connection.prepareStatement(modalityIdFromCombo);
-            preparedStatementModalityCombo.setString(1, insertName);
+            preparedStatementModalityCombo.setInt(1, orderIdComboBox.getValue());
             ResultSet resultSetTechCombo = preparedStatementModalityCombo.executeQuery();
 
             int i = 0;
@@ -301,7 +302,7 @@ public class AppointmentPopUp implements Initializable {
 
     // Returns false if any input field is invalid
     public boolean validInput() {
-        return roleComboBoxModality.getValue() != null &&
+        return orderIdComboBox.getValue() != null &&
                roleComboBoxTech.getValue() != null &&
                roleComboBoxRad.getValue() != null &&
                roleComboBoxPatient.getValue() != null &&

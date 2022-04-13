@@ -157,7 +157,7 @@ public class OrdersPopup implements Initializable {
     public void insertOrderQuery() throws SQLException {
         String sql = """
                 insert into orders
-                values (?, ?, ?, ?, ?, ?, ?, ?);
+                values (?, ?, ?, ?, ?, ?, ?);
                 
                 """;
         PreparedStatement preparedStatement = this.driver.connection.prepareStatement(sql);
@@ -165,10 +165,9 @@ public class OrdersPopup implements Initializable {
         preparedStatement.setString(2, patientComboBox.getValue());
         preparedStatement.setString(3, referralMdComboBox.getValue());
         preparedStatement.setString(4, modalityComboBox.getValue());
-        preparedStatement.setInt(5,  /* getDataToInsertAppointmentId())*/ 0);
-        preparedStatement.setString(6, this.notesTextArea.getText());
-        preparedStatement.setString(7, null);
-        preparedStatement.setString(8, this.reportTextArea.getText());
+        preparedStatement.setString(5, this.notesTextArea.getText());
+        preparedStatement.setString(6, null);
+        preparedStatement.setString(7, this.reportTextArea.getText());
         preparedStatement.execute();
     /*
         String sqlAfter = """
