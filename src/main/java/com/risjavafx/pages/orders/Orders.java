@@ -9,9 +9,9 @@ import com.risjavafx.components.TitleBar;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.TableManager;
-import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
+import com.risjavafx.popups.models.PopupConfirmation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -19,7 +19,10 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
-import javafx.scene.control.*;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -53,18 +56,16 @@ public class Orders implements Initializable {
             patient = new TableColumn<>("Patient"),
             referralMd = new TableColumn<>("Referral MD"),
             modality = new TableColumn<>("Modality"),
-            appointment = new TableColumn<>("Appointment"),
             notes = new TableColumn<>("Notes"),
-            status = new TableColumn<>("Status"),
             report = new TableColumn<>("Report");
     public ArrayList<TableColumn<OrdersData, String>> tableColumnsList = new ArrayList<>() {{
         add(orderId);
         add(patient);
         add(referralMd);
         add(modality);
-       // add(appointment);
+        // add(appointment);
         add(notes);
-     //   add(status);
+        //   add(status);
         add(report);
     }};
 
@@ -113,9 +114,7 @@ public class Orders implements Initializable {
             infoTable.setCustomColumnWidth(patient, .15);
             infoTable.setCustomColumnWidth(referralMd, .13);
             infoTable.setCustomColumnWidth(modality, .13);
-            infoTable.setCustomColumnWidth(appointment, .15);
             infoTable.setCustomColumnWidth(notes, .28);
-            infoTable.setCustomColumnWidth(status, .11);
             infoTable.setCustomColumnWidth(report, .28);
 
 
@@ -149,9 +148,7 @@ public class Orders implements Initializable {
                     resultSet.getString("patient"),
                     resultSet.getString("referral_md"),
                     resultSet.getString("modality"),
-                    resultSet.getString("appointment"),
                     resultSet.getString("notes"),
-                    resultSet.getString("status"),
                     resultSet.getString("report")
             ));
         }
@@ -193,9 +190,7 @@ public class Orders implements Initializable {
         patient.setCellValueFactory(new PropertyValueFactory<>("patientData"));
         referralMd.setCellValueFactory(new PropertyValueFactory<>("referralMdData"));
         modality.setCellValueFactory(new PropertyValueFactory<>("modalityData"));
-        appointment.setCellValueFactory(new PropertyValueFactory<>("appointmentData"));
         notes.setCellValueFactory(new PropertyValueFactory<>("notesData"));
-        status.setCellValueFactory(new PropertyValueFactory<>("statusData"));
         report.setCellValueFactory(new PropertyValueFactory<>("reportData"));
     }
 
@@ -206,9 +201,7 @@ public class Orders implements Initializable {
                 "Patient",
                 "Referral MD",
                 "Modality",
-                "Appointment",
                 "Notes",
-                "Status",
                 "Report"
         );
         tableSearchBar.getComboBox().setItems(oblist);
@@ -272,9 +265,6 @@ public class Orders implements Initializable {
             return true;
         } else if (ordersData.getNotesData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Notes")) {
             return true;
-        }
-        else if (ordersData.getStatusData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Status")) {
-            return true;
         } else
             return ordersData.getReportData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Report");
     }
@@ -299,7 +289,7 @@ public class Orders implements Initializable {
             row.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
                 final int index = row.getIndex();
                 if (index >= 0 && index < infoTable.tableView.getItems().size() &&
-                    infoTable.tableView.getSelectionModel().isSelected(index)) {
+                        infoTable.tableView.getSelectionModel().isSelected(index)) {
                     infoTable.tableView.getSelectionModel().clearSelection();
 
                     tableSearchBar.toggleButtons(true);
@@ -325,7 +315,7 @@ public class Orders implements Initializable {
     public void confirmDeletion() {
 
         try {
-           //deleteSelectedItemsQuery("order_id");
+            //deleteSelectedItemsQuery("order_id");
             deleteSelectedItemsQuery("orders");
 
         } catch (SQLException e) {
