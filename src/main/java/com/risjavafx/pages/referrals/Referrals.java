@@ -8,6 +8,7 @@ import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
+import com.risjavafx.pages.referrals.billing.BillingReferralsPopup;
 import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
@@ -94,6 +95,7 @@ public class Referrals implements Initializable {
         tableSearchBar.createSearchBar(tableSearchBarContainer);
         tableSearchBarAddButtonListener();
         tableSearchBarViewButtonListener();
+        tableSearchBarBillingButtonListener();
         setComboBoxItems();
         filterData();
 
@@ -275,6 +277,7 @@ public class Referrals implements Initializable {
             }
             if (infoTable.tableView.getSelectionModel().getSelectedItem() != null) {
                 ViewReferralsPopup.setPatientClickedId(infoTable.tableView.getSelectionModel().getSelectedItem().patientIdData.get());
+                BillingReferralsPopup.setPatientId(infoTable.tableView.getSelectionModel().getSelectedItem().patientIdData.get());
             }
         });
     }
@@ -326,5 +329,9 @@ public class Referrals implements Initializable {
 
     public void tableSearchBarViewButtonListener() {
         tableSearchBar.getViewButton().setOnAction(event -> PopupManager.createPopup(Popups.VIEW_REFERRALS));
+    }
+
+    public void tableSearchBarBillingButtonListener() {
+        tableSearchBar.getBillingButton().setOnAction(event -> PopupManager.createPopup(Popups.BILLING));
     }
 }

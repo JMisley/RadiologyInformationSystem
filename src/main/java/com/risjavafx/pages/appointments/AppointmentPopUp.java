@@ -1,5 +1,6 @@
 package com.risjavafx.pages.appointments;
 
+import com.risjavafx.PromptButtonCell;
 import com.risjavafx.pages.LoadingService;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.Driver;
@@ -258,7 +259,7 @@ public class AppointmentPopUp implements Initializable {
                 String sql = """
                         SELECT orders.order_id
                         FROM orders
-                        WHERE orders.patient = ? 
+                        WHERE orders.patient = ?
                          """;
                 ObservableList<Integer> oblist = FXCollections.observableArrayList();
                 PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
@@ -319,6 +320,11 @@ public class AppointmentPopUp implements Initializable {
         cancelButton.setPrefWidth(misc.getScreenWidth() * .11);
         submitButton.setPrefHeight(misc.getScreenWidth() * .033);
         submitButton.setPrefWidth(misc.getScreenWidth() * .11);
+
+        roleComboBoxPatient.setButtonCell(new PromptButtonCell<>("Patient"));
+        orderIdComboBox.setButtonCell(new PromptButtonCell<>("Order ID"));
+        roleComboBoxRad.setButtonCell(new PromptButtonCell<>("Radiologist"));
+        roleComboBoxTech.setButtonCell(new PromptButtonCell<>("Technician"));
 
         double fontSize;
         if ((misc.getScreenWidth() / 80) < 20) {

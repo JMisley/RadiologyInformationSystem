@@ -82,8 +82,4 @@ public class PopupManager {
             }
         }
     }
-
-    public static void clearCache() {
-        cache.clear();
-    }
 }

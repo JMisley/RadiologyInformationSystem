@@ -5,7 +5,7 @@
 }
 
 .root:disabled {
-    -fx-opacity: .7;
+    -fx-opacity: .8;
 }
 
 #root {
@@ -100,6 +100,16 @@
 
 #viewButton:hover {
     -fx-background-color: #2994C173;
+}
+
+#billingButton {
+    -fx-background-color: #c18c29;
+    -fx-text-fill: white;
+    -fx-font-family: "Century Gothic";
+}
+
+#billingButton:hover {
+    -fx-background-color: #c18c2973;
 }
 
 
