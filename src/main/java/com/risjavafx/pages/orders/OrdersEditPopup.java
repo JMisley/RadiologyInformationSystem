@@ -26,12 +26,12 @@ public class OrdersEditPopup implements Initializable {
     public VBox popupContainer;
     public static VBox usablePopupContainer;
     public Label orderIDLabel;
-    public ComboBox<String> patientNameComboBox;
+    //public ComboBox<String> patientNameComboBox;
     public ComboBox<String> referralMdComboBox;
-    public ComboBox<String> modalityComboBox;
-    public ComboBox<String> appointmentComboBox;
+    //public ComboBox<String> modalityComboBox;
+    //public ComboBox<String> appointmentComboBox;
     public TextArea notesTextArea;
-    public ComboBox<String> statusComboBox;
+    //public ComboBox<String> statusComboBox;
     public TextArea reportTextArea;
     public Button cancelButton;
     public Button submitButton;
@@ -221,7 +221,7 @@ public class OrdersEditPopup implements Initializable {
 
     private void refreshTextFields() {
         referralMdComboBox.getSelectionModel().clearSelection();
-        appointmentComboBox.getSelectionModel().clearSelection();
+        //appointmentComboBox.getSelectionModel().clearSelection();
         reportTextArea.clear();
         notesTextArea.clear();
     }
@@ -250,26 +250,26 @@ public class OrdersEditPopup implements Initializable {
         } catch (Exception ignored) {
         }
     }
-    public String returnAppointmentComboBoxDate(){
-
-        String str = appointmentComboBox.getValue();
-        String[] arrOfStr = str.split(": ", 2);
-
-
-        return arrOfStr[1];
-    }
-    public void setAppointmentComboBoxListener() {
-        appointmentComboBox.valueProperty().addListener(observable -> {
-            /*
-            String Date = appointmentComboBox.getValue();
-            ArrayList<String> info = new ArrayList<String>();
-            info.add(Arrays.toString(Date.split(": ")));
-            System.out.println(info);
-            */
-            String str = appointmentComboBox.getValue();
-            String[] arrOfStr = str.split(": ", 2);
-
-            System.out.println(arrOfStr[1]);
-        });
-    }
+//    public String returnAppointmentComboBoxDate(){
+//
+//        String str = appointmentComboBox.getValue();
+//        String[] arrOfStr = str.split(": ", 2);
+//
+//
+//        return arrOfStr[1];
+//    }
+//    public void setAppointmentComboBoxListener() {
+//        appointmentComboBox.valueProperty().addListener(observable -> {
+//            /*
+//            String Date = appointmentComboBox.getValue();
+//            ArrayList<String> info = new ArrayList<String>();
+//            info.add(Arrays.toString(Date.split(": ")));
+//            System.out.println(info);
+//            */
+//            String str = appointmentComboBox.getValue();
+//            String[] arrOfStr = str.split(": ", 2);
+//
+//            System.out.println(arrOfStr[1]);
+//        });
+//    }
 }
