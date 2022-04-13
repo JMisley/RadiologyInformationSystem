@@ -5,10 +5,7 @@ import com.risjavafx.UserStates;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.components.NavigationBar;
 import com.risjavafx.pages.LoadingService;
-import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
-import com.risjavafx.popups.PopupManager;
-import com.risjavafx.popups.models.Notification;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -109,8 +106,6 @@ public class UserInfo implements Initializable {
             reloadSystem();
             resetTextFields();
             welcomeLabel.setText("Welcome " + getText(fullNameTextField));
-
-            Notification.createNotification("Changes Complete", "You successfully changed your information");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -133,9 +128,9 @@ public class UserInfo implements Initializable {
     }
 
     private void reloadSystem() {
-        PageManager.clearCache();
-        PopupManager.clearCache();
-        LoadingService.GlobalReset globalReset = new LoadingService.GlobalReset(Pages.USERINFO);
+        String notiHeader = "Submission Complete";
+        String notiText = "You have successfully changed your information";
+        LoadingService.GlobalResetDefault globalReset = new LoadingService.GlobalResetDefault(notiHeader, notiText);
         globalReset.start();
     }
 

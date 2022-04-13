@@ -22,7 +22,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
-public class OrdersPopup implements Initializable {
+public class OrdersEditPopup implements Initializable {
     public VBox popupContainer;
     public static VBox usablePopupContainer;
     public Label orderIDLabel;
@@ -35,10 +35,12 @@ public class OrdersPopup implements Initializable {
     public TextArea reportTextArea;
     public Button cancelButton;
     public Button submitButton;
+    public static int clickedOrderId;
+
     Driver driver = new Driver();
     Miscellaneous misc = new Miscellaneous();
 
-    public OrdersPopup() throws SQLException {
+    public OrdersEditPopup() throws SQLException {
     }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -47,11 +49,11 @@ public class OrdersPopup implements Initializable {
         populateComboBoxReferralMd();
         populateComboBoxAppointment();
         setAppointmentComboBoxListener();
-        Popups.ORDERS.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
+        Popups.ORDERS_EDIT.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
             PageManager.getRoot().setDisable(!aBoolean);
 
-            if (Popups.ORDERS.getPopup().isShowing()) {
-                orderIDLabel.setText(String.valueOf(setOrderIDLabel()));
+            if (Popups.ORDERS_EDIT.getPopup().isShowing()) {
+                orderIDLabel.setText(String.valueOf(getOrderClickedId()));
                 refreshTextFields();
             }
         });
@@ -114,27 +116,32 @@ public class OrdersPopup implements Initializable {
         }
     }
 
+    public static void setOrderClickedId(int orderClickedId) {
+        OrdersEditPopup.clickedOrderId = orderClickedId;
+    }
 
-    public void insertOrderQuery() throws SQLException {
+    public static int getOrderClickedId() {
+        return OrdersEditPopup.clickedOrderId;
+    }
+
+
+    public void updateOrderQuery() throws SQLException {
         String sql = """
-                insert into orders
-                values (?, ?, ?, ?, ?, ?, ?, ?);
-                
+                UPDATE orders
+                SET referral_md = ?, appointment = ?, notes = ?, report = ?
+                WHERE orders.order_id = ?;
                 """;
         PreparedStatement preparedStatement = this.driver.connection.prepareStatement(sql);
-        preparedStatement.setInt(1, Integer.parseInt(this.orderIDLabel.getText()));
-        preparedStatement.setString(2, getDataToInsert()[0]);
-        preparedStatement.setString(3, referralMdComboBox.getValue());
-        preparedStatement.setString(4, getDataToInsert()[1]);
-        preparedStatement.setInt(5, getDataToInsertAppointmentId());
-        preparedStatement.setString(6, this.notesTextArea.getText());
-        preparedStatement.setString(7, null);
-        preparedStatement.setString(8, this.reportTextArea.getText());
+        preparedStatement.setString(1, referralMdComboBox.getValue());
+        preparedStatement.setInt(2, getDataToInsertAppointmentId());
+        preparedStatement.setString(3, this.notesTextArea.getText());
+        preparedStatement.setString(4, this.reportTextArea.getText());
+        preparedStatement.setInt(5, getOrderClickedId());
         preparedStatement.execute();
     /*
         String sqlAfter = """
-                 update orders 
-                 where orders.order_id = ? 
+                 update orders
+                 where orders.order_id = ?
                  set
                  """
         PreparedStatement insertAfter = this.driver.connection.prepareStatement((sqlAfter));
@@ -145,7 +152,7 @@ public class OrdersPopup implements Initializable {
 
 
 
-            String sql = """
+        String sql = """
                         SELECT patients.first_name, patients.last_name, modalities.name
                     FROM appointments,
                          patients,
@@ -154,17 +161,17 @@ public class OrdersPopup implements Initializable {
                       AND appointments.patient = patients.patient_id
                       AND appointments.modality = modalities.modality_id;
                     """;
-            PreparedStatement preparedStatement = this.driver.connection.prepareStatement(sql);
-            preparedStatement.setString(1, returnAppointmentComboBoxDate());
-            ResultSet resultSet = preparedStatement.executeQuery();
+        PreparedStatement preparedStatement = this.driver.connection.prepareStatement(sql);
+        preparedStatement.setString(1, returnAppointmentComboBoxDate());
+        ResultSet resultSet = preparedStatement.executeQuery();
 
 
-            if (resultSet.next()) {
-                return new String[]{resultSet.getString("first_name") + " " + resultSet.getString("last_name"), resultSet.getString("name")};
+        if (resultSet.next()) {
+            return new String[]{resultSet.getString("first_name") + " " + resultSet.getString("last_name"), resultSet.getString("name")};
 
-            }
+        }
 
-            return null;
+        return null;
     }
 
     public int getDataToInsertAppointmentId() throws SQLException {
@@ -222,7 +229,7 @@ public class OrdersPopup implements Initializable {
 
     public void submitButtonOnclick() throws SQLException {
         if (this.validInput()) {
-            this.insertOrderQuery();
+            this.updateOrderQuery();
             //this.insertOrderIdQuery();
             Orders.queryData(Orders.getLastRowStringQuery());
             PopupManager.removePopup("MENU");

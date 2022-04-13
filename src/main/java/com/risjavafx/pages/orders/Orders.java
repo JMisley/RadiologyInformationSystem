@@ -55,7 +55,8 @@ public class Orders implements Initializable {
             modality = new TableColumn<>("Modality"),
             appointment = new TableColumn<>("Appointment"),
             notes = new TableColumn<>("Notes"),
-            status = new TableColumn<>("Status");
+            status = new TableColumn<>("Status"),
+            report = new TableColumn<>("Report");
     public ArrayList<TableColumn<OrdersData, String>> tableColumnsList = new ArrayList<>() {{
         add(orderId);
         add(patient);
@@ -64,6 +65,7 @@ public class Orders implements Initializable {
         add(appointment);
         add(notes);
         add(status);
+        add(report);
     }};
 
     // Load NavigationBar component into home-page.fxml
@@ -107,13 +109,14 @@ public class Orders implements Initializable {
             infoTable.setColumns(tableColumnsList);
             infoTable.addColumnsToTable();
 
-            infoTable.setCustomColumnWidth(orderId, .09);
-            infoTable.setCustomColumnWidth(patient, .16);
-            infoTable.setCustomColumnWidth(referralMd, .16);
-            infoTable.setCustomColumnWidth(modality, .14);
-            infoTable.setCustomColumnWidth(appointment, .16);
-            infoTable.setCustomColumnWidth(notes, .18);
-            infoTable.setCustomColumnWidth(status, .12);
+            infoTable.setCustomColumnWidth(orderId, .1);
+            infoTable.setCustomColumnWidth(patient, .15);
+            infoTable.setCustomColumnWidth(referralMd, .13);
+            infoTable.setCustomColumnWidth(modality, .13);
+            infoTable.setCustomColumnWidth(appointment, .15);
+            infoTable.setCustomColumnWidth(notes, .15);
+            infoTable.setCustomColumnWidth(status, .11);
+            infoTable.setCustomColumnWidth(report, .15);
 
 
             centerContentContainer.setMaxWidth(misc.getScreenWidth() * .75);
@@ -148,33 +151,22 @@ public class Orders implements Initializable {
                     resultSet.getString("modality"),
                     resultSet.getString("appointment"),
                     resultSet.getString("notes"),
-                    resultSet.getString("status")
+                    resultSet.getString("status"),
+                    resultSet.getString("report")
             ));
         }
     }
 
     public String getAllDataStringQuery() {
         return """
-                SELECT order_id, 
-                patient, 
-                referral_md, 
-                modality, 
-                appointment, 
-                notes, 
-                status
+                SELECT *
                 FROM orders
                 """;
     }
 
     public static String getLastRowStringQuery() {
         return """
-                SELECT order_id, 
-                patient, 
-                referral_md, 
-                modality, 
-                appointment, 
-                notes, 
-                status
+                SELECT *
                 FROM orders
                 ORDER BY order_id
                 DESC LIMIT 1;
@@ -187,9 +179,9 @@ public class Orders implements Initializable {
         ObservableList<OrdersData> selectedItems = infoTable.tableView.getSelectionModel().getSelectedItems();
         for (OrdersData selectedItem : selectedItems) {
             String sql = """
-                    DELETE FROM orders
+                    DELETE FROM %$
                     WHERE order_id = ?
-                    """.replace("orders", table);
+                    """.replace("%$", table);
             PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getOrderIdData());
             preparedStatement.execute();
@@ -204,6 +196,7 @@ public class Orders implements Initializable {
         appointment.setCellValueFactory(new PropertyValueFactory<>("appointmentData"));
         notes.setCellValueFactory(new PropertyValueFactory<>("notesData"));
         status.setCellValueFactory(new PropertyValueFactory<>("statusData"));
+        report.setCellValueFactory(new PropertyValueFactory<>("reportData"));
     }
 
     public void setComboBoxItems() {
@@ -215,7 +208,8 @@ public class Orders implements Initializable {
                 "Modality",
                 "Appointment",
                 "Notes",
-                "Status"
+                "Status",
+                "Report"
         );
         tableSearchBar.getComboBox().setItems(oblist);
     }
@@ -279,9 +273,10 @@ public class Orders implements Initializable {
         } else if (ordersData.getNotesData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Notes")) {
             return true;
         }
-        else {
-            return ordersData.getStatusData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Status");
-        }
+        else if (ordersData.getStatusData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Status")) {
+            return true;
+        } else
+            return ordersData.getReportData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Report");
     }
 
     // Listener for Orders TableView
@@ -346,4 +341,5 @@ public class Orders implements Initializable {
     public void tableSearchBarEditButtonListener() {
         tableSearchBar.getEditButton().setOnAction(event -> PopupManager.createPopup(Popups.ORDERS_EDIT));
     }
+
 }

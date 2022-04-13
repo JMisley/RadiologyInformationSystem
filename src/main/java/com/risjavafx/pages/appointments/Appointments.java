@@ -10,6 +10,7 @@ import com.risjavafx.components.TitleBar;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.TableManager;
+import com.risjavafx.pages.admin.AdminEditPopup;
 import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
@@ -137,6 +138,7 @@ public class Appointments implements Initializable {
         if (!centerContent.getChildren().contains(TableManager.getAppointmentsTable())) {
             centerContent.getChildren().add(TableManager.getAppointmentsTable());
         }
+
     }
 
 
@@ -242,6 +244,7 @@ public class Appointments implements Initializable {
             PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getAppointmentId());
             preparedStatement.execute();
+
         }
     }
 
@@ -342,9 +345,10 @@ public class Appointments implements Initializable {
             } else {
                 tableSearchBar.toggleButtons(true);
             }
-            tableSearchBar.getCheckInButton().setOnAction(actionEvent ->
-                    customCheckInConfirmationPopup(confirm -> confirmCheckIn(), cancel -> PopupManager.removePopup("ALERT")));
             AppointmentEditPopup.setAppointmentClickedId(infoTable.tableView.getSelectionModel().getSelectedItem().appointmentId.get());
+            tableSearchBar.getCheckInButton().setOnAction(actionEvent ->
+                    customCheckInConfirmationPopup(confirm -> confirmCheckIn() , cancel -> PopupManager.removePopup("ALERT")));
+                    refreshTable();
         });
     }
 
@@ -376,6 +380,17 @@ public class Appointments implements Initializable {
             getCancelButton().setOnAction(cancel);
         }};
     }
+    public void customBillingConfirmationPopup(EventHandler<ActionEvent> confirm, EventHandler<ActionEvent> cancel) {
+        PopupManager.createPopup(Popups.CONFIRMATION);
+        new PopupConfirmation() {{
+            setConfirmButtonLabel("Yes");
+            setExitButtonLabel("No");
+            setHeaderLabel("Notice");
+            setContentLabel("This Person is done with their appointment");
+            getConfirmationButton().setOnAction(confirm);
+            getCancelButton().setOnAction(cancel);
+        }};
+    }
     public void customCheckInConfirmationPopup(EventHandler<ActionEvent> confirm, EventHandler<ActionEvent> cancel) {
         PopupManager.createPopup(Popups.CONFIRMATION);
         new PopupConfirmation() {{
@@ -390,32 +405,23 @@ public class Appointments implements Initializable {
     private void confirmCheckIn() {
         try {
             changeCheckIn("appointments");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
-        observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
-        observableList.addAll(infoTable.tableView.getSelectionModel().getSelectedItems());
+        closedFlag.setCellValueFactory(new PropertyValueFactory<>("closedFlag"));
         PopupManager.removePopup("ALERT");
+        refreshTable();
     }
 
     public void confirmDeletion() {
-        /*
-        try {
-            deleteSelectedItemsQuery("users_roles");
-            deleteSelectedItemsQuery("users");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-         */
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
-    PopupManager.removePopup("ALERT");
+        PopupManager.removePopup("ALERT");
     }
 
     public void tableSearchBarAddButtonListener() {
         tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.APPOINTMENT));
+
     }
 
     public void tableSearchBarEditButtonListener() {

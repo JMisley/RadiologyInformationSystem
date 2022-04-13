@@ -5,18 +5,18 @@ import javafx.stage.Popup;
 
 public enum Popups {
     ADMIN("admin-popup.fxml", PopupManager.popupMenu, "MENU"),
+    ADMINEDIT("edit-admin-popup.fxml", PopupManager.popupMenu, "MENU"),
     APPOINTMENT("appointment-popup.fxml", PopupManager.popupMenu, "MENU"),
     APPOINTMENT_EDIT("edit-appointment-popup.fxml", PopupManager.popupMenu, "MENU"),
     ORDERS("orders-popup.fxml", PopupManager.popupMenu, "MENU"),
     ORDERS_EDIT("edit-orders-popup.fxml", PopupManager.popupMenu, "MENU"),
-    ADMINEDIT("edit-admin-popup.fxml", PopupManager.popupMenu, "MENU"),
     CONFIRMATION("popup-confirmation.fxml", PopupManager.popupAlert, "ALERT"),
     ALERT("popup-alert.fxml", PopupManager.popupAlert, "ALERT"),
     REFERRALS("referrals/referral-popup.fxml", PopupManager.popupMenu, "MENU"),
     REFERRALS_EDIT("referrals/edit-referral-popup.fxml", PopupManager.popupMenu, "MENU"),
-    VIEW_REFERRALS("referrals/view-referral-popup.fxml", PopupManager.popupMenu, "LARGE_MENU");
-
+    VIEW_REFERRALS("referrals/view-referral-popup.fxml", PopupManager.largePopupMenu, "LARGE_MENU");
     private static Popups menuPopups;
+    private static Popups largeMenuPopups;
     private static Popups alertPopups;
     private final String filename;
     private final Popup popup;
@@ -28,10 +28,6 @@ public enum Popups {
         this.filename = fileName;
         this.popup = popup;
         this.type = type;
-    }
-
-    public static Popups[] getPopupsArray() {
-        return new Popups[]{ADMIN, ORDERS, APPOINTMENT, CONFIRMATION, ALERT};
     }
 
     public static Popups[] getAlertPopupsArray() {
@@ -64,6 +60,14 @@ public enum Popups {
 
     public static Popups getAlertPopupEnum() {
         return alertPopups;
+    }
+
+    public static void setLargeMenuPopupEnum(Popups popups) {
+        Popups.largeMenuPopups = popups;
+    }
+
+    public static Popups getLargeMenuPopupEnum() {
+        return largeMenuPopups;
     }
 
     public static double[] getMenuDimensions() {

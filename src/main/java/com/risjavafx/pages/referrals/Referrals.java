@@ -271,11 +271,16 @@ public class Referrals implements Initializable {
                 tableSearchBar.getDeleteButton().setOnAction(actionEvent ->
                         customConfirmationPopup(confirm -> confirmDeletion(), cancel -> PopupManager.removePopup("ALERT")));
             } else {
+
                 tableSearchBar.toggleButtons(true);
+            }
+            if (infoTable.tableView.getSelectionModel().getSelectedItem() != null) {
+                ViewReferralsPopup.setPatientClickedId(infoTable.tableView.getSelectionModel().getSelectedItem().patientIdData.get());
             }
             ReferralEditPopup.setPatientClickedId(infoTable.tableView.getSelectionModel().getSelectedItem().patientIdData.get());
         });
     }
+
 
     // If a selected row is clicked again, it will unselect. TableSearchBar Buttons will also adjust appropriately
     public void manageRowSelection() {

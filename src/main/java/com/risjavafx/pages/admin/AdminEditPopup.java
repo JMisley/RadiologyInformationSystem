@@ -1,26 +1,30 @@
-package com.risjavafx.pages.admin;
 
-import com.risjavafx.popups.models.PopupAlert;
-import com.risjavafx.popups.models.Notification;
-import com.risjavafx.pages.PageManager;
-import com.risjavafx.popups.PopupManager;
-import com.risjavafx.Driver;
-import com.risjavafx.Miscellaneous;
-import com.risjavafx.popups.Popups;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
+        package com.risjavafx.pages.admin;
 
-import java.net.URL;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ResourceBundle;
+        import com.risjavafx.pages.LoadingService;
+        import com.risjavafx.pages.Pages;
+        import com.risjavafx.pages.TableManager;
+        import com.risjavafx.popups.models.PopupAlert;
+        import com.risjavafx.popups.models.Notification;
+        import com.risjavafx.pages.PageManager;
+        import com.risjavafx.popups.PopupManager;
+        import com.risjavafx.Driver;
+        import com.risjavafx.Miscellaneous;
+        import com.risjavafx.popups.Popups;
+        import javafx.collections.FXCollections;
+        import javafx.collections.ObservableList;
+        import javafx.fxml.Initializable;
+        import javafx.scene.control.Button;
+        import javafx.scene.control.ComboBox;
+        import javafx.scene.control.Label;
+        import javafx.scene.control.TextField;
+        import javafx.scene.layout.VBox;
+
+        import java.net.URL;
+        import java.sql.PreparedStatement;
+        import java.sql.ResultSet;
+        import java.sql.SQLException;
+        import java.util.ResourceBundle;
 
 public class AdminEditPopup implements Initializable {
     public VBox popupContainer;
@@ -136,6 +140,28 @@ public class AdminEditPopup implements Initializable {
         usernameTextField.clear();
         passwordTextField.clear();
     }
+
+    private void refreshPage() {
+        String notiHeader = "Submission Complete";
+        String notiText = "You have successfully changed your information";
+        LoadingService.GlobalResetDefault globalReset = new LoadingService.GlobalResetDefault(notiHeader, notiText);
+        globalReset.start();
+    }
+
+//    public String getCurrRowStringQuery() throws SQLException {
+//        String sql = """
+//                    SELECT *
+//                FROM users, roles INNER JOIN users_roles
+//                ON roles.role_id = users_roles.role_id
+//                WHERE users.user_id = ?
+//                ORDER BY users.user_id DESC LIMIT 1;
+//                    """;
+//        PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+//        preparedStatement.setInt(1, getUserClickedId());
+//        preparedStatement.execute();
+//
+//        return sql;
+//    }
 
     //Button Onclicks
     // Onclick for submit button
