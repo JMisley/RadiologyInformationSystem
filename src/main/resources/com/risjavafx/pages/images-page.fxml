@@ -6,6 +6,7 @@
 
 <StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="com.risjavafx.pages.images.ImagesPage" style="-fx-background-color: #121212">
+           fx:controller="com.risjavafx.pages.images.ImagesPage"
+           style="-fx-background-color: #121212; -fx-background-image: none">
     <ImageView fx:id="imageView" pickOnBounds="true" preserveRatio="true"/>
 </StackPane>

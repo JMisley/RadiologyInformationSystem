@@ -2,6 +2,7 @@ package com.risjavafx.pages.referrals;
 
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
+import com.risjavafx.PromptButtonCell;
 import com.risjavafx.components.Main;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
@@ -11,10 +12,7 @@ import com.risjavafx.popups.Popups;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Control;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -43,14 +41,13 @@ public class ViewReferralsPopup implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         resizeElements();
-        setAppointmentsComboBoxListener();
         Popups.VIEW_REFERRALS.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
             PageManager.getRoot().setDisable(!aBoolean);
-            refreshElements();
+            refreshComboBoxes();
+            refreshTextAndButtons();
             populateComboBoxAppointment();
             populateComboBoxOrder();
-            populateNotesTextArea();
-            populateReportTextArea();
+            queryNotesAndReportText();
         });
     }
 
@@ -100,77 +97,51 @@ public class ViewReferralsPopup implements Initializable {
                     oblist.add(resultSet.getInt("order_id"));
                 }
                 ordersComboBox.setItems(oblist);
+                refreshTextAndButtons();
             } catch (Exception exception) {
                 exception.printStackTrace();
             }
         });
     }
 
-    public void populateNotesTextArea() {
+    public void queryNotesAndReportText() {
         ordersComboBox.valueProperty().addListener(observable -> {
             try {
                 String sql = """
-                        SELECT notes
+                        SELECT notes, report
                         FROM orders
                         WHERE orders.order_id = ?
                         """;
                 PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
                 preparedStatement.setInt(1, ordersComboBox.getValue());
                 ResultSet resultSet = preparedStatement.executeQuery();
-                while (resultSet.next()) {
-                    notesTextArea.setText(resultSet.getString("notes"));
-                }
+
+                populateTextAreas(resultSet);
+
             } catch (Exception ignored) {
             }
         });
     }
 
-    public void populateReportTextArea() {
-        ordersComboBox.valueProperty().addListener(observable -> {
-            try {
-                String sql = """
-                        SELECT report
-                        FROM orders
-                        WHERE orders.order_id = ?
-                        """;
-                PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
-                preparedStatement.setInt(1, ordersComboBox.getValue());
-                ResultSet resultSet = preparedStatement.executeQuery();
-                while (resultSet.next()) {
-                    reportTextArea.setText(resultSet.getString("report"));
-                }
-
-                viewImagesButton.setDisable(false);
-            } catch (Exception ignored) {
+    private void populateTextAreas(ResultSet resultSet) throws SQLException {
+        while (resultSet.next()) {
+            if (resultSet.getString("notes").isBlank())
+                notesTextArea.setPromptText("No notes have been taken yet");
+            else {
+                String notesText = resultSet.getString("notes");
+                notesTextArea.setText(notesText);
             }
-        });
-    }
 
-    public String[] getDataToInsert() throws SQLException {
-        String sql = """
-                    SELECT patients.first_name, patients.last_name, modalities.name
-                FROM appointments,
-                     patients,
-                     modalities
-                WHERE appointments.date_time =  ?
-                  AND appointments.patient = patients.patient_id
-                  AND appointments.modality = modalities.modality_id;
-                """;
-        PreparedStatement preparedStatement = this.driver.connection.prepareStatement(sql);
-        preparedStatement.setString(1, appointmentsComboBox.getValue());
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-        if (resultSet.next()) {
-            return new String[]{resultSet.getString("first_name") + " " + resultSet.getString("last_name"), resultSet.getString("name")};
+            if (resultSet.getString("report").isBlank())
+                reportTextArea.setPromptText("No report has been made yet");
+            else {
+                String reportText = resultSet.getString("report");
+                reportTextArea.setText(reportText);
+            }
         }
-        return null;
-    }
 
-    public void setAppointmentsComboBoxListener() {
-        appointmentsComboBox.valueProperty().addListener(observable -> {
-            String str = appointmentsComboBox.getValue();
-            System.out.println(str);
-        });
+        submitButton.setDisable(false);
+        viewImagesButton.setDisable(false);
     }
 
     private void resizeElements() {
@@ -181,6 +152,9 @@ public class ViewReferralsPopup implements Initializable {
         popupContainer.setMaxHeight(Popups.getLargeMenuDimensions()[0]);
         popupContainer.setMaxWidth(Popups.getLargeMenuDimensions()[1]);
 
+        ordersComboBox.setButtonCell(new PromptButtonCell<>("Select Order"));
+        appointmentsComboBox.setButtonCell(new PromptButtonCell<>("Select Appointment"));
+
         for (Control control : new Control[]{returnButton, submitButton, viewImagesButton, appointmentsComboBox, ordersComboBox}) {
             control.setPrefHeight(40);
             control.setPrefWidth(misc.getScreenWidth() * .15);
@@ -188,10 +162,33 @@ public class ViewReferralsPopup implements Initializable {
         }
     }
 
-    public void refreshElements() {
+    private void refreshComboBoxes() {
+        ordersComboBox.getSelectionModel().clearSelection();
+        appointmentsComboBox.getSelectionModel().clearSelection();
+    }
+
+    private void refreshTextAndButtons() {
         reportTextArea.clear();
+        reportTextArea.setPromptText("");
         notesTextArea.clear();
+        notesTextArea.setPromptText("");
         viewImagesButton.setDisable(true);
+        submitButton.setDisable(true);
+    }
+
+    private void updateTextAreas() throws SQLException {
+        Driver driver = new Driver();
+        PreparedStatement preparedStatement;
+        final String sql = """
+                UPDATE orders
+                SET notes = ?, report = ?
+                WHERE order_id = ?;
+                """;
+        preparedStatement = driver.connection.prepareStatement(sql);
+        preparedStatement.setString(1, notesTextArea.getText());
+        preparedStatement.setString(2, reportTextArea.getText());
+        preparedStatement.setInt(3, ordersComboBox.getValue());
+        preparedStatement.execute();
     }
 
     // OnClick listeners
@@ -204,6 +201,7 @@ public class ViewReferralsPopup implements Initializable {
 
     public void submitChanges() {
         try {
+            updateTextAreas();
             PopupManager.removePopup("MENU");
         } catch (Exception ignore) {
         }

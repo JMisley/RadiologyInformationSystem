@@ -111,13 +111,13 @@ public class Referrals implements Initializable {
             infoTable.setColumns(tableColumnsList);
             infoTable.addColumnsToTable();
 
-            infoTable.setCustomColumnWidth(patientId, .142);
-            infoTable.setCustomColumnWidth(dateOfBirth, .142);
-            infoTable.setCustomColumnWidth(lastName, .142);
-            infoTable.setCustomColumnWidth(firstName, .142);
-            infoTable.setCustomColumnWidth(sex, .142);
-            infoTable.setCustomColumnWidth(race, .142);
-            infoTable.setCustomColumnWidth(ethnicity, .142);
+            infoTable.setCustomColumnWidth(patientId, .12);
+            infoTable.setCustomColumnWidth(dateOfBirth, .2);
+            infoTable.setCustomColumnWidth(lastName, .15);
+            infoTable.setCustomColumnWidth(firstName, .15);
+            infoTable.setCustomColumnWidth(sex, .12);
+            infoTable.setCustomColumnWidth(race, .13);
+            infoTable.setCustomColumnWidth(ethnicity, .13);
 
             centerContentContainer.setMaxWidth(misc.getScreenWidth() * .75);
             centerContentContainer.setMaxHeight(misc.getScreenHeight() * .85);

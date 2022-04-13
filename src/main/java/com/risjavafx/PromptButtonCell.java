@@ -14,7 +14,7 @@ public class PromptButtonCell<T> extends ListCell<T> {
                 setText(newText);
             }
         });
-        setPromptText(promptText);
+        setStringPromptText(promptText);
     }
 
     public StringProperty promptTextProperty() {
@@ -25,7 +25,7 @@ public class PromptButtonCell<T> extends ListCell<T> {
         return promptTextProperty().get();
     }
 
-    public final void setPromptText(String promptText) {
+    public final void setStringPromptText(String promptText) {
         promptTextProperty().set(promptText);
     }
 
@@ -35,7 +35,7 @@ public class PromptButtonCell<T> extends ListCell<T> {
         if (empty || item == null) {
             setText(getPromptText());
         } else {
-            setText((String) item);
+            setText(item.toString());
         }
     }
 }

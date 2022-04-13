@@ -36,6 +36,7 @@ public class BillingReferralsPopup implements Initializable {
         populateComboBox();
 
         Popups.BILLING.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
+            PageManager.getRoot().setDisable(!aBoolean);
             refreshElements();
             totalCost = queryTotalCost();
             insuranceComboBox.valueProperty().addListener(observable -> calculatePatientBill());
