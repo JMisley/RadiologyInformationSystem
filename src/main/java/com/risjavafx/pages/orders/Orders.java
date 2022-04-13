@@ -358,11 +358,19 @@ public class Orders implements Initializable {
     private void uploadImageToDatabase() {
         try {
             Driver driver = new Driver();
-            String query = """
+
+            String query;
+            if (checkForImages()) {
+                query = """
                 UPDATE imaging_info
                 SET Image = ?
                 WHERE order_id = ?;
                 """;
+            } else {
+                query = """
+                INSERT INTO imaging_info (Image, order_id)
+                VALUES (?,?)                """;
+            }
 
             PreparedStatement preparedStatement = driver.connection.prepareStatement(query);
             FileInputStream fileInputStream = new FileInputStream(file);
@@ -379,5 +387,26 @@ public class Orders implements Initializable {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+    }
+
+    // Returns true if order_id already has an image
+    private boolean checkForImages() {
+        try {
+            Driver driver = new Driver();
+            String query = """
+                SELECT order_id
+                FROM imaging_info
+                WHERE order_id = ?
+                """;
+
+            PreparedStatement preparedStatement = driver.connection.prepareStatement(query);
+            preparedStatement.setInt(1, infoTable.tableView.getSelectionModel().getSelectedItem().getOrderIdData());
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            return resultSet.next();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+        return false;
     }
 }
