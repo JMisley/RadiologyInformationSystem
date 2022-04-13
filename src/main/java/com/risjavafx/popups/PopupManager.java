@@ -22,8 +22,13 @@ public class PopupManager {
     // Method to create a popup menu. Input a decimals to represent a percentage of the screen height and width
     public static void createPopup(Popups popups) {
         try {
-            Parent popupRoot = cache.get(popups);
-
+            Parent popupRoot;
+            if (popups.isCachable())
+                popupRoot = cache.get(popups);
+            else {
+                popupRoot = FXMLLoader.load(Objects.requireNonNull(PopupManager.class.getResource(popups.getFilename())));
+                popupRoot.getStylesheets().add(Objects.requireNonNull(PageManager.class.getResource("stylesheet/styles.css")).toExternalForm());
+            }
             popups.getPopup().getContent().add(popupRoot);
             popups.getPopup().show(Main.usableStage);
 

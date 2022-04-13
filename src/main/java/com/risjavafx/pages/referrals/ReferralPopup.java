@@ -147,7 +147,6 @@ public class ReferralPopup implements Initializable {
         } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);
             new PopupAlert() {{
-                setAlertImage(new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/error.png"));
                 setHeaderLabel("Submission Failed");
                 setContentLabel("Please make sure you filled out all fields");
                 setExitButtonLabel("Retry");

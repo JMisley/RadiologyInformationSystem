@@ -292,6 +292,7 @@ public class Admin implements Initializable {
     public void customConfirmationPopup(EventHandler<ActionEvent> confirm, EventHandler<ActionEvent> cancel) {
         PopupManager.createPopup(Popups.CONFIRMATION);
         new PopupConfirmation() {{
+            getHeaderLabel().setManaged(false);
             setConfirmButtonLabel("Continue");
             setExitButtonLabel("Cancel");
             setHeaderLabel("Warning");

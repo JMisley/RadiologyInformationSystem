@@ -23,6 +23,7 @@ public class TableSearchBar implements Initializable {
     @FXML private Button checkInButton;
     @FXML private Button billingButton;
     @FXML private Button addImageButton;
+
     @FXML private TextField textField;
     @FXML private ComboBox<String> comboBox;
     @FXML private Label errorLabel;
@@ -34,6 +35,7 @@ public class TableSearchBar implements Initializable {
     private static Button usableViewButton;
     private static Button usableBillingButton;
     private static Button usableAddImageButton;
+
     private static TextField usableTextField;
     private static ComboBox<String> usableComboBox;
     private static Label usableErrorLabel;
@@ -134,4 +136,6 @@ public class TableSearchBar implements Initializable {
     }
 
     public Button getBillingButton() { return usableBillingButton;}
+
+    public Button getAddImageButton() {return usableAddImageButton;}
 }

@@ -11,6 +11,7 @@ import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
@@ -23,16 +24,16 @@ import java.sql.SQLException;
 
 public class ViewReferralsPopup implements Initializable {
 
-    public VBox popupContainer;
-    public Button returnButton;
-    public Button submitButton;
-    public Button viewImagesButton;
-    public ComboBox<String> appointmentsComboBox;
-    public ComboBox<Integer> ordersComboBox;
-    public static int clickedPatientId;
-    public TextArea notesTextArea;
-    public TextArea reportTextArea;
+    @FXML private VBox popupContainer;
+    @FXML private Button returnButton;
+    @FXML private Button submitButton;
+    @FXML private Button viewImagesButton;
+    @FXML private ComboBox<String> appointmentsComboBox;
+    @FXML private ComboBox<Integer> ordersComboBox;
+    @FXML private TextArea notesTextArea;
+    @FXML private TextArea reportTextArea;
 
+    private static int clickedPatientId;
     Driver driver = new Driver();
 
     public ViewReferralsPopup() throws SQLException {
@@ -55,11 +56,7 @@ public class ViewReferralsPopup implements Initializable {
         ViewReferralsPopup.clickedPatientId = clickedPatientId;
     }
 
-    public static int getPatientClickedId() {
-        return ViewReferralsPopup.clickedPatientId;
-    }
-
-    public void populateComboBoxAppointment() {
+    private void populateComboBoxAppointment() {
         try {
             String sql = """
                     SELECT date_time
@@ -68,7 +65,7 @@ public class ViewReferralsPopup implements Initializable {
                      """;
             ObservableList<String> oblist = FXCollections.observableArrayList();
             PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
-            preparedStatement.setInt(1, getPatientClickedId());
+            preparedStatement.setInt(1, clickedPatientId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -80,7 +77,7 @@ public class ViewReferralsPopup implements Initializable {
         }
     }
 
-    public void populateComboBoxOrder() {
+    private void populateComboBoxOrder() {
         appointmentsComboBox.valueProperty().addListener(observable -> {
             try {
                 String sql = """
@@ -104,7 +101,7 @@ public class ViewReferralsPopup implements Initializable {
         });
     }
 
-    public void queryNotesAndReportText() {
+    private void queryNotesAndReportText() {
         ordersComboBox.valueProperty().addListener(observable -> {
             try {
                 String sql = """
@@ -192,14 +189,16 @@ public class ViewReferralsPopup implements Initializable {
     }
 
     // OnClick listeners
-    public void returnToPage() {
+    @FXML
+    private void returnToPage() {
         try {
             PopupManager.removePopup("MENU");
         } catch (Exception ignore) {
         }
     }
 
-    public void submitChanges() {
+    @FXML
+    private void submitChanges() {
         try {
             updateTextAreas();
             PopupManager.removePopup("MENU");
@@ -207,7 +206,8 @@ public class ViewReferralsPopup implements Initializable {
         }
     }
 
-    public void viewImageButtonOnClick() {
+    @FXML
+    private void viewImageButtonOnClick() {
         ImagesPage.setOrderId(ordersComboBox.getValue());
         Main.createNewWindow(Pages.IMAGE);
     }
