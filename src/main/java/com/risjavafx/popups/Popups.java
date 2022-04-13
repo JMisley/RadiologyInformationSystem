@@ -4,28 +4,33 @@ import com.risjavafx.Miscellaneous;
 import javafx.stage.Popup;
 
 public enum Popups {
-    ADMIN("admin-popup.fxml", PopupManager.popupMenu, "MENU"),
-    ADMINEDIT("edit-admin-popup.fxml", PopupManager.popupMenu, "MENU"),
-    APPOINTMENT("appointment-popup.fxml", PopupManager.popupMenu, "MENU"),
-    ORDERS("orders-popup.fxml", PopupManager.popupMenu, "MENU"),
-    BILLING("billing-popup.fxml", PopupManager.popupMenu, "MENU"),
-    CONFIRMATION("popup-confirmation.fxml", PopupManager.popupAlert, "ALERT"),
-    ALERT("popup-alert.fxml", PopupManager.popupAlert, "ALERT"),
-    REFERRALS("referrals/referral-popup.fxml", PopupManager.popupMenu, "MENU"),
-    VIEW_REFERRALS("referrals/view-referral-popup.fxml", PopupManager.largePopupMenu, "LARGE_MENU");
+    ADMIN("admin-popup.fxml", PopupManager.popupMenu, "MENU", true),
+    ADMINEDIT("edit-admin-popup.fxml", PopupManager.popupMenu, "MENU", true),
+    APPOINTMENT("appointment-popup.fxml", PopupManager.popupMenu, "MENU", true),
+    APPOINTMENT_EDIT("edit-appointment-popup.fxml", PopupManager.popupMenu, "MENU", true),
+    ORDERS("orders-popup.fxml", PopupManager.popupMenu, "MENU", true),
+    ORDERS_EDIT("edit-orders-popup.fxml", PopupManager.popupMenu, "MENU", true),
+    BILLING("billing-popup.fxml", PopupManager.popupMenu, "MENU", true),
+    CONFIRMATION("popup-confirmation.fxml", PopupManager.popupAlert, "ALERT", false),
+    ALERT("popup-alert.fxml", PopupManager.popupAlert, "ALERT", true),
+    REFERRALS("referrals/referral-popup.fxml", PopupManager.popupMenu, "MENU", true),
+    REFERRALS_EDIT("referrals/edit-referral-popup.fxml", PopupManager.popupMenu, "MENU", true),
+    VIEW_REFERRALS("referrals/view-referral-popup.fxml", PopupManager.largePopupMenu, "LARGE_MENU", true);
     private static Popups menuPopups;
     private static Popups largeMenuPopups;
     private static Popups alertPopups;
     private final String filename;
     private final Popup popup;
     private final String type;
+    private final boolean isCachable;
 
     static final Miscellaneous misc = new Miscellaneous();
 
-    Popups(String fileName, Popup popup, String type) {
+    Popups(String fileName, Popup popup, String type, boolean isCachable) {
         this.filename = fileName;
         this.popup = popup;
         this.type = type;
+        this.isCachable = isCachable;
     }
 
     public static Popups[] getAlertPopupsArray() {
@@ -42,6 +47,10 @@ public enum Popups {
 
     public String getType() {
         return type;
+    }
+
+    public boolean isCachable() {
+        return isCachable;
     }
 
     public static void setMenuPopupEnum(Popups popups) {

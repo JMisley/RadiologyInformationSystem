@@ -9,9 +9,9 @@ import com.risjavafx.components.TitleBar;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.TableManager;
+import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
-import com.risjavafx.popups.models.PopupConfirmation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -94,6 +94,7 @@ public class Orders implements Initializable {
     public void createTableSearchBar() {
         tableSearchBar.createSearchBar(tableSearchBarContainer);
         tableSearchBarAddButtonListener();
+        tableSearchBarEditButtonListener();
         setComboBoxItems();
         filterData();
 
@@ -116,6 +117,8 @@ public class Orders implements Initializable {
             infoTable.setCustomColumnWidth(modality, .13);
             infoTable.setCustomColumnWidth(notes, .28);
             infoTable.setCustomColumnWidth(report, .28);
+            infoTable.setCustomColumnWidth(notes, .255);
+            infoTable.setCustomColumnWidth(report, .255);
 
 
             centerContentContainer.setMaxWidth(misc.getScreenWidth() * .75);
@@ -176,9 +179,9 @@ public class Orders implements Initializable {
         ObservableList<OrdersData> selectedItems = infoTable.tableView.getSelectionModel().getSelectedItems();
         for (OrdersData selectedItem : selectedItems) {
             String sql = """
-                    DELETE FROM %$
+                    DELETE FROM orders
                     WHERE order_id = ?
-                    """.replace("%$", table);
+                    """.replace("orders", table);
             PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getOrderIdData());
             preparedStatement.execute();
@@ -279,6 +282,7 @@ public class Orders implements Initializable {
             } else {
                 tableSearchBar.toggleButtons(true);
             }
+            OrdersEditPopup.setOrderClickedId(infoTable.tableView.getSelectionModel().getSelectedItem().orderIdData.get());
         });
     }
 
@@ -313,7 +317,6 @@ public class Orders implements Initializable {
     }
 
     public void confirmDeletion() {
-
         try {
             //deleteSelectedItemsQuery("order_id");
             deleteSelectedItemsQuery("orders");
@@ -321,14 +324,16 @@ public class Orders implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
         PopupManager.removePopup("ALERT");
     }
 
     public void tableSearchBarAddButtonListener() {
         tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.ORDERS));
+    }
+
+    public void tableSearchBarEditButtonListener() {
+        tableSearchBar.getEditButton().setOnAction(event -> PopupManager.createPopup(Popups.ORDERS_EDIT));
     }
 
 }

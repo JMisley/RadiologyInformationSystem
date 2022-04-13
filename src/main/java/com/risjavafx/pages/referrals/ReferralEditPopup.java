@@ -1,6 +1,6 @@
+
 package com.risjavafx.pages.referrals;
 
-import com.risjavafx.pages.LoadingService;
 import com.risjavafx.popups.models.PopupAlert;
 import com.risjavafx.popups.models.Notification;
 import com.risjavafx.pages.PageManager;
@@ -21,7 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class ReferralPopup implements Initializable {
+public class ReferralEditPopup implements Initializable {
     public VBox popupContainer;
     public static VBox usablePopupContainer;
 
@@ -34,22 +34,23 @@ public class ReferralPopup implements Initializable {
     public TextField ethnicityTextField;
     public Button cancelButton;
     public Button submitButton;
+    public static int clickedPatientId;
 
     Driver driver = new Driver();
     Miscellaneous misc = new Miscellaneous();
 
-    public ReferralPopup() throws SQLException {
+    public ReferralEditPopup() throws SQLException {
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         resizeElements();
         setPatientIDLabel();
-        Popups.REFERRALS.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
+        Popups.REFERRALS_EDIT.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
             PageManager.getRoot().setDisable(!aBoolean);
 
-            if (Popups.APPOINTMENT.getPopup().isShowing()) {
-                patientIDLabel.setText(String.valueOf(setPatientIDLabel()));
+            if (Popups.REFERRALS_EDIT.getPopup().isShowing()) {
+                patientIDLabel.setText(String.valueOf(getPatientClickedId()));
                 refreshElements();
             }
         });
@@ -64,7 +65,6 @@ public class ReferralPopup implements Initializable {
         sexTextField.clear();
         ethnicityTextField.clear();
     }
-
     public int setPatientIDLabel() {
         try {
             String sql = """
@@ -81,25 +81,29 @@ public class ReferralPopup implements Initializable {
         return -1;
     }
 
+    public static void setPatientClickedId(int patientClickedId) {
+        ReferralEditPopup.clickedPatientId = patientClickedId;
+    }
 
-    public void insertPatientQuery() throws SQLException {
+    public static int getPatientClickedId() {
+        return ReferralEditPopup.clickedPatientId;
+    }
+
+    public void updatePatientQuery() throws SQLException {
         String sql = """
-                insert into patients
-                values (?, ?, ?, ?, ?, ?, ?);
+                UPDATE patients
+                SET first_name = ?, last_name = ?, dob = ?, sex = ?, race = ?, ethnicity = ?
+                WHERE patients.patient_id = ?;
                 """;
         PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
-        preparedStatement.setInt(1, Integer.parseInt(patientIDLabel.getText()));
-        preparedStatement.setString(2, firstNameTextField.getText());
-        preparedStatement.setString(3, lastNameTextField.getText());
-        preparedStatement.setString(4, birthDateTextField.getText());
-        preparedStatement.setString(5, sexTextField.getText());
-        preparedStatement.setString(6, raceTextField.getText());
-        preparedStatement.setString(7, ethnicityTextField.getText());
+        preparedStatement.setString(1, firstNameTextField.getText());
+        preparedStatement.setString(2, lastNameTextField.getText());
+        preparedStatement.setString(3, birthDateTextField.getText());
+        preparedStatement.setString(4, sexTextField.getText());
+        preparedStatement.setString(5, raceTextField.getText());
+        preparedStatement.setString(6, ethnicityTextField.getText());
+        preparedStatement.setInt(7, getPatientClickedId());
         preparedStatement.execute();
-        String notiHeader = "Submission Complete";
-        String notiText = "You have successfully changed your information";
-        LoadingService.GlobalResetDefault globalReset = new LoadingService.GlobalResetDefault(notiHeader, notiText);
-        globalReset.start();
     }
 
 
@@ -107,11 +111,11 @@ public class ReferralPopup implements Initializable {
     public boolean validInput() {
         return
                 !firstNameTextField.getText().isBlank() &&
-                !birthDateTextField.getText().isBlank() &&
-                !lastNameTextField.getText().isBlank() &&
-                !sexTextField.getText().isBlank() &&
-                !raceTextField.getText().isBlank() &&
-                !ethnicityTextField.getText().isBlank();
+                        !birthDateTextField.getText().isBlank() &&
+                        !lastNameTextField.getText().isBlank() &&
+                        !sexTextField.getText().isBlank() &&
+                        !raceTextField.getText().isBlank() &&
+                        !ethnicityTextField.getText().isBlank();
     }
 
     public void resizeElements() {
@@ -126,8 +130,8 @@ public class ReferralPopup implements Initializable {
         submitButton.setPrefWidth(misc.getScreenWidth() * .11);
 
         double fontSize;
-        if ((misc.getScreenWidth() / 80) < 20) {
-            fontSize = misc.getScreenWidth() / 80;
+        if ((misc.getScreenWidth()/80) < 20) {
+            fontSize = misc.getScreenWidth()/80;
         } else {
             fontSize = 20;
         }
@@ -139,7 +143,7 @@ public class ReferralPopup implements Initializable {
     // Onclick for submit button
     public void submitButtonOnclick() throws SQLException {
         if (validInput()) {
-            insertPatientQuery();
+            updatePatientQuery();
             Referrals.queryData(Referrals.getLastRowStringQuery());
             PopupManager.removePopup("MENU");
             Notification.createNotification("Submission Complete", "You have successfully created a new appointment");
@@ -147,6 +151,7 @@ public class ReferralPopup implements Initializable {
         } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);
             new PopupAlert() {{
+                setAlertImage(new Image("file:C:/Users/johnn/IdeaProjects/RISJavaFX/src/main/resources/com/risjavafx/images/error.png"));
                 setHeaderLabel("Submission Failed");
                 setContentLabel("Please make sure you filled out all fields");
                 setExitButtonLabel("Retry");
@@ -159,7 +164,6 @@ public class ReferralPopup implements Initializable {
     public void cancelButtonOnclick() {
         try {
             PopupManager.removePopup("MENU");
-        } catch (Exception ignore) {
-        }
+        } catch (Exception ignore) {}
     }
 }

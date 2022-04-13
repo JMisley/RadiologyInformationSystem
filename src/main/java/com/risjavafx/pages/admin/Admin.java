@@ -1,6 +1,5 @@
 package com.risjavafx.pages.admin;
 
-import com.risjavafx.UserStates;
 import com.risjavafx.components.InfoTable;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
@@ -10,7 +9,6 @@ import com.risjavafx.components.TitleBar;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.TableManager;
-import com.risjavafx.popups.models.Notification;
 import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
@@ -296,6 +294,7 @@ public class Admin implements Initializable {
     public void customConfirmationPopup(EventHandler<ActionEvent> confirm, EventHandler<ActionEvent> cancel) {
         PopupManager.createPopup(Popups.CONFIRMATION);
         new PopupConfirmation() {{
+            getHeaderLabel().setManaged(false);
             setConfirmButtonLabel("Continue");
             setExitButtonLabel("Cancel");
             setHeaderLabel("Warning");
@@ -319,6 +318,7 @@ public class Admin implements Initializable {
     public void tableSearchBarAddButtonListener() {
         tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.ADMIN));
     }
+
     public void tableSearchBarEditButtonListener() {
         tableSearchBar.getEditButton().setOnAction(event -> PopupManager.createPopup(Popups.ADMINEDIT));
     }
