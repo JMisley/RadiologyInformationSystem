@@ -1,6 +1,8 @@
 package com.risjavafx.pages.images;
 
 import com.risjavafx.Driver;
+import com.risjavafx.pages.PageManager;
+import com.risjavafx.pages.Pages;
 import javafx.fxml.Initializable;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -29,10 +31,10 @@ public class ImagesPage implements Initializable {
         try {
             Driver driver = new Driver();
             String sql = """
-                SELECT Image
-                FROM imaging_info
-                WHERE order_id = ?
-                """;
+                    SELECT Image
+                    FROM imaging_info
+                    WHERE order_id = ?
+                    """;
             PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
             preparedStatement.setInt(1, orderId);
             ResultSet resultSet = preparedStatement.executeQuery();

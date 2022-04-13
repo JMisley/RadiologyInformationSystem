@@ -2,7 +2,6 @@ package com.risjavafx.pages.referrals;
 
 import com.risjavafx.pages.LoadingService;
 import com.risjavafx.popups.models.PopupAlert;
-import com.risjavafx.popups.models.Notification;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.Driver;
@@ -12,7 +11,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -96,10 +94,6 @@ public class ReferralPopup implements Initializable {
         preparedStatement.setString(6, raceTextField.getText());
         preparedStatement.setString(7, ethnicityTextField.getText());
         preparedStatement.execute();
-        String notiHeader = "Submission Complete";
-        String notiText = "You have successfully changed your information";
-        LoadingService.GlobalResetDefault globalReset = new LoadingService.GlobalResetDefault(notiHeader, notiText);
-        globalReset.start();
     }
 
 
@@ -142,8 +136,10 @@ public class ReferralPopup implements Initializable {
             insertPatientQuery();
             Referrals.queryData(Referrals.getLastRowStringQuery());
             PopupManager.removePopup("MENU");
-            Notification.createNotification("Submission Complete", "You have successfully created a new appointment");
-
+            String notiHeader = "Submission Complete";
+            String notiText = "You have successfully changed your information";
+            LoadingService.GlobalResetDefault globalReset = new LoadingService.GlobalResetDefault(notiHeader, notiText);
+            globalReset.start();
         } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);
             new PopupAlert() {{
