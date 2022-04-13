@@ -86,6 +86,7 @@ public class Admin implements Initializable {
     public void createTableSearchBar() {
         tableSearchBar.createSearchBar(tableSearchBarContainer);
         tableSearchBarAddButtonListener();
+        tableSearchBarEditButtonListener();
         setComboBoxItems();
         filterData();
 
@@ -268,6 +269,7 @@ public class Admin implements Initializable {
             } else {
                 tableSearchBar.toggleButtons(true);
             }
+            AdminEditPopup.setUserClickedId(infoTable.tableView.getSelectionModel().getSelectedItem().userIdData.get());
         });
     }
 
@@ -314,5 +316,9 @@ public class Admin implements Initializable {
 
     public void tableSearchBarAddButtonListener() {
         tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.ADMIN));
+    }
+
+    public void tableSearchBarEditButtonListener() {
+        tableSearchBar.getEditButton().setOnAction(event -> PopupManager.createPopup(Popups.ADMINEDIT));
     }
 }
