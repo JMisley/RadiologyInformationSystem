@@ -6,7 +6,6 @@ import com.risjavafx.components.InfoTable;
 import com.risjavafx.components.NavigationBar;
 import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
-import com.risjavafx.pages.LoadingService;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.TableManager;
@@ -22,16 +21,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -45,7 +39,6 @@ public class Orders implements Initializable {
     public HBox topContent, titleBar, tableSearchBarContainer;
     public StackPane centerContent;
     public SplitPane centerContentContainer;
-    private File file;
 
     public static ObservableList<OrdersData> observableList = FXCollections.observableArrayList();
     SortedList<OrdersData> sortedList;
@@ -60,9 +53,7 @@ public class Orders implements Initializable {
             patient = new TableColumn<>("Patient"),
             referralMd = new TableColumn<>("Referral MD"),
             modality = new TableColumn<>("Modality"),
-            appointment = new TableColumn<>("Appointment"),
             notes = new TableColumn<>("Notes"),
-            status = new TableColumn<>("Status"),
             report = new TableColumn<>("Report");
     public ArrayList<TableColumn<OrdersData, String>> tableColumnsList = new ArrayList<>() {{
         add(orderId);
@@ -89,7 +80,6 @@ public class Orders implements Initializable {
             if (Pages.getPage() == Pages.ORDERS) {
                 createTableSearchBar();
                 refreshTable();
-
             }
         });
 
@@ -98,7 +88,7 @@ public class Orders implements Initializable {
     public void createTableSearchBar() {
         tableSearchBar.createSearchBar(tableSearchBarContainer);
         tableSearchBarAddButtonListener();
-        tableSearchBarAddImageButtonListener();
+        tableSearchBarEditButtonListener();
         setComboBoxItems();
         filterData();
 
@@ -119,10 +109,8 @@ public class Orders implements Initializable {
             infoTable.setCustomColumnWidth(patient, .15);
             infoTable.setCustomColumnWidth(referralMd, .13);
             infoTable.setCustomColumnWidth(modality, .13);
-            infoTable.setCustomColumnWidth(appointment, .15);
-            infoTable.setCustomColumnWidth(notes, .28);
-            infoTable.setCustomColumnWidth(status, .11);
-            infoTable.setCustomColumnWidth(report, .28);
+            infoTable.setCustomColumnWidth(notes, .255);
+            infoTable.setCustomColumnWidth(report, .255);
 
 
             centerContentContainer.setMaxWidth(misc.getScreenWidth() * .75);
@@ -155,9 +143,7 @@ public class Orders implements Initializable {
                     resultSet.getString("patient"),
                     resultSet.getString("referral_md"),
                     resultSet.getString("modality"),
-                    resultSet.getString("appointment"),
                     resultSet.getString("notes"),
-                    resultSet.getString("status"),
                     resultSet.getString("report")
             ));
         }
@@ -199,9 +185,7 @@ public class Orders implements Initializable {
         patient.setCellValueFactory(new PropertyValueFactory<>("patientData"));
         referralMd.setCellValueFactory(new PropertyValueFactory<>("referralMdData"));
         modality.setCellValueFactory(new PropertyValueFactory<>("modalityData"));
-        appointment.setCellValueFactory(new PropertyValueFactory<>("appointmentData"));
         notes.setCellValueFactory(new PropertyValueFactory<>("notesData"));
-        status.setCellValueFactory(new PropertyValueFactory<>("statusData"));
         report.setCellValueFactory(new PropertyValueFactory<>("reportData"));
     }
 
@@ -212,9 +196,7 @@ public class Orders implements Initializable {
                 "Patient",
                 "Referral MD",
                 "Modality",
-                "Appointment",
                 "Notes",
-                "Status",
                 "Report"
         );
         tableSearchBar.getComboBox().setItems(oblist);
@@ -278,9 +260,6 @@ public class Orders implements Initializable {
             return true;
         } else if (ordersData.getNotesData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Notes")) {
             return true;
-        }
-        else if (ordersData.getStatusData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Status")) {
-            return true;
         } else
             return ordersData.getReportData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Report");
     }
@@ -295,6 +274,7 @@ public class Orders implements Initializable {
             } else {
                 tableSearchBar.toggleButtons(true);
             }
+            OrdersEditPopup.setOrderClickedId(infoTable.tableView.getSelectionModel().getSelectedItem().orderIdData.get());
         });
     }
 
@@ -305,7 +285,7 @@ public class Orders implements Initializable {
             row.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
                 final int index = row.getIndex();
                 if (index >= 0 && index < infoTable.tableView.getItems().size() &&
-                    infoTable.tableView.getSelectionModel().isSelected(index)) {
+                        infoTable.tableView.getSelectionModel().isSelected(index)) {
                     infoTable.tableView.getSelectionModel().clearSelection();
 
                     tableSearchBar.toggleButtons(true);
@@ -330,13 +310,11 @@ public class Orders implements Initializable {
 
     public void confirmDeletion() {
         try {
-           //deleteSelectedItemsQuery("order_id");
-            deleteSelectedItemsQuery("orders");
-
+            deleteSelectedItemsQuery("order_id");
+            //deleteSelectedItemsQuery("orders");
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
         PopupManager.removePopup("ALERT");
     }
@@ -345,53 +323,8 @@ public class Orders implements Initializable {
         tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.ORDERS));
     }
 
-    public void tableSearchBarAddImageButtonListener() {
-        FileChooser fileChooser = new FileChooser();
-        tableSearchBar.getAddImageButton().setOnAction(e -> {
-             file = fileChooser.showOpenDialog(new Stage());
-             createConfirmationPopup(confirm -> uploadImageToDatabase(), cancel -> PopupManager.removePopup("ALERT"));
-        });
+    public void tableSearchBarEditButtonListener() {
+        tableSearchBar.getEditButton().setOnAction(event -> PopupManager.createPopup(Popups.ORDERS_EDIT));
     }
 
-    private void createConfirmationPopup(EventHandler<ActionEvent> confirm, EventHandler<ActionEvent> cancel) {
-        PopupManager.createPopup(Popups.CONFIRMATION);
-        new PopupConfirmation() {{
-            setConfirmationImage(new Image(String.valueOf(file)));
-            getHeaderLabel().setManaged(false);
-            getConfirmationImageView().setFitHeight(150);
-            getConfirmationImageView().setFitWidth(200);
-            setConfirmButtonLabel("Yes");
-            setExitButtonLabel("No");
-            setHeaderLabel("");
-            setContentLabel("Is this the image you wish to add?");
-            getConfirmationButton().setOnAction(confirm);
-            getCancelButton().setOnAction(cancel);
-        }};
-    }
-
-    private void uploadImageToDatabase() {
-        try {
-            Driver driver = new Driver();
-            String query = """
-                UPDATE imaging_info
-                SET Image = ?
-                WHERE order_id = ?;
-                """;
-
-            PreparedStatement preparedStatement = driver.connection.prepareStatement(query);
-            FileInputStream fileInputStream = new FileInputStream(file);
-            preparedStatement.setBinaryStream(1, fileInputStream, (int)file.length());
-            preparedStatement.setInt(2, infoTable.tableView.getSelectionModel().getSelectedItem().getOrderIdData());
-            preparedStatement.execute();
-            preparedStatement.close();
-            PopupManager.removePopup("ALERT");
-
-            String notiHeader = "Submission Complete";
-            String notBody = "You have successfully added an image";
-            LoadingService.GlobalResetDefault globalResetDefault = new LoadingService.GlobalResetDefault(notiHeader, notBody);
-            globalResetDefault.start();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-    }
 }

@@ -47,8 +47,8 @@ public class OrdersEditPopup implements Initializable {
         resizeElements();
         setOrderIDLabel();
         populateComboBoxReferralMd();
-        populateComboBoxAppointment();
-        setAppointmentComboBoxListener();
+        //populateComboBoxAppointment();
+        //setAppointmentComboBoxListener();
         Popups.ORDERS_EDIT.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
             PageManager.getRoot().setDisable(!aBoolean);
 
@@ -96,25 +96,25 @@ public class OrdersEditPopup implements Initializable {
         }
     }
 
-    public void populateComboBoxAppointment() {
-        try {
-            String sql = """
-                    SELECT last_name, date_time
-                                        FROM db_ris.patients, db_ris.appointments
-                                        where patients.patient_id = appointments.patient;
-                    """;
-
-            ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
-            ObservableList<String> oblist = FXCollections.observableArrayList();
-            while (resultSet.next()) {
-
-                oblist.add(resultSet.getString("last_name") + ": " + resultSet.getString("date_time"));
-            }
-            appointmentComboBox.setItems(oblist);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-    }
+//    public void populateComboBoxAppointment() {
+//        try {
+//            String sql = """
+//                    SELECT last_name, date_time
+//                                        FROM db_ris.patients, db_ris.appointments
+//                                        where patients.patient_id = appointments.patient;
+//                    """;
+//
+//            ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+//            ObservableList<String> oblist = FXCollections.observableArrayList();
+//            while (resultSet.next()) {
+//
+//                oblist.add(resultSet.getString("last_name") + ": " + resultSet.getString("date_time"));
+//            }
+//            appointmentComboBox.setItems(oblist);
+//        } catch (Exception exception) {
+//            exception.printStackTrace();
+//        }
+//    }
 
     public static void setOrderClickedId(int orderClickedId) {
         OrdersEditPopup.clickedOrderId = orderClickedId;
@@ -128,15 +128,14 @@ public class OrdersEditPopup implements Initializable {
     public void updateOrderQuery() throws SQLException {
         String sql = """
                 UPDATE orders
-                SET referral_md = ?, appointment = ?, notes = ?, report = ?
+                SET referral_md = ?, notes = ?, report = ?
                 WHERE orders.order_id = ?;
                 """;
         PreparedStatement preparedStatement = this.driver.connection.prepareStatement(sql);
         preparedStatement.setString(1, referralMdComboBox.getValue());
-        preparedStatement.setInt(2, getDataToInsertAppointmentId());
-        preparedStatement.setString(3, this.notesTextArea.getText());
-        preparedStatement.setString(4, this.reportTextArea.getText());
-        preparedStatement.setInt(5, getOrderClickedId());
+        preparedStatement.setString(2, this.notesTextArea.getText());
+        preparedStatement.setString(3, this.reportTextArea.getText());
+        preparedStatement.setInt(4, getOrderClickedId());
         preparedStatement.execute();
     /*
         String sqlAfter = """
@@ -148,55 +147,55 @@ public class OrdersEditPopup implements Initializable {
     */
     }
 
-    public String[] getDataToInsert() throws SQLException {
+//    public String[] getDataToInsert() throws SQLException {
+//
+//
+//
+//        String sql = """
+//                        SELECT patients.first_name, patients.last_name, modalities.name
+//                    FROM appointments,
+//                         patients,
+//                         modalities
+//                    WHERE appointments.date_time =  ?
+//                      AND appointments.patient = patients.patient_id
+//                      AND appointments.modality = modalities.modality_id;
+//                    """;
+//        PreparedStatement preparedStatement = this.driver.connection.prepareStatement(sql);
+//        preparedStatement.setString(1, returnAppointmentComboBoxDate());
+//        ResultSet resultSet = preparedStatement.executeQuery();
+//
+//
+//        if (resultSet.next()) {
+//            return new String[]{resultSet.getString("first_name") + " " + resultSet.getString("last_name"), resultSet.getString("name")};
+//
+//        }
+//
+//        return null;
+//    }
 
-
-
-        String sql = """
-                        SELECT patients.first_name, patients.last_name, modalities.name
-                    FROM appointments,
-                         patients,
-                         modalities
-                    WHERE appointments.date_time =  ?
-                      AND appointments.patient = patients.patient_id
-                      AND appointments.modality = modalities.modality_id;
-                    """;
-        PreparedStatement preparedStatement = this.driver.connection.prepareStatement(sql);
-        preparedStatement.setString(1, returnAppointmentComboBoxDate());
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-
-        if (resultSet.next()) {
-            return new String[]{resultSet.getString("first_name") + " " + resultSet.getString("last_name"), resultSet.getString("name")};
-
-        }
-
-        return null;
-    }
-
-    public int getDataToInsertAppointmentId() throws SQLException {
-
-
-
-        String sql = """
-                        SELECT appointments.appointment_id
-                    FROM appointments
-                       
-                    WHERE appointments.date_time =  ?
-                      
-                    """;
-        PreparedStatement preparedStatement = this.driver.connection.prepareStatement(sql);
-        preparedStatement.setString(1, returnAppointmentComboBoxDate());
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-
-        if (resultSet.next()) {
-            return resultSet.getInt("appointment_id");
-
-        }
-
-        return -1;
-    }
+//    public int getDataToInsertAppointmentId() throws SQLException {
+//
+//
+//
+//        String sql = """
+//                        SELECT appointments.appointment_id
+//                    FROM appointments
+//
+//                    WHERE appointments.date_time =  ?
+//
+//                    """;
+//        PreparedStatement preparedStatement = this.driver.connection.prepareStatement(sql);
+//        preparedStatement.setString(1, returnAppointmentComboBoxDate());
+//        ResultSet resultSet = preparedStatement.executeQuery();
+//
+//
+//        if (resultSet.next()) {
+//            return resultSet.getInt("appointment_id");
+//
+//        }
+//
+//        return -1;
+//    }
 
 
 
