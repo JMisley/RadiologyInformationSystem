@@ -98,6 +98,16 @@
     -fx-background-color: #2994C173;
 }
 
+#billingButton {
+    -fx-background-color: #c18c29;
+    -fx-text-fill: white;
+    -fx-font-family: "Century Gothic";
+}
+
+#billingButton:hover {
+    -fx-background-color: #c18c2973;
+}
+
 
 /*Images--------------------------------------------------------------------------------------------------------------*/
 #successImage {
@@ -177,18 +187,18 @@
     -fx-background-color: #BB86FC;
 }
 
-.combo-box *.scroll-bar:vertical {
+.combo-box .scroll-bar:vertical {
     -fx-background-color: #8692fc;
     -fx-font-size: 7px;
 }
 
-.combo-box *.scroll-bar:vertical .track {
+.combo-box .scroll-bar:vertical .track {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
     -fx-background-radius: 0em;
 }
 
-.combo-box *.scroll-bar:vertical .thumb {
+.combo-box .scroll-bar:vertical .thumb {
     -fx-background-color: white;
     -fx-background-radius: 5em;
 }
@@ -317,10 +327,10 @@
     -fx-font-size: 2ex;
 }
 
-.table-view *.scroll-bar:horizontal *.increment-button,
-.table-view *.scroll-bar:horizontal *.decrement-button,
-.table-view *.scroll-bar:horizontal *.increment-arrow,
-.table-view *.scroll-bar:horizontal *.decrement-arrow {
+.table-view .scroll-bar:horizontal .increment-button,
+.table-view .scroll-bar:horizontal .decrement-button,
+.table-view .scroll-bar:horizontal .increment-arrow,
+.table-view .scroll-bar:horizontal .decrement-arrow {
     -fx-padding: 0;
     -fx-shape: "";
 }
@@ -344,21 +354,21 @@
     -fx-text-fill: white;
 }
 
-.dialog-pane > *.button-bar > *.container {
+.dialog-pane > .button-bar > .container {
     -fx-background-color: #121212;
 }
 
-.dialog-pane > *.label.content {
+.dialog-pane > .label.content {
     -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-text-fill: #cf6679;
 }
 
-.dialog-pane *.header-panel {
+.dialog-pane .header-panel {
     -fx-background-color: #121212;
 }
 
-.dialog-pane *.header-panel *.label {
+.dialog-pane .header-panel .label {
     -fx-font-size: 18px;
     -fx-font-style: italic;
     -fx-text-fill: #cf6679;
@@ -370,29 +380,29 @@
     -fx-background-color: black;
 }
 
-.scroll-pane *.scroll-bar:vertical {
+.scroll-pane .scroll-bar:vertical {
     -fx-background-color: #8692fc;
     -fx-font-size: 2ex;
 }
 
-.scroll-pane *.scroll-bar:horizontal {
+.scroll-pane .scroll-bar:horizontal {
     -fx-background-color: transparent;
 }
 
-.scroll-pane *.increment-button, .decrement-button {
+.scroll-pane .increment-button, .decrement-button {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
 }
 
-.scroll-pane *.scroll-bar:horizontal .track,
-.scroll-pane *.scroll-bar:vertical .track {
+.scroll-pane .scroll-bar:horizontal .track,
+.scroll-pane .scroll-bar:vertical .track {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
     -fx-background-radius: 0em;
 }
 
-.scroll-pane *.scroll-bar:horizontal .thumb,
-.scroll-pane *.scroll-bar:vertical .thumb {
+.scroll-pane .scroll-bar:horizontal .thumb,
+.scroll-pane .scroll-bar:vertical .thumb {
     -fx-background-color: white;
     -fx-background-radius: 5em;
 }

@@ -8,6 +8,8 @@ import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
+import com.risjavafx.pages.TableManager;
+import com.risjavafx.pages.referrals.billing.BillingReferralsPopup;
 import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
@@ -86,6 +88,7 @@ public class Referrals implements Initializable {
         PageManager.getScene().rootProperty().addListener(observable -> {
             if (Pages.getPage() == Pages.REFERRALS) {
                 createTableSearchBar();
+                refreshTable();
             }
         });
     }
@@ -94,6 +97,7 @@ public class Referrals implements Initializable {
         tableSearchBar.createSearchBar(tableSearchBarContainer);
         tableSearchBarAddButtonListener();
         tableSearchBarViewButtonListener();
+        tableSearchBarBillingButtonListener();
         setComboBoxItems();
         filterData();
 
@@ -109,13 +113,13 @@ public class Referrals implements Initializable {
             infoTable.setColumns(tableColumnsList);
             infoTable.addColumnsToTable();
 
-            infoTable.setCustomColumnWidth(patientId, .142);
-            infoTable.setCustomColumnWidth(dateOfBirth, .142);
-            infoTable.setCustomColumnWidth(lastName, .142);
-            infoTable.setCustomColumnWidth(firstName, .142);
-            infoTable.setCustomColumnWidth(sex, .142);
-            infoTable.setCustomColumnWidth(race, .142);
-            infoTable.setCustomColumnWidth(ethnicity, .142);
+            infoTable.setCustomColumnWidth(patientId, .12);
+            infoTable.setCustomColumnWidth(dateOfBirth, .2);
+            infoTable.setCustomColumnWidth(lastName, .15);
+            infoTable.setCustomColumnWidth(firstName, .15);
+            infoTable.setCustomColumnWidth(sex, .12);
+            infoTable.setCustomColumnWidth(race, .13);
+            infoTable.setCustomColumnWidth(ethnicity, .13);
 
             centerContentContainer.setMaxWidth(misc.getScreenWidth() * .75);
             centerContentContainer.setMaxHeight(misc.getScreenHeight() * .85);
@@ -124,15 +128,22 @@ public class Referrals implements Initializable {
             queryData(getAllDataStringQuery());
             infoTable.tableView.setItems(observableList);
             infoTable.tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+            TableManager.setReferralsTable(infoTable.tableView);
         } catch (
                 Exception exception) {
             exception.printStackTrace();
         }
     }
 
+    private void refreshTable() {
+        if (!centerContent.getChildren().contains(TableManager.getReferralsTable())) {
+            centerContent.getChildren().add(TableManager.getReferralsTable());
+        }
+    }
+
     public static void queryData(String sql) throws SQLException {
-        Driver driver = new Driver();
-        ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+
+        ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
 
         while (resultSet.next()) {
             observableList.add(new ReferralData(
@@ -165,14 +176,14 @@ public class Referrals implements Initializable {
 
     @SuppressWarnings("SqlWithoutWhere")
     public void deleteSelectedItemsQuery(String table) throws SQLException {
-        Driver driver = new Driver();
+
         ObservableList<ReferralData> selectedItems = infoTable.tableView.getSelectionModel().getSelectedItems();
         for (ReferralData selectedItem : selectedItems) {
             String sql = """
                     DELETE FROM %$
                     WHERE patient_id = ?
                     """.replace("%$", table);
-            PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getPatientIdData());
             preparedStatement.execute();
         }
@@ -190,21 +201,17 @@ public class Referrals implements Initializable {
 
     public void setComboBoxItems() {
         ObservableList<String> oblist = FXCollections.observableArrayList(
-                "All",
                 "Patient ID",
                 "Date of birth",
                 "Last name",
-                "First name",
-                "Sex",
-                "Race",
-                "Ethnicity"
+                "First name"
         );
         tableSearchBar.getComboBox().setItems(oblist);
     }
 
     public boolean getComboBoxItem(String string) {
         String selectedComboValue = tableSearchBar.getComboBox().getValue();
-        return string.equals(selectedComboValue) || "All".equals(selectedComboValue);
+        return string.equals(selectedComboValue);
     }
 
     // Listener for Admin TextField and ComboBox
@@ -253,8 +260,8 @@ public class Referrals implements Initializable {
         if (referralData.getPatientIdData() == searchKeyInt && getComboBoxItem("Patient ID")) {
             return true;
         } else if (referralData.getDateOfBirthData().toLowerCase().contains(searchKeyword) ||
-                referralData.getDateOfBirthData().toLowerCase().contains(String.valueOf(searchKeyInt)) &&
-                        getComboBoxItem("Date of birth")) {
+                   referralData.getDateOfBirthData().toLowerCase().contains(String.valueOf(searchKeyInt)) &&
+                   getComboBoxItem("Date of birth")) {
             return true;
         } else if (referralData.getLastNameData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Last name")) {
             return true;
@@ -270,10 +277,16 @@ public class Referrals implements Initializable {
                 tableSearchBar.getDeleteButton().setOnAction(actionEvent ->
                         customConfirmationPopup(confirm -> confirmDeletion(), cancel -> PopupManager.removePopup("ALERT")));
             } else {
+
                 tableSearchBar.toggleButtons(true);
+            }
+            if (infoTable.tableView.getSelectionModel().getSelectedItem() != null) {
+                ViewReferralsPopup.setPatientClickedId(infoTable.tableView.getSelectionModel().getSelectedItem().patientIdData.get());
+                BillingReferralsPopup.setPatientId(infoTable.tableView.getSelectionModel().getSelectedItem().patientIdData.get());
             }
         });
     }
+
 
     // If a selected row is clicked again, it will unselect. TableSearchBar Buttons will also adjust appropriately
     public void manageRowSelection() {
@@ -282,7 +295,7 @@ public class Referrals implements Initializable {
             row.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
                 final int index = row.getIndex();
                 if (index >= 0 && index < infoTable.tableView.getItems().size() &&
-                        infoTable.tableView.getSelectionModel().isSelected(index)) {
+                    infoTable.tableView.getSelectionModel().isSelected(index)) {
                     infoTable.tableView.getSelectionModel().clearSelection();
 
                     tableSearchBar.toggleButtons(true);
@@ -321,5 +334,9 @@ public class Referrals implements Initializable {
 
     public void tableSearchBarViewButtonListener() {
         tableSearchBar.getViewButton().setOnAction(event -> PopupManager.createPopup(Popups.VIEW_REFERRALS));
+    }
+
+    public void tableSearchBarBillingButtonListener() {
+        tableSearchBar.getBillingButton().setOnAction(event -> PopupManager.createPopup(Popups.BILLING));
     }
 }

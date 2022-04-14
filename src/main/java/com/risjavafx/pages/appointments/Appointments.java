@@ -7,6 +7,7 @@ import com.risjavafx.components.InfoTable;
 import com.risjavafx.components.NavigationBar;
 import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
+import com.risjavafx.pages.LoadingService;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.TableManager;
@@ -84,7 +85,7 @@ public class Appointments implements Initializable {
         // Overrides caching functionality and loads *TableSearchBar* every time page is opened
         PageManager.getScene().rootProperty().addListener(observable -> {
             if (Pages.getPage() == Pages.APPOINTMENTS) {
-                 createTableSearchBar();
+                createTableSearchBar();
                 refreshTable();
             }
         });
@@ -141,8 +142,8 @@ public class Appointments implements Initializable {
 
     public static void queryData(String sql) throws SQLException {
         // ObservableList<AppointmentData> observableList = FXCollections.observableArrayList();
-        Driver driver = new Driver();
-        ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+
+        ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
 
         while (resultSet.next()) {
             String name = resultSet.getString("first_name") + " " + resultSet.getString("last_name");
@@ -217,20 +218,21 @@ public class Appointments implements Initializable {
 
     @SuppressWarnings("SqlWithoutWhere")
     public void deleteSelectedItemsQuery(String table) throws SQLException {
-        Driver driver = new Driver();
+
         ObservableList<AppointmentData> selectedItems = infoTable.tableView.getSelectionModel().getSelectedItems();
         for (AppointmentData selectedItem : selectedItems) {
             String sql = """
                     DELETE FROM %$
                     WHERE appointment_id = ?
                     """.replace("%$", table);
-            PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getAppointmentId());
             preparedStatement.execute();
         }
     }
+
     public void changeCheckIn(String table) throws SQLException {
-        Driver driver = new Driver();
+
         ObservableList<AppointmentData> selectedItems = infoTable.tableView.getSelectionModel().getSelectedItems();
         for (AppointmentData selectedItem : selectedItems) {
             String sql = """
@@ -238,9 +240,13 @@ public class Appointments implements Initializable {
                     SET closed = !closed
                     WHERE appointment_id = ?;
                     """;
-            PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getAppointmentId());
             preparedStatement.execute();
+            String notiHeader = "Submission Complete";
+            String notiText = "You have successfully changed your information";
+            LoadingService.GlobalResetDefault globalReset = new LoadingService.GlobalResetDefault(notiHeader, notiText);
+            globalReset.start();
         }
     }
 
@@ -254,18 +260,13 @@ public class Appointments implements Initializable {
         technician.setCellValueFactory(cellData -> cellData.getValue().technician);
         closedFlag.setCellValueFactory(new PropertyValueFactory<>("closedFlag"));
     }
-    /////////////
 
     public void setComboBoxItems() {
         ObservableList<String> oblist = FXCollections.observableArrayList(
-                "All",
-                "Patient ",
-                "Modality",
-                "Price",
+                "Patient",
                 "Date",
                 "Radiologist",
-                "Technician",
-                "Closed"
+                "Technician"
         );
         tableSearchBar.getComboBox().setItems(oblist);
     }
@@ -294,7 +295,6 @@ public class Appointments implements Initializable {
             sortedList = new SortedList<>(filteredList);
             sortedList.comparatorProperty().bind(infoTable.tableView.comparatorProperty());
             infoTable.tableView.setItems(sortedList);
-
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -312,19 +312,12 @@ public class Appointments implements Initializable {
         }
 
         String searchKeyword = newValue.toLowerCase();
-        int searchKeyInt = -1;
-        try {
-            searchKeyInt = Integer.parseInt(newValue);
-        } catch (Exception ignored) {
-        }
 
-        if (appointmentData.getAppointmentId() == searchKeyInt && getComboBoxItem("User ID")) {
-            return true;
-        } else if (appointmentData.getPatient().toLowerCase().contains(searchKeyword) && getComboBoxItem("Patient")) {
-            return true;
-        } else if (appointmentData.getModality().toLowerCase().contains(searchKeyword) && getComboBoxItem("Modality")) {
+        if (appointmentData.getPatient().toLowerCase().contains(searchKeyword) && getComboBoxItem("Patient")) {
             return true;
         } else if (appointmentData.getDate().toLowerCase().contains(searchKeyword) && getComboBoxItem("Date")) {
+            return true;
+        } else if (appointmentData.getDate().toLowerCase().contains(searchKeyword) && getComboBoxItem("Technician")) {
             return true;
         } else
             return appointmentData.getRadiologist().toLowerCase().contains(searchKeyword) && getComboBoxItem("Radiologist");
@@ -343,6 +336,7 @@ public class Appointments implements Initializable {
             }
             tableSearchBar.getCheckInButton().setOnAction(actionEvent ->
                     customCheckInConfirmationPopup(confirm -> confirmCheckIn(), cancel -> PopupManager.removePopup("ALERT")));
+            refreshTable();
         });
     }
 
@@ -363,6 +357,7 @@ public class Appointments implements Initializable {
             return row;
         });
     }
+
     public void customConfirmationPopup(EventHandler<ActionEvent> confirm, EventHandler<ActionEvent> cancel) {
         PopupManager.createPopup(Popups.CONFIRMATION);
         new PopupConfirmation() {{
@@ -374,6 +369,19 @@ public class Appointments implements Initializable {
             getCancelButton().setOnAction(cancel);
         }};
     }
+
+    public void customBillingConfirmationPopup(EventHandler<ActionEvent> confirm, EventHandler<ActionEvent> cancel) {
+        PopupManager.createPopup(Popups.CONFIRMATION);
+        new PopupConfirmation() {{
+            setConfirmButtonLabel("Yes");
+            setExitButtonLabel("No");
+            setHeaderLabel("Notice");
+            setContentLabel("This Person is done with their appointment");
+            getConfirmationButton().setOnAction(confirm);
+            getCancelButton().setOnAction(cancel);
+        }};
+    }
+
     public void customCheckInConfirmationPopup(EventHandler<ActionEvent> confirm, EventHandler<ActionEvent> cancel) {
         PopupManager.createPopup(Popups.CONFIRMATION);
         new PopupConfirmation() {{
@@ -385,34 +393,27 @@ public class Appointments implements Initializable {
             getCancelButton().setOnAction(cancel);
         }};
     }
+
     private void confirmCheckIn() {
         try {
             changeCheckIn("appointments");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-
-        observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
-        observableList.addAll(infoTable.tableView.getSelectionModel().getSelectedItems());
+        closedFlag.setCellValueFactory(new PropertyValueFactory<>("closedFlag"));
         PopupManager.removePopup("ALERT");
+        refreshTable();
+
     }
 
     public void confirmDeletion() {
-        /*
-        try {
-            deleteSelectedItemsQuery("users_roles");
-            deleteSelectedItemsQuery("users");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-         */
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
-    PopupManager.removePopup("ALERT");
+        PopupManager.removePopup("ALERT");
     }
 
     public void tableSearchBarAddButtonListener() {
         tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.APPOINTMENT));
+
     }
 }

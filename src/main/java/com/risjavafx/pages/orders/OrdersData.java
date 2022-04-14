@@ -8,20 +8,17 @@ public class OrdersData {
     SimpleStringProperty patientData;
     SimpleStringProperty referralMdData;
     SimpleStringProperty modalityData;
-    SimpleStringProperty appointmentData;
     SimpleStringProperty notesData;
     SimpleStringProperty statusData;
     SimpleStringProperty reportData;
 
-    public OrdersData(int orderId, String patient, String referralMd, String modality, String appointment, String notes, String status, String report) {
+    public OrdersData(int orderId, String patient, String referralMd, String modality, String notes, String status) {
         this.orderIdData = new SimpleIntegerProperty(orderId);
         this.patientData = new SimpleStringProperty(patient);
         this.referralMdData = new SimpleStringProperty(referralMd);
         this.modalityData = new SimpleStringProperty(modality);
-        this.appointmentData = new SimpleStringProperty(appointment);
         this.notesData = new SimpleStringProperty(notes);
         this.statusData = new SimpleStringProperty(status);
-        this.reportData = new SimpleStringProperty(report);
     }
 
     public int getOrderIdData() {
@@ -56,14 +53,6 @@ public class OrdersData {
         this.modalityData.set(modalityData);
     }
 
-    public String getAppointmentData() {
-        return appointmentData.get();
-    }
-
-    public void setAppointmentData(String appointmentData) {
-        this.appointmentData.set(appointmentData);
-    }
-
     public String getNotesData() {
         return notesData.get();
     }
@@ -78,13 +67,5 @@ public class OrdersData {
 
     public void setStatusData(String statusData) {
         this.statusData.set(statusData);
-    }
-
-    public String getReportData() {
-        return reportData.get();
-    }
-
-    public void setReportData(String reportData) {
-        this.reportData.set(reportData);
     }
 }

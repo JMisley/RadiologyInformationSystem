@@ -1,8 +1,9 @@
-package com.risjavafx.components;
+package com.risjavafx.components.main;
 
 import com.risjavafx.Miscellaneous;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
+import com.risjavafx.popups.PopupManager;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -12,16 +13,17 @@ import javafx.stage.StageStyle;
 public class Main extends Application {
 
     public static Stage usableStage;
-    Miscellaneous misc = new Miscellaneous();
 
     @Override
     public void start(Stage primaryStage) {
+        Miscellaneous misc = new Miscellaneous();
         usableStage = primaryStage;
 
         Scene scene = new Scene(new BorderPane());
+        PopupManager.loadPopupsToCache();
+        PageManager.loadPageToCache(Pages.PROGRESS);
         PageManager.setScene(scene);
         PageManager.switchPage(Pages.LOGIN);
-        PageManager.loadPageToCache(Pages.PROGRESS);
 
         usableStage.setScene(scene);
         usableStage.setMinWidth(misc.getScreenWidth());
@@ -29,6 +31,20 @@ public class Main extends Application {
         usableStage.setMaximized(false);
         usableStage.initStyle(StageStyle.UNDECORATED);
         usableStage.show();
+    }
+
+    public static void createNewWindow(Pages page) {
+        Miscellaneous misc = new Miscellaneous();
+        try {
+            Stage newStage = new Stage();
+            newStage.setScene(new Scene(PageManager.getRootFromUnloadedPage(page)));
+            newStage.setHeight(misc.getScreenHeight() *.8);
+            newStage.setWidth(misc.getScreenWidth() * .6);
+            newStage.setResizable(false);
+            newStage.show();
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

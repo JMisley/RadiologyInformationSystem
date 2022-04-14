@@ -6,12 +6,10 @@ import com.risjavafx.components.TitleBar;
 import com.risjavafx.components.NavigationBar;
 import com.risjavafx.pages.LoadingService;
 import com.risjavafx.pages.Pages;
-import com.risjavafx.popups.models.Notification;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 import java.net.URL;
@@ -31,7 +29,6 @@ public class UserInfo implements Initializable {
     public TextField emailAdrTextField;
     public TextField passwordTextField;
     public Label welcomeLabel;
-    public StackPane centerContent;
 
     // Load NavigationBar component into home-page.fxml
     @Override
@@ -64,14 +61,13 @@ public class UserInfo implements Initializable {
 
     private void setElements() {
         try {
-            Driver driver = new Driver();
             PreparedStatement preparedStatement;
             final String sql = """
                     SELECT user_id, email, full_name, username, password
                     FROM users
                     WHERE user_id = ?;
                     """;
-            preparedStatement = driver.connection.prepareStatement(sql);
+            preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, UserStates.getUserId());
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -91,14 +87,14 @@ public class UserInfo implements Initializable {
     // Confirm button onClick
     public void confirmChanges() {
         try {
-            Driver driver = new Driver();
+            
             PreparedStatement preparedStatement;
             final String sql = """
                     UPDATE users
                     SET username = ?, password = ?, full_name = ?, email = ?
                     WHERE user_id = ?;
                     """;
-            preparedStatement = driver.connection.prepareStatement(sql);
+            preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setString(1, getText(usernameTextField));
             preparedStatement.setString(2, getText(passwordTextField));
             preparedStatement.setString(3, getText(fullNameTextField));
@@ -109,8 +105,6 @@ public class UserInfo implements Initializable {
             reloadSystem();
             resetTextFields();
             welcomeLabel.setText("Welcome " + getText(fullNameTextField));
-
-            Notification.createNotification("Changes Complete", "You successfully changed your information");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -133,7 +127,9 @@ public class UserInfo implements Initializable {
     }
 
     private void reloadSystem() {
-        LoadingService.GlobalResetDefault globalReset = new LoadingService.GlobalResetDefault();
+        String notiHeader = "Submission Complete";
+        String notiText = "You have successfully changed your information";
+        LoadingService.GlobalResetDefault globalReset = new LoadingService.GlobalResetDefault(notiHeader, notiText);
         globalReset.start();
     }
 

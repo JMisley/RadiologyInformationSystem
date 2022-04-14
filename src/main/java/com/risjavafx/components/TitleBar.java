@@ -1,6 +1,7 @@
 package com.risjavafx.components;
 
 import com.risjavafx.Miscellaneous;
+import com.risjavafx.components.main.Main;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -11,6 +12,7 @@ import java.util.ResourceBundle;
 
 public class TitleBar implements javafx.fxml.Initializable {
 
+    public HBox titleBarContainer;
     public Button titleBarCloseButton;
     public Button titleBarMaxButton;
     public Button titleBarMinButton;

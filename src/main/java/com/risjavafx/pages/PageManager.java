@@ -1,9 +1,12 @@
 package com.risjavafx.pages;
 
+import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.util.Duration;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -36,6 +39,30 @@ public class PageManager {
         }
     }
 
+    public static void switchPageWithFade(Pages page) {
+        Pages rootPage = null;
+        for (Pages pages : cache.keySet()) {
+            if (cache.get(pages).equals(PageManager.root))
+                rootPage = pages;
+        }
+        FadeTransition transition1 = fadeTransition(rootPage, 1, .3);
+        transition1.setOnFinished(event -> fadeTransition(page, .5, 1));
+    }
+
+    private static FadeTransition fadeTransition(Pages page, double opacityStart, double opacityEnd) {
+        FadeTransition fadeTransition = new FadeTransition();
+        if (PageManager.root != cache.get(page)) {
+            PageManager.root = cache.get(page);
+            scene.setRoot(PageManager.root);
+        }
+        fadeTransition.setDuration(Duration.millis(1000));
+        fadeTransition.setNode(PageManager.root);
+        fadeTransition.setFromValue(opacityStart);
+        fadeTransition.setToValue(opacityEnd);
+        fadeTransition.play();
+        return fadeTransition;
+    }
+
     public static void clearCache() {
         cache.clear();
     }
@@ -53,6 +80,7 @@ public class PageManager {
         return root;
     }
 
+    // Loads all pages to cache
     public static void loadPagesToCache() {
         try {
             for (Pages page : Pages.values()) {
@@ -67,6 +95,7 @@ public class PageManager {
         }
     }
 
+    // Loads a single desired page to cache
     public static void loadPageToCache(Pages page) {
         try {
             if (page.isCachable()) {
@@ -74,6 +103,15 @@ public class PageManager {
                 root.getStylesheets().add(Objects.requireNonNull(PageManager.class.getResource("stylesheet/styles.css")).toExternalForm());
                 cache.put(page, root);
             }
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Returns root of a page that is not loaded into cache
+    public static Parent getRootFromUnloadedPage(Pages page) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(PageManager.class.getResource(page.getFilename())));
+        root.getStylesheets().add(Objects.requireNonNull(PageManager.class.getResource("stylesheet/styles.css")).toExternalForm());
+        return root;
     }
 }

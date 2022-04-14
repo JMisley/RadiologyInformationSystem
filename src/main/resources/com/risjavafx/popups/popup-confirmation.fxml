@@ -8,30 +8,19 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="popupContainer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefWidth="400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.risjavafx.popups.models.PopupConfirmation">
-    <HBox alignment="CENTER">
-        <VBox.margin>
-            <Insets top="20.0"/>
-        </VBox.margin>
-        <ImageView fx:id="confirmationImage" fitHeight="150.0" fitWidth="75.0" pickOnBounds="true"
-                   preserveRatio="true"/>
-    </HBox>
-    <HBox alignment="CENTER">
-        <VBox.margin>
-            <Insets top="20.0"/>
-        </VBox.margin>
-        <Label id="alertBox-header" fx:id="headerLabel" text="Label">
+<VBox fx:id="popupContainer" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+      minWidth="-Infinity" prefWidth="400.0" spacing="20.0" xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.risjavafx.popups.models.PopupConfirmation">
+    <ImageView fx:id="confirmationImage" fitHeight="150.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true"
+               VBox.vgrow="ALWAYS"/>
+    <HBox alignment="CENTER" VBox.vgrow="NEVER">
+        <Label id="alertBox-header" fx:id="headerLabel">
             <font>
                 <Font name="Century Gothic" size="24.0"/>
             </font>
         </Label>
     </HBox>
     <HBox alignment="CENTER">
-        <VBox.margin>
-            <Insets top="20.0"/>
-        </VBox.margin>
         <Label id="alertBox-content" fx:id="contentLabel" text="Label">
             <font>
                 <Font size="18.0"/>
@@ -39,9 +28,6 @@
         </Label>
     </HBox>
     <HBox alignment="CENTER">
-        <VBox.margin>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="40.0"/>
-        </VBox.margin>
         <HBox alignment="CENTER" HBox.hgrow="ALWAYS">
             <Button id="primaryButton" fx:id="cancelButton" mnemonicParsing="false" text="Button"/>
         </HBox>
@@ -49,4 +35,7 @@
             <Button id="primaryButton" fx:id="confirmButton" mnemonicParsing="false" text="Button"/>
         </HBox>
     </HBox>
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
 </VBox>
