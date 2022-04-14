@@ -1,29 +1,32 @@
 package com.risjavafx.pages.admin;
 
-import com.risjavafx.components.InfoTable;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
+import com.risjavafx.components.InfoTable;
 import com.risjavafx.components.NavigationBar;
 import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.TableManager;
-import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
+import com.risjavafx.popups.models.PopupConfirmation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.*;
+import javafx.fxml.Initializable;
+import javafx.scene.control.SelectionMode;
+import javafx.scene.control.SplitPane;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.fxml.Initializable;
 import javafx.scene.layout.StackPane;
 
 import java.net.URL;
@@ -179,6 +182,7 @@ public class Admin implements Initializable {
         }
     }
 
+
     public void setCellFactoryValues() {
         userId.setCellValueFactory(new PropertyValueFactory<>("userIdData"));
         displayName.setCellValueFactory(new PropertyValueFactory<>("displayNameData"));
@@ -280,7 +284,7 @@ public class Admin implements Initializable {
             row.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
                 final int index = row.getIndex();
                 if (index >= 0 && index < infoTable.tableView.getItems().size() &&
-                    infoTable.tableView.getSelectionModel().isSelected(index)) {
+                        infoTable.tableView.getSelectionModel().isSelected(index)) {
                     infoTable.tableView.getSelectionModel().clearSelection();
 
                     tableSearchBar.toggleButtons(true);

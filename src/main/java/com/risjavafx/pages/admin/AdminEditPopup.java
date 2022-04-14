@@ -1,30 +1,26 @@
+package com.risjavafx.pages.admin;
 
-        package com.risjavafx.pages.admin;
+import com.risjavafx.Driver;
+import com.risjavafx.Miscellaneous;
+import com.risjavafx.pages.LoadingService;
+import com.risjavafx.pages.PageManager;
+import com.risjavafx.popups.PopupManager;
+import com.risjavafx.popups.Popups;
+import com.risjavafx.popups.models.PopupAlert;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 
-        import com.risjavafx.pages.LoadingService;
-        import com.risjavafx.pages.Pages;
-        import com.risjavafx.pages.TableManager;
-        import com.risjavafx.popups.models.PopupAlert;
-        import com.risjavafx.popups.models.Notification;
-        import com.risjavafx.pages.PageManager;
-        import com.risjavafx.popups.PopupManager;
-        import com.risjavafx.Driver;
-        import com.risjavafx.Miscellaneous;
-        import com.risjavafx.popups.Popups;
-        import javafx.collections.FXCollections;
-        import javafx.collections.ObservableList;
-        import javafx.fxml.Initializable;
-        import javafx.scene.control.Button;
-        import javafx.scene.control.ComboBox;
-        import javafx.scene.control.Label;
-        import javafx.scene.control.TextField;
-        import javafx.scene.layout.VBox;
-
-        import java.net.URL;
-        import java.sql.PreparedStatement;
-        import java.sql.ResultSet;
-        import java.sql.SQLException;
-        import java.util.ResourceBundle;
+import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 public class AdminEditPopup implements Initializable {
     public VBox popupContainer;
@@ -90,10 +86,10 @@ public class AdminEditPopup implements Initializable {
 
     public void updateUserQuery() throws SQLException {
         String sql = """
-                    UPDATE users
-                    SET email = ?, full_name = ?, username = ?, password = ?
-                    WHERE users.user_id = ?;
-                    """;
+                UPDATE users
+                SET email = ?, full_name = ?, username = ?, password = ?
+                WHERE users.user_id = ?;
+                """;
         PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
         preparedStatement.setString(1, emailTextField.getText().toLowerCase());
         preparedStatement.setString(2, fullNameTextField.getText());
@@ -141,12 +137,12 @@ public class AdminEditPopup implements Initializable {
         passwordTextField.clear();
     }
 
-    private void refreshPage() {
-        String notiHeader = "Submission Complete";
-        String notiText = "You have successfully changed your information";
-        LoadingService.GlobalResetDefault globalReset = new LoadingService.GlobalResetDefault(notiHeader, notiText);
-        globalReset.start();
-    }
+//    private void refreshPage() {
+//        String notiHeader = "Submission Complete";
+//        String notiText = "You have successfully changed your information";
+//        LoadingService.GlobalResetDefault globalReset = new LoadingService.GlobalResetDefault(notiHeader, notiText);
+//        globalReset.start();
+//    }
 
 //    public String getCurrRowStringQuery() throws SQLException {
 //        String sql = """
@@ -172,7 +168,11 @@ public class AdminEditPopup implements Initializable {
                 updateUserQuery();
                 Admin.queryData(Admin.getLastRowStringQuery());
                 PopupManager.removePopup("MENU");
-                Notification.createNotification("Submission Complete", "You successfully added a new user");
+                //Notification.createNotification("Submission Complete", "You successfully added a new user");
+                String notiHeader = "Submission Complete";
+                String notiText = "You have successfully changed your information";
+                LoadingService.GlobalResetDefault globalReset = new LoadingService.GlobalResetDefault(notiHeader, notiText);
+                globalReset.start();
             } catch (Exception e) {
                 exception = true;
             }
