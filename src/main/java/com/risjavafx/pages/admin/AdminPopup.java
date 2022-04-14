@@ -36,10 +36,7 @@ public class AdminPopup implements Initializable {
     public Button cancelButton;
     public Button submitButton;
 
-    Driver driver = new Driver();
     Miscellaneous misc = new Miscellaneous();
-
-    public AdminPopup() throws SQLException {}
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -64,7 +61,7 @@ public class AdminPopup implements Initializable {
                     select MAX(user_id)
                     from users;
                     """;
-            ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+            ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
             if (resultSet.next()) {
                 return resultSet.getInt("MAX(user_id)") + 1;
             }
@@ -80,7 +77,7 @@ public class AdminPopup implements Initializable {
                     select name
                     from roles;
                     """;
-            ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+            ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
             ObservableList<String> oblist = FXCollections.observableArrayList();
             while (resultSet.next()) {
                 oblist.add(resultSet.getString("name"));
@@ -96,7 +93,7 @@ public class AdminPopup implements Initializable {
                 insert into users
                 values (?, ?, ?, ?, ?, ?);
                 """;
-        PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+        PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
         preparedStatement.setInt(1, Integer.parseInt(userIDLabel.getText()));
         preparedStatement.setString(2, emailTextField.getText().toLowerCase());
         preparedStatement.setString(3, fullNameTextField.getText());
@@ -111,7 +108,7 @@ public class AdminPopup implements Initializable {
                 insert into users_roles
                 values (?, ?, ?);
                 """;
-        PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+        PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
         preparedStatement.setInt(1, Integer.parseInt(userIDLabel.getText()));
         preparedStatement.setInt(2, getRoleId(roleComboBox.getValue()));
         preparedStatement.setInt(3, Integer.parseInt(userIDLabel.getText()));
@@ -124,7 +121,7 @@ public class AdminPopup implements Initializable {
                 from roles
                 where name = ?;
                 """;
-        PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+        PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
         preparedStatement.setString(1, role);
         ResultSet resultSet = preparedStatement.executeQuery();
         resultSet.next();

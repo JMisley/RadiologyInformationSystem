@@ -29,13 +29,13 @@ public class ImagesPage implements Initializable {
 
     private void displayImage() {
         try {
-            Driver driver = new Driver();
+            
             String sql = """
                     SELECT Image
                     FROM imaging_info
                     WHERE order_id = ?
                     """;
-            PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, orderId);
             ResultSet resultSet = preparedStatement.executeQuery();
 

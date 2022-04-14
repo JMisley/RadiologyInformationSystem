@@ -86,7 +86,6 @@ public class Orders implements Initializable {
             if (Pages.getPage() == Pages.ORDERS) {
                 createTableSearchBar();
                 refreshTable();
-
             }
         });
 
@@ -139,8 +138,8 @@ public class Orders implements Initializable {
     }
 
     public static void queryData(String sql) throws SQLException {
-        Driver driver = new Driver();
-        ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+        
+        ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
 
         while (resultSet.next()) {
             observableList.add(new OrdersData(
@@ -172,14 +171,14 @@ public class Orders implements Initializable {
 
     @SuppressWarnings("SqlWithoutWhere")
     public void deleteSelectedItemsQuery(String table) throws SQLException {
-        Driver driver = new Driver();
+        
         ObservableList<OrdersData> selectedItems = infoTable.tableView.getSelectionModel().getSelectedItems();
         for (OrdersData selectedItem : selectedItems) {
             String sql = """
                     DELETE FROM %$
                     WHERE order_id = ?
                     """.replace("%$", table);
-            PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getOrderIdData());
             preparedStatement.execute();
         }
@@ -357,7 +356,7 @@ public class Orders implements Initializable {
 
     private void uploadImageToDatabase() {
         try {
-            Driver driver = new Driver();
+            
 
             String query;
             if (checkForImages()) {
@@ -373,7 +372,7 @@ public class Orders implements Initializable {
                 """;
             }
 
-            PreparedStatement preparedStatement = driver.connection.prepareStatement(query);
+            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(query);
             FileInputStream fileInputStream = new FileInputStream(file);
             preparedStatement.setBinaryStream(1, fileInputStream, (int)file.length());
             preparedStatement.setInt(2, infoTable.tableView.getSelectionModel().getSelectedItem().getOrderIdData());
@@ -393,14 +392,14 @@ public class Orders implements Initializable {
     // Returns true if order_id already has an image
     private boolean checkForImages() {
         try {
-            Driver driver = new Driver();
+            
             String query = """
                 SELECT order_id
                 FROM imaging_info
                 WHERE order_id = ?
                 """;
 
-            PreparedStatement preparedStatement = driver.connection.prepareStatement(query);
+            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, infoTable.tableView.getSelectionModel().getSelectedItem().getOrderIdData());
             ResultSet resultSet = preparedStatement.executeQuery();
 

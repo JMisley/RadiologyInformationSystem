@@ -34,10 +34,6 @@ public class ViewReferralsPopup implements Initializable {
     @FXML private TextArea reportTextArea;
 
     private static int clickedPatientId;
-    Driver driver = new Driver();
-
-    public ViewReferralsPopup() throws SQLException {
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -64,7 +60,7 @@ public class ViewReferralsPopup implements Initializable {
                     WHERE  appointments.patient = ?
                      """;
             ObservableList<String> oblist = FXCollections.observableArrayList();
-            PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, clickedPatientId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -86,7 +82,7 @@ public class ViewReferralsPopup implements Initializable {
                         WHERE appointments.date_time = ? AND patient = ?
                          """;
                 ObservableList<Integer> oblist = FXCollections.observableArrayList();
-                PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+                PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
                 preparedStatement.setString(1, appointmentsComboBox.getValue());
                 preparedStatement.setInt(2, clickedPatientId);
                 ResultSet resultSet = preparedStatement.executeQuery();
@@ -110,7 +106,7 @@ public class ViewReferralsPopup implements Initializable {
                         FROM orders
                         WHERE orders.order_id = ?
                         """;
-                PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+                PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
                 preparedStatement.setInt(1, ordersComboBox.getValue());
                 ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -175,14 +171,14 @@ public class ViewReferralsPopup implements Initializable {
     }
 
     private void updateTextAreas() throws SQLException {
-        Driver driver = new Driver();
+        
         PreparedStatement preparedStatement;
         final String sql = """
                 UPDATE orders
                 SET notes = ?, report = ?
                 WHERE order_id = ?;
                 """;
-        preparedStatement = driver.connection.prepareStatement(sql);
+        preparedStatement = Driver.getConnection().prepareStatement(sql);
         preparedStatement.setString(1, notesTextArea.getText());
         preparedStatement.setString(2, reportTextArea.getText());
         preparedStatement.setInt(3, ordersComboBox.getValue());

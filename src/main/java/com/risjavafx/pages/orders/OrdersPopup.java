@@ -30,11 +30,8 @@ public class OrdersPopup implements Initializable {
     public TextArea reportTextArea;
     public Button cancelButton;
     public Button submitButton;
-    Driver driver = new Driver();
+    
     Miscellaneous misc = new Miscellaneous();
-
-    public OrdersPopup() throws SQLException {
-    }
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         resizeElements();
@@ -63,7 +60,7 @@ public class OrdersPopup implements Initializable {
                     select MAX(order_id)
                     from orders;
                     """;
-            ResultSet resultSet = this.driver.connection.createStatement().executeQuery(sql);
+            ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
 
             if (resultSet.next()) {
                 return resultSet.getInt("MAX(order_id)") + 1;
@@ -80,7 +77,7 @@ public class OrdersPopup implements Initializable {
                     select name
                     from modalities;
                     """;
-            ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+            ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
             ObservableList<String> oblist = FXCollections.observableArrayList();
             while (resultSet.next()) {
                 oblist.add(resultSet.getString("name"));
@@ -98,7 +95,7 @@ public class OrdersPopup implements Initializable {
                     FROM users, users_roles
                     where users_roles.role_id = 3 AND users_roles.user_id = users.user_id;
                     """;
-            ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+            ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
             ObservableList<String> oblist = FXCollections.observableArrayList();
             while (resultSet.next()) {
                 oblist.add(resultSet.getString("full_name"));
@@ -115,7 +112,7 @@ public class OrdersPopup implements Initializable {
                     SELECT first_name, last_name
                     FROM patients
                     """;
-            ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+            ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
             ObservableList<String> oblist = FXCollections.observableArrayList();
             while (resultSet.next()) {
                 oblist.add(resultSet.getString("first_name") + " " + resultSet.getString("last_name"));
@@ -132,7 +129,7 @@ public class OrdersPopup implements Initializable {
                 values (?, ?, ?, ?, ?, ?, ?);
                                 
                 """;
-        PreparedStatement preparedStatement = this.driver.connection.prepareStatement(sql);
+        PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
         preparedStatement.setInt(1, Integer.parseInt(this.orderIDLabel.getText()));
         preparedStatement.setString(2, patientComboBox.getValue());
         preparedStatement.setString(3, referralMdComboBox.getValue());
@@ -147,7 +144,7 @@ public class OrdersPopup implements Initializable {
                  where orders.order_id = ? 
                  set
                  """
-        PreparedStatement insertAfter = this.driver.connection.prepareStatement((sqlAfter));
+        PreparedStatement insertAfter = this.Driver.getConnection().prepareStatement((sqlAfter));
     */
     }
 

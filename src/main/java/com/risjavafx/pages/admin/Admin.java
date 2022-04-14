@@ -129,8 +129,8 @@ public class Admin implements Initializable {
     }
 
     public static void queryData(String sql) throws SQLException {
-        Driver driver = new Driver();
-        ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+        
+        ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
 
         while (resultSet.next()) {
             observableList.add(new AdminData(
@@ -165,14 +165,14 @@ public class Admin implements Initializable {
 
     @SuppressWarnings("SqlWithoutWhere")
     public void deleteSelectedItemsQuery(String table) throws SQLException {
-        Driver driver = new Driver();
+        
         ObservableList<AdminData> selectedItems = infoTable.tableView.getSelectionModel().getSelectedItems();
         for (AdminData selectedItem : selectedItems) {
             String sql = """
                     DELETE FROM %$
                     WHERE user_id = ?
                     """.replace("%$", table);
-            PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getUserIdData());
             preparedStatement.execute();
         }

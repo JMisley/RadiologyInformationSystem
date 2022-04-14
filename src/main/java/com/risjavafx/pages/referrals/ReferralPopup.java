@@ -33,11 +33,7 @@ public class ReferralPopup implements Initializable {
     public Button cancelButton;
     public Button submitButton;
 
-    Driver driver = new Driver();
     Miscellaneous misc = new Miscellaneous();
-
-    public ReferralPopup() throws SQLException {
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -69,7 +65,7 @@ public class ReferralPopup implements Initializable {
                     select MAX(patient_id)
                     from patients;
                     """;
-            ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+            ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
             if (resultSet.next()) {
                 return (resultSet.getInt("MAX(patient_id)") + 1);
             }
@@ -85,7 +81,7 @@ public class ReferralPopup implements Initializable {
                 insert into patients
                 values (?, ?, ?, ?, ?, ?, ?);
                 """;
-        PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+        PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
         preparedStatement.setInt(1, Integer.parseInt(patientIDLabel.getText()));
         preparedStatement.setString(2, firstNameTextField.getText());
         preparedStatement.setString(3, lastNameTextField.getText());

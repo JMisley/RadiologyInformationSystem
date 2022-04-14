@@ -58,14 +58,14 @@ public class Login implements Initializable {
 
     // If input username and password combination exists in database, return true
     private boolean checkCredentials(String username, String password) throws SQLException {
-        Driver driver = new Driver();
+        
         PreparedStatement preparedStatement;
         final String sql = """
                 SELECT username, password, user_id
                 FROM users
                 WHERE BINARY username = ? AND BINARY password = ?
                 """;
-        preparedStatement = driver.connection.prepareStatement(sql);
+        preparedStatement = Driver.getConnection().prepareStatement(sql);
         preparedStatement.setString(1, username);
         preparedStatement.setString(2, password);
         ResultSet resultSet = preparedStatement.executeQuery();

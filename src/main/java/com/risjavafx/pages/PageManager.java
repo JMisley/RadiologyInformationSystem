@@ -1,8 +1,10 @@
 package com.risjavafx.pages;
 
+import javafx.animation.FadeTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -35,6 +37,30 @@ public class PageManager {
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+    }
+
+    public static void switchPageWithFade(Pages page) {
+        Pages rootPage = null;
+        for (Pages pages : cache.keySet()) {
+            if (cache.get(pages).equals(PageManager.root))
+                rootPage = pages;
+        }
+        FadeTransition transition1 = fadeTransition(rootPage, 1, .3);
+        transition1.setOnFinished(event -> fadeTransition(page, .5, 1));
+    }
+
+    private static FadeTransition fadeTransition(Pages page, double opacityStart, double opacityEnd) {
+        FadeTransition fadeTransition = new FadeTransition();
+        if (PageManager.root != cache.get(page)) {
+            PageManager.root = cache.get(page);
+            scene.setRoot(PageManager.root);
+        }
+        fadeTransition.setDuration(Duration.millis(1000));
+        fadeTransition.setNode(PageManager.root);
+        fadeTransition.setFromValue(opacityStart);
+        fadeTransition.setToValue(opacityEnd);
+        fadeTransition.play();
+        return fadeTransition;
     }
 
     public static void clearCache() {

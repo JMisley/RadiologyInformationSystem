@@ -61,14 +61,13 @@ public class UserInfo implements Initializable {
 
     private void setElements() {
         try {
-            Driver driver = new Driver();
             PreparedStatement preparedStatement;
             final String sql = """
                     SELECT user_id, email, full_name, username, password
                     FROM users
                     WHERE user_id = ?;
                     """;
-            preparedStatement = driver.connection.prepareStatement(sql);
+            preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, UserStates.getUserId());
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -88,14 +87,14 @@ public class UserInfo implements Initializable {
     // Confirm button onClick
     public void confirmChanges() {
         try {
-            Driver driver = new Driver();
+            
             PreparedStatement preparedStatement;
             final String sql = """
                     UPDATE users
                     SET username = ?, password = ?, full_name = ?, email = ?
                     WHERE user_id = ?;
                     """;
-            preparedStatement = driver.connection.prepareStatement(sql);
+            preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setString(1, getText(usernameTextField));
             preparedStatement.setString(2, getText(passwordTextField));
             preparedStatement.setString(3, getText(fullNameTextField));

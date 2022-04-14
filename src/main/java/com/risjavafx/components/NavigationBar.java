@@ -106,7 +106,7 @@ public class NavigationBar implements Initializable {
             case ADMIN -> {}
             case USER -> disableSelectedButtons(new Button[]{adminButton, referralsButton, appointmentsButton, ordersButton});
             case REFERRAL_MD, RADIOLOGIST -> disableSelectedButtons(new Button[]{adminButton});
-            case RECEPTIONIST -> disableSelectedButtons(new Button[]{adminButton, referralsButton});
+            case RECEPTIONIST -> disableSelectedButtons(new Button[]{adminButton, ordersButton});
             case TECHNICIAN -> disableSelectedButtons(new Button[]{adminButton, referralsButton, });
         }
     }

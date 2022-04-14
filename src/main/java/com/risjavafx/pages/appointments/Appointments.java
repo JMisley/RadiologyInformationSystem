@@ -143,8 +143,8 @@ public class Appointments implements Initializable {
 
     public static void queryData(String sql) throws SQLException {
         // ObservableList<AppointmentData> observableList = FXCollections.observableArrayList();
-        Driver driver = new Driver();
-        ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+        
+        ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
 
         while (resultSet.next()) {
             String name = resultSet.getString("first_name") + " " + resultSet.getString("last_name");
@@ -219,20 +219,20 @@ public class Appointments implements Initializable {
 
     @SuppressWarnings("SqlWithoutWhere")
     public void deleteSelectedItemsQuery(String table) throws SQLException {
-        Driver driver = new Driver();
+        
         ObservableList<AppointmentData> selectedItems = infoTable.tableView.getSelectionModel().getSelectedItems();
         for (AppointmentData selectedItem : selectedItems) {
             String sql = """
                     DELETE FROM %$
                     WHERE appointment_id = ?
                     """.replace("%$", table);
-            PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getAppointmentId());
             preparedStatement.execute();
         }
     }
     public void changeCheckIn(String table) throws SQLException {
-        Driver driver = new Driver();
+        
         ObservableList<AppointmentData> selectedItems = infoTable.tableView.getSelectionModel().getSelectedItems();
         for (AppointmentData selectedItem : selectedItems) {
             String sql = """
@@ -240,7 +240,7 @@ public class Appointments implements Initializable {
                     SET closed = !closed
                     WHERE appointment_id = ?;
                     """;
-            PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getAppointmentId());
             preparedStatement.execute();
             String notiHeader = "Submission Complete";
