@@ -44,7 +44,6 @@ public class AppointmentPopUp implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         resizeElements();
         setAppointmentIdLabel();
-        // populateComboBoxModality();
         populateComboBoxRadiologist();
         populateComboBoxTechnician();
         populateComboBoxPatient();
@@ -122,11 +121,10 @@ public class AppointmentPopUp implements Initializable {
 
     public void populateComboBoxRadiologist() {
         try {
-            String sql = """
-                                        
+            String sql = """           
                     SELECT full_name
                     FROM users, users_roles
-                    where users_roles.role_id = 6 AND users_roles.user_id = users.user_id;
+                    where users_roles.role_id = 4 AND users_roles.user_id = users.user_id;
                     """;
             ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
             ObservableList<String> oblist = FXCollections.observableArrayList();

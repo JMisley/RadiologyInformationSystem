@@ -3,7 +3,7 @@ package com.risjavafx.pages.referrals;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
 import com.risjavafx.PromptButtonCell;
-import com.risjavafx.components.Main;
+import com.risjavafx.components.main.Main;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.images.ImagesPage;

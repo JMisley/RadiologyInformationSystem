@@ -1,6 +1,7 @@
 package com.risjavafx.components;
 
 import com.risjavafx.Miscellaneous;
+import com.risjavafx.components.main.Main;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;

@@ -8,6 +8,8 @@ import com.risjavafx.pages.LoadingService;
 import com.risjavafx.pages.Pages;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -27,6 +29,7 @@ public class Login implements Initializable {
     public PasswordField password;
     public AnchorPane loginContainer;
     public HBox titleBar;
+
     Miscellaneous misc = new Miscellaneous();
 
     public void initialize(URL url, ResourceBundle resourceBundle) {

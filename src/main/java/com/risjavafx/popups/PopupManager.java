@@ -1,6 +1,6 @@
 package com.risjavafx.popups;
 
-import com.risjavafx.components.Main;
+import com.risjavafx.components.main.Main;
 import com.risjavafx.Miscellaneous;
 import com.risjavafx.pages.PageManager;
 import javafx.fxml.FXMLLoader;

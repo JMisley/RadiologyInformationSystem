@@ -1,14 +1,24 @@
 package com.risjavafx.pages;
 
 import com.risjavafx.UserStates;
-import com.risjavafx.components.Main;
+import com.risjavafx.components.main.Main;
 import com.risjavafx.popups.PopupManager;
+import com.risjavafx.popups.Popups;
 import com.risjavafx.popups.models.Notification;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 
-public class LoadingService {
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class LoadingService implements Initializable {
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    }
 
     // Reloads entire application and opens to a specific page (uses Progress Page as loading UI)
     public static class GlobalResetPageSwitch extends Service<Void> {
@@ -38,7 +48,8 @@ public class LoadingService {
     public static class GlobalResetDefault extends Service<Void> {
         String notificationHeader, notificationText;
 
-        public GlobalResetDefault() {}
+        public GlobalResetDefault() {
+        }
 
         public GlobalResetDefault(String notificationHeader, String notificationText) {
             this.notificationHeader = notificationHeader;
@@ -62,6 +73,21 @@ public class LoadingService {
                 if (notificationHeader != null)
                     Notification.createNotification(notificationHeader, notificationText);
             });
+            return task;
+        }
+    }
+
+    // Reloads entire application without switching page (uses progress spinner as loading UI)
+    public static class Reset extends Service<Void> {
+        public Task<Void> createTask() {
+            Task<Void> task = new Task<>() {
+                @Override
+                protected Void call() {
+                    PopupManager.createPopup(Popups.ADMIN);
+                    return null;
+                }
+            };
+            task.setOnSucceeded(event -> {});
             return task;
         }
     }

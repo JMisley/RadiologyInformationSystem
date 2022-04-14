@@ -39,8 +39,11 @@ public class Home implements Initializable {
         createStackPanesArray();
         createScrollView(tableViewList, stackPanes);
 
+        // SOME PROBLEMS
         PageManager.getScene().rootProperty().addListener(observable -> {
             if (Pages.getPage() == Pages.HOME) {
+                createStackPanesArray();
+                createScrollView(tableViewList, stackPanes);
                 refreshTables();
             }
         });

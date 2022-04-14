@@ -6,10 +6,10 @@ import com.risjavafx.components.InfoTable;
 import com.risjavafx.components.NavigationBar;
 import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
-import com.risjavafx.pages.LoadingService;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.TableManager;
+import com.risjavafx.popups.models.Notification;
 import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
@@ -365,8 +365,7 @@ public class Orders implements Initializable {
 
             String notiHeader = "Submission Complete";
             String notiBody = "You have successfully added an image";
-            LoadingService.GlobalResetDefault globalResetDefault = new LoadingService.GlobalResetDefault(notiHeader, notiBody);
-            globalResetDefault.start();
+            Notification.createNotification(notiHeader, notiBody);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
