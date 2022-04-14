@@ -95,13 +95,12 @@ public class ReferralPopup implements Initializable {
 
     // Returns false if any input field is invalid
     public boolean validInput() {
-        return
-                !firstNameTextField.getText().isBlank() &&
-                !birthDateTextField.getText().isBlank() &&
-                !lastNameTextField.getText().isBlank() &&
-                !sexTextField.getText().isBlank() &&
-                !raceTextField.getText().isBlank() &&
-                !ethnicityTextField.getText().isBlank();
+        return !firstNameTextField.getText().isBlank() &&
+               !birthDateTextField.getText().isBlank() &&
+               !lastNameTextField.getText().isBlank() &&
+               !sexTextField.getText().isBlank() &&
+               !raceTextField.getText().isBlank() &&
+               !ethnicityTextField.getText().isBlank();
     }
 
     public void resizeElements() {

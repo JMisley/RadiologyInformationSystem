@@ -243,8 +243,7 @@ public class Admin implements Initializable {
         int searchKeyInt = -1;
         try {
             searchKeyInt = Integer.parseInt(newValue);
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
 
         if (adminData.getUserIdData() == searchKeyInt && getComboBoxItem("User ID")) {
             return true;

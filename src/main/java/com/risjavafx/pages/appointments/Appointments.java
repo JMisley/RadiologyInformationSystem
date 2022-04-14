@@ -85,7 +85,7 @@ public class Appointments implements Initializable {
         // Overrides caching functionality and loads *TableSearchBar* every time page is opened
         PageManager.getScene().rootProperty().addListener(observable -> {
             if (Pages.getPage() == Pages.APPOINTMENTS) {
-                 createTableSearchBar();
+                createTableSearchBar();
                 refreshTable();
             }
         });
@@ -137,13 +137,12 @@ public class Appointments implements Initializable {
         if (!centerContent.getChildren().contains(TableManager.getAppointmentsTable())) {
             centerContent.getChildren().add(TableManager.getAppointmentsTable());
         }
-
     }
 
 
     public static void queryData(String sql) throws SQLException {
         // ObservableList<AppointmentData> observableList = FXCollections.observableArrayList();
-        
+
         ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
 
         while (resultSet.next()) {
@@ -219,7 +218,7 @@ public class Appointments implements Initializable {
 
     @SuppressWarnings("SqlWithoutWhere")
     public void deleteSelectedItemsQuery(String table) throws SQLException {
-        
+
         ObservableList<AppointmentData> selectedItems = infoTable.tableView.getSelectionModel().getSelectedItems();
         for (AppointmentData selectedItem : selectedItems) {
             String sql = """
@@ -231,8 +230,9 @@ public class Appointments implements Initializable {
             preparedStatement.execute();
         }
     }
+
     public void changeCheckIn(String table) throws SQLException {
-        
+
         ObservableList<AppointmentData> selectedItems = infoTable.tableView.getSelectionModel().getSelectedItems();
         for (AppointmentData selectedItem : selectedItems) {
             String sql = """
@@ -260,18 +260,13 @@ public class Appointments implements Initializable {
         technician.setCellValueFactory(cellData -> cellData.getValue().technician);
         closedFlag.setCellValueFactory(new PropertyValueFactory<>("closedFlag"));
     }
-    /////////////
 
     public void setComboBoxItems() {
         ObservableList<String> oblist = FXCollections.observableArrayList(
-                "All",
-                "Patient ",
-                "Modality",
-                "Price",
+                "Patient",
                 "Date",
                 "Radiologist",
-                "Technician",
-                "Closed"
+                "Technician"
         );
         tableSearchBar.getComboBox().setItems(oblist);
     }
@@ -300,7 +295,6 @@ public class Appointments implements Initializable {
             sortedList = new SortedList<>(filteredList);
             sortedList.comparatorProperty().bind(infoTable.tableView.comparatorProperty());
             infoTable.tableView.setItems(sortedList);
-
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -318,19 +312,12 @@ public class Appointments implements Initializable {
         }
 
         String searchKeyword = newValue.toLowerCase();
-        int searchKeyInt = -1;
-        try {
-            searchKeyInt = Integer.parseInt(newValue);
-        } catch (Exception ignored) {
-        }
 
-        if (appointmentData.getAppointmentId() == searchKeyInt && getComboBoxItem("User ID")) {
-            return true;
-        } else if (appointmentData.getPatient().toLowerCase().contains(searchKeyword) && getComboBoxItem("Patient")) {
-            return true;
-        } else if (appointmentData.getModality().toLowerCase().contains(searchKeyword) && getComboBoxItem("Modality")) {
+        if (appointmentData.getPatient().toLowerCase().contains(searchKeyword) && getComboBoxItem("Patient")) {
             return true;
         } else if (appointmentData.getDate().toLowerCase().contains(searchKeyword) && getComboBoxItem("Date")) {
+            return true;
+        } else if (appointmentData.getDate().toLowerCase().contains(searchKeyword) && getComboBoxItem("Technician")) {
             return true;
         } else
             return appointmentData.getRadiologist().toLowerCase().contains(searchKeyword) && getComboBoxItem("Radiologist");
@@ -348,8 +335,8 @@ public class Appointments implements Initializable {
                 tableSearchBar.toggleButtons(true);
             }
             tableSearchBar.getCheckInButton().setOnAction(actionEvent ->
-                    customCheckInConfirmationPopup(confirm -> confirmCheckIn() , cancel -> PopupManager.removePopup("ALERT")));
-                    refreshTable();
+                    customCheckInConfirmationPopup(confirm -> confirmCheckIn(), cancel -> PopupManager.removePopup("ALERT")));
+            refreshTable();
         });
     }
 
@@ -370,6 +357,7 @@ public class Appointments implements Initializable {
             return row;
         });
     }
+
     public void customConfirmationPopup(EventHandler<ActionEvent> confirm, EventHandler<ActionEvent> cancel) {
         PopupManager.createPopup(Popups.CONFIRMATION);
         new PopupConfirmation() {{
@@ -381,6 +369,7 @@ public class Appointments implements Initializable {
             getCancelButton().setOnAction(cancel);
         }};
     }
+
     public void customBillingConfirmationPopup(EventHandler<ActionEvent> confirm, EventHandler<ActionEvent> cancel) {
         PopupManager.createPopup(Popups.CONFIRMATION);
         new PopupConfirmation() {{
@@ -392,6 +381,7 @@ public class Appointments implements Initializable {
             getCancelButton().setOnAction(cancel);
         }};
     }
+
     public void customCheckInConfirmationPopup(EventHandler<ActionEvent> confirm, EventHandler<ActionEvent> cancel) {
         PopupManager.createPopup(Popups.CONFIRMATION);
         new PopupConfirmation() {{
@@ -403,6 +393,7 @@ public class Appointments implements Initializable {
             getCancelButton().setOnAction(cancel);
         }};
     }
+
     private void confirmCheckIn() {
         try {
             changeCheckIn("appointments");

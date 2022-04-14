@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public enum UserStates {
-    USER,
     ADMIN,
     REFERRAL_MD,
     RECEPTIONIST,
