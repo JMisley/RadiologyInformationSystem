@@ -31,7 +31,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class Admin implements Initializable, Loadable {
+public class Admin implements Initializable {
 
     public BorderPane mainContainer;
     public HBox topContent, titleBar, tableSearchBarContainer;
@@ -127,7 +127,7 @@ public class Admin implements Initializable, Loadable {
     }
 
     public static void queryData(String sql) throws SQLException {
-        
+
         ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
 
         while (resultSet.next()) {
@@ -163,7 +163,7 @@ public class Admin implements Initializable, Loadable {
 
     @SuppressWarnings("SqlWithoutWhere")
     public void deleteSelectedItemsQuery(String table) throws SQLException {
-        
+
         ObservableList<AdminData> selectedItems = infoTable.tableView.getSelectionModel().getSelectedItems();
         for (AdminData selectedItem : selectedItems) {
             String sql = """
@@ -241,7 +241,8 @@ public class Admin implements Initializable, Loadable {
         int searchKeyInt = -1;
         try {
             searchKeyInt = Integer.parseInt(newValue);
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
 
         if (adminData.getUserIdData() == searchKeyInt && getComboBoxItem("User ID")) {
             return true;
@@ -311,22 +312,6 @@ public class Admin implements Initializable, Loadable {
     }
 
     public void tableSearchBarAddButtonListener() {
-        Loadable loadable = new Admin();
-        LoadingService.CustomReload customReload = new LoadingService.CustomReload(loadable);
-        tableSearchBar.getAddButton().setOnAction(event -> customReload.start());
-    }
-
-    @Override
-    public void loadMethods() {
-        while (!Popups.ADMIN.getPopup().isShowing()) {
-            Popups.ADMIN.getPopup().isShowing();
-        }
-    }
-
-    @Override
-    public void performAction() {
-        System.out.println("start");
-        PopupManager.createPopup(Popups.ADMIN);
-        System.out.println("end");
+        tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.ADMIN));
     }
 }

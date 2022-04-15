@@ -3,7 +3,8 @@ package com.risjavafx.pages.appointments;
 import com.risjavafx.PromptButtonCell;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
-import com.risjavafx.popups.models.Notification;
+import com.risjavafx.pages.Loadable;
+import com.risjavafx.pages.LoadingService;
 import com.risjavafx.popups.models.PopupAlert;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
@@ -22,7 +23,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class AppointmentPopUp implements Initializable {
+public class AppointmentPopUp implements Initializable, Loadable {
     public VBox popupContainer;
     public static VBox usablePopupContainer;
 
@@ -275,14 +276,19 @@ public class AppointmentPopUp implements Initializable {
         submitButton.setStyle("-fx-font-size: " + fontSize);
     }
 
-    //Button Onclicks
+    //Button OnClicks
     // Onclick for submit button
     public void submitButtonOnclick() throws SQLException {
         if (validInput()) {
             insertAppointmentQuery();
             Appointments.queryData(Appointments.getLastRowStringQuery());
             PopupManager.removePopup();
-            Notification.createNotification("Submission Complete", "You successfully added a new user");
+
+            Loadable loadable = new AppointmentPopUp();
+            String notiHeader = "Submission Complete";
+            String notiBody = "You have successfully created a new appointment";
+            LoadingService.CustomReload customReload = new LoadingService.CustomReload(loadable, notiHeader, notiBody);
+            customReload.start();
         } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);
             new PopupAlert() {{

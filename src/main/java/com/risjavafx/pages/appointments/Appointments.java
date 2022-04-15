@@ -240,10 +240,10 @@ public class Appointments implements Initializable, Loadable {
             PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getAppointmentId());
             preparedStatement.execute();
-            String notiHeader = "Submission Complete";
-            String notiText = "You have successfully changed your information";
 
             Loadable loadable = new Appointments();
+            String notiHeader = "Submission Complete";
+            String notiText = "You have successfully changed your information";
             LoadingService.CustomReload defaultReset = new LoadingService.CustomReload(loadable, notiHeader, notiText);
             defaultReset.start();
         }
@@ -275,7 +275,6 @@ public class Appointments implements Initializable, Loadable {
         tableSearchBar.getComboBox().setItems(oblist);
     }
 
-    //////
     public boolean getComboBoxItem(String string) {
         String selectedComboValue = tableSearchBar.getComboBox().getValue();
         return string.equals(selectedComboValue) || "All".equals(selectedComboValue);
@@ -400,6 +399,7 @@ public class Appointments implements Initializable, Loadable {
     }
 
     public void confirmDeletion() {
+
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
         PopupManager.removePopup();
     }

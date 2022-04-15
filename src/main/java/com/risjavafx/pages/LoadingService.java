@@ -40,15 +40,6 @@ public class LoadingService {
         String notiHeader;
         String notiText;
 
-        public CustomReload(Loadable loadable) {
-            this.loadable = loadable;
-        }
-
-        public CustomReload(String notiHeader, String notiText) {
-            this.notiHeader = notiHeader;
-            this.notiText = notiText;
-        }
-
         public CustomReload(Loadable loadable, String notiHeader, String notiText) {
             this.notiHeader = notiHeader;
             this.notiText = notiText;
@@ -59,10 +50,7 @@ public class LoadingService {
             Task<Void> task = new Task<>() {
                 @Override
                 protected Void call() {
-                    Platform.runLater(() -> {
-                        loadable.performAction();
-                        PopupManager.createPopup(Popups.LOADING);
-                    });
+                    Platform.runLater(() -> PopupManager.createPopup(Popups.LOADING));
                     loadable.loadMethods();
                     return null;
                 }
@@ -70,8 +58,8 @@ public class LoadingService {
             task.setOnSucceeded(event -> {
                 if (notiHeader != null)
                     Notification.createNotification(notiHeader, notiText);
-                PopupManager.removePopup(Popups.LOADING);
-                System.out.println("success");
+                PopupManager.removePopup();
+                loadable.performAction();
             });
             return task;
         }
