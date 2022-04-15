@@ -44,6 +44,9 @@
         <Button id="viewButton" fx:id="viewButton" managed="false" maxHeight="40.0" mnemonicParsing="false"
                 prefHeight="40.0" text="View" visible="false" HBox.hgrow="NEVER"/>
 
+        <Button id="viewButton" fx:id="patientBackgroundButton" managed="false" maxHeight="40.0" mnemonicParsing="false"
+                prefHeight="40.0" text="Background" visible="false" HBox.hgrow="NEVER"/>
+
         <Button id="checkInButton" fx:id="checkInButton" managed="false" maxHeight="40.0" minWidth="85.0"
                 mnemonicParsing="false" prefHeight="40.0" text="Check In" visible="false" HBox.hgrow="NEVER"/>
 

@@ -12,7 +12,9 @@ public enum Popups {
     ALERT("popup-alert.fxml", PopupManager.popupAlert, "ALERT", true),
     LOADING("popup-loading.fxml", PopupManager.popupAlert, "ALERT", true),
     REFERRALS("referrals/referral-popup.fxml", PopupManager.popupMenu, "MENU", true),
+    PATIENTBACKGROUND("referrals/patient-background.fxml", PopupManager.popupMenu, "MENU", true),
     VIEW_REFERRALS("referrals/view-referral-popup.fxml", PopupManager.largePopupMenu, "LARGE_MENU", true);
+
 
     private static Popups menuPopups;
     private static Popups largeMenuPopups;
