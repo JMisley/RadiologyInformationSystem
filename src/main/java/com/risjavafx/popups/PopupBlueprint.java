@@ -10,10 +10,7 @@ public class PopupBlueprint {
     Miscellaneous misc = new Miscellaneous();
 
      public void resizeElements(Pane popupBox, ImageView image, Button[] buttons, Label headerLabel, Label contentLabel) {
-        popupBox.setPrefHeight(Popups.getAlertDimensions()[0]);
-        popupBox.setPrefWidth(Popups.getAlertDimensions()[1]);
-        popupBox.setMaxHeight(Popups.getAlertDimensions()[0]);
-        popupBox.setMaxWidth(Popups.getAlertDimensions()[1]);
+        resizePopupContainer(popupBox);
 
         image.setFitHeight(misc.getScreenHeight() * .075);
 
@@ -40,5 +37,12 @@ public class PopupBlueprint {
         }
         headerLabel.setStyle("-fx-font-size: " + headerFontSize);
         contentLabel.setStyle("-fx-font-size: " + contentFontSize);
+    }
+
+    public void resizePopupContainer(Pane popupBox) {
+        popupBox.setPrefHeight(Popups.getAlertDimensions()[0]);
+        popupBox.setPrefWidth(Popups.getAlertDimensions()[1]);
+        popupBox.setMaxHeight(Popups.getAlertDimensions()[0]);
+        popupBox.setMaxWidth(Popups.getAlertDimensions()[1]);
     }
 }

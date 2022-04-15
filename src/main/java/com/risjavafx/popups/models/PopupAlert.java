@@ -1,9 +1,7 @@
 package com.risjavafx.popups.models;
 
-import com.risjavafx.pages.PageManager;
 import com.risjavafx.popups.PopupBlueprint;
 import com.risjavafx.popups.PopupManager;
-import com.risjavafx.popups.Popups;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;

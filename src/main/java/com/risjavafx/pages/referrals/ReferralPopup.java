@@ -35,11 +35,9 @@ public class ReferralPopup implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         resizeElements();
-        setPatientIDLabel();
-        System.out.println("Boob");
 
         Popups.REFERRALS.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
-            if (aBoolean) {
+            if (Popups.REFERRALS.getPopup().isShowing()) {
                 patientIDLabel.setText(String.valueOf(setPatientIDLabel()));
                 refreshElements();
             }

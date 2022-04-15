@@ -1,7 +1,6 @@
 package com.risjavafx.pages.appointments;
 
 import com.risjavafx.PromptButtonCell;
-import com.risjavafx.pages.PageManager;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
 import com.risjavafx.popups.models.Notification;

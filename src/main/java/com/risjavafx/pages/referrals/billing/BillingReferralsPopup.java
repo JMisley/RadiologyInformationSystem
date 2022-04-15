@@ -3,7 +3,6 @@ package com.risjavafx.pages.referrals.billing;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
 import com.risjavafx.PromptButtonCell;
-import com.risjavafx.pages.PageManager;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
 import javafx.collections.FXCollections;

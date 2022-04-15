@@ -24,17 +24,19 @@ public class PopupManager {
 
     // Method to create a popup menu
     public static void createPopup(Popups popups) {
+        if (!popups.isCachable())
+            loadPopupsToCache(new Popups[] {popups});
         Parent popupRoot = cache.get(popups);
-        System.out.println("Popup from cache");
+
         popups.getPopup().getContent().add(popupRoot);
         PageManager.getRoot().setDisable(true);
         popups.getPopup().show(Main.usableStage);
         currentPopups.add(popups);
 
-//        Main.usableStage.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
-//            if (aBoolean) popups.getPopup().setOpacity(0f);
-//            else popups.getPopup().setOpacity(1f);
-//        });
+        Main.usableStage.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (aBoolean) popups.getPopup().setOpacity(0f);
+            else popups.getPopup().setOpacity(1f);
+        });
     }
 
     public static void loadPopupsToCache(Popups[] popups) {
@@ -59,11 +61,6 @@ public class PopupManager {
                         popup.getPopup().setX(misc.getScreenWidth() / 2 - Popups.getAlertDimensions()[1] / 2);
                         Popups.setAlertPopupEnum(popup);
                     }
-                    case "LOADING" -> {
-                        popup.getPopup().setY(misc.getScreenHeight() / 2 - Popups.getLoadingDimensions()[0] / 2);
-                        popup.getPopup().setX(misc.getScreenWidth() / 2 - Popups.getLoadingDimensions()[1] / 2);
-                        Popups.setLoadingPopupEnum(popup);
-                    }
                 }
 
                 cache.put(popup, root);
@@ -81,11 +78,14 @@ public class PopupManager {
             currentPopups.get(currentPopups.size() - 1).getPopup().hide();
             currentPopups.remove(currentPopups.size() - 1);
         } else {
-            PageManager.getRoot().setDisable(false);
-            for (Popups popups : currentPopups) {
-                popups.getPopup().getContent().clear();
-                popups.getPopup().hide();
-                currentPopups.clear();
+            try {
+                for (Popups popups : currentPopups) {
+                    PageManager.getRoot().setDisable(false);
+                    popups.getPopup().getContent().clear();
+                    popups.getPopup().hide();
+                    currentPopups.clear();
+                }
+            } catch (Exception ignore) {
             }
         }
     }

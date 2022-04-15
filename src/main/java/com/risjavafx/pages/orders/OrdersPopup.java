@@ -3,7 +3,6 @@ package com.risjavafx.pages.orders;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
 import com.risjavafx.PromptButtonCell;
-import com.risjavafx.pages.PageManager;
 import com.risjavafx.popups.models.Notification;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
@@ -122,7 +121,7 @@ public class OrdersPopup implements Initializable {
     public void insertOrderQuery() throws SQLException {
         String sql = """
                 insert into orders
-                values (?, ?, ?, ?, ?, ?);
+                values (?, ?, ?, ?, ?, ?, ?);
                                 
                 """;
         PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
@@ -132,6 +131,7 @@ public class OrdersPopup implements Initializable {
         preparedStatement.setString(4, modalityComboBox.getValue());
         preparedStatement.setString(5, this.notesTextArea.getText());
         preparedStatement.setString(6, null);
+        preparedStatement.setString(7, "");
         preparedStatement.execute();
     }
 

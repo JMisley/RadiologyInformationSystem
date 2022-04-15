@@ -3,7 +3,6 @@ package com.risjavafx.pages.admin;
 import com.risjavafx.PromptButtonCell;
 import com.risjavafx.popups.models.PopupAlert;
 import com.risjavafx.popups.models.Notification;
-import com.risjavafx.pages.PageManager;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
@@ -159,7 +158,7 @@ public class AdminPopup implements Initializable {
     }
 
     private void refreshElements() {
-        roleComboBox.setPromptText("Select Role");
+        roleComboBox.getSelectionModel().clearSelection();
         fullNameTextField.clear();
         emailTextField.clear();
         usernameTextField.clear();
