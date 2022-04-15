@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="popupContainer" spacing="35.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+<VBox fx:id="popupContainer" spacing="25.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.risjavafx.pages.orders.OrdersPopup">
     <HBox alignment="CENTER" VBox.vgrow="NEVER">
         <Label text="New Order" textFill="WHITE" underline="true">
@@ -33,12 +33,11 @@
             </font>
         </Label>
     </HBox>
-    <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" spacing="30.0" VBox.vgrow="NEVER">
-        <ComboBox fx:id="referralMdComboBox" maxHeight="30.0" prefWidth="150.0" promptText="Referral MD"
-                  HBox.hgrow="NEVER"/>
-        <ComboBox fx:id="modalityComboBox" maxHeight="30.0" promptText="Modality" HBox.hgrow="NEVER"/>
-        <ComboBox fx:id="patientComboBox" maxHeight="30.0" prefWidth="150.0" promptText="Patient" HBox.hgrow="NEVER"/>
-    </HBox>
+    <VBox alignment="CENTER" spacing="10.0" VBox.vgrow="NEVER">
+        <ComboBox fx:id="referralMdComboBox" maxHeight="30.0" prefWidth="150.0" promptText="Referral MD"/>
+        <ComboBox fx:id="modalityComboBox" maxHeight="30.0" prefWidth="150.0" promptText="Modality"/>
+        <ComboBox fx:id="patientComboBox" maxHeight="30.0" prefWidth="150.0" promptText="Patient"/>
+    </VBox>
     <VBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="522.0" text="Notes:"
                textAlignment="CENTER" textFill="WHITE">

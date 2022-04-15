@@ -34,16 +34,16 @@ public class LoadingService {
         }
     }
 
-    // Reloads entire application and stays on current page (uses Progress Spinner as loading UI)
-    public static class DefaultReset extends Service<Void> {
+    // Use the Loadable interface to pass whatever methods you want to execute (uses Progress Spinner as loading UI)
+    public static class CustomReload extends Service<Void> {
+        Loadable loadable;
         String notiHeader;
         String notiText;
 
-        public DefaultReset() {}
-
-        public DefaultReset(String notiHeader, String notiText) {
+        public CustomReload(Loadable loadable, String notiHeader, String notiText) {
             this.notiHeader = notiHeader;
             this.notiText = notiText;
+            this.loadable = loadable;
         }
 
         public Task<Void> createTask() {
@@ -51,8 +51,7 @@ public class LoadingService {
                 @Override
                 protected Void call() {
                     Platform.runLater(() -> PopupManager.createPopup(Popups.LOADING));
-                    PageManager.loadPagesToCache();
-                    PopupManager.loadPopupsToCache(Popups.values());
+                    loadable.loadMethods();
                     return null;
                 }
             };
@@ -60,8 +59,9 @@ public class LoadingService {
                 if (notiHeader != null)
                     Notification.createNotification(notiHeader, notiText);
                 PopupManager.removePopup();
+                loadable.performAction();
             });
             return task;
+        }
     }
-}
 }

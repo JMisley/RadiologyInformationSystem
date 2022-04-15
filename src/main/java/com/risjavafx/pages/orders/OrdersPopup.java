@@ -3,8 +3,8 @@ package com.risjavafx.pages.orders;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
 import com.risjavafx.PromptButtonCell;
-import com.risjavafx.pages.PageManager;
-import com.risjavafx.popups.models.Notification;
+import com.risjavafx.pages.Loadable;
+import com.risjavafx.pages.LoadingService;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
 
@@ -21,7 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
-public class OrdersPopup implements Initializable {
+public class OrdersPopup implements Initializable, Loadable {
     public VBox popupContainer;
     public Label orderIDLabel;
     public ComboBox<String> referralMdComboBox;
@@ -122,7 +122,7 @@ public class OrdersPopup implements Initializable {
     public void insertOrderQuery() throws SQLException {
         String sql = """
                 insert into orders
-                values (?, ?, ?, ?, ?, ?);
+                values (?, ?, ?, ?, ?, ?, ?);
                                 
                 """;
         PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
@@ -132,6 +132,7 @@ public class OrdersPopup implements Initializable {
         preparedStatement.setString(4, modalityComboBox.getValue());
         preparedStatement.setString(5, this.notesTextArea.getText());
         preparedStatement.setString(6, null);
+        preparedStatement.setString(7, "");
         preparedStatement.execute();
     }
 
@@ -172,7 +173,12 @@ public class OrdersPopup implements Initializable {
             this.insertOrderQuery();
             Orders.queryData(Orders.getLastRowStringQuery());
             PopupManager.removePopup();
-            Notification.createNotification("Submission Complete", "You have successfully added a new order");
+
+            Loadable loadable = new OrdersPopup();
+            String notiHeader = "Submission Complete";
+            String notiBody = "You have successfully created a new order";
+            LoadingService.CustomReload customReload = new LoadingService.CustomReload(loadable, notiHeader, notiBody);
+            customReload.start();
         } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);
             new PopupAlert() {{

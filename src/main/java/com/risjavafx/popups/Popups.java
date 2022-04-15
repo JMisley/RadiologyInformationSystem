@@ -10,14 +10,13 @@ public enum Popups {
     BILLING("billing-popup.fxml", PopupManager.popupMenu, "MENU", true),
     CONFIRMATION("popup-confirmation.fxml", PopupManager.popupAlert, "ALERT", false),
     ALERT("popup-alert.fxml", PopupManager.popupAlert, "ALERT", true),
-    LOADING("popup-loading.fxml", PopupManager.loadingPopup, "LOADING", true),
+    LOADING("popup-loading.fxml", PopupManager.popupAlert, "ALERT", true),
     REFERRALS("referrals/referral-popup.fxml", PopupManager.popupMenu, "MENU", true),
     VIEW_REFERRALS("referrals/view-referral-popup.fxml", PopupManager.largePopupMenu, "LARGE_MENU", true);
 
     private static Popups menuPopups;
     private static Popups largeMenuPopups;
     private static Popups alertPopups;
-    private static Popups loadingPopups;
     private final String filename;
     private final Popup popup;
     private final String type;
@@ -62,10 +61,6 @@ public enum Popups {
 
     public static void setAlertPopupEnum(Popups popups) {
         Popups.alertPopups = popups;
-    }
-
-    public static void setLoadingPopupEnum(Popups popups) {
-        Popups.loadingPopups = popups;
     }
 
     public static Popups getAlertPopupEnum() {

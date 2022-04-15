@@ -7,10 +7,7 @@ import com.risjavafx.components.InfoTable;
 import com.risjavafx.components.NavigationBar;
 import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
-import com.risjavafx.pages.LoadingService;
-import com.risjavafx.pages.PageManager;
-import com.risjavafx.pages.Pages;
-import com.risjavafx.pages.TableManager;
+import com.risjavafx.pages.*;
 import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
@@ -35,7 +32,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class Appointments implements Initializable {
+public class Appointments implements Initializable, Loadable {
     public BorderPane mainContainer;
     public HBox topContent, titleBar, tableSearchBarContainer;
     public StackPane centerContent;
@@ -243,11 +240,18 @@ public class Appointments implements Initializable {
             PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getAppointmentId());
             preparedStatement.execute();
+
+            Loadable loadable = new Appointments();
             String notiHeader = "Submission Complete";
             String notiText = "You have successfully changed your information";
-            LoadingService.DefaultReset defaultReset = new LoadingService.DefaultReset(notiHeader, notiText);
+            LoadingService.CustomReload defaultReset = new LoadingService.CustomReload(loadable, notiHeader, notiText);
             defaultReset.start();
         }
+    }
+
+    public void loadMethods() {
+        PageManager.loadPagesToCache();
+        PopupManager.loadPopupsToCache(Popups.values());
     }
 
     public void setCellFactoryValues() {
@@ -271,7 +275,6 @@ public class Appointments implements Initializable {
         tableSearchBar.getComboBox().setItems(oblist);
     }
 
-    //////
     public boolean getComboBoxItem(String string) {
         String selectedComboValue = tableSearchBar.getComboBox().getValue();
         return string.equals(selectedComboValue) || "All".equals(selectedComboValue);
@@ -396,6 +399,7 @@ public class Appointments implements Initializable {
     }
 
     public void confirmDeletion() {
+
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
         PopupManager.removePopup();
     }
