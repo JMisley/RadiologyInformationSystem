@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="popupContainer" maxHeight="570.0" maxWidth="500.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.risjavafx.pages.referrals.PatientBackgroundPopup">
+    <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+        <VBox.margin>
+            <Insets top="20.0" />
+        </VBox.margin>
+        <Label text="Patient" textFill="WHITE" underline="true">
+            <font>
+                <Font name="Century Gothic" size="24.0" />
+            </font>
+        </Label>
+
+
+    </HBox>
+    <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+        <VBox.margin>
+            <Insets left="20.0" right="20.0" top="20.0" />
+        </VBox.margin>
+        <Label text="Patient ID:" textFill="WHITE">
+            <font>
+                <Font name="Century Gothic" size="14.0" />
+            </font>
+            <HBox.margin>
+                <Insets right="10.0" />
+            </HBox.margin>
+        </Label>
+        <Label fx:id="patientIDLabel" text="101" textFill="#bb86fc">
+            <font>
+                <Font name="Century Gothic Bold" size="14.0" />
+            </font>
+        </Label>
+        <HBox HBox.hgrow="ALWAYS" />
+    </HBox>
+
+
+    <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
+        <VBox.margin>
+            <Insets left="20.0" right="20.0" top="20.0" />
+        </VBox.margin>
+        <Label text="Family History:" textFill="WHITE">
+            <HBox.margin>
+                <Insets right="10.0" />
+            </HBox.margin>
+            <font>
+                <Font name="Century Gothic" size="14.0" />
+            </font>
+        </Label>
+        <TextField fx:id="firstNameTextField" maxHeight="30.0" HBox.hgrow="ALWAYS">
+            <font>
+                <Font name="Arial" size="14.0" />
+            </font>
+            <HBox.margin>
+                <Insets />
+            </HBox.margin>
+        </TextField>
+    </HBox>
+
+
+    <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
+        <VBox.margin>
+            <Insets left="20.0" right="20.0" top="20.0" />
+        </VBox.margin>
+        <Label text="Food/Medicine Allergy:" textFill="WHITE">
+            <HBox.margin>
+                <Insets right="10.0" />
+            </HBox.margin>
+            <font>
+                <Font name="Century Gothic" size="14.0" />
+            </font>
+        </Label>
+        <TextField fx:id="lastNameTextField" maxHeight="30.0" HBox.hgrow="ALWAYS">
+            <font>
+                <Font name="Arial" size="14.0" />
+            </font>
+            <HBox.margin>
+                <Insets />
+            </HBox.margin>
+        </TextField>
+    </HBox>
+
+
+    <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
+        <VBox.margin>
+            <Insets left="20.0" right="20.0" top="20.0" />
+        </VBox.margin>
+        <Label text="Current Medication:" textFill="WHITE">
+            <HBox.margin>
+                <Insets right="10.0" />
+            </HBox.margin>
+            <font>
+                <Font name="Century Gothic" size="14.0" />
+            </font>
+        </Label>
+        <TextField fx:id="birthDateTextField" maxHeight="30.0" HBox.hgrow="ALWAYS">
+            <font>
+                <Font name="Arial" size="14.0" />
+            </font>
+            <HBox.margin>
+                <Insets />
+            </HBox.margin>
+        </TextField>
+    </HBox>
+
+
+    <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
+        <VBox.margin>
+            <Insets left="20.0" right="20.0" top="20.0" />
+        </VBox.margin>
+        <Label text="Previous Surgeries:" textFill="WHITE">
+            <HBox.margin>
+                <Insets right="10.0" />
+            </HBox.margin>
+            <font>
+                <Font name="Century Gothic" size="14.0" />
+            </font>
+        </Label>
+        <TextField fx:id="sexTextField" maxHeight="30.0" HBox.hgrow="ALWAYS">
+            <font>
+                <Font name="Arial" size="14.0" />
+            </font>
+            <HBox.margin>
+                <Insets />
+            </HBox.margin>
+        </TextField>
+    </HBox>
+
+
+    <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
+        <VBox.margin>
+            <Insets left="20.0" right="20.0" top="20.0" />
+        </VBox.margin>
+        <Label text="Installed Medical Devices:" textFill="WHITE">
+            <HBox.margin>
+                <Insets right="10.0" />
+            </HBox.margin>
+            <font>
+                <Font name="Century Gothic" size="14.0" />
+            </font>
+        </Label>
+        <TextField fx:id="raceTextField" maxHeight="30.0" HBox.hgrow="ALWAYS">
+            <font>
+                <Font name="Arial" size="14.0" />
+            </font>
+            <HBox.margin>
+                <Insets />
+            </HBox.margin>
+        </TextField>
+    </HBox>
+
+
+    <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
+        <VBox.margin>
+            <Insets left="20.0" right="20.0" top="20.0" />
+        </VBox.margin>
+        <Label text="Other:" textFill="WHITE">
+            <HBox.margin>
+                <Insets right="10.0" />
+            </HBox.margin>
+            <font>
+                <Font name="Century Gothic" size="14.0" />
+            </font>
+        </Label>
+        <TextField fx:id="ethnicityTextField" maxHeight="30.0" HBox.hgrow="ALWAYS">
+            <font>
+                <Font name="Arial" size="14.0" />
+            </font>
+            <HBox.margin>
+                <Insets />
+            </HBox.margin>
+        </TextField>
+    </HBox>
+
+
+    <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+        <VBox.margin>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="60.0" />
+        </VBox.margin>
+        <Button id="primaryButton" fx:id="cancelButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="60.0" maxWidth="200.0" mnemonicParsing="false" onAction="#cancelButtonOnclick" text="Cancel" />
+        <HBox HBox.hgrow="ALWAYS" />
+        <Button id="primaryButton" fx:id="submitButton" alignment="CENTER" maxHeight="60.0" maxWidth="200.0" mnemonicParsing="false" onAction="#submitButtonOnclick" text="Submit" />
+    </HBox>
+</VBox>
