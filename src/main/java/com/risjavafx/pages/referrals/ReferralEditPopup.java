@@ -1,6 +1,8 @@
 
 package com.risjavafx.pages.referrals;
 
+import com.risjavafx.pages.LoadingService;
+import com.risjavafx.pages.Pages;
 import com.risjavafx.popups.models.PopupAlert;
 import com.risjavafx.popups.models.Notification;
 import com.risjavafx.pages.PageManager;
@@ -146,8 +148,8 @@ public class ReferralEditPopup implements Initializable {
             updatePatientQuery();
             Referrals.queryData(Referrals.getLastRowStringQuery());
             PopupManager.removePopup("MENU");
-            Notification.createNotification("Submission Complete", "You have successfully created a new appointment");
-
+            LoadingService.GlobalResetPageSwitch globalReset = new LoadingService.GlobalResetPageSwitch(Pages.HOME);
+            globalReset.start();
         } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);
             new PopupAlert() {{

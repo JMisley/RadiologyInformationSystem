@@ -141,12 +141,12 @@ public class AdminEditPopup implements Initializable {
         passwordTextField.clear();
     }
 
-    private void refreshPage() {
-        String notiHeader = "Submission Complete";
-        String notiText = "You have successfully changed your information";
-        LoadingService.GlobalResetDefault globalReset = new LoadingService.GlobalResetDefault(notiHeader, notiText);
-        globalReset.start();
-    }
+//    private void refreshPage() {
+//        String notiHeader = "Submission Complete";
+//        String notiText = "You have successfully changed your information";
+//        LoadingService.GlobalResetDefault globalReset = new LoadingService.GlobalResetDefault(notiHeader, notiText);
+//        globalReset.start();
+//    }
 
 //    public String getCurrRowStringQuery() throws SQLException {
 //        String sql = """
@@ -172,7 +172,10 @@ public class AdminEditPopup implements Initializable {
                 updateUserQuery();
                 Admin.queryData(Admin.getLastRowStringQuery());
                 PopupManager.removePopup("MENU");
-                Notification.createNotification("Submission Complete", "You successfully added a new user");
+//                String notiHeader = "Submission Complete";
+//                String notiText = "You have successfully changed your information";
+                LoadingService.GlobalResetPageSwitch globalReset = new LoadingService.GlobalResetPageSwitch(Pages.HOME);
+                globalReset.start();
             } catch (Exception e) {
                 exception = true;
             }

@@ -2,7 +2,9 @@ package com.risjavafx.pages.orders;
 
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
+import com.risjavafx.pages.LoadingService;
 import com.risjavafx.pages.PageManager;
+import com.risjavafx.pages.Pages;
 import com.risjavafx.popups.models.Notification;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
@@ -232,7 +234,8 @@ public class OrdersEditPopup implements Initializable {
             //this.insertOrderIdQuery();
             Orders.queryData(Orders.getLastRowStringQuery());
             PopupManager.removePopup("MENU");
-            Notification.createNotification("Submission Complete", "You have successfully added a new order");
+            LoadingService.GlobalResetPageSwitch globalReset = new LoadingService.GlobalResetPageSwitch(Pages.HOME);
+            globalReset.start();
         } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);
             new PopupAlert() {{

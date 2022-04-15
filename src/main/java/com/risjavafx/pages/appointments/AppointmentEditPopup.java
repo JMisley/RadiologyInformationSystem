@@ -1,8 +1,10 @@
 package com.risjavafx.pages.appointments;
 
+import com.risjavafx.pages.LoadingService;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
+import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.admin.AdminEditPopup;
 import com.risjavafx.popups.models.Notification;
 import com.risjavafx.popups.models.PopupAlert;
@@ -293,7 +295,8 @@ public class AppointmentEditPopup implements Initializable {
             updateAppointmentQuery();
             Appointments.queryData(Appointments.getLastRowStringQuery());
             PopupManager.removePopup("MENU");
-            Notification.createNotification("Submission Complete", "You successfully added a new user");
+            LoadingService.GlobalResetPageSwitch globalReset = new LoadingService.GlobalResetPageSwitch(Pages.HOME);
+            globalReset.start();
         } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);
             new PopupAlert() {{
