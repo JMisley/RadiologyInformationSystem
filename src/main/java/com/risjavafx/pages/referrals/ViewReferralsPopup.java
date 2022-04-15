@@ -4,7 +4,8 @@ import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
 import com.risjavafx.PromptButtonCell;
 import com.risjavafx.components.main.Main;
-import com.risjavafx.pages.PageManager;
+import com.risjavafx.pages.Loadable;
+import com.risjavafx.pages.LoadingService;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.images.ImagesPage;
 import com.risjavafx.popups.PopupManager;
@@ -22,7 +23,7 @@ import java.sql.ResultSet;
 import java.util.ResourceBundle;
 import java.sql.SQLException;
 
-public class ViewReferralsPopup implements Initializable {
+public class ViewReferralsPopup implements Initializable, Loadable {
 
     @FXML private VBox popupContainer;
     @FXML private Button returnButton;
@@ -39,7 +40,6 @@ public class ViewReferralsPopup implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         resizeElements();
         Popups.VIEW_REFERRALS.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
-            PageManager.getRoot().setDisable(!aBoolean);
             refreshComboBoxes();
             refreshTextAndButtons();
             populateComboBoxAppointment();
@@ -170,7 +170,7 @@ public class ViewReferralsPopup implements Initializable {
         submitButton.setDisable(true);
     }
 
-    private void updateTextAreas() throws SQLException {
+    private void updateTextAreaChanges() throws SQLException {
         
         PreparedStatement preparedStatement;
         final String sql = """
@@ -189,18 +189,22 @@ public class ViewReferralsPopup implements Initializable {
     @FXML
     private void returnToPage() {
         try {
-            PopupManager.removePopup("MENU");
-        } catch (Exception ignore) {
-        }
+            PopupManager.removePopup();
+        } catch (Exception ignore) {}
     }
 
     @FXML
     private void submitChanges() {
         try {
-            updateTextAreas();
-            PopupManager.removePopup("MENU");
-        } catch (Exception ignore) {
-        }
+            updateTextAreaChanges();
+            PopupManager.removePopup();
+
+            Loadable loadable = new ViewReferralsPopup();
+            String notiHeader = "Submission Complete";
+            String notiBody = "You have successfully changed this patient's information";
+            LoadingService.CustomReload customReload = new LoadingService.CustomReload(loadable, notiHeader, notiBody);
+            customReload.start();
+        } catch (Exception ignore) {}
     }
 
     @FXML

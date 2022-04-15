@@ -1,9 +1,11 @@
 package com.risjavafx.pages.admin;
 
 import com.risjavafx.PromptButtonCell;
-import com.risjavafx.popups.models.PopupAlert;
+import com.risjavafx.pages.Loadable;
+import com.risjavafx.pages.LoadingService;
+import com.risjavafx.pages.Pages;
 import com.risjavafx.popups.models.Notification;
-import com.risjavafx.pages.PageManager;
+import com.risjavafx.popups.models.PopupAlert;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
@@ -23,10 +25,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class AdminPopup implements Initializable {
+public class AdminPopup implements Initializable, Loadable {
     public VBox popupContainer;
     public static VBox usablePopupContainer;
-
     public Label userIDLabel;
     public ComboBox<String> roleComboBox;
     public TextField fullNameTextField;
@@ -45,8 +46,6 @@ public class AdminPopup implements Initializable {
 
         // Overrides caching functionality
         Popups.ADMIN.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
-            PageManager.getRoot().setDisable(!aBoolean);
-
             if (Popups.ADMIN.getPopup().isShowing()) {
                 userIDLabel.setText(String.valueOf(getNextUserId()));
                 refreshElements();
@@ -131,10 +130,10 @@ public class AdminPopup implements Initializable {
     // Returns false if any input field is invalid
     public boolean validInput() {
         return roleComboBox.getValue() != null &&
-                !fullNameTextField.getText().isBlank() &&
-                !emailTextField.getText().isBlank() &&
-                !usernameTextField.getText().isBlank() &&
-                !passwordTextField.getText().isBlank();
+               !fullNameTextField.getText().isBlank() &&
+               !emailTextField.getText().isBlank() &&
+               !usernameTextField.getText().isBlank() &&
+               !passwordTextField.getText().isBlank();
     }
 
     private void resizeElements() {
@@ -151,8 +150,8 @@ public class AdminPopup implements Initializable {
         roleComboBox.setButtonCell(new PromptButtonCell<>("Select Role"));
 
         double fontSize;
-        if ((misc.getScreenWidth()/80) < 20) {
-            fontSize = misc.getScreenWidth()/80;
+        if ((misc.getScreenWidth() / 80) < 20) {
+            fontSize = misc.getScreenWidth() / 80;
         } else {
             fontSize = 20;
         }
@@ -161,14 +160,14 @@ public class AdminPopup implements Initializable {
     }
 
     private void refreshElements() {
-        roleComboBox.setPromptText("Select Role");
+        roleComboBox.getSelectionModel().clearSelection();
         fullNameTextField.clear();
         emailTextField.clear();
         usernameTextField.clear();
         passwordTextField.clear();
     }
 
-    //Button Onclicks
+    //Button OnClicks
     // Onclick for submit button
     public void submitButtonOnclick() {
         boolean exception = false;
@@ -177,12 +176,16 @@ public class AdminPopup implements Initializable {
                 insertUserQuery();
                 insertRoleIdQuery();
                 Admin.queryData(Admin.getLastRowStringQuery());
-                PopupManager.removePopup("MENU");
-                Notification.createNotification("Submission Complete", "You successfully added a new user");
+                PopupManager.removePopup();
+
+                LoadingService.GlobalResetPageSwitch customReload = new LoadingService.GlobalResetPageSwitch(Pages.HOME);
+                customReload.start();
+                String notiHeader = "Submission Complete";
+                String notiBody = "You have successfully added a new user";
+                Notification.createNotification(notiHeader, notiBody);
             } catch (Exception e) {
                 exception = true;
             }
-
         }
         if (!validInput() || exception) {
             PopupManager.createPopup(Popups.ALERT);
@@ -196,9 +199,6 @@ public class AdminPopup implements Initializable {
 
     // Onclick for cancel button
     public void cancelButtonOnclick() {
-        try {
-            PopupManager.removePopup("MENU");
-        }
-        catch (Exception ignore) {}
+        PopupManager.removePopup();
     }
 }

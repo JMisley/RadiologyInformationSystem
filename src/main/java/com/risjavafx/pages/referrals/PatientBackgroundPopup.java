@@ -1,12 +1,11 @@
 package com.risjavafx.pages.referrals;
 
-import com.risjavafx.pages.Loadable;
-import com.risjavafx.pages.LoadingService;
-import com.risjavafx.popups.models.PopupAlert;
-import com.risjavafx.popups.PopupManager;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
+import com.risjavafx.pages.LoadingService;
+import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
+import com.risjavafx.popups.models.PopupAlert;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -19,7 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class ReferralPopup implements Initializable, Loadable {
+public class PatientBackgroundPopup implements Initializable {
     public VBox popupContainer;
     public Label patientIDLabel;
     public TextField firstNameTextField;
@@ -126,12 +125,10 @@ public class ReferralPopup implements Initializable, Loadable {
             insertPatientQuery();
             Referrals.queryData(Referrals.getLastRowStringQuery());
             PopupManager.removePopup();
-
-            Loadable loadable = new ReferralPopup();
             String notiHeader = "Submission Complete";
-            String notiBody = "You have successfully added a new patient";
-            LoadingService.CustomReload customReload = new LoadingService.CustomReload(loadable, notiHeader, notiBody);
-            customReload.start();
+            String notiText = "You have successfully changed your information";
+            LoadingService.CustomReload defaultReset = new LoadingService.CustomReload(notiHeader, notiText);
+            defaultReset.start();
         } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);
             new PopupAlert() {{

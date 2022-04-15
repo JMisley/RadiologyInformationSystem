@@ -4,6 +4,7 @@ import com.risjavafx.Driver;
 import com.risjavafx.UserStates;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.components.NavigationBar;
+import com.risjavafx.pages.Loadable;
 import com.risjavafx.pages.LoadingService;
 import com.risjavafx.pages.Pages;
 import javafx.fxml.Initializable;
@@ -17,7 +18,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
-public class UserInfo implements Initializable {
+public class UserInfo implements Initializable, Loadable {
 
     public BorderPane mainContainer;
     public HBox titleBar;
@@ -127,10 +128,11 @@ public class UserInfo implements Initializable {
     }
 
     private void reloadSystem() {
+        Loadable loadable = new UserInfo();
         String notiHeader = "Submission Complete";
         String notiText = "You have successfully changed your information";
-        LoadingService.GlobalResetDefault globalReset = new LoadingService.GlobalResetDefault(notiHeader, notiText);
-        globalReset.start();
+        LoadingService.CustomReload defaultReset = new LoadingService.CustomReload(loadable, notiHeader, notiText);
+        defaultReset.start();
     }
 
     private void createTooltip(Control element) {

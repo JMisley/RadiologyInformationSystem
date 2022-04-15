@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.Popup;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -17,33 +18,30 @@ public class PopupManager {
     public static Popup popupMenu = new Popup();
     public static Popup largePopupMenu = new Popup();
     public static Popup popupAlert = new Popup();
+    private static final ArrayList<Popups> currentPopups = new ArrayList<>();
     static Miscellaneous misc = new Miscellaneous();
 
-    // Method to create a popup menu. Input a decimals to represent a percentage of the screen height and width
+    // Method to create a popup menu
     public static void createPopup(Popups popups) {
-        try {
-            Parent popupRoot;
-            if (popups.isCachable())
-                popupRoot = cache.get(popups);
-            else {
-                popupRoot = FXMLLoader.load(Objects.requireNonNull(PopupManager.class.getResource(popups.getFilename())));
-                popupRoot.getStylesheets().add(Objects.requireNonNull(PageManager.class.getResource("stylesheet/styles.css")).toExternalForm());
-            }
-            popups.getPopup().getContent().add(popupRoot);
-            popups.getPopup().show(Main.usableStage);
-
-            Main.usableStage.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
-                if (aBoolean) popups.getPopup().setOpacity(0f);
-                else popups.getPopup().setOpacity(1f);
-            });
-        } catch (Exception exception) {
-            exception.printStackTrace();
+        if (!popups.isCachable()) {
+            loadPopupsToCache(new Popups[]{popups});
         }
+        Parent popupRoot = cache.get(popups);
+
+        popups.getPopup().getContent().add(popupRoot);
+        PageManager.getRoot().setDisable(true);
+        popups.getPopup().show(Main.usableStage);
+        currentPopups.add(popups);
+
+        Main.usableStage.focusedProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (aBoolean) popups.getPopup().setOpacity(0f);
+            else popups.getPopup().setOpacity(1f);
+        });
     }
 
-    public static void loadPopupsToCache() {
+    public static void loadPopupsToCache(Popups[] popups) {
         try {
-            for (Popups popup : Popups.values()) {
+            for (Popups popup : popups) {
                 Parent root = FXMLLoader.load(Objects.requireNonNull(PopupManager.class.getResource(popup.getFilename())));
                 root.getStylesheets().add(Objects.requireNonNull(PageManager.class.getResource("stylesheet/styles.css")).toExternalForm());
 
@@ -64,7 +62,6 @@ public class PopupManager {
                         Popups.setAlertPopupEnum(popup);
                     }
                 }
-
                 cache.put(popup, root);
             }
         } catch (Exception e) {
@@ -72,17 +69,33 @@ public class PopupManager {
         }
     }
 
-    public static void removePopup(String type) {
-        if (type.equals("MENU")) {
-            for (Popups popups : Popups.values()) {
-                popups.getPopup().hide();
-                popups.getPopup().getContent().clear();
+    public static void removePopup() {
+        if (currentPopups.get(currentPopups.size() - 1).getType().equals("ALERT")) {
+            if (currentPopups.size() <= 1)
+                PageManager.getRoot().setDisable(false);
+            currentPopups.get(currentPopups.size() - 1).getPopup().getContent().clear();
+            currentPopups.get(currentPopups.size() - 1).getPopup().hide();
+            currentPopups.remove(currentPopups.size() - 1);
+        } else {
+            try {
+                for (Popups popups : currentPopups) {
+                    PageManager.getRoot().setDisable(false);
+                    popups.getPopup().getContent().clear();
+                    popups.getPopup().hide();
+                    currentPopups.clear();
+                }
+            } catch (Exception ignore) {
             }
-        } else if (type.equals("ALERT")) {
-            for (Popups popups : Popups.getAlertPopupsArray()) {
-                popups.getPopup().hide();
-                popups.getPopup().getContent().clear();
-            }
+        }
+    }
+
+    public static void removePopup(Popups popup) {
+        if (currentPopups.contains(popup)) {
+            PageManager.getRoot().setDisable(false);
+            popup.getPopup().getContent().clear();
+            popup.getPopup().hide();
+            currentPopups.remove(popup);
+            System.out.println("removed");
         }
     }
 }

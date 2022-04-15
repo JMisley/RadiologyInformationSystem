@@ -275,9 +275,8 @@ public class Referrals implements Initializable {
             if (t1 != null) {
                 tableSearchBar.toggleButtons(false);
                 tableSearchBar.getDeleteButton().setOnAction(actionEvent ->
-                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> PopupManager.removePopup("ALERT")));
+                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> PopupManager.removePopup()));
             } else {
-
                 tableSearchBar.toggleButtons(true);
             }
             if (infoTable.tableView.getSelectionModel().getSelectedItem() != null) {
@@ -325,7 +324,7 @@ public class Referrals implements Initializable {
             e.printStackTrace();
         }
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
-        PopupManager.removePopup("ALERT");
+        PopupManager.removePopup();
     }
 
     public void tableSearchBarAddButtonListener() {

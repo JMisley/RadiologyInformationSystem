@@ -3,7 +3,6 @@ package com.risjavafx.pages.referrals.billing;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
 import com.risjavafx.PromptButtonCell;
-import com.risjavafx.pages.PageManager;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
 import javafx.collections.FXCollections;
@@ -36,7 +35,6 @@ public class BillingReferralsPopup implements Initializable {
         populateComboBox();
 
         Popups.BILLING.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
-            PageManager.getRoot().setDisable(!aBoolean);
             refreshElements();
             totalCost = queryTotalCost();
             insuranceComboBox.valueProperty().addListener(observable -> calculatePatientBill());
@@ -132,6 +130,6 @@ public class BillingReferralsPopup implements Initializable {
 
     // Button OnClicks
     public void closePopup() {
-        PopupManager.removePopup("MENU");
+        PopupManager.removePopup();
     }
 }

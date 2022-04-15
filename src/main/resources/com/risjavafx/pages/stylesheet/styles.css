@@ -4,12 +4,18 @@
     -fx-background-size: cover;
 }
 
+.root:disabled {
+    -fx-max-width: infinity;
+    -fx-effect: innershadow(gaussian, rgba( 0, 0, 0, 0.3), 5000, 5000, 5000, 5000);
+}
+
 #root {
     -fx-background-image: url(../../images/background.jpg);
     -fx-background-size: cover;
 }
 
 #transparent {
+    -fx-background-image: none;
     -fx-background-color: transparent;
 }
 
@@ -132,6 +138,10 @@
 
 #minimizeImage {
     -fx-image: url(../../images/minus.png);
+}
+
+#progressSpinner {
+    -fx-image: url(../../images/spinner.gif);
 }
 
 
@@ -377,7 +387,7 @@
 
 /*Scroll Pane Styling-------------------------------------------------------------------------------------------------*/
 .scroll-pane {
-    -fx-background-color: black;
+    -fx-background-color: transparent;
 }
 
 .scroll-pane .scroll-bar:vertical {

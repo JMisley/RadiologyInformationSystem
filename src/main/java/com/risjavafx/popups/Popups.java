@@ -10,8 +10,10 @@ public enum Popups {
     BILLING("billing-popup.fxml", PopupManager.popupMenu, "MENU", true),
     CONFIRMATION("popup-confirmation.fxml", PopupManager.popupAlert, "ALERT", false),
     ALERT("popup-alert.fxml", PopupManager.popupAlert, "ALERT", true),
+    LOADING("popup-loading.fxml", PopupManager.popupAlert, "ALERT", true),
     REFERRALS("referrals/referral-popup.fxml", PopupManager.popupMenu, "MENU", true),
     VIEW_REFERRALS("referrals/view-referral-popup.fxml", PopupManager.largePopupMenu, "LARGE_MENU", true);
+
     private static Popups menuPopups;
     private static Popups largeMenuPopups;
     private static Popups alertPopups;
@@ -83,5 +85,9 @@ public enum Popups {
 
     public static double[] getAlertDimensions() {
         return new double[]{misc.getScreenHeight() * .3, misc.getScreenHeight() * .415};
+    }
+
+    public static double[] getLoadingDimensions() {
+        return new double[]{175, 175};
     }
 }

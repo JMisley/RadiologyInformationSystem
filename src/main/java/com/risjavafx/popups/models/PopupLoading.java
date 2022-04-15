@@ -1,9 +1,17 @@
 package com.risjavafx.popups.models;
 
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
+import com.risjavafx.popups.PopupBlueprint;
+import javafx.fxml.Initializable;
+import javafx.scene.layout.StackPane;
 
-public class PopupLoading {
-    public ImageView progressSpinner;
-    public BorderPane mainContainer;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class PopupLoading extends PopupBlueprint implements Initializable {
+    public StackPane popupContainer;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        resizePopupContainer(popupContainer);
+    }
 }

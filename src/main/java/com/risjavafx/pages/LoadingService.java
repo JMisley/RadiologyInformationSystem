@@ -1,24 +1,14 @@
 package com.risjavafx.pages;
 
 import com.risjavafx.UserStates;
-import com.risjavafx.components.main.Main;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
 import com.risjavafx.popups.models.Notification;
+import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.fxml.Initializable;
-import javafx.scene.Cursor;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-public class LoadingService implements Initializable {
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
+public class LoadingService {
 
     // Reloads entire application and opens to a specific page (uses Progress Page as loading UI)
     public static class GlobalResetPageSwitch extends Service<Void> {
@@ -35,7 +25,7 @@ public class LoadingService implements Initializable {
                     PageManager.switchPage(Pages.PROGRESS);
                     UserStates.setUserState();
                     PageManager.loadPagesToCache();
-                    PopupManager.loadPopupsToCache();
+                    PopupManager.loadPopupsToCache(Popups.values());
                     return null;
                 }
             };
@@ -44,50 +34,33 @@ public class LoadingService implements Initializable {
         }
     }
 
-    // Reloads entire application without switching page (uses progress spinner as loading UI)
-    public static class GlobalResetDefault extends Service<Void> {
-        String notificationHeader, notificationText;
+    // Use the Loadable interface to pass whatever methods you want to execute (uses Progress Spinner as loading UI)
+    public static class CustomReload extends Service<Void> {
+        Loadable loadable;
+        String notiHeader;
+        String notiText;
 
-        public GlobalResetDefault() {
-        }
-
-        public GlobalResetDefault(String notificationHeader, String notificationText) {
-            this.notificationHeader = notificationHeader;
-            this.notificationText = notificationText;
+        public CustomReload(Loadable loadable, String notiHeader, String notiText) {
+            this.notiHeader = notiHeader;
+            this.notiText = notiText;
+            this.loadable = loadable;
         }
 
         public Task<Void> createTask() {
             Task<Void> task = new Task<>() {
                 @Override
                 protected Void call() {
-                    Main.usableStage.getScene().setCursor(Cursor.WAIT);
-                    Main.usableStage.getScene().getRoot().setDisable(true);
-                    PageManager.loadPagesToCache();
-                    PopupManager.loadPopupsToCache();
+                    Platform.runLater(() -> PopupManager.createPopup(Popups.LOADING));
+                    loadable.loadMethods();
                     return null;
                 }
             };
             task.setOnSucceeded(event -> {
-                Main.usableStage.getScene().getRoot().setDisable(false);
-                Main.usableStage.getScene().setCursor(Cursor.DEFAULT);
-                if (notificationHeader != null)
-                    Notification.createNotification(notificationHeader, notificationText);
+                if (notiHeader != null)
+                    Notification.createNotification(notiHeader, notiText);
+                PopupManager.removePopup();
+                loadable.performAction();
             });
-            return task;
-        }
-    }
-
-    // Reloads entire application without switching page (uses progress spinner as loading UI)
-    public static class Reset extends Service<Void> {
-        public Task<Void> createTask() {
-            Task<Void> task = new Task<>() {
-                @Override
-                protected Void call() {
-                    PopupManager.createPopup(Popups.ADMIN);
-                    return null;
-                }
-            };
-            task.setOnSucceeded(event -> {});
             return task;
         }
     }
