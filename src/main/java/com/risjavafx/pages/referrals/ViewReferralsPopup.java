@@ -3,8 +3,7 @@ package com.risjavafx.pages.referrals;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
 import com.risjavafx.PromptButtonCell;
-import com.risjavafx.components.Main;
-import com.risjavafx.pages.PageManager;
+import com.risjavafx.components.main.Main;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.images.ImagesPage;
 import com.risjavafx.popups.PopupManager;
@@ -34,16 +33,11 @@ public class ViewReferralsPopup implements Initializable {
     @FXML private TextArea reportTextArea;
 
     private static int clickedPatientId;
-    Driver driver = new Driver();
-
-    public ViewReferralsPopup() throws SQLException {
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         resizeElements();
         Popups.VIEW_REFERRALS.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
-            PageManager.getRoot().setDisable(!aBoolean);
             refreshComboBoxes();
             refreshTextAndButtons();
             populateComboBoxAppointment();
@@ -64,7 +58,7 @@ public class ViewReferralsPopup implements Initializable {
                     WHERE  appointments.patient = ?
                      """;
             ObservableList<String> oblist = FXCollections.observableArrayList();
-            PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, clickedPatientId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -86,7 +80,7 @@ public class ViewReferralsPopup implements Initializable {
                         WHERE appointments.date_time = ? AND patient = ?
                          """;
                 ObservableList<Integer> oblist = FXCollections.observableArrayList();
-                PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+                PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
                 preparedStatement.setString(1, appointmentsComboBox.getValue());
                 preparedStatement.setInt(2, clickedPatientId);
                 ResultSet resultSet = preparedStatement.executeQuery();
@@ -110,7 +104,7 @@ public class ViewReferralsPopup implements Initializable {
                         FROM orders
                         WHERE orders.order_id = ?
                         """;
-                PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+                PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
                 preparedStatement.setInt(1, ordersComboBox.getValue());
                 ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -174,15 +168,15 @@ public class ViewReferralsPopup implements Initializable {
         submitButton.setDisable(true);
     }
 
-    private void updateTextAreas() throws SQLException {
-        Driver driver = new Driver();
+    private void updateTextAreaChanges() throws SQLException {
+        
         PreparedStatement preparedStatement;
         final String sql = """
                 UPDATE orders
                 SET notes = ?, report = ?
                 WHERE order_id = ?;
                 """;
-        preparedStatement = driver.connection.prepareStatement(sql);
+        preparedStatement = Driver.getConnection().prepareStatement(sql);
         preparedStatement.setString(1, notesTextArea.getText());
         preparedStatement.setString(2, reportTextArea.getText());
         preparedStatement.setInt(3, ordersComboBox.getValue());
@@ -193,18 +187,16 @@ public class ViewReferralsPopup implements Initializable {
     @FXML
     private void returnToPage() {
         try {
-            PopupManager.removePopup("MENU");
-        } catch (Exception ignore) {
-        }
+            PopupManager.removePopup();
+        } catch (Exception ignore) {}
     }
 
     @FXML
     private void submitChanges() {
         try {
-            updateTextAreas();
-            PopupManager.removePopup("MENU");
-        } catch (Exception ignore) {
-        }
+            updateTextAreaChanges();
+            PopupManager.removePopup();
+        } catch (Exception ignore) {}
     }
 
     @FXML

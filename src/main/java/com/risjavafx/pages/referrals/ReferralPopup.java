@@ -2,8 +2,6 @@ package com.risjavafx.pages.referrals;
 
 import com.risjavafx.pages.LoadingService;
 import com.risjavafx.popups.models.PopupAlert;
-import com.risjavafx.popups.models.Notification;
-import com.risjavafx.pages.PageManager;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
@@ -12,7 +10,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -23,8 +20,6 @@ import java.util.ResourceBundle;
 
 public class ReferralPopup implements Initializable {
     public VBox popupContainer;
-    public static VBox usablePopupContainer;
-
     public Label patientIDLabel;
     public TextField firstNameTextField;
     public TextField lastNameTextField;
@@ -35,25 +30,20 @@ public class ReferralPopup implements Initializable {
     public Button cancelButton;
     public Button submitButton;
 
-    Driver driver = new Driver();
     Miscellaneous misc = new Miscellaneous();
-
-    public ReferralPopup() throws SQLException {
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         resizeElements();
         setPatientIDLabel();
-        Popups.REFERRALS.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
-            PageManager.getRoot().setDisable(!aBoolean);
+        System.out.println("Boob");
 
-            if (Popups.APPOINTMENT.getPopup().isShowing()) {
+        Popups.REFERRALS.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (aBoolean) {
                 patientIDLabel.setText(String.valueOf(setPatientIDLabel()));
                 refreshElements();
             }
         });
-        usablePopupContainer = popupContainer;
     }
 
     public void refreshElements() {
@@ -71,7 +61,7 @@ public class ReferralPopup implements Initializable {
                     select MAX(patient_id)
                     from patients;
                     """;
-            ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+            ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
             if (resultSet.next()) {
                 return (resultSet.getInt("MAX(patient_id)") + 1);
             }
@@ -87,7 +77,7 @@ public class ReferralPopup implements Initializable {
                 insert into patients
                 values (?, ?, ?, ?, ?, ?, ?);
                 """;
-        PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+        PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
         preparedStatement.setInt(1, Integer.parseInt(patientIDLabel.getText()));
         preparedStatement.setString(2, firstNameTextField.getText());
         preparedStatement.setString(3, lastNameTextField.getText());
@@ -96,22 +86,17 @@ public class ReferralPopup implements Initializable {
         preparedStatement.setString(6, raceTextField.getText());
         preparedStatement.setString(7, ethnicityTextField.getText());
         preparedStatement.execute();
-        String notiHeader = "Submission Complete";
-        String notiText = "You have successfully changed your information";
-        LoadingService.GlobalResetDefault globalReset = new LoadingService.GlobalResetDefault(notiHeader, notiText);
-        globalReset.start();
     }
 
 
     // Returns false if any input field is invalid
     public boolean validInput() {
-        return
-                !firstNameTextField.getText().isBlank() &&
-                !birthDateTextField.getText().isBlank() &&
-                !lastNameTextField.getText().isBlank() &&
-                !sexTextField.getText().isBlank() &&
-                !raceTextField.getText().isBlank() &&
-                !ethnicityTextField.getText().isBlank();
+        return !firstNameTextField.getText().isBlank() &&
+               !birthDateTextField.getText().isBlank() &&
+               !lastNameTextField.getText().isBlank() &&
+               !sexTextField.getText().isBlank() &&
+               !raceTextField.getText().isBlank() &&
+               !ethnicityTextField.getText().isBlank();
     }
 
     public void resizeElements() {
@@ -135,15 +120,17 @@ public class ReferralPopup implements Initializable {
         submitButton.setStyle("-fx-font-size: " + fontSize);
     }
 
-    //Button Onclicks
+    //Button OnClicks
     // Onclick for submit button
     public void submitButtonOnclick() throws SQLException {
         if (validInput()) {
             insertPatientQuery();
             Referrals.queryData(Referrals.getLastRowStringQuery());
-            PopupManager.removePopup("MENU");
-            Notification.createNotification("Submission Complete", "You have successfully created a new appointment");
-
+            PopupManager.removePopup();
+            String notiHeader = "Submission Complete";
+            String notiText = "You have successfully changed your information";
+            LoadingService.DefaultReset defaultReset = new LoadingService.DefaultReset(notiHeader, notiText);
+            defaultReset.start();
         } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);
             new PopupAlert() {{
@@ -151,14 +138,13 @@ public class ReferralPopup implements Initializable {
                 setContentLabel("Please make sure you filled out all fields");
                 setExitButtonLabel("Retry");
             }};
-
         }
     }
 
     // Onclick for cancel button
     public void cancelButtonOnclick() {
         try {
-            PopupManager.removePopup("MENU");
+            PopupManager.removePopup();
         } catch (Exception ignore) {
         }
     }

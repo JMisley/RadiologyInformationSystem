@@ -1,6 +1,7 @@
 package com.risjavafx.pages.home;
 
 import com.risjavafx.Miscellaneous;
+import com.risjavafx.UserStates;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.components.NavigationBar;
 import com.risjavafx.pages.PageManager;
@@ -15,6 +16,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class Home implements Initializable {
@@ -25,26 +28,27 @@ public class Home implements Initializable {
     public ScrollPane scrollPane;
     public VBox tableViewList;
 
+    ArrayList<StackPane> stackPanes = new ArrayList<>();
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Pages.setPage(Pages.HOME);
         TitleBar.createTitleBar(mainContainer, titleBar);
         NavigationBar.createNavBar(topContent);
 
-        StackPane[] stackPanes = {
-                new StackPane(TableManager.getAdminTable()),
-                new StackPane(TableManager.getAppointmentsTable()),
-                new StackPane(TableManager.getOrdersTable())};
+        createStackPanesArray();
         createScrollView(tableViewList, stackPanes);
 
         PageManager.getScene().rootProperty().addListener(observable -> {
             if (Pages.getPage() == Pages.HOME) {
+                createStackPanesArray();
+                createScrollView(tableViewList, stackPanes);
                 refreshTables();
             }
         });
     }
 
-    private void createScrollView(VBox tableViewList, StackPane[] stackPanes) {
+    private void createScrollView(VBox tableViewList, ArrayList<StackPane> stackPanes) {
         for (StackPane stackPane : stackPanes) {
             addToScrollView(stackPane);
             resizeElements();
@@ -62,11 +66,26 @@ public class Home implements Initializable {
         stackPane.setId("tableContainer");
     }
 
+    private void createStackPanesArray() {
+        stackPanes.clear();
+        StackPane adminPane = new StackPane(TableManager.getAdminTable());
+        StackPane referralsPane = new StackPane(TableManager.getReferralsTable());
+        StackPane appointmentsPane = new StackPane(TableManager.getAppointmentsTable());
+        StackPane ordersPane = new StackPane(TableManager.getOrdersTable());
+
+        switch (UserStates.getUserState()) {
+            case ADMIN -> stackPanes.addAll(Arrays.asList(adminPane, referralsPane, appointmentsPane, ordersPane));
+            case REFERRAL_MD, RADIOLOGIST -> stackPanes.addAll(Arrays.asList(referralsPane, appointmentsPane, ordersPane));
+            case RECEPTIONIST -> stackPanes.addAll(Arrays.asList(referralsPane, appointmentsPane));
+            case TECHNICIAN -> stackPanes.addAll(Arrays.asList(appointmentsPane, ordersPane));
+        }
+    }
+
     private void refreshTables() {
         tableViewList.getChildren().clear();
-        addToScrollView(new StackPane(TableManager.getAdminTable()));
-        addToScrollView(new StackPane(TableManager.getAppointmentsTable()));
-        addToScrollView(new StackPane(TableManager.getOrdersTable()));
+        createStackPanesArray();
+        for (StackPane stackPane : stackPanes)
+            addToScrollView(stackPane);
     }
 
     private void resizeElements() {

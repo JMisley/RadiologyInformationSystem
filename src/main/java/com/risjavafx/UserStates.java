@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public enum UserStates {
-    USER,
     ADMIN,
     REFERRAL_MD,
     RECEPTIONIST,
@@ -16,14 +15,14 @@ public enum UserStates {
 
     public static void setUserState() {
         try {
-            Driver driver = new Driver();
+            
             PreparedStatement preparedStatement;
             final String sql = """
                         SELECT roles.name
                         FROM roles, users_roles
                         WHERE users_roles.user_id = ? AND roles.role_id = users_roles.role_id
                     """;
-            preparedStatement = driver.connection.prepareStatement(sql);
+            preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, UserStates.userId);
             ResultSet resultSet = preparedStatement.executeQuery();
 

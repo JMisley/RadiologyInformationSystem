@@ -8,6 +8,7 @@ import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
+import com.risjavafx.pages.TableManager;
 import com.risjavafx.pages.referrals.billing.BillingReferralsPopup;
 import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
@@ -87,6 +88,7 @@ public class Referrals implements Initializable {
         PageManager.getScene().rootProperty().addListener(observable -> {
             if (Pages.getPage() == Pages.REFERRALS) {
                 createTableSearchBar();
+                refreshTable();
             }
         });
     }
@@ -126,15 +128,22 @@ public class Referrals implements Initializable {
             queryData(getAllDataStringQuery());
             infoTable.tableView.setItems(observableList);
             infoTable.tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+            TableManager.setReferralsTable(infoTable.tableView);
         } catch (
                 Exception exception) {
             exception.printStackTrace();
         }
     }
 
+    private void refreshTable() {
+        if (!centerContent.getChildren().contains(TableManager.getReferralsTable())) {
+            centerContent.getChildren().add(TableManager.getReferralsTable());
+        }
+    }
+
     public static void queryData(String sql) throws SQLException {
-        Driver driver = new Driver();
-        ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+
+        ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
 
         while (resultSet.next()) {
             observableList.add(new ReferralData(
@@ -167,14 +176,14 @@ public class Referrals implements Initializable {
 
     @SuppressWarnings("SqlWithoutWhere")
     public void deleteSelectedItemsQuery(String table) throws SQLException {
-        Driver driver = new Driver();
+
         ObservableList<ReferralData> selectedItems = infoTable.tableView.getSelectionModel().getSelectedItems();
         for (ReferralData selectedItem : selectedItems) {
             String sql = """
                     DELETE FROM %$
                     WHERE patient_id = ?
                     """.replace("%$", table);
-            PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getPatientIdData());
             preparedStatement.execute();
         }
@@ -192,21 +201,17 @@ public class Referrals implements Initializable {
 
     public void setComboBoxItems() {
         ObservableList<String> oblist = FXCollections.observableArrayList(
-                "All",
                 "Patient ID",
                 "Date of birth",
                 "Last name",
-                "First name",
-                "Sex",
-                "Race",
-                "Ethnicity"
+                "First name"
         );
         tableSearchBar.getComboBox().setItems(oblist);
     }
 
     public boolean getComboBoxItem(String string) {
         String selectedComboValue = tableSearchBar.getComboBox().getValue();
-        return string.equals(selectedComboValue) || "All".equals(selectedComboValue);
+        return string.equals(selectedComboValue);
     }
 
     // Listener for Admin TextField and ComboBox
@@ -255,8 +260,8 @@ public class Referrals implements Initializable {
         if (referralData.getPatientIdData() == searchKeyInt && getComboBoxItem("Patient ID")) {
             return true;
         } else if (referralData.getDateOfBirthData().toLowerCase().contains(searchKeyword) ||
-                referralData.getDateOfBirthData().toLowerCase().contains(String.valueOf(searchKeyInt)) &&
-                        getComboBoxItem("Date of birth")) {
+                   referralData.getDateOfBirthData().toLowerCase().contains(String.valueOf(searchKeyInt)) &&
+                   getComboBoxItem("Date of birth")) {
             return true;
         } else if (referralData.getLastNameData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Last name")) {
             return true;
@@ -270,9 +275,8 @@ public class Referrals implements Initializable {
             if (t1 != null) {
                 tableSearchBar.toggleButtons(false);
                 tableSearchBar.getDeleteButton().setOnAction(actionEvent ->
-                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> PopupManager.removePopup("ALERT")));
+                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> PopupManager.removePopup()));
             } else {
-
                 tableSearchBar.toggleButtons(true);
             }
             if (infoTable.tableView.getSelectionModel().getSelectedItem() != null) {
@@ -290,7 +294,7 @@ public class Referrals implements Initializable {
             row.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
                 final int index = row.getIndex();
                 if (index >= 0 && index < infoTable.tableView.getItems().size() &&
-                        infoTable.tableView.getSelectionModel().isSelected(index)) {
+                    infoTable.tableView.getSelectionModel().isSelected(index)) {
                     infoTable.tableView.getSelectionModel().clearSelection();
 
                     tableSearchBar.toggleButtons(true);
@@ -320,7 +324,7 @@ public class Referrals implements Initializable {
             e.printStackTrace();
         }
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
-        PopupManager.removePopup("ALERT");
+        PopupManager.removePopup();
     }
 
     public void tableSearchBarAddButtonListener() {

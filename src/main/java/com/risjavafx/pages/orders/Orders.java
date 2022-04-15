@@ -6,10 +6,10 @@ import com.risjavafx.components.InfoTable;
 import com.risjavafx.components.NavigationBar;
 import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
-import com.risjavafx.pages.LoadingService;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.TableManager;
+import com.risjavafx.popups.models.Notification;
 import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
@@ -86,7 +86,6 @@ public class Orders implements Initializable {
             if (Pages.getPage() == Pages.ORDERS) {
                 createTableSearchBar();
                 refreshTable();
-
             }
         });
 
@@ -139,8 +138,8 @@ public class Orders implements Initializable {
     }
 
     public static void queryData(String sql) throws SQLException {
-        Driver driver = new Driver();
-        ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+
+        ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
 
         while (resultSet.next()) {
             observableList.add(new OrdersData(
@@ -172,14 +171,14 @@ public class Orders implements Initializable {
 
     @SuppressWarnings("SqlWithoutWhere")
     public void deleteSelectedItemsQuery(String table) throws SQLException {
-        Driver driver = new Driver();
+
         ObservableList<OrdersData> selectedItems = infoTable.tableView.getSelectionModel().getSelectedItems();
         for (OrdersData selectedItem : selectedItems) {
             String sql = """
                     DELETE FROM %$
                     WHERE order_id = ?
                     """.replace("%$", table);
-            PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getOrderIdData());
             preparedStatement.execute();
         }
@@ -196,14 +195,9 @@ public class Orders implements Initializable {
 
     public void setComboBoxItems() {
         ObservableList<String> oblist = FXCollections.observableArrayList(
-                "All",
-                "Order ID ",
                 "Patient",
                 "Referral MD",
-                "Modality",
-                "Notes",
-                "Status",
-                "Report"
+                "Modality"
         );
         tableSearchBar.getComboBox().setItems(oblist);
     }
@@ -250,24 +244,12 @@ public class Orders implements Initializable {
         }
 
         String searchKeyword = newValue.toLowerCase();
-        int searchKeyInt = -1;
-        try {
-            searchKeyInt = Integer.parseInt(newValue);
-        } catch (Exception ignored) {
-        }
 
-        if (ordersData.getOrderIdData() == searchKeyInt && getComboBoxItem("Order ID")) {
-            return true;
-        } else if (ordersData.getPatientData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Patient")) {
+        if (ordersData.getPatientData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Patient")) {
             return true;
         } else if (ordersData.getReferralMdData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Referral MD")) {
             return true;
-        } else if (ordersData.getModalityData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Modality")) {
-            return true;
-        } else if (ordersData.getNotesData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Notes")) {
-            return true;
-        }
-        else return ordersData.getStatusData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Status");
+        } else return ordersData.getModalityData().toLowerCase().contains(searchKeyword) && getComboBoxItem("Modality");
     }
 
     // Listener for Orders TableView
@@ -276,7 +258,7 @@ public class Orders implements Initializable {
             if (t1 != null) {
                 tableSearchBar.toggleButtons(false);
                 tableSearchBar.getDeleteButton().setOnAction(actionEvent ->
-                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> PopupManager.removePopup("ALERT")));
+                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> PopupManager.removePopup()));
             } else {
                 tableSearchBar.toggleButtons(true);
             }
@@ -315,7 +297,7 @@ public class Orders implements Initializable {
 
     public void confirmDeletion() {
         try {
-           //deleteSelectedItemsQuery("order_id");
+            //deleteSelectedItemsQuery("order_id");
             deleteSelectedItemsQuery("orders");
 
         } catch (SQLException e) {
@@ -323,7 +305,7 @@ public class Orders implements Initializable {
         }
 
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
-        PopupManager.removePopup("ALERT");
+        PopupManager.removePopup();
     }
 
     public void tableSearchBarAddButtonListener() {
@@ -333,57 +315,57 @@ public class Orders implements Initializable {
     public void tableSearchBarAddImageButtonListener() {
         FileChooser fileChooser = new FileChooser();
         tableSearchBar.getAddImageButton().setOnAction(e -> {
-             file = fileChooser.showOpenDialog(new Stage());
-             if (file != null)
-                 createConfirmationPopup(confirm -> uploadImageToDatabase(), cancel -> PopupManager.removePopup("ALERT"));
+            file = fileChooser.showOpenDialog(new Stage());
+            if (file != null)
+                createConfirmationPopup(confirm -> uploadImageToDatabase(), cancel -> PopupManager.removePopup());
         });
     }
 
     private void createConfirmationPopup(EventHandler<ActionEvent> confirm, EventHandler<ActionEvent> cancel) {
         PopupManager.createPopup(Popups.CONFIRMATION);
-            new PopupConfirmation() {{
-                setConfirmationImage(new Image(String.valueOf(file)));
-                getHeaderLabel().setManaged(false);
-                getConfirmationImageView().setFitHeight(150);
-                getConfirmationImageView().setFitWidth(200);
-                setConfirmButtonLabel("Yes");
-                setExitButtonLabel("No");
-                setHeaderLabel("");
-                setContentLabel("Is this the image you wish to add?");
-                getConfirmationButton().setOnAction(confirm);
-                getCancelButton().setOnAction(cancel);
-            }};
-        }
+        new PopupConfirmation() {{
+            setConfirmationImage(new Image(String.valueOf(file)));
+            getHeaderLabel().setManaged(false);
+            getConfirmationImageView().setFitHeight(150);
+            getConfirmationImageView().setFitWidth(200);
+            setConfirmButtonLabel("Yes");
+            setExitButtonLabel("No");
+            setHeaderLabel("");
+            setContentLabel("Is this the image you wish to add?");
+            getConfirmationButton().setOnAction(confirm);
+            getCancelButton().setOnAction(cancel);
+        }};
+    }
 
     private void uploadImageToDatabase() {
         try {
-            Driver driver = new Driver();
+
 
             String query;
             if (checkForImages()) {
                 query = """
-                UPDATE imaging_info
-                SET Image = ?
-                WHERE order_id = ?;
-                """;
+                        UPDATE imaging_info
+                        SET Image = ?
+                        WHERE order_id = ?;
+                        """;
             } else {
                 query = """
-                INSERT INTO imaging_info (Image, order_id)
-                VALUES (?,?)                """;
+                        INSERT INTO imaging_info (Image, order_id)
+                        VALUES (?, ?)
+                        """;
             }
 
-            PreparedStatement preparedStatement = driver.connection.prepareStatement(query);
+            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(query);
             FileInputStream fileInputStream = new FileInputStream(file);
-            preparedStatement.setBinaryStream(1, fileInputStream, (int)file.length());
+            preparedStatement.setBinaryStream(1, fileInputStream, (int) file.length());
             preparedStatement.setInt(2, infoTable.tableView.getSelectionModel().getSelectedItem().getOrderIdData());
             preparedStatement.execute();
             preparedStatement.close();
-            PopupManager.removePopup("ALERT");
+            PopupManager.removePopup();
 
             String notiHeader = "Submission Complete";
-            String notBody = "You have successfully added an image";
-            LoadingService.GlobalResetDefault globalResetDefault = new LoadingService.GlobalResetDefault(notiHeader, notBody);
-            globalResetDefault.start();
+            String notiBody = "You have successfully added an image";
+            Notification.createNotification(notiHeader, notiBody);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -392,14 +374,14 @@ public class Orders implements Initializable {
     // Returns true if order_id already has an image
     private boolean checkForImages() {
         try {
-            Driver driver = new Driver();
-            String query = """
-                SELECT order_id
-                FROM imaging_info
-                WHERE order_id = ?
-                """;
 
-            PreparedStatement preparedStatement = driver.connection.prepareStatement(query);
+            String query = """
+                    SELECT order_id
+                    FROM imaging_info
+                    WHERE order_id = ?
+                    """;
+
+            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(query);
             preparedStatement.setInt(1, infoTable.tableView.getSelectionModel().getSelectedItem().getOrderIdData());
             ResultSet resultSet = preparedStatement.executeQuery();
 

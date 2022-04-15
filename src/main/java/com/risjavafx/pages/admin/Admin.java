@@ -129,8 +129,8 @@ public class Admin implements Initializable {
     }
 
     public static void queryData(String sql) throws SQLException {
-        Driver driver = new Driver();
-        ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+        
+        ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
 
         while (resultSet.next()) {
             observableList.add(new AdminData(
@@ -165,14 +165,14 @@ public class Admin implements Initializable {
 
     @SuppressWarnings("SqlWithoutWhere")
     public void deleteSelectedItemsQuery(String table) throws SQLException {
-        Driver driver = new Driver();
+        
         ObservableList<AdminData> selectedItems = infoTable.tableView.getSelectionModel().getSelectedItems();
         for (AdminData selectedItem : selectedItems) {
             String sql = """
                     DELETE FROM %$
                     WHERE user_id = ?
                     """.replace("%$", table);
-            PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, selectedItem.getUserIdData());
             preparedStatement.execute();
         }
@@ -243,8 +243,7 @@ public class Admin implements Initializable {
         int searchKeyInt = -1;
         try {
             searchKeyInt = Integer.parseInt(newValue);
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
 
         if (adminData.getUserIdData() == searchKeyInt && getComboBoxItem("User ID")) {
             return true;
@@ -264,7 +263,7 @@ public class Admin implements Initializable {
             if (t1 != null) {
                 tableSearchBar.toggleButtons(false);
                 tableSearchBar.getDeleteButton().setOnAction(actionEvent ->
-                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> PopupManager.removePopup("ALERT")));
+                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> PopupManager.removePopup()));
             } else {
                 tableSearchBar.toggleButtons(true);
             }
@@ -310,7 +309,7 @@ public class Admin implements Initializable {
             e.printStackTrace();
         }
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
-        PopupManager.removePopup("ALERT");
+        PopupManager.removePopup();
     }
 
     public void tableSearchBarAddButtonListener() {

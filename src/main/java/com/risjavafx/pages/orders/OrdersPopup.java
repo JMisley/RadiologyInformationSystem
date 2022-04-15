@@ -2,7 +2,7 @@ package com.risjavafx.pages.orders;
 
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
-import com.risjavafx.pages.LoadingService;
+import com.risjavafx.PromptButtonCell;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.popups.models.Notification;
 import com.risjavafx.popups.PopupManager;
@@ -12,8 +12,6 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import com.risjavafx.popups.models.PopupAlert;
@@ -25,45 +23,31 @@ import javafx.scene.layout.VBox;
 
 public class OrdersPopup implements Initializable {
     public VBox popupContainer;
-    public static VBox usablePopupContainer;
     public Label orderIDLabel;
-    public ComboBox<String> patientNameComboBox;
     public ComboBox<String> referralMdComboBox;
     public ComboBox<String> modalityComboBox;
-    public ComboBox<String> appointmentComboBox;
     public ComboBox<String> patientComboBox;
     public TextArea notesTextArea;
-    public ComboBox<String> statusComboBox;
-    public TextArea reportTextArea;
     public Button cancelButton;
     public Button submitButton;
-    Driver driver = new Driver();
-    Miscellaneous misc = new Miscellaneous();
 
-    public OrdersPopup() throws SQLException {
-    }
+    Miscellaneous misc = new Miscellaneous();
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         resizeElements();
         setOrderIDLabel();
         populateComboBoxReferralMd();
-       // populateComboBoxAppointment();
         populateComboBoxPatient();
         populateComboBoxModality();
-        //setAppointmentComboBoxListener();
 
         Popups.ORDERS.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
-            PageManager.getRoot().setDisable(!aBoolean);
-
             if (Popups.ORDERS.getPopup().isShowing()) {
                 orderIDLabel.setText(String.valueOf(setOrderIDLabel()));
-                refreshTextFields();
-
+                refreshElements();
 
 
             }
         });
-        usablePopupContainer = this.popupContainer;
     }
 
     public int setOrderIDLabel() {
@@ -72,7 +56,7 @@ public class OrdersPopup implements Initializable {
                     select MAX(order_id)
                     from orders;
                     """;
-            ResultSet resultSet = this.driver.connection.createStatement().executeQuery(sql);
+            ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
 
             if (resultSet.next()) {
                 return resultSet.getInt("MAX(order_id)") + 1;
@@ -89,7 +73,7 @@ public class OrdersPopup implements Initializable {
                     select name
                     from modalities;
                     """;
-            ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+            ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
             ObservableList<String> oblist = FXCollections.observableArrayList();
             while (resultSet.next()) {
                 oblist.add(resultSet.getString("name"));
@@ -99,6 +83,7 @@ public class OrdersPopup implements Initializable {
             exception.printStackTrace();
         }
     }
+
     public void populateComboBoxReferralMd() {
         try {
             String sql = """               
@@ -106,7 +91,7 @@ public class OrdersPopup implements Initializable {
                     FROM users, users_roles
                     where users_roles.role_id = 3 AND users_roles.user_id = users.user_id;
                     """;
-            ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+            ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
             ObservableList<String> oblist = FXCollections.observableArrayList();
             while (resultSet.next()) {
                 oblist.add(resultSet.getString("full_name"));
@@ -116,13 +101,14 @@ public class OrdersPopup implements Initializable {
             exception.printStackTrace();
         }
     }
+
     public void populateComboBoxPatient() {
         try {
             String sql = """               
                     SELECT first_name, last_name
                     FROM patients
                     """;
-            ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
+            ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
             ObservableList<String> oblist = FXCollections.observableArrayList();
             while (resultSet.next()) {
                 oblist.add(resultSet.getString("first_name") + " " + resultSet.getString("last_name"));
@@ -133,107 +119,26 @@ public class OrdersPopup implements Initializable {
         }
     }
 
-    public void populateComboBoxAppointment() {
-        try {
-            String sql = """
-                    SELECT last_name, date_time
-                                        FROM db_ris.patients, db_ris.appointments
-                                        where patients.patient_id = appointments.patient;
-                    """;
-
-            ResultSet resultSet = driver.connection.createStatement().executeQuery(sql);
-            ObservableList<String> oblist = FXCollections.observableArrayList();
-            while (resultSet.next()) {
-
-                oblist.add(resultSet.getString("last_name") + ": " + resultSet.getString("date_time"));
-            }
-            appointmentComboBox.setItems(oblist);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-    }
-
-
     public void insertOrderQuery() throws SQLException {
         String sql = """
                 insert into orders
-                values (?, ?, ?, ?, ?, ?, ?);
-                
+                values (?, ?, ?, ?, ?, ?);
+                                
                 """;
-        PreparedStatement preparedStatement = this.driver.connection.prepareStatement(sql);
+        PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
         preparedStatement.setInt(1, Integer.parseInt(this.orderIDLabel.getText()));
         preparedStatement.setString(2, patientComboBox.getValue());
         preparedStatement.setString(3, referralMdComboBox.getValue());
         preparedStatement.setString(4, modalityComboBox.getValue());
         preparedStatement.setString(5, this.notesTextArea.getText());
         preparedStatement.setString(6, null);
-        preparedStatement.setString(7, this.reportTextArea.getText());
         preparedStatement.execute();
-    /*
-        String sqlAfter = """
-                 update orders 
-                 where orders.order_id = ? 
-                 set
-                 """
-        PreparedStatement insertAfter = this.driver.connection.prepareStatement((sqlAfter));
-    */
     }
-
-    public String[] getDataToInsert() throws SQLException {
-
-
-
-            String sql = """
-                        SELECT patients.first_name, patients.last_name, modalities.name
-                    FROM appointments,
-                         patients,
-                         modalities
-                    WHERE appointments.date_time =  ?
-                      AND appointments.patient = patients.patient_id
-                      AND appointments.modality = modalities.modality_id;
-                    """;
-            PreparedStatement preparedStatement = this.driver.connection.prepareStatement(sql);
-            preparedStatement.setString(1, returnAppointmentComboBoxDate());
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-
-            if (resultSet.next()) {
-                return new String[]{resultSet.getString("first_name") + " " + resultSet.getString("last_name"), resultSet.getString("name")};
-
-            }
-
-            return null;
-    }
-
-    public int getDataToInsertAppointmentId() throws SQLException {
-
-
-
-        String sql = """
-                        SELECT appointments.appointment_id
-                    FROM appointments
-                       
-                    WHERE appointments.date_time =  ?
-                      
-                    """;
-        PreparedStatement preparedStatement = this.driver.connection.prepareStatement(sql);
-        preparedStatement.setString(1, returnAppointmentComboBoxDate());
-        ResultSet resultSet = preparedStatement.executeQuery();
-
-
-        if (resultSet.next()) {
-            return resultSet.getInt("appointment_id");
-
-        }
-
-        return -1;
-    }
-
-
-
 
     public boolean validInput() {
-        return  this.referralMdComboBox.getValue() != null && !this.notesTextArea.getText().isBlank() &&  !this.reportTextArea.getText().isBlank();
+        return referralMdComboBox.getValue() != null &&
+               modalityComboBox.getValue() != null &&
+               patientComboBox.getValue() != null;
     }
 
     public void resizeElements() {
@@ -249,21 +154,24 @@ public class OrdersPopup implements Initializable {
 
         this.cancelButton.setStyle("-fx-font-size: " + fontSize);
         this.submitButton.setStyle("-fx-font-size: " + fontSize);
+
+        referralMdComboBox.setButtonCell(new PromptButtonCell<>("Referral MD"));
+        modalityComboBox.setButtonCell(new PromptButtonCell<>("Modality"));
+        patientComboBox.setButtonCell(new PromptButtonCell<>("Patient"));
     }
 
-    private void refreshTextFields() {
+    private void refreshElements() {
         referralMdComboBox.getSelectionModel().clearSelection();
-        // appointmentComboBox.getSelectionModel().clearSelection();
-        reportTextArea.clear();
+        modalityComboBox.getSelectionModel().clearSelection();
+        patientComboBox.getSelectionModel().clearSelection();
         notesTextArea.clear();
     }
 
     public void submitButtonOnclick() throws SQLException {
         if (this.validInput()) {
             this.insertOrderQuery();
-            //this.insertOrderIdQuery();
             Orders.queryData(Orders.getLastRowStringQuery());
-            PopupManager.removePopup("MENU");
+            PopupManager.removePopup();
             Notification.createNotification("Submission Complete", "You have successfully added a new order");
         } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);
@@ -273,35 +181,12 @@ public class OrdersPopup implements Initializable {
                 setExitButtonLabel("Retry");
             }};
         }
-
     }
 
     public void cancelButtonOnclick() {
         try {
-            PopupManager.removePopup("MENU");
+            PopupManager.removePopup();
         } catch (Exception ignored) {
         }
-    }
-    public String returnAppointmentComboBoxDate(){
-
-        String str = appointmentComboBox.getValue();
-        String[] arrOfStr = str.split(": ", 2);
-
-
-        return arrOfStr[1];
-    }
-    public void setAppointmentComboBoxListener() {
-        appointmentComboBox.valueProperty().addListener(observable -> {
-            /*
-            String Date = appointmentComboBox.getValue();
-            ArrayList<String> info = new ArrayList<String>();
-            info.add(Arrays.toString(Date.split(": ")));
-            System.out.println(info);
-            */
-            String str = appointmentComboBox.getValue();
-            String[] arrOfStr = str.split(": ", 2);
-
-            System.out.println(arrOfStr[1]);
-        });
     }
 }

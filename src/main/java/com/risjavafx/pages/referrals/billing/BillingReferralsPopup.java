@@ -36,7 +36,6 @@ public class BillingReferralsPopup implements Initializable {
         populateComboBox();
 
         Popups.BILLING.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
-            PageManager.getRoot().setDisable(!aBoolean);
             refreshElements();
             totalCost = queryTotalCost();
             insuranceComboBox.valueProperty().addListener(observable -> calculatePatientBill());
@@ -46,13 +45,13 @@ public class BillingReferralsPopup implements Initializable {
     private double queryTotalCost() {
         int totalCost = 0;
         try {
-            Driver driver = new Driver();
+            
             String sql = """
                     SELECT price
                     FROM modalities, appointments
                     WHERE appointments.patient = ? AND appointments.modality = modality_id
                     """;
-            PreparedStatement preparedStatement = driver.connection.prepareStatement(sql);
+            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, patientId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -132,6 +131,6 @@ public class BillingReferralsPopup implements Initializable {
 
     // Button OnClicks
     public void closePopup() {
-        PopupManager.removePopup("MENU");
+        PopupManager.removePopup();
     }
 }

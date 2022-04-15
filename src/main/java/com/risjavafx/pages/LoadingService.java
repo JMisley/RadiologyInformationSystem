@@ -1,12 +1,12 @@
 package com.risjavafx.pages;
 
 import com.risjavafx.UserStates;
-import com.risjavafx.components.Main;
 import com.risjavafx.popups.PopupManager;
+import com.risjavafx.popups.Popups;
 import com.risjavafx.popups.models.Notification;
+import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
-import javafx.scene.Cursor;
 
 public class LoadingService {
 
@@ -25,7 +25,7 @@ public class LoadingService {
                     PageManager.switchPage(Pages.PROGRESS);
                     UserStates.setUserState();
                     PageManager.loadPagesToCache();
-                    PopupManager.loadPopupsToCache();
+                    PopupManager.loadPopupsToCache(Popups.values());
                     return null;
                 }
             };
@@ -34,35 +34,34 @@ public class LoadingService {
         }
     }
 
-    // Reloads entire application without switching page (uses progress spinner as loading UI)
-    public static class GlobalResetDefault extends Service<Void> {
-        String notificationHeader, notificationText;
+    // Reloads entire application and stays on current page (uses Progress Spinner as loading UI)
+    public static class DefaultReset extends Service<Void> {
+        String notiHeader;
+        String notiText;
 
-        public GlobalResetDefault() {}
+        public DefaultReset() {}
 
-        public GlobalResetDefault(String notificationHeader, String notificationText) {
-            this.notificationHeader = notificationHeader;
-            this.notificationText = notificationText;
+        public DefaultReset(String notiHeader, String notiText) {
+            this.notiHeader = notiHeader;
+            this.notiText = notiText;
         }
 
         public Task<Void> createTask() {
             Task<Void> task = new Task<>() {
                 @Override
                 protected Void call() {
-                    Main.usableStage.getScene().setCursor(Cursor.WAIT);
-                    Main.usableStage.getScene().getRoot().setDisable(true);
+                    Platform.runLater(() -> PopupManager.createPopup(Popups.LOADING));
                     PageManager.loadPagesToCache();
-                    PopupManager.loadPopupsToCache();
+                    PopupManager.loadPopupsToCache(Popups.values());
                     return null;
                 }
             };
             task.setOnSucceeded(event -> {
-                Main.usableStage.getScene().getRoot().setDisable(false);
-                Main.usableStage.getScene().setCursor(Cursor.DEFAULT);
-                if (notificationHeader != null)
-                    Notification.createNotification(notificationHeader, notificationText);
+                if (notiHeader != null)
+                    Notification.createNotification(notiHeader, notiText);
+                PopupManager.removePopup();
             });
             return task;
-        }
     }
+}
 }
