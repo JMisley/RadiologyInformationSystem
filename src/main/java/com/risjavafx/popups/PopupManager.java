@@ -18,14 +18,16 @@ public class PopupManager {
     public static Popup popupMenu = new Popup();
     public static Popup largePopupMenu = new Popup();
     public static Popup popupAlert = new Popup();
-    public static Popup loadingPopup = new Popup();
     private static final ArrayList<Popups> currentPopups = new ArrayList<>();
     static Miscellaneous misc = new Miscellaneous();
 
     // Method to create a popup menu
     public static void createPopup(Popups popups) {
-        if (!popups.isCachable())
-            loadPopupsToCache(new Popups[] {popups});
+        if (!popups.isCachable()) {
+            loadPopupsToCache(new Popups[]{popups});
+        } else {
+            System.out.println("created");
+        }
         Parent popupRoot = cache.get(popups);
 
         popups.getPopup().getContent().add(popupRoot);
@@ -62,7 +64,6 @@ public class PopupManager {
                         Popups.setAlertPopupEnum(popup);
                     }
                 }
-
                 cache.put(popup, root);
             }
         } catch (Exception e) {
@@ -87,6 +88,16 @@ public class PopupManager {
                 }
             } catch (Exception ignore) {
             }
+        }
+    }
+
+    public static void removePopup(Popups popup) {
+        if (currentPopups.contains(popup)) {
+            PageManager.getRoot().setDisable(false);
+            popup.getPopup().getContent().clear();
+            popup.getPopup().hide();
+            currentPopups.remove(popup);
+            System.out.println("removed");
         }
     }
 }

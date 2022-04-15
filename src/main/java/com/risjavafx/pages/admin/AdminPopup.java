@@ -165,7 +165,7 @@ public class AdminPopup implements Initializable {
         passwordTextField.clear();
     }
 
-    //Button Onclicks
+    //Button OnClicks
     // Onclick for submit button
     public void submitButtonOnclick() {
         boolean exception = false;

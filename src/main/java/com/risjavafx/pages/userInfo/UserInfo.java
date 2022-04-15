@@ -129,7 +129,7 @@ public class UserInfo implements Initializable {
     private void reloadSystem() {
         String notiHeader = "Submission Complete";
         String notiText = "You have successfully changed your information";
-        LoadingService.DefaultReset defaultReset = new LoadingService.DefaultReset(notiHeader, notiText);
+        LoadingService.CustomReload defaultReset = new LoadingService.CustomReload(notiHeader, notiText);
         defaultReset.start();
     }
 

@@ -34,34 +34,46 @@ public class LoadingService {
         }
     }
 
-    // Reloads entire application and stays on current page (uses Progress Spinner as loading UI)
-    public static class DefaultReset extends Service<Void> {
+    // Use the Loadable interface to pass whatever methods you want to execute (uses Progress Spinner as loading UI)
+    public static class CustomReload extends Service<Void> {
+        Loadable loadable;
         String notiHeader;
         String notiText;
 
-        public DefaultReset() {}
+        public CustomReload(Loadable loadable) {
+            this.loadable = loadable;
+        }
 
-        public DefaultReset(String notiHeader, String notiText) {
+        public CustomReload(String notiHeader, String notiText) {
             this.notiHeader = notiHeader;
             this.notiText = notiText;
+        }
+
+        public CustomReload(Loadable loadable, String notiHeader, String notiText) {
+            this.notiHeader = notiHeader;
+            this.notiText = notiText;
+            this.loadable = loadable;
         }
 
         public Task<Void> createTask() {
             Task<Void> task = new Task<>() {
                 @Override
                 protected Void call() {
-                    Platform.runLater(() -> PopupManager.createPopup(Popups.LOADING));
-                    PageManager.loadPagesToCache();
-                    PopupManager.loadPopupsToCache(Popups.values());
+                    Platform.runLater(() -> {
+                        loadable.performAction();
+                        PopupManager.createPopup(Popups.LOADING);
+                    });
+                    loadable.loadMethods();
                     return null;
                 }
             };
             task.setOnSucceeded(event -> {
                 if (notiHeader != null)
                     Notification.createNotification(notiHeader, notiText);
-                PopupManager.removePopup();
+                PopupManager.removePopup(Popups.LOADING);
+                System.out.println("success");
             });
             return task;
+        }
     }
-}
 }

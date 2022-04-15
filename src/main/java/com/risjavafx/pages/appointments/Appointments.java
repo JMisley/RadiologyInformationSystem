@@ -7,10 +7,7 @@ import com.risjavafx.components.InfoTable;
 import com.risjavafx.components.NavigationBar;
 import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
-import com.risjavafx.pages.LoadingService;
-import com.risjavafx.pages.PageManager;
-import com.risjavafx.pages.Pages;
-import com.risjavafx.pages.TableManager;
+import com.risjavafx.pages.*;
 import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
@@ -35,7 +32,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class Appointments implements Initializable {
+public class Appointments implements Initializable, Loadable {
     public BorderPane mainContainer;
     public HBox topContent, titleBar, tableSearchBarContainer;
     public StackPane centerContent;
@@ -245,9 +242,16 @@ public class Appointments implements Initializable {
             preparedStatement.execute();
             String notiHeader = "Submission Complete";
             String notiText = "You have successfully changed your information";
-            LoadingService.DefaultReset defaultReset = new LoadingService.DefaultReset(notiHeader, notiText);
+
+            Loadable loadable = new Appointments();
+            LoadingService.CustomReload defaultReset = new LoadingService.CustomReload(loadable, notiHeader, notiText);
             defaultReset.start();
         }
+    }
+
+    public void loadMethods() {
+        PageManager.loadPagesToCache();
+        PopupManager.loadPopupsToCache(Popups.values());
     }
 
     public void setCellFactoryValues() {

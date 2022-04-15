@@ -127,7 +127,7 @@ public class ReferralPopup implements Initializable {
             PopupManager.removePopup();
             String notiHeader = "Submission Complete";
             String notiText = "You have successfully changed your information";
-            LoadingService.DefaultReset defaultReset = new LoadingService.DefaultReset(notiHeader, notiText);
+            LoadingService.CustomReload defaultReset = new LoadingService.CustomReload(notiHeader, notiText);
             defaultReset.start();
         } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);

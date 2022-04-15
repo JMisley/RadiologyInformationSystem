@@ -6,9 +6,7 @@ import com.risjavafx.Miscellaneous;
 import com.risjavafx.components.NavigationBar;
 import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
-import com.risjavafx.pages.PageManager;
-import com.risjavafx.pages.Pages;
-import com.risjavafx.pages.TableManager;
+import com.risjavafx.pages.*;
 import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
@@ -33,7 +31,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class Admin implements Initializable {
+public class Admin implements Initializable, Loadable {
 
     public BorderPane mainContainer;
     public HBox topContent, titleBar, tableSearchBarContainer;
@@ -313,6 +311,22 @@ public class Admin implements Initializable {
     }
 
     public void tableSearchBarAddButtonListener() {
-        tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.ADMIN));
+        Loadable loadable = new Admin();
+        LoadingService.CustomReload customReload = new LoadingService.CustomReload(loadable);
+        tableSearchBar.getAddButton().setOnAction(event -> customReload.start());
+    }
+
+    @Override
+    public void loadMethods() {
+        while (!Popups.ADMIN.getPopup().isShowing()) {
+            Popups.ADMIN.getPopup().isShowing();
+        }
+    }
+
+    @Override
+    public void performAction() {
+        System.out.println("start");
+        PopupManager.createPopup(Popups.ADMIN);
+        System.out.println("end");
     }
 }
