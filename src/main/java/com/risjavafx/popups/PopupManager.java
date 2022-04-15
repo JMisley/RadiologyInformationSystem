@@ -25,8 +25,6 @@ public class PopupManager {
     public static void createPopup(Popups popups) {
         if (!popups.isCachable()) {
             loadPopupsToCache(new Popups[]{popups});
-        } else {
-            System.out.println("created");
         }
         Parent popupRoot = cache.get(popups);
 
