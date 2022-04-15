@@ -258,7 +258,7 @@ public class Orders implements Initializable {
             if (t1 != null) {
                 tableSearchBar.toggleButtons(false);
                 tableSearchBar.getDeleteButton().setOnAction(actionEvent ->
-                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> PopupManager.removePopup("ALERT")));
+                        customConfirmationPopup(confirm -> confirmDeletion(), cancel -> PopupManager.removePopup()));
             } else {
                 tableSearchBar.toggleButtons(true);
             }
@@ -305,7 +305,7 @@ public class Orders implements Initializable {
         }
 
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
-        PopupManager.removePopup("ALERT");
+        PopupManager.removePopup();
     }
 
     public void tableSearchBarAddButtonListener() {
@@ -317,7 +317,7 @@ public class Orders implements Initializable {
         tableSearchBar.getAddImageButton().setOnAction(e -> {
             file = fileChooser.showOpenDialog(new Stage());
             if (file != null)
-                createConfirmationPopup(confirm -> uploadImageToDatabase(), cancel -> PopupManager.removePopup("ALERT"));
+                createConfirmationPopup(confirm -> uploadImageToDatabase(), cancel -> PopupManager.removePopup());
         });
     }
 
@@ -361,7 +361,7 @@ public class Orders implements Initializable {
             preparedStatement.setInt(2, infoTable.tableView.getSelectionModel().getSelectedItem().getOrderIdData());
             preparedStatement.execute();
             preparedStatement.close();
-            PopupManager.removePopup("ALERT");
+            PopupManager.removePopup();
 
             String notiHeader = "Submission Complete";
             String notiBody = "You have successfully added an image";

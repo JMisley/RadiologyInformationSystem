@@ -8,8 +8,6 @@ import com.risjavafx.pages.LoadingService;
 import com.risjavafx.pages.Pages;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -21,7 +19,6 @@ import java.sql.*;
 import java.util.ResourceBundle;
 
 public class Login implements Initializable {
-
     public BorderPane mainContainer;
     public Button loginButton;
     public Label errorMessage;

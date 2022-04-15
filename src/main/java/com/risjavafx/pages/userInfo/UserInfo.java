@@ -129,8 +129,8 @@ public class UserInfo implements Initializable {
     private void reloadSystem() {
         String notiHeader = "Submission Complete";
         String notiText = "You have successfully changed your information";
-        LoadingService.GlobalResetDefault globalReset = new LoadingService.GlobalResetDefault(notiHeader, notiText);
-        globalReset.start();
+        LoadingService.DefaultReset defaultReset = new LoadingService.DefaultReset(notiHeader, notiText);
+        defaultReset.start();
     }
 
     private void createTooltip(Control element) {

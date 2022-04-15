@@ -45,8 +45,6 @@ public class AdminPopup implements Initializable {
 
         // Overrides caching functionality
         Popups.ADMIN.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
-            PageManager.getRoot().setDisable(!aBoolean);
-
             if (Popups.ADMIN.getPopup().isShowing()) {
                 userIDLabel.setText(String.valueOf(getNextUserId()));
                 refreshElements();
@@ -177,12 +175,11 @@ public class AdminPopup implements Initializable {
                 insertUserQuery();
                 insertRoleIdQuery();
                 Admin.queryData(Admin.getLastRowStringQuery());
-                PopupManager.removePopup("MENU");
+                PopupManager.removePopup();
                 Notification.createNotification("Submission Complete", "You successfully added a new user");
             } catch (Exception e) {
                 exception = true;
             }
-
         }
         if (!validInput() || exception) {
             PopupManager.createPopup(Popups.ALERT);
@@ -197,7 +194,7 @@ public class AdminPopup implements Initializable {
     // Onclick for cancel button
     public void cancelButtonOnclick() {
         try {
-            PopupManager.removePopup("MENU");
+            PopupManager.removePopup();
         }
         catch (Exception ignore) {}
     }

@@ -2,6 +2,7 @@ package com.risjavafx.pages.orders;
 
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
+import com.risjavafx.PromptButtonCell;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.popups.models.Notification;
 import com.risjavafx.popups.PopupManager;
@@ -27,27 +28,22 @@ public class OrdersPopup implements Initializable {
     public ComboBox<String> modalityComboBox;
     public ComboBox<String> patientComboBox;
     public TextArea notesTextArea;
-    public TextArea reportTextArea;
     public Button cancelButton;
     public Button submitButton;
-    
+
     Miscellaneous misc = new Miscellaneous();
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
         resizeElements();
         setOrderIDLabel();
         populateComboBoxReferralMd();
-        // populateComboBoxAppointment();
         populateComboBoxPatient();
         populateComboBoxModality();
-        //setAppointmentComboBoxListener();
 
         Popups.ORDERS.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
-            PageManager.getRoot().setDisable(!aBoolean);
-
             if (Popups.ORDERS.getPopup().isShowing()) {
                 orderIDLabel.setText(String.valueOf(setOrderIDLabel()));
-                refreshTextFields();
+                refreshElements();
 
 
             }
@@ -126,7 +122,7 @@ public class OrdersPopup implements Initializable {
     public void insertOrderQuery() throws SQLException {
         String sql = """
                 insert into orders
-                values (?, ?, ?, ?, ?, ?, ?);
+                values (?, ?, ?, ?, ?, ?);
                                 
                 """;
         PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
@@ -136,16 +132,7 @@ public class OrdersPopup implements Initializable {
         preparedStatement.setString(4, modalityComboBox.getValue());
         preparedStatement.setString(5, this.notesTextArea.getText());
         preparedStatement.setString(6, null);
-        preparedStatement.setString(7, this.reportTextArea.getText());
         preparedStatement.execute();
-    /*
-        String sqlAfter = """
-                 update orders 
-                 where orders.order_id = ? 
-                 set
-                 """
-        PreparedStatement insertAfter = this.Driver.getConnection().prepareStatement((sqlAfter));
-    */
     }
 
     public boolean validInput() {
@@ -167,21 +154,24 @@ public class OrdersPopup implements Initializable {
 
         this.cancelButton.setStyle("-fx-font-size: " + fontSize);
         this.submitButton.setStyle("-fx-font-size: " + fontSize);
+
+        referralMdComboBox.setButtonCell(new PromptButtonCell<>("Referral MD"));
+        modalityComboBox.setButtonCell(new PromptButtonCell<>("Modality"));
+        patientComboBox.setButtonCell(new PromptButtonCell<>("Patient"));
     }
 
-    private void refreshTextFields() {
+    private void refreshElements() {
         referralMdComboBox.getSelectionModel().clearSelection();
-        // appointmentComboBox.getSelectionModel().clearSelection();
-        reportTextArea.clear();
+        modalityComboBox.getSelectionModel().clearSelection();
+        patientComboBox.getSelectionModel().clearSelection();
         notesTextArea.clear();
     }
 
     public void submitButtonOnclick() throws SQLException {
         if (this.validInput()) {
             this.insertOrderQuery();
-            //this.insertOrderIdQuery();
             Orders.queryData(Orders.getLastRowStringQuery());
-            PopupManager.removePopup("MENU");
+            PopupManager.removePopup();
             Notification.createNotification("Submission Complete", "You have successfully added a new order");
         } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);
@@ -195,7 +185,8 @@ public class OrdersPopup implements Initializable {
 
     public void cancelButtonOnclick() {
         try {
-            PopupManager.removePopup("MENU");
-        } catch (Exception ignored) {}
+            PopupManager.removePopup();
+        } catch (Exception ignored) {
+        }
     }
 }

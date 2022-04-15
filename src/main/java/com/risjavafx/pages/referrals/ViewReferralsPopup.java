@@ -4,7 +4,6 @@ import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
 import com.risjavafx.PromptButtonCell;
 import com.risjavafx.components.main.Main;
-import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.images.ImagesPage;
 import com.risjavafx.popups.PopupManager;
@@ -39,7 +38,6 @@ public class ViewReferralsPopup implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         resizeElements();
         Popups.VIEW_REFERRALS.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
-            PageManager.getRoot().setDisable(!aBoolean);
             refreshComboBoxes();
             refreshTextAndButtons();
             populateComboBoxAppointment();
@@ -170,7 +168,7 @@ public class ViewReferralsPopup implements Initializable {
         submitButton.setDisable(true);
     }
 
-    private void updateTextAreas() throws SQLException {
+    private void updateTextAreaChanges() throws SQLException {
         
         PreparedStatement preparedStatement;
         final String sql = """
@@ -189,18 +187,16 @@ public class ViewReferralsPopup implements Initializable {
     @FXML
     private void returnToPage() {
         try {
-            PopupManager.removePopup("MENU");
-        } catch (Exception ignore) {
-        }
+            PopupManager.removePopup();
+        } catch (Exception ignore) {}
     }
 
     @FXML
     private void submitChanges() {
         try {
-            updateTextAreas();
-            PopupManager.removePopup("MENU");
-        } catch (Exception ignore) {
-        }
+            updateTextAreaChanges();
+            PopupManager.removePopup();
+        } catch (Exception ignore) {}
     }
 
     @FXML

@@ -16,7 +16,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class PopupAlert extends PopupBlueprint implements Initializable {
-
     @FXML private VBox popupContainer;
     @FXML private ImageView alertImage;
     @FXML private Label headerLabel;
@@ -34,12 +33,6 @@ public class PopupAlert extends PopupBlueprint implements Initializable {
         resizeElements(popupContainer, alertImage, buttons, headerLabel, contentLabel);
         alertImage.setId("errorImage");
         initializeUsables();
-
-        Popups.getMenuPopupEnum().getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
-            if (!Popups.getMenuPopupEnum().getPopup().isShowing()) {
-                PageManager.getRoot().setDisable(!aBoolean);
-            }
-        });
     }
 
     public void initializeUsables() {
@@ -58,6 +51,6 @@ public class PopupAlert extends PopupBlueprint implements Initializable {
     public void setAlertImage(Image image) {usableAlertImage.setImage(image);}
 
     public void exitPopup() {
-        PopupManager.removePopup("ALERT");
+        PopupManager.removePopup();
     }
 }

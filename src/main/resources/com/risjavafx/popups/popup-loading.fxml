@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+
+
+<StackPane id="transparent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+           xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+    <ImageView fx:id="progressSpinner" fitHeight="175.0" fitWidth="175.0" pickOnBounds="true" preserveRatio="true"
+               StackPane.alignment="CENTER"/>
+</StackPane>

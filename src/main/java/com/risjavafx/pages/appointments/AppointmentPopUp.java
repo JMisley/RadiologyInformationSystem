@@ -28,8 +28,8 @@ public class AppointmentPopUp implements Initializable {
     public static VBox usablePopupContainer;
 
     public Label appointmentIdLabel;
-    public ComboBox<String> roleComboBoxRad;
     public ComboBox<String> roleComboBoxTech;
+    public ComboBox<String> roleComboBoxRad;
     public ComboBox<String> roleComboBoxPatient;
     public ComboBox<Integer> orderIdComboBox;
     public TextField dateTextField;
@@ -37,22 +37,20 @@ public class AppointmentPopUp implements Initializable {
     public TextField emailTextField;
     public Button cancelButton;
     public Button submitButton;
-    
+
     Miscellaneous misc = new Miscellaneous();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         resizeElements();
         setAppointmentIdLabel();
-        populateComboBoxRadiologist();
-        populateComboBoxTechnician();
+        populateRadTechCombos(roleComboBoxRad);
+        populateRadTechCombos(roleComboBoxTech);
         populateComboBoxPatient();
         setPatientComboBoxListener();
         populateComboBoxOrderFromPatient();
 
         Popups.APPOINTMENT.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
-            PageManager.getRoot().setDisable(!aBoolean);
-
             if (Popups.APPOINTMENT.getPopup().isShowing()) {
                 appointmentIdLabel.setText(String.valueOf(setAppointmentIdLabel()));
                 refreshElements();
@@ -62,6 +60,10 @@ public class AppointmentPopUp implements Initializable {
     }
 
     public void refreshElements() {
+        roleComboBoxRad.getSelectionModel().clearSelection();
+        roleComboBoxTech.getSelectionModel().clearSelection();
+        orderIdComboBox.getSelectionModel().clearSelection();
+        roleComboBoxPatient.getSelectionModel().clearSelection();
         phoneNumberTextField.clear();
         emailTextField.clear();
         dateTextField.clear();
@@ -83,30 +85,11 @@ public class AppointmentPopUp implements Initializable {
         return -1;
     }
 
-
-    public void populateComboBoxTechnician() {
-        try {
-            String sql = """
-                    SELECT full_name
-                      FROM users, users_roles
-                      where users_roles.role_id = 5 AND users_roles.user_id = users.user_id;
-                      """;
-            ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
-            ObservableList<String> oblist = FXCollections.observableArrayList();
-            while (resultSet.next()) {
-                oblist.add(resultSet.getString("full_name"));
-            }
-            roleComboBoxTech.setItems(oblist);
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-    }
-
     public void populateComboBoxPatient() {
         try {
             String sql = """
                     SELECT first_name , last_name
-                      FROM patients;
+                    FROM patients;
                       """;
             ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
             ObservableList<String> oblist = FXCollections.observableArrayList();
@@ -119,19 +102,27 @@ public class AppointmentPopUp implements Initializable {
         }
     }
 
-    public void populateComboBoxRadiologist() {
+    public void populateRadTechCombos(ComboBox<String> comboBox) {
+        int roleId = -1;
+        if (comboBox.equals(roleComboBoxRad)) roleId = 5;
+        else if (comboBox.equals(roleComboBoxTech)) roleId = 4;
+
         try {
             String sql = """           
                     SELECT full_name
                     FROM users, users_roles
-                    where users_roles.role_id = 4 AND users_roles.user_id = users.user_id;
+                    where users_roles.role_id = ? AND users_roles.user_id = users.user_id;
                     """;
-            ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
+
+            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
+            preparedStatement.setInt(1, roleId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
             ObservableList<String> oblist = FXCollections.observableArrayList();
             while (resultSet.next()) {
                 oblist.add(resultSet.getString("full_name"));
             }
-            roleComboBoxRad.setItems(oblist);
+            comboBox.setItems(oblist);
         } catch (Exception exception) {
             exception.printStackTrace();
         }
@@ -147,7 +138,7 @@ public class AppointmentPopUp implements Initializable {
         PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
         preparedStatement.setInt(1, Integer.parseInt(appointmentIdLabel.getText()));
         preparedStatement.setInt(2, pullPatientComboboxId(roleComboBoxPatient.getValue()));
-        preparedStatement.setInt(3,orderIdComboBox.getValue());
+        preparedStatement.setInt(3, orderIdComboBox.getValue());
         preparedStatement.setInt(4, pullModalityComboboxId());
         preparedStatement.setString(5, dateTextField.getText());
         preparedStatement.setInt(6, pullDocComboboxId(roleComboBoxRad.getValue()));
@@ -251,8 +242,8 @@ public class AppointmentPopUp implements Initializable {
     // Returns false if any input field is invalid
     public boolean validInput() {
         return orderIdComboBox.getValue() != null &&
-               roleComboBoxTech.getValue() != null &&
                roleComboBoxRad.getValue() != null &&
+               roleComboBoxTech.getValue() != null &&
                roleComboBoxPatient.getValue() != null &&
                !dateTextField.getText().isBlank() &&
                !phoneNumberTextField.getText().isBlank() &&
@@ -272,8 +263,8 @@ public class AppointmentPopUp implements Initializable {
 
         roleComboBoxPatient.setButtonCell(new PromptButtonCell<>("Patient"));
         orderIdComboBox.setButtonCell(new PromptButtonCell<>("Order ID"));
-        roleComboBoxRad.setButtonCell(new PromptButtonCell<>("Radiologist"));
         roleComboBoxTech.setButtonCell(new PromptButtonCell<>("Technician"));
+        roleComboBoxRad.setButtonCell(new PromptButtonCell<>("Radiologist"));
 
         double fontSize;
         if ((misc.getScreenWidth() / 80) < 20) {
@@ -291,7 +282,7 @@ public class AppointmentPopUp implements Initializable {
         if (validInput()) {
             insertAppointmentQuery();
             Appointments.queryData(Appointments.getLastRowStringQuery());
-            PopupManager.removePopup("MENU");
+            PopupManager.removePopup();
             Notification.createNotification("Submission Complete", "You successfully added a new user");
         } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);
@@ -306,10 +297,11 @@ public class AppointmentPopUp implements Initializable {
     // Onclick for cancel button
     public void cancelButtonOnclick() {
         try {
-            PopupManager.removePopup("MENU");
+            PopupManager.removePopup();
         } catch (Exception ignore) {
         }
     }
+
     public void setPatientComboBoxListener() {
         roleComboBoxPatient.valueProperty().addListener(observable -> {
             String str = roleComboBoxPatient.getValue();

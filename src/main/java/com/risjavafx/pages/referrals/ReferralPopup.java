@@ -2,7 +2,6 @@ package com.risjavafx.pages.referrals;
 
 import com.risjavafx.pages.LoadingService;
 import com.risjavafx.popups.models.PopupAlert;
-import com.risjavafx.pages.PageManager;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
@@ -21,8 +20,6 @@ import java.util.ResourceBundle;
 
 public class ReferralPopup implements Initializable {
     public VBox popupContainer;
-    public static VBox usablePopupContainer;
-
     public Label patientIDLabel;
     public TextField firstNameTextField;
     public TextField lastNameTextField;
@@ -39,15 +36,14 @@ public class ReferralPopup implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         resizeElements();
         setPatientIDLabel();
-        Popups.REFERRALS.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
-            PageManager.getRoot().setDisable(!aBoolean);
+        System.out.println("Boob");
 
-            if (Popups.APPOINTMENT.getPopup().isShowing()) {
+        Popups.REFERRALS.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (aBoolean) {
                 patientIDLabel.setText(String.valueOf(setPatientIDLabel()));
                 refreshElements();
             }
         });
-        usablePopupContainer = popupContainer;
     }
 
     public void refreshElements() {
@@ -124,17 +120,17 @@ public class ReferralPopup implements Initializable {
         submitButton.setStyle("-fx-font-size: " + fontSize);
     }
 
-    //Button Onclicks
+    //Button OnClicks
     // Onclick for submit button
     public void submitButtonOnclick() throws SQLException {
         if (validInput()) {
             insertPatientQuery();
             Referrals.queryData(Referrals.getLastRowStringQuery());
-            PopupManager.removePopup("MENU");
+            PopupManager.removePopup();
             String notiHeader = "Submission Complete";
             String notiText = "You have successfully changed your information";
-            LoadingService.GlobalResetDefault globalReset = new LoadingService.GlobalResetDefault(notiHeader, notiText);
-            globalReset.start();
+            LoadingService.DefaultReset defaultReset = new LoadingService.DefaultReset(notiHeader, notiText);
+            defaultReset.start();
         } else if (!validInput()) {
             PopupManager.createPopup(Popups.ALERT);
             new PopupAlert() {{
@@ -142,14 +138,13 @@ public class ReferralPopup implements Initializable {
                 setContentLabel("Please make sure you filled out all fields");
                 setExitButtonLabel("Retry");
             }};
-
         }
     }
 
     // Onclick for cancel button
     public void cancelButtonOnclick() {
         try {
-            PopupManager.removePopup("MENU");
+            PopupManager.removePopup();
         } catch (Exception ignore) {
         }
     }

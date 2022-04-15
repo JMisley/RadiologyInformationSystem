@@ -39,7 +39,6 @@ public class Home implements Initializable {
         createStackPanesArray();
         createScrollView(tableViewList, stackPanes);
 
-        // SOME PROBLEMS
         PageManager.getScene().rootProperty().addListener(observable -> {
             if (Pages.getPage() == Pages.HOME) {
                 createStackPanesArray();
@@ -68,6 +67,7 @@ public class Home implements Initializable {
     }
 
     private void createStackPanesArray() {
+        stackPanes.clear();
         StackPane adminPane = new StackPane(TableManager.getAdminTable());
         StackPane referralsPane = new StackPane(TableManager.getReferralsTable());
         StackPane appointmentsPane = new StackPane(TableManager.getAppointmentsTable());
@@ -83,6 +83,7 @@ public class Home implements Initializable {
 
     private void refreshTables() {
         tableViewList.getChildren().clear();
+        createStackPanesArray();
         for (StackPane stackPane : stackPanes)
             addToScrollView(stackPane);
     }

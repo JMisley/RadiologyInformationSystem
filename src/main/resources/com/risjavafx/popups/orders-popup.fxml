@@ -9,16 +9,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="popupContainer" spacing="20.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+<VBox fx:id="popupContainer" spacing="35.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.risjavafx.pages.orders.OrdersPopup">
-    <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+    <HBox alignment="CENTER" VBox.vgrow="NEVER">
         <Label text="New Order" textFill="WHITE" underline="true">
             <font>
                 <Font name="Century Gothic" size="24.0"/>
             </font>
         </Label>
     </HBox>
-    <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+    <HBox alignment="CENTER" VBox.vgrow="NEVER">
         <Label text="Order ID:" textFill="WHITE">
             <font>
                 <Font name="Century Gothic" size="14.0"/>
@@ -33,83 +33,26 @@
             </font>
         </Label>
     </HBox>
-    <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
-        <Label text="Referral MD:" textFill="WHITE">
-            <HBox.margin>
-                <Insets right="10.0"/>
-            </HBox.margin>
-            <font>
-                <Font name="Century Gothic" size="14.0"/>
-            </font>
-        </Label>
-        <HBox HBox.hgrow="ALWAYS"/>
-        <ComboBox fx:id="referralMdComboBox" maxHeight="30.0" HBox.hgrow="ALWAYS">
-            <HBox.margin>
-                <Insets/>
-            </HBox.margin>
-        </ComboBox>
+    <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" spacing="30.0" VBox.vgrow="NEVER">
+        <ComboBox fx:id="referralMdComboBox" maxHeight="30.0" prefWidth="150.0" promptText="Referral MD"
+                  HBox.hgrow="NEVER"/>
+        <ComboBox fx:id="modalityComboBox" maxHeight="30.0" promptText="Modality" HBox.hgrow="NEVER"/>
+        <ComboBox fx:id="patientComboBox" maxHeight="30.0" prefWidth="150.0" promptText="Patient" HBox.hgrow="NEVER"/>
     </HBox>
-    <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
-        <Label text="Modality:" textFill="WHITE">
-            <HBox.margin>
-                <Insets right="10.0"/>
-            </HBox.margin>
-            <font>
-                <Font name="Century Gothic" size="14.0"/>
-            </font>
-        </Label>
-        <HBox HBox.hgrow="ALWAYS"/>
-        <ComboBox fx:id="modalityComboBox" maxHeight="30.0" HBox.hgrow="ALWAYS">
-            <HBox.margin>
-                <Insets/>
-            </HBox.margin>
-        </ComboBox>
-    </HBox>
-    <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" VBox.vgrow="ALWAYS">
-        <Label text="Patient:" textFill="WHITE">
-            <HBox.margin>
-                <Insets right="10.0"/>
-            </HBox.margin>
-            <font>
-                <Font name="Century Gothic" size="14.0"/>
-            </font>
-        </Label>
-        <HBox HBox.hgrow="ALWAYS"/>
-        <ComboBox fx:id="patientComboBox" maxHeight="30.0" HBox.hgrow="ALWAYS">
-            <HBox.margin>
-                <Insets/>
-            </HBox.margin>
-        </ComboBox>
-    </HBox>
-    <VBox alignment="CENTER" maxHeight="100.0" VBox.vgrow="ALWAYS">
+    <VBox alignment="CENTER" spacing="10.0" VBox.vgrow="ALWAYS">
         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="522.0" text="Notes:"
                textAlignment="CENTER" textFill="WHITE">
             <font>
                 <Font name="Century Gothic" size="14.0"/>
             </font>
         </Label>
-
-        <TextArea fx:id="notesTextArea">
+        <TextArea fx:id="notesTextArea" VBox.vgrow="ALWAYS">
             <font>
                 <Font name="Arial" size="14.0"/>
             </font>
         </TextArea>
     </VBox>
-    <VBox alignment="CENTER" maxHeight="300.0" VBox.vgrow="ALWAYS">
-        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="18.0" prefWidth="577.0" text="Report:"
-               textAlignment="CENTER" textFill="WHITE">
-            <font>
-                <Font name="Century Gothic" size="14.0"/>
-            </font>
-        </Label>
-
-        <TextArea fx:id="reportTextArea">
-            <font>
-                <Font name="Arial" size="14.0"/>
-            </font>
-        </TextArea>
-    </VBox>
-    <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+    <HBox alignment="CENTER" VBox.vgrow="NEVER">
         <Button id="primaryButton" fx:id="cancelButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="60.0"
                 maxWidth="200.0" mnemonicParsing="false" onAction="#cancelButtonOnclick" text="Cancel"/>
         <HBox HBox.hgrow="ALWAYS"/>
@@ -117,6 +60,6 @@
                 mnemonicParsing="false" onAction="#submitButtonOnclick" text="Submit"/>
     </HBox>
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        <Insets bottom="35.0" left="35.0" right="35.0" top="35.0"/>
     </padding>
 </VBox>
