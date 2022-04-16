@@ -3,7 +3,6 @@ package com.risjavafx.pages.admin;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-
 public class AdminData {
     SimpleIntegerProperty userIdData;
     SimpleStringProperty displayNameData;

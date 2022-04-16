@@ -44,9 +44,11 @@ public class BillingReferralsPopup implements Initializable {
     private final ObservableList<BillingUtils.BillingData> observableList = FXCollections.observableArrayList();
     private final TableColumn<BillingUtils.BillingData, String>
             modalityColumn = new TableColumn<>("Modality"),
+            dateTimeColumn = new TableColumn<>("Date"),
             priceColumn = new TableColumn<>("Price");
     private final ArrayList<TableColumn<BillingUtils.BillingData, String>> tableColumnList = new ArrayList<>() {{
         add(modalityColumn);
+        add(dateTimeColumn);
         add(priceColumn);
     }};
 
@@ -80,7 +82,8 @@ public class BillingReferralsPopup implements Initializable {
 
             tableViewContainer.getChildren().add(infoTable.tableView);
 
-            infoTable.setCustomColumnWidth(modalityColumn, .7);
+            infoTable.setCustomColumnWidth(modalityColumn, .3);
+            infoTable.setCustomColumnWidth(dateTimeColumn, .4);
             infoTable.setCustomColumnWidth(priceColumn, .3);
 
             infoTable.tableView.setItems(observableList);
@@ -91,15 +94,18 @@ public class BillingReferralsPopup implements Initializable {
 
     private void setCellFactoryValues() {
         modalityColumn.setCellValueFactory(new PropertyValueFactory<>("modalityData"));
+        dateTimeColumn.setCellValueFactory(new PropertyValueFactory<>("dateTimeData"));
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("priceData"));
     }
 
     private void queryTotalCost() {
         try {
             String sql = """
-                    SELECT name, price
+                    SELECT name, date_time, price
                     FROM modalities, appointments
-                    WHERE appointments.patient = ? AND appointments.modality = modality_id
+                    WHERE appointments.patient = ?
+                        AND appointments.modality = modality_id
+                        AND appointments.closed = 0
                     """;
             PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, patientId);
@@ -108,6 +114,7 @@ public class BillingReferralsPopup implements Initializable {
             while (resultSet.next()) {
                 observableList.add(new BillingUtils.BillingData(
                         resultSet.getString("name"),
+                        resultSet.getString("date_time"),
                         resultSet.getInt("price")
                 ));
             }

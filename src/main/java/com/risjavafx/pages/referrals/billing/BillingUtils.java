@@ -21,12 +21,15 @@ public class BillingUtils {
         }
     }
 
+
     public static class BillingData {
         SimpleStringProperty modalityData;
+        SimpleStringProperty dateTimeData;
         SimpleIntegerProperty priceData;
 
-        public BillingData(String modality, int price) {
+        public BillingData(String modality, String dateTime, int price) {
             this.modalityData = new SimpleStringProperty(modality);
+            this.dateTimeData = new SimpleStringProperty(dateTime);
             this.priceData = new SimpleIntegerProperty(price);
         }
 
@@ -36,6 +39,14 @@ public class BillingUtils {
 
         public void setModalityData(String modality) {
             this.modalityData.set(modality);
+        }
+
+        public String getDateTimeData() {
+            return dateTimeData.get();
+        }
+
+        public void setDateTimeData(String dateTime) {
+            this.dateTimeData.set(dateTime);
         }
 
         public int getPriceData() {
