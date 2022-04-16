@@ -21,6 +21,8 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class AppointmentPopUp implements Initializable, Loadable {
@@ -49,6 +51,8 @@ public class AppointmentPopUp implements Initializable, Loadable {
         populateComboBoxPatient();
         setPatientComboBoxListener();
         populateComboBoxOrderFromPatient();
+
+
 
         Popups.APPOINTMENT.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
             if (Popups.APPOINTMENT.getPopup().isShowing()) {
@@ -245,7 +249,7 @@ public class AppointmentPopUp implements Initializable, Loadable {
                roleComboBoxRad.getValue() != null &&
                roleComboBoxTech.getValue() != null &&
                roleComboBoxPatient.getValue() != null &&
-               !dateTextField.getText().isBlank() &&
+                (!dateTextField.getText().isBlank() ) &&
                !phoneNumberTextField.getText().isBlank() &&
                !emailTextField.getText().isBlank();
     }
