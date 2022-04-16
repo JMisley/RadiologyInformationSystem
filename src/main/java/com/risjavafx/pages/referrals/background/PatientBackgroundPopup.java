@@ -29,7 +29,6 @@ import java.util.ResourceBundle;
 public class PatientBackgroundPopup implements Initializable, Loadable {
 
 
-
     static int clickedPatientId;
 
     @FXML
@@ -75,14 +74,12 @@ public class PatientBackgroundPopup implements Initializable, Loadable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
 
-        setPatientNameLabel();
-        setPatientClickedId(clickedPatientId);
-
         Popups.PATIENTBACKGROUND.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
             if (Popups.PATIENTBACKGROUND.getPopup().isShowing()) {
                 refreshElements();
-                patientNameLabel.setText(String.valueOf(setPatientNameLabel()));
 
+                setPatientClickedId(clickedPatientId);
+                patientNameLabel.setText(String.valueOf(setPatientNameLabel()));
 
 
             }
@@ -95,14 +92,14 @@ public class PatientBackgroundPopup implements Initializable, Loadable {
     }
 
     public static void setPatientClickedId(int clickedPatientId) {
-        Popups.PATIENTBACKGROUND.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
-            PatientBackgroundPopup.clickedPatientId = clickedPatientId;
-            System.out.println(clickedPatientId);
-        });
+
+        PatientBackgroundPopup.clickedPatientId = clickedPatientId;
+        System.out.println(clickedPatientId);
+
     }
 
     public String setPatientNameLabel() {
-        String answer ="broken";
+        String answer = "broken";
         try {
             String sql = """
                     SELECT first_name, last_name
@@ -119,8 +116,8 @@ public class PatientBackgroundPopup implements Initializable, Loadable {
             //System.out.println(clickedPatientId);
 
             if (resultSet.next()) {
-                answer =  ((resultSet.getString("first_name") + (" ") + resultSet.getString("last_name")));
-                return  answer;
+                answer = ((resultSet.getString("first_name") + (" ") + resultSet.getString("last_name")));
+                return answer;
 
             }
         } catch (Exception exception) {
@@ -129,115 +126,129 @@ public class PatientBackgroundPopup implements Initializable, Loadable {
         return answer;
     }
 
-    public void insertAppointmentQuery() throws SQLException {
-        String sql = """
-                insert into patient_background
-                values (?, ?,  ?, ?, ?, ?);
-                """;
-
-        System.out.println(clickedPatientId);
-        PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
-        preparedStatement.setInt(1, clickedPatientId);
-        preparedStatement.setString(2, addFoodMedicineAllergyTextArea.getText());
-        preparedStatement.setString(3, addTextAreaPreviousSurgeries.getText());
-        preparedStatement.setString(4, addTextAreaCurrentMedication.getText());
-        preparedStatement.setString(5, addTextAreaMedicalDevices.getText());
-        preparedStatement.setString(6, addFamilyIllnessTextArea.getText());
-        preparedStatement.execute();
-
-    }
 
     @FXML
-    void addListItemFamilyIllness(MouseEvent event) throws SQLException{
+    void addListItemFamilyIllness(MouseEvent event) throws SQLException {
         addListItem(FamilyIllnessList, addFamilyIllnessTextArea);
-        insertDataToList("family_illness", addFamilyIllnessTextArea);
+        insertDataToList("family_illness", addFamilyIllnessTextArea, FamilyIllnessList);
     }
 
     @FXML
-    void addListNameCurrentMedication(MouseEvent event) throws SQLException{
+    void addListNameCurrentMedication(MouseEvent event) throws SQLException {
         addListItem(CurrentMedicationList, addTextAreaCurrentMedication);
-        insertDataToList("current_medication", addTextAreaCurrentMedication);
+        insertDataToList("current_medication", addTextAreaCurrentMedication, CurrentMedicationList);
 
     }
 
     @FXML
-    void addListNameFoodMedicine(MouseEvent event) throws SQLException{
+    void addListNameFoodMedicine(MouseEvent event) throws SQLException {
         addListItem(FoodMedicineAllergyList, addFoodMedicineAllergyTextArea);
-       insertDataToList("allergies", addFoodMedicineAllergyTextArea);
+        insertDataToList("allergies", addFoodMedicineAllergyTextArea, FoodMedicineAllergyList);
     }
 
     @FXML
-    void addListNameInstalledMedicalDevices(MouseEvent event) throws SQLException{
+    void addListNameInstalledMedicalDevices(MouseEvent event) throws SQLException {
         addListItem(InstalledMedicalDevicesList, addTextAreaMedicalDevices);
-        insertDataToList("installed_devices", addTextAreaMedicalDevices);
+        insertDataToList("installed_devices", addTextAreaMedicalDevices, InstalledMedicalDevicesList);
     }
 
     @FXML
     void addListNamePreviousSurgeries(MouseEvent event) throws SQLException {
         addListItem(PreviousSurgeriesList, addTextAreaPreviousSurgeries);
-        insertDataToList("previous_surgeries", addTextAreaPreviousSurgeries);
+        insertDataToList("previous_surgeries", addTextAreaPreviousSurgeries, PreviousSurgeriesList);
     }
 
     @FXML
     void removeListFoodMedicine(MouseEvent event) {
         removeListItem(FoodMedicineAllergyList);
+
     }
 
     @FXML
     void removeListItemFamilyIllness(MouseEvent event) {
         removeListItem(FamilyIllnessList);
+
     }
 
     @FXML
     void removeListNameCurrentMedication(MouseEvent event) {
-     removeListItem(CurrentMedicationList);
+        removeListItem(CurrentMedicationList);
     }
 
     @FXML
     void removeListNameInstalledMedicalDevices(MouseEvent event) {
-      removeListItem(InstalledMedicalDevicesList);
+        removeListItem(InstalledMedicalDevicesList);
     }
 
     @FXML
     void removeListNamePreviousSurgeries(MouseEvent event) {
-   removeListItem(PreviousSurgeriesList);
+        removeListItem(PreviousSurgeriesList);
     }
 
     public void cancelButtonOnclick(ActionEvent actionEvent) {
         try {
             PopupManager.removePopup();
-        } catch (Exception ignore) {}
+        } catch (Exception ignore) {
+        }
 
     }
 
-    public void submitButtonOnclick(ActionEvent actionEvent) throws SQLException  {
-    insertAppointmentQuery();
-
-    }
 
     void removeListItem(ListView<String> list) {
         int selectedID = list.getSelectionModel().getSelectedIndex();
+        System.out.println(selectedID);
         list.getItems().remove(selectedID);
+
     }
 
     void addListItem(ListView<String> list, TextField textField) {
         list.getItems().add(textField.getText());
+        int selectedID = list.getSelectionModel().getSelectedIndex();
+    }
+
+    public void insertDataToList(String columnName, TextField textArea, ListView<String> list) throws SQLException {
+        String sql = " ";
+        if (getIsNull(columnName, list)) {
+            sql = """
+                    INSERT INTO patient_background (%$ , index_id, patient_id)
+                    VALUES (?, ?, ?)
+                    """.replace("%$", columnName);
+            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
+            preparedStatement.setString(1, textArea.getText());
+            preparedStatement.setInt(2, (list.getItems().size()  ));
+            preparedStatement.setInt(3, clickedPatientId);
+            preparedStatement.execute();
+            textArea.clear();
+        } else {
+            sql = """
+                      UPDATE patient_background
+                      SET %$ = ?
+                      WHERE index_id = ?;
+                    """.replace("%$", columnName);
+            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
+            preparedStatement.setString(1, textArea.getText());
+            preparedStatement.setInt(2, list.getItems().size() );
+            preparedStatement.execute();
+            textArea.clear();
+        }
 
     }
 
-    public  void insertDataToList(String columnName, TextField textArea) throws  SQLException{
+    public boolean getIsNull(String columnName, ListView<String> list) throws SQLException {
         String sql = """
-                UPDATE patient_background
-                SET %$ = ?
-                WHERE patient_background.patient_id = ? 
-                """.replace("%$", columnName);
-
-
+                SELECT %$
+                    FROM patient_background
+                    WHERE index_id = ?
+                    """.replace("%$", columnName);
         PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
-        preparedStatement.setString(1, textArea.getText());
-        preparedStatement.setInt(2, clickedPatientId);
-        preparedStatement.execute();
-        textArea.clear();
-
+        preparedStatement.setInt(1, list.getItems().size());
+        ResultSet result = preparedStatement.executeQuery();
+        //returns true if it is null
+        String stringResult = "";
+        if (result.next()){
+            stringResult = result.getString(columnName);
+        }
+        System.out.println(stringResult.equals("-1"));
+        return !stringResult.equals("-1");
     }
 }

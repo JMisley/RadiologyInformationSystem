@@ -169,7 +169,7 @@
                      <children>
                         <Label fx:id="patientNameLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="24.0" prefWidth="125.0" text="Label" textFill="WHITE" HBox.hgrow="NEVER" />
                      </children></HBox>
-                  <Button id="primaryButton" fx:id="submitButton" alignment="CENTER" maxHeight="60.0" maxWidth="200.0" mnemonicParsing="false" onAction="#submitButtonOnclick" text="Submit" />
+
                </children>
             </HBox>
          </children>
