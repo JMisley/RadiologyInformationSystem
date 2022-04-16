@@ -345,6 +345,11 @@
     -fx-shape: "";
 }
 
+#smallTableContent .table-cell {
+    -fx-font-size: 14px;
+    -fx-padding: 10px 0 10px 20px;
+}
+
 
 /*Alert box styling---------------------------------------------------------------------------------------------------*/
 #alertBox {

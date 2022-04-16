@@ -7,7 +7,7 @@ public enum Popups {
     ADMIN("admin-popup.fxml", PopupManager.popupMenu, "MENU", true),
     APPOINTMENT("appointment-popup.fxml", PopupManager.popupMenu, "MENU", true),
     ORDERS("orders-popup.fxml", PopupManager.popupMenu, "MENU", true),
-    BILLING("billing-popup.fxml", PopupManager.popupMenu, "MENU", true),
+    BILLING("billing-popup.fxml", PopupManager.largePopupMenu, "LARGE_MENU", true),
     CONFIRMATION("popup-confirmation.fxml", PopupManager.popupAlert, "ALERT", false),
     ALERT("popup-alert.fxml", PopupManager.popupAlert, "ALERT", true),
     LOADING("popup-loading.fxml", PopupManager.popupAlert, "ALERT", true),

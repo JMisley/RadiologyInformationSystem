@@ -5,11 +5,12 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="popupContainer" maxHeight="570.0" maxWidth="500.0" prefHeight="570.0" prefWidth="500.0" spacing="20.0"
-      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+<VBox fx:id="popupContainer" alignment="CENTER" maxHeight="570.0" maxWidth="500.0" prefHeight="570.0" prefWidth="500.0"
+      spacing="20.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.risjavafx.pages.referrals.billing.BillingReferralsPopup">
     <HBox alignment="CENTER" VBox.vgrow="NEVER">
         <Label text="Billing Report" textFill="WHITE" underline="true">
@@ -21,53 +22,90 @@
     <HBox alignment="CENTER">
         <ComboBox fx:id="insuranceComboBox" prefWidth="150.0" promptText="Insurance"/>
     </HBox>
-    <VBox alignment="CENTER_LEFT" spacing="5.0" VBox.vgrow="ALWAYS">
-        <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
-            <Label text="Insurance Bill:" textFill="WHITE">
+    <StackPane fx:id="tableViewContainer" VBox.vgrow="ALWAYS">
+        <VBox.margin>
+            <Insets top="20.0"/>
+        </VBox.margin>
+    </StackPane>
+    <VBox alignment="CENTER">
+        <HBox alignment="CENTER">
+            <Label prefWidth="125.0" text="Subtotal:" textFill="WHITE">
                 <font>
-                    <Font name="Century Gothic" size="16.0"/>
+                    <Font name="Arial" size="16.0"/>
                 </font>
             </Label>
-            <HBox HBox.hgrow="ALWAYS"/>
-            <Label fx:id="insuranceBillLabel" textFill="#bb86fc">
+            <Label fx:id="subtotalLabel" alignment="CENTER_RIGHT" prefWidth="125.0" textFill="#bb86fc">
                 <font>
-                    <Font size="16.0"/>
-                </font>
-            </Label>
-        </HBox>
-        <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
-            <Label text="Patient Bill:" textFill="WHITE">
-                <font>
-                    <Font name="Century Gothic" size="16.0"/>
-                </font>
-            </Label>
-            <HBox HBox.hgrow="ALWAYS"/>
-            <Label fx:id="patientBillLabel" textFill="#bb86fc">
-                <font>
-                    <Font size="16.0"/>
+                    <Font name="Arial Bold" size="18.0"/>
                 </font>
             </Label>
         </HBox>
-        <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
-            <Label text="Total Bill:" textFill="WHITE">
+        <HBox alignment="CENTER">
+            <Label prefWidth="125.0" text="Tax:" textFill="WHITE">
                 <font>
-                    <Font name="Century Gothic" size="16.0"/>
+                    <Font name="Arial" size="16.0"/>
                 </font>
             </Label>
-            <HBox HBox.hgrow="ALWAYS"/>
-            <Label fx:id="totalBillLabel" textFill="#bb86fc">
+            <Label fx:id="taxLabel" alignment="CENTER_RIGHT" prefWidth="125.0" textFill="#bb86fc">
                 <font>
-                    <Font size="16.0"/>
+                    <Font name="Arial Bold" size="18.0"/>
                 </font>
             </Label>
         </HBox>
+        <HBox alignment="CENTER">
+            <Label prefWidth="125.0" style="-fx-border-color: transparent transparent white transparent;"
+                   text="Total Bill:" textFill="WHITE">
+                <font>
+                    <Font name="Arial" size="16.0"/>
+                </font>
+                <HBox.margin>
+                    <Insets bottom="5.0"/>
+                </HBox.margin>
+            </Label>
+            <Label fx:id="totalBillLabel" alignment="CENTER_RIGHT" prefWidth="125.0"
+                   style="-fx-border-color: transparent transparent white transparent;" textFill="#bb86fc">
+                <font>
+                    <Font name="Arial Bold" size="18.0"/>
+                </font>
+                <HBox.margin>
+                    <Insets bottom="5.0"/>
+                </HBox.margin>
+            </Label>
+        </HBox>
+        <HBox alignment="CENTER">
+            <Label prefWidth="125.0" text="Insurance Bill:" textFill="WHITE">
+                <font>
+                    <Font name="Arial" size="16.0"/>
+                </font>
+            </Label>
+            <Label fx:id="insuranceBillLabel" alignment="CENTER_RIGHT" prefWidth="125.0"
+                   textFill="#bb86fc">
+                <font>
+                    <Font name="Arial Bold" size="18.0"/>
+                </font>
+            </Label>
+        </HBox>
+        <HBox alignment="CENTER">
+            <Label prefWidth="125.0" text="Patient Bill:" textFill="WHITE">
+                <font>
+                    <Font name="Arial" size="16.0"/>
+                </font>
+            </Label>
+            <Label fx:id="patientBillLabel" alignment="CENTER_RIGHT" prefWidth="125.0" textFill="#bb86fc">
+                <font>
+                    <Font name="Arial Bold" size="18.0"/>
+                </font>
+            </Label>
+        </HBox>
+        <VBox.margin>
+            <Insets bottom="20.0"/>
+        </VBox.margin>
     </VBox>
     <HBox alignment="CENTER" VBox.vgrow="NEVER">
-        <Button fx:id="closeButton" id="primaryButton" mnemonicParsing="false" maxHeight="60.0" maxWidth="200.0"
-                onAction="#closePopup"
-                text="Close"/>
+        <Button id="primaryButton" fx:id="closeButton" maxHeight="60.0" maxWidth="200.0" mnemonicParsing="false"
+                onAction="#closePopup" text="Close"/>
     </HBox>
     <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        <Insets bottom="35.0" left="35.0" right="35.0" top="35.0"/>
     </padding>
 </VBox>

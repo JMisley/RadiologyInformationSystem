@@ -5,16 +5,11 @@ import javafx.beans.property.SimpleStringProperty;
 
 
 public class AdminData {
-
     SimpleIntegerProperty userIdData;
     SimpleStringProperty displayNameData;
     SimpleStringProperty usernameData;
     SimpleStringProperty emailAddressData;
     SimpleStringProperty systemRoleData;
-
-    public AdminData() {
-
-    }
 
     public AdminData(int userId, String displayName, String username, String emailAdr, String systemRole) {
         this.userIdData = new SimpleIntegerProperty(userId);
