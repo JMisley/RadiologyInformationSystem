@@ -123,8 +123,8 @@ public class OrdersPopup implements Initializable, Loadable {
         String sql = """
                 insert into orders
                 values (?, ?, ?, ?, ?, ?, ?);
-                                
                 """;
+
         PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
         preparedStatement.setInt(1, Integer.parseInt(this.orderIDLabel.getText()));
         preparedStatement.setString(2, patientComboBox.getValue());

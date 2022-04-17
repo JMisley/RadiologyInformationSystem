@@ -56,18 +56,19 @@
 #primaryButton {
     -fx-background-color: #BB86FC;
     -fx-text-fill: white;
-    -fx-font-family: "Century Gothic";
+    /*-fx-font-family: "Century Gothic";*/
 }
 
 #primaryButton:hover {
     -fx-background-color: #BB86FC73;
-    -fx-text-fill: white;
 }
 
+
+/*Custom Buttons------------------------------------------------------------------------------------------------------*/
 #editButton {
     -fx-background-color: #00a293;
     -fx-text-fill: white;
-    -fx-font-family: "Century Gothic";
+    /*-fx-font-family: "Century Gothic";*/
 }
 
 #editButton:hover {
@@ -77,7 +78,7 @@
 #deleteButton {
     -fx-background-color: #CF6676;
     -fx-text-fill: white;
-    -fx-font-family: "Century Gothic";
+    /*-fx-font-family: "Century Gothic";*/
 }
 
 #deleteButton:hover {
@@ -343,6 +344,11 @@
 .table-view .scroll-bar:horizontal .decrement-arrow {
     -fx-padding: 0;
     -fx-shape: "";
+}
+
+#smallTableContent .table-cell {
+    -fx-font-size: 14px;
+    -fx-padding: 10px 0 10px 20px;
 }
 
 

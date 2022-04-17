@@ -56,7 +56,7 @@ public class Appointments implements Initializable, Loadable {
             patient = new TableColumn<>("Patient"),
             modality = new TableColumn<>("Modality"),
             price = new TableColumn<>("Price"),
-            dateTime = new TableColumn<>("Date"),
+            dateTime = new TableColumn<>("Date and Time"),
             radiologist = new TableColumn<>("Radiologist"),
             technician = new TableColumn<>("Technician"),
             closedFlag = new TableColumn<>("Closed");
@@ -145,7 +145,6 @@ public class Appointments implements Initializable, Loadable {
 
     public static void queryData(String sql) throws SQLException {
         // ObservableList<AppointmentData> observableList = FXCollections.observableArrayList();
-
         ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
 
         while (resultSet.next()) {
@@ -177,7 +176,7 @@ public class Appointments implements Initializable, Loadable {
                        patients.last_name,
                        modalities.name,
                        modalities.price,
-                       appointments.date_time,
+                       DATE_FORMAT(appointments.date_time, '%c/%e/%Y %H:%i') as date_time,
                        u1.full_name,
                        u2.full_name,
                        appointments.closed
@@ -196,12 +195,12 @@ public class Appointments implements Initializable, Loadable {
 
     public static String getLastRowStringQuery() {
         return """
-                    SELECT appointments.appointment_id,
+                SELECT appointments.appointment_id,
                        patients.first_name,
                        patients.last_name,
                        modalities.name,
                        modalities.price,
-                       appointments.date_time,
+                       DATE_FORMAT(appointments.date_time, '%c/%e/%Y %H:%i') as date_time,
                        u1.full_name,
                        u2.full_name,
                        appointments.closed
@@ -215,7 +214,8 @@ public class Appointments implements Initializable, Loadable {
                   AND patients.patient_id = appointments.patient
                   AND modalities.modality_id = appointments.modality
                 ORDER BY appointments.appointment_id
-                  DESC LIMIT 1;
+                        DESC
+                LIMIT 1;
                 """;
     }
 
