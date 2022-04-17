@@ -7,7 +7,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
@@ -43,8 +42,6 @@ public class PatientBackgroundPopup implements Initializable, Loadable {
     private TextField addTextAreaPreviousSurgeries;
     @FXML
     private StackPane popupContainer;
-    @FXML
-    private Label patientNameLabel;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -53,7 +50,6 @@ public class PatientBackgroundPopup implements Initializable, Loadable {
             if (Popups.PATIENTBACKGROUND.getPopup().isShowing()) {
                 refreshElements();
                 setPatientClickedId(clickedPatientId);
-                patientNameLabel.setText(String.valueOf(setPatientNameLabel()));
                 try {
                     populateList(FamilyIllnessList, "family_illness");
                     populateList(InstalledMedicalDevicesList, "installed_devices");
@@ -63,50 +59,17 @@ public class PatientBackgroundPopup implements Initializable, Loadable {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-
-
             }
         });
-        // usablePopupContainer = popupContainer;
     }
 
     private void refreshElements() {
-        patientNameLabel.setText("");
     }
 
     public static void setPatientClickedId(int clickedPatientId) {
         PatientBackgroundPopup.clickedPatientId = clickedPatientId;
         System.out.println(clickedPatientId);
     }
-
-    public String setPatientNameLabel() {
-        String answer = "broken";
-        try {
-            String sql = """
-                    SELECT first_name, last_name
-                    FROM  patients
-                    WHERE patients.patient_id = ?;
-                    """;
-
-            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
-            preparedStatement.setInt(1, (clickedPatientId));
-            preparedStatement.execute();
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-
-            //System.out.println(clickedPatientId);
-
-            if (resultSet.next()) {
-                answer = ((resultSet.getString("first_name") + (" ") + resultSet.getString("last_name")));
-                return answer;
-
-            }
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-        return answer;
-    }
-
 
     void removeListItem(ListView<String> list, String columnName) throws SQLException {
         int selectedID = list.getSelectionModel().getSelectedIndex();
@@ -124,10 +87,7 @@ public class PatientBackgroundPopup implements Initializable, Loadable {
         deleteRow(list);
 
         list.getItems().remove(selectedID);
-
-
     }
-
 
     void shiftColumnUp(String columnName, int currentIndex) throws SQLException {
         String sql = """
@@ -209,7 +169,6 @@ public class PatientBackgroundPopup implements Initializable, Loadable {
             preparedStatement.execute();
             textArea.clear();
         }
-
     }
 
     public boolean getIsNull(String columnName, ListView<String> list) throws SQLException {
@@ -245,8 +204,6 @@ public class PatientBackgroundPopup implements Initializable, Loadable {
             if (result.getString(columnName) != (null)) {
                 observableList.add(result.getString(columnName));
             }
-
-
         }
         list.setItems(observableList);
     }
@@ -261,7 +218,6 @@ public class PatientBackgroundPopup implements Initializable, Loadable {
     void addListNameCurrentMedication() throws SQLException {
         addListItem(CurrentMedicationList, addTextAreaCurrentMedication);
         insertDataToList("current_medication", addTextAreaCurrentMedication, CurrentMedicationList);
-
     }
 
     @FXML
@@ -285,13 +241,11 @@ public class PatientBackgroundPopup implements Initializable, Loadable {
     @FXML
     void removeListFoodMedicine() throws SQLException {
         removeListItem(FoodMedicineAllergyList, "allergies");
-
     }
 
     @FXML
     void removeListItemFamilyIllness() throws SQLException {
         removeListItem(FamilyIllnessList, "family_illness");
-
     }
 
     @FXML
@@ -314,8 +268,5 @@ public class PatientBackgroundPopup implements Initializable, Loadable {
             PopupManager.removePopup();
         } catch (Exception ignore) {
         }
-
     }
-
-
 }
