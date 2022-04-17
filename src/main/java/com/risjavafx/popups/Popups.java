@@ -5,14 +5,18 @@ import javafx.stage.Popup;
 
 public enum Popups {
     ADMIN("admin-popup.fxml", PopupManager.popupMenu, "MENU", true),
+    ADMINEDIT("edit-admin-popup.fxml", PopupManager.popupMenu, "MENU", true),
     APPOINTMENT("appointment-popup.fxml", PopupManager.popupMenu, "MENU", true),
+    APPOINTMENT_EDIT("edit-appointment-popup.fxml", PopupManager.popupMenu, "MENU", true),
     ORDERS("orders-popup.fxml", PopupManager.popupMenu, "MENU", true),
+    ORDERS_EDIT("edit-orders-popup.fxml", PopupManager.popupMenu, "MENU", true),
     BILLING("billing-popup.fxml", PopupManager.popupMenu, "MENU", true),
     CONFIRMATION("popup-confirmation.fxml", PopupManager.popupAlert, "ALERT", false),
     ALERT("popup-alert.fxml", PopupManager.popupAlert, "ALERT", true),
     LOADING("popup-loading.fxml", PopupManager.popupAlert, "ALERT", true),
     REFERRALS("referrals/referral-popup.fxml", PopupManager.popupMenu, "MENU", true),
     PATIENTBACKGROUND("referrals/patient-background.fxml", PopupManager.popupMenu, "MENU", true),
+    REFERRALS_EDIT("referrals/edit-referral-popup.fxml", PopupManager.popupMenu, "MENU", true),
     VIEW_REFERRALS("referrals/view-referral-popup.fxml", PopupManager.largePopupMenu, "LARGE_MENU", true);
 
 

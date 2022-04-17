@@ -6,6 +6,7 @@ import com.risjavafx.components.InfoTable;
 import com.risjavafx.components.NavigationBar;
 import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
+import com.risjavafx.pages.LoadingService;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.TableManager;
@@ -95,6 +96,7 @@ public class Orders implements Initializable {
         tableSearchBar.createSearchBar(tableSearchBarContainer);
         tableSearchBarAddButtonListener();
         tableSearchBarAddImageButtonListener();
+        tableSearchBarEditButtonListener();
         setComboBoxItems();
         filterData();
 
@@ -262,6 +264,7 @@ public class Orders implements Initializable {
             } else {
                 tableSearchBar.toggleButtons(true);
             }
+            OrdersEditPopup.setOrderClickedId(infoTable.tableView.getSelectionModel().getSelectedItem().orderIdData.get());
         });
     }
 
@@ -303,7 +306,6 @@ public class Orders implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
         PopupManager.removePopup();
     }
@@ -336,7 +338,9 @@ public class Orders implements Initializable {
             getCancelButton().setOnAction(cancel);
         }};
     }
-
+    public void tableSearchBarEditButtonListener() {
+        tableSearchBar.getEditButton().setOnAction(event -> PopupManager.createPopup(Popups.ORDERS_EDIT));
+    }
     private void uploadImageToDatabase() {
         try {
 

@@ -5,6 +5,7 @@ import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
+import com.risjavafx.pages.admin.AdminEditPopup;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;

@@ -8,6 +8,11 @@ import com.risjavafx.components.NavigationBar;
 import com.risjavafx.components.TableSearchBar;
 import com.risjavafx.components.TitleBar;
 import com.risjavafx.pages.*;
+import com.risjavafx.pages.LoadingService;
+import com.risjavafx.pages.PageManager;
+import com.risjavafx.pages.Pages;
+import com.risjavafx.pages.TableManager;
+import com.risjavafx.pages.admin.AdminEditPopup;
 import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
@@ -91,6 +96,7 @@ public class Appointments implements Initializable, Loadable {
     public void createTableSearchBar() {
         tableSearchBar.createSearchBar(tableSearchBarContainer);
         tableSearchBarAddButtonListener();
+        tableSearchBarEditButtonListener();
         setComboBoxItems();
         filterData();
 
@@ -337,6 +343,7 @@ public class Appointments implements Initializable, Loadable {
             } else {
                 tableSearchBar.toggleButtons(true);
             }
+            AppointmentEditPopup.setAppointmentClickedId(infoTable.tableView.getSelectionModel().getSelectedItem().appointmentId.get());
             tableSearchBar.getCheckInButton().setOnAction(actionEvent ->
                     customCheckInConfirmationPopup(confirm -> confirmCheckIn(), cancel -> PopupManager.removePopup()));
             refreshTable();
@@ -407,5 +414,9 @@ public class Appointments implements Initializable, Loadable {
     public void tableSearchBarAddButtonListener() {
         tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.APPOINTMENT));
 
+    }
+
+    public void tableSearchBarEditButtonListener() {
+        tableSearchBar.getEditButton().setOnAction(event -> PopupManager.createPopup(Popups.APPOINTMENT_EDIT));
     }
 }
