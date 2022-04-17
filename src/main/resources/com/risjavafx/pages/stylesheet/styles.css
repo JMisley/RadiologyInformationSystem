@@ -86,13 +86,13 @@
 }
 
 #checkInButton {
-    -fx-background-color: #660066;
+    -fx-background-color: #8d018d;
     -fx-text-fill: white;
     -fx-font-family: "Century Gothic";
 }
 
 #checkInButton:hover {
-    -fx-background-color: rgba(102, 0, 102, 0.68);
+    -fx-background-color: #8d018d73;
 }
 
 #viewButton {
@@ -113,6 +113,16 @@
 
 #billingButton:hover {
     -fx-background-color: #c18c2973;
+}
+
+#patientBackgroundButton {
+    -fx-background-color: #c21e53;
+    -fx-text-fill: white;
+    -fx-font-family: "Century Gothic";
+}
+
+#patientBackgroundButton:hover {
+    -fx-background-color: #c21e5373;
 }
 
 

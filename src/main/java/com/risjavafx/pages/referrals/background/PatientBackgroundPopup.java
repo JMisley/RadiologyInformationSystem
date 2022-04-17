@@ -10,12 +10,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
+
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
-
 
 public class PatientBackgroundPopup implements Initializable, Loadable {
 
@@ -45,9 +45,10 @@ public class PatientBackgroundPopup implements Initializable, Loadable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        resizeElements();
 
-        Popups.PATIENTBACKGROUND.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
-            if (Popups.PATIENTBACKGROUND.getPopup().isShowing()) {
+        Popups.PATIENT_BACKGROUND.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (Popups.PATIENT_BACKGROUND.getPopup().isShowing()) {
                 refreshElements();
                 setPatientClickedId(clickedPatientId);
                 try {
@@ -64,11 +65,22 @@ public class PatientBackgroundPopup implements Initializable, Loadable {
     }
 
     private void refreshElements() {
+        addFamilyIllnessTextArea.clear();
+        addFoodMedicineAllergyTextArea.clear();
+        addTextAreaCurrentMedication.clear();
+        addTextAreaMedicalDevices.clear();
+        addTextAreaPreviousSurgeries.clear();
+    }
+
+    private void resizeElements() {
+        popupContainer.setPrefHeight(Popups.getMenuDimensions()[0]);
+        popupContainer.setPrefWidth(Popups.getMenuDimensions()[1]);
+        popupContainer.setMaxHeight(Popups.getMenuDimensions()[0]);
+        popupContainer.setMaxWidth(Popups.getMenuDimensions()[1]);
     }
 
     public static void setPatientClickedId(int clickedPatientId) {
         PatientBackgroundPopup.clickedPatientId = clickedPatientId;
-        System.out.println(clickedPatientId);
     }
 
     void removeListItem(ListView<String> list, String columnName) throws SQLException {

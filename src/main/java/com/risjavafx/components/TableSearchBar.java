@@ -18,7 +18,6 @@ public class TableSearchBar implements Initializable {
     @FXML private Label searchLabel;
     @FXML private Button addButton;
     @FXML private Button deleteButton;
-    @FXML private Button editButton;
     @FXML private Button viewButton;
     @FXML private Button checkInButton;
     @FXML private Button billingButton;
@@ -32,7 +31,6 @@ public class TableSearchBar implements Initializable {
 
     private static Button usableAddButton;
     private static Button usableDeleteButton;
-    private static Button usableEditButton;
     private static Button usableCheckInButton;
     private static Button usableViewButton;
     private static Button usableBillingButton;
@@ -54,7 +52,6 @@ public class TableSearchBar implements Initializable {
         usableComboBox = comboBox;
         usableErrorLabel = errorLabel;
         usableAddButton = addButton;
-        usableEditButton = editButton;
         usableDeleteButton = deleteButton;
         usableCheckInButton = checkInButton;
         usableBillingButton = billingButton;
@@ -81,7 +78,7 @@ public class TableSearchBar implements Initializable {
         searchLabel.setStyle("-fx-font-size: " + fontSize + "px");
         textField.setStyle("-fx-font-size: " + (fontSize - 2) + "px ; -fx-font-family: 'Arial'");
 
-        Button[] buttons = {addButton, editButton, deleteButton, checkInButton, viewButton, billingButton, addImageButton, patientBackgroundButton};
+        Button[] buttons = {addButton, deleteButton, checkInButton, viewButton, billingButton, addImageButton, patientBackgroundButton};
         for (Button button : buttons) {
             button.setPrefWidth(misc.getScreenWidth() * .05);
             button.setStyle("-fx-font-size: " + (fontSize - 2) + "px");
@@ -89,7 +86,7 @@ public class TableSearchBar implements Initializable {
     }
 
     public void toggleButtons(boolean showButtons) {
-        showButtons(new Button[] {usableEditButton, usableDeleteButton}, showButtons);
+        showButtons(new Button[] {usableDeleteButton}, showButtons);
 
         if (Pages.getPage().equals(Pages.APPOINTMENTS)) {
             hideButtons(new Button[] {usableBillingButton});
@@ -128,8 +125,6 @@ public class TableSearchBar implements Initializable {
     public Label getErrorLabel() {return usableErrorLabel;}
 
     public Button getAddButton() {return usableAddButton;}
-
-    public Button getEditButton() {return usableEditButton;}
 
     public Button getCheckInButton() {return  usableCheckInButton;}
 

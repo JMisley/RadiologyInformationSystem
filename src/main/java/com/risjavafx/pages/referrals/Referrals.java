@@ -343,6 +343,6 @@ public class Referrals implements Initializable {
     }
 
     public void tableSearchBarPatientBackgroundButtonListener() {
-        tableSearchBar.getPatientBackgroundButton().setOnAction(event -> PopupManager.createPopup(Popups.PATIENTBACKGROUND));
+        tableSearchBar.getPatientBackgroundButton().setOnAction(event -> PopupManager.createPopup(Popups.PATIENT_BACKGROUND));
     }
 }

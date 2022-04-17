@@ -44,8 +44,6 @@ public class OrdersPopup implements Initializable, Loadable {
             if (Popups.ORDERS.getPopup().isShowing()) {
                 orderIDLabel.setText(String.valueOf(setOrderIDLabel()));
                 refreshElements();
-
-
             }
         });
     }
@@ -169,28 +167,35 @@ public class OrdersPopup implements Initializable, Loadable {
     }
 
     public void submitButtonOnclick() throws SQLException {
-        if (this.validInput()) {
-            this.insertOrderQuery();
-            Orders.queryData(Orders.getLastRowStringQuery());
-            PopupManager.removePopup();
+        if (!OrderAlert.isClicked()) {
+            OrderAlert.patientNameToID(patientComboBox.getValue());
+            PopupManager.createPopup(Popups.ORDER_ALERT);
+        } else {
+            if (this.validInput()) {
+                this.insertOrderQuery();
+                Orders.queryData(Orders.getLastRowStringQuery());
+                PopupManager.removePopup();
 
-            Loadable loadable = new OrdersPopup();
-            String notiHeader = "Submission Complete";
-            String notiBody = "You have successfully created a new order";
-            LoadingService.CustomReload customReload = new LoadingService.CustomReload(loadable, notiHeader, notiBody);
-            customReload.start();
-        } else if (!validInput()) {
-            PopupManager.createPopup(Popups.ALERT);
-            new PopupAlert() {{
-                setHeaderLabel("Submission Failed");
-                setContentLabel("Please make sure you filled out all fields");
-                setExitButtonLabel("Retry");
-            }};
+                Loadable loadable = new OrdersPopup();
+                String notiHeader = "Submission Complete";
+                String notiBody = "You have successfully created a new order";
+                LoadingService.CustomReload customReload = new LoadingService.CustomReload(loadable, notiHeader, notiBody);
+                customReload.start();
+            } else if (!validInput()) {
+                PopupManager.createPopup(Popups.ALERT);
+                new PopupAlert() {{
+                    setHeaderLabel("Submission Failed");
+                    setContentLabel("Please make sure you filled out all fields");
+                    setExitButtonLabel("Retry");
+                }};
+            }
+            OrderAlert.toggleClicked();
         }
     }
 
     public void cancelButtonOnclick() {
         try {
+            OrderAlert.resetClicked();
             PopupManager.removePopup();
         } catch (Exception ignored) {
         }

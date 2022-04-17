@@ -399,13 +399,16 @@ public class Appointments implements Initializable, Loadable {
     }
 
     public void confirmDeletion() {
-
-        observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
-        PopupManager.removePopup();
+        try {
+            deleteSelectedItemsQuery("appointments");
+            observableList.removeAll(infoTable.tableView.getSelectionModel().getSelectedItems());
+            PopupManager.removePopup();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void tableSearchBarAddButtonListener() {
         tableSearchBar.getAddButton().setOnAction(event -> PopupManager.createPopup(Popups.APPOINTMENT));
-
     }
 }
