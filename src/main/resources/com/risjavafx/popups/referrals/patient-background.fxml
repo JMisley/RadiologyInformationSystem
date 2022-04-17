@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="popupContainer" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.risjavafx.pages.referrals.background.PatientBackgroundPopup">
+    <children>
+        <VBox>
+            <children>
+                <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                           prefHeight="400.0" prefWidth="600.0">
+                    <children>
+                        <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
+                            <tabs>
+                                <Tab text="Family Illness">
+                                    <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                            <children>
+                                                <VBox layoutX="88.0" layoutY="85.0" prefHeight="202.0"
+                                                      prefWidth="425.0">
+                                                    <children>
+                                                        <ListView fx:id="FamilyIllnessList" prefHeight="195.0"
+                                                                  prefWidth="600.0">
+                                                            <VBox.margin>
+                                                                <Insets/>
+                                                            </VBox.margin>
+                                                        </ListView>
+                                                    </children>
+                                                </VBox>
+                                                <Label fx:id="familyIllnessLabel" alignment="CENTER"
+                                                       contentDisplay="CENTER" layoutY="14.0" prefHeight="50.0"
+                                                       prefWidth="600.0" text="Family Illness" textAlignment="CENTER"
+                                                       textFill="WHITE">
+                                                    <font>
+                                                        <Font size="24.0"/>
+                                                    </font>
+                                                </Label>
+                                                <Button id="primaryButton" alignment="CENTER" contentDisplay="CENTER" layoutX="274.0"
+                                                        layoutY="332.0" mnemonicParsing="false"
+                                                        onMouseClicked="#addListItemFamilyIllness" prefHeight="22.0"
+                                                        prefWidth="53.0" text="Add"/>
+                                                <TextField fx:id="addFamilyIllnessTextArea" alignment="CENTER"
+                                                           layoutX="232.0" layoutY="294.0" prefHeight="31.0"
+                                                           prefWidth="137.0"/>
+                                                <Button id="primaryButton" layoutX="526.0" layoutY="161.0" mnemonicParsing="false"
+                                                        onMouseClicked="#removeListItemFamilyIllness" text="Remove"/>
+
+                                            </children>
+
+                                        </AnchorPane>
+
+                                    </content>
+
+                                </Tab>
+
+                                <Tab text="Food &amp; Medicine ">
+                                    <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                            <children>
+                                                <VBox layoutX="88.0" layoutY="85.0" prefHeight="202.0"
+                                                      prefWidth="425.0">
+                                                    <children>
+                                                        <ListView fx:id="FoodMedicineAllergyList" prefHeight="195.0"
+                                                                  prefWidth="600.0">
+                                                            <VBox.margin>
+                                                                <Insets/>
+                                                            </VBox.margin>
+                                                        </ListView>
+                                                    </children>
+                                                </VBox>
+                                                <Label alignment="CENTER" contentDisplay="CENTER" layoutY="14.0"
+                                                       prefHeight="50.0" prefWidth="600.0"
+                                                       text="Food &amp; Medicine Allergies" textAlignment="CENTER"
+                                                       textFill="WHITE">
+                                                    <font>
+                                                        <Font size="24.0"/>
+                                                    </font>
+                                                </Label>
+                                                <Button id="primaryButton" alignment="CENTER" contentDisplay="CENTER" layoutX="274.0"
+                                                        layoutY="332.0" mnemonicParsing="false"
+                                                        onMouseClicked="#addListNameFoodMedicine" prefHeight="22.0"
+                                                        prefWidth="53.0" text="Add"/>
+                                                <TextField fx:id="addFoodMedicineAllergyTextArea" alignment="CENTER"
+                                                           layoutX="232.0" layoutY="294.0" prefHeight="31.0"
+                                                           prefWidth="137.0"/>
+                                                <Button id="primaryButton" layoutX="526.0" layoutY="161.0" mnemonicParsing="false"
+                                                        onMouseClicked="#removeListFoodMedicine" text="Remove"/>
+                                            </children>
+                                        </AnchorPane>
+                                    </content>
+                                </Tab>
+                                <Tab text="Previous Surgeries">
+                                    <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                            <children>
+                                                <VBox layoutX="88.0" layoutY="85.0" prefHeight="202.0"
+                                                      prefWidth="425.0">
+                                                    <children>
+                                                        <ListView fx:id="PreviousSurgeriesList" prefHeight="195.0"
+                                                                  prefWidth="600.0">
+                                                            <VBox.margin>
+                                                                <Insets/>
+                                                            </VBox.margin>
+                                                        </ListView>
+                                                    </children>
+                                                </VBox>
+                                                <Label alignment="CENTER" contentDisplay="CENTER" layoutY="14.0"
+                                                       prefHeight="50.0" prefWidth="600.0" text="Previous Surgeries"
+                                                       textAlignment="CENTER" textFill="WHITE">
+                                                    <font>
+                                                        <Font size="24.0"/>
+                                                    </font>
+                                                </Label>
+                                                <Button id="primaryButton" alignment="CENTER" contentDisplay="CENTER" layoutX="274.0"
+                                                        layoutY="332.0" mnemonicParsing="false"
+                                                        onMouseClicked="#addListNamePreviousSurgeries" prefHeight="22.0"
+                                                        prefWidth="53.0" text="Add"/>
+                                                <TextField fx:id="addTextAreaPreviousSurgeries" alignment="CENTER"
+                                                           layoutX="232.0" layoutY="294.0" prefHeight="31.0"
+                                                           prefWidth="137.0"/>
+                                                <Button id="primaryButton" layoutX="526.0" layoutY="161.0" mnemonicParsing="false"
+                                                        onMouseClicked="#removeListNamePreviousSurgeries"
+                                                        text="Remove"/>
+                                            </children>
+                                        </AnchorPane>
+                                    </content>
+                                </Tab>
+                                <Tab text="Current Medication">
+                                    <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                            <children>
+                                                <VBox layoutX="88.0" layoutY="85.0" prefHeight="202.0"
+                                                      prefWidth="425.0">
+                                                    <children>
+                                                        <ListView fx:id="CurrentMedicationList" prefHeight="195.0"
+                                                                  prefWidth="600.0">
+                                                            <VBox.margin>
+                                                                <Insets/>
+                                                            </VBox.margin>
+                                                        </ListView>
+                                                    </children>
+                                                </VBox>
+                                                <Label alignment="CENTER" contentDisplay="CENTER" layoutY="14.0"
+                                                       prefHeight="50.0" prefWidth="600.0" text="Current Medication"
+                                                       textAlignment="CENTER" textFill="WHITE">
+                                                    <font>
+                                                        <Font size="24.0"/>
+                                                    </font>
+                                                </Label>
+                                                <Button id="primaryButton" alignment="CENTER" contentDisplay="CENTER" layoutX="274.0"
+                                                        layoutY="332.0" mnemonicParsing="false"
+                                                        onMouseClicked="#addListNameCurrentMedication" prefHeight="22.0"
+                                                        prefWidth="53.0" text="Add"/>
+                                                <TextField fx:id="addTextAreaCurrentMedication" alignment="CENTER"
+                                                           layoutX="232.0" layoutY="294.0" prefHeight="31.0"
+                                                           prefWidth="137.0"/>
+                                                <Button id="primaryButton" layoutX="526.0" layoutY="161.0" mnemonicParsing="false"
+                                                        onMouseClicked="#removeListNameCurrentMedication"
+                                                        text="Remove"/>
+                                            </children>
+
+                                        </AnchorPane>
+                                    </content>
+                                </Tab>
+                                <Tab text="Installed Medical Devices">
+                                    <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                            <children>
+                                                <VBox layoutX="88.0" layoutY="85.0" prefHeight="202.0"
+                                                      prefWidth="425.0">
+                                                    <children>
+                                                        <ListView fx:id="InstalledMedicalDevicesList" prefHeight="195.0"
+                                                                  prefWidth="600.0">
+                                                            <VBox.margin>
+                                                                <Insets/>
+                                                            </VBox.margin>
+                                                        </ListView>
+                                                    </children>
+                                                </VBox>
+                                                <Label alignment="CENTER" contentDisplay="CENTER" layoutY="14.0"
+                                                       prefHeight="50.0" prefWidth="600.0"
+                                                       text="Installed Medical Devices" textAlignment="CENTER"
+                                                       textFill="WHITE">
+                                                    <font>
+                                                        <Font size="24.0"/>
+                                                    </font>
+                                                </Label>
+                                                <Button id="primaryButton" alignment="CENTER" contentDisplay="CENTER" layoutX="274.0"
+                                                        layoutY="332.0" mnemonicParsing="false"
+                                                        onMouseClicked="#addListNameInstalledMedicalDevices"
+                                                        prefHeight="22.0" prefWidth="53.0" text="Add"/>
+                                                <TextField fx:id="addTextAreaMedicalDevices" alignment="CENTER"
+                                                           layoutX="232.0" layoutY="294.0" prefHeight="31.0"
+                                                           prefWidth="137.0"/>
+                                                <Button id="primaryButton" layoutX="526.0" layoutY="161.0" mnemonicParsing="false"
+                                                        onMouseClicked="#removeListNameInstalledMedicalDevices"
+                                                        text="Remove"/>
+                                            </children>
+
+                                        </AnchorPane>
+                                    </content>
+                                </Tab>
+
+                            </tabs>
+
+                        </TabPane>
+
+
+                    </children>
+
+                </StackPane>
+                <HBox alignment="CENTER">
+                    <children>
+                        <Button id="primaryButton" fx:id="cancelButton" alignment="CENTER" contentDisplay="CENTER"
+                                maxHeight="60.0" maxWidth="200.0" mnemonicParsing="false"
+                                onAction="#cancelButtonOnclick" text="Cancel"/>
+                        <HBox HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label fx:id="patientNameLabel" alignment="CENTER" contentDisplay="CENTER"
+                                       prefHeight="24.0" prefWidth="125.0" text="Label" textFill="WHITE"
+                                       HBox.hgrow="NEVER"/>
+                            </children>
+                        </HBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</StackPane>

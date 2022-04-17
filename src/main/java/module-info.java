@@ -36,4 +36,6 @@ module com.example.risjavafx {
     opens com.risjavafx.pages.referrals.billing to javafx.fxml;
     exports com.risjavafx.components.main;
     opens com.risjavafx.components.main to javafx.fxml;
+    exports com.risjavafx.pages.referrals.background;
+    opens com.risjavafx.pages.referrals.background to javafx.fxml;
 }
