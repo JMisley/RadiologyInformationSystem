@@ -18,11 +18,12 @@ public class TableSearchBar implements Initializable {
     @FXML private Label searchLabel;
     @FXML private Button addButton;
     @FXML private Button deleteButton;
-    @FXML private Button editButton;
     @FXML private Button viewButton;
     @FXML private Button checkInButton;
     @FXML private Button billingButton;
     @FXML private Button addImageButton;
+    @FXML private Button patientBackgroundButton;
+
 
     @FXML private TextField textField;
     @FXML private ComboBox<String> comboBox;
@@ -30,11 +31,11 @@ public class TableSearchBar implements Initializable {
 
     private static Button usableAddButton;
     private static Button usableDeleteButton;
-    private static Button usableEditButton;
     private static Button usableCheckInButton;
     private static Button usableViewButton;
     private static Button usableBillingButton;
     private static Button usableAddImageButton;
+    private static Button usablePatientBackgroundButton;
 
     private static TextField usableTextField;
     private static ComboBox<String> usableComboBox;
@@ -51,10 +52,10 @@ public class TableSearchBar implements Initializable {
         usableComboBox = comboBox;
         usableErrorLabel = errorLabel;
         usableAddButton = addButton;
-        usableEditButton = editButton;
         usableDeleteButton = deleteButton;
         usableCheckInButton = checkInButton;
         usableBillingButton = billingButton;
+        usablePatientBackgroundButton = patientBackgroundButton;
         usableViewButton = viewButton;
         usableAddImageButton = addImageButton;
     }
@@ -63,7 +64,7 @@ public class TableSearchBar implements Initializable {
         ComponentsManager.createComponent(Components.TABLE_SEARCH_BAR, tableSearchBar);
     }
 
-    public void resizeElements() {
+    private void resizeElements() {
         Miscellaneous misc = new Miscellaneous();
 
         textField.setPrefHeight(misc.getScreenHeight() * .05);
@@ -77,7 +78,7 @@ public class TableSearchBar implements Initializable {
         searchLabel.setStyle("-fx-font-size: " + fontSize + "px");
         textField.setStyle("-fx-font-size: " + (fontSize - 2) + "px ; -fx-font-family: 'Arial'");
 
-        Button[] buttons = {addButton, editButton, deleteButton, checkInButton, viewButton, billingButton, addImageButton};
+        Button[] buttons = {addButton, deleteButton, checkInButton, viewButton, billingButton, addImageButton, patientBackgroundButton};
         for (Button button : buttons) {
             button.setPrefWidth(misc.getScreenWidth() * .05);
             button.setStyle("-fx-font-size: " + (fontSize - 2) + "px");
@@ -85,7 +86,7 @@ public class TableSearchBar implements Initializable {
     }
 
     public void toggleButtons(boolean showButtons) {
-        showButtons(new Button[] {usableEditButton, usableDeleteButton}, showButtons);
+        showButtons(new Button[] {usableDeleteButton}, showButtons);
 
         if (Pages.getPage().equals(Pages.APPOINTMENTS)) {
             hideButtons(new Button[] {usableBillingButton});
@@ -94,7 +95,7 @@ public class TableSearchBar implements Initializable {
 
         if (Pages.getPage().equals(Pages.REFERRALS)) {
             hideButtons(new Button[] {usableCheckInButton});
-            showButtons(new Button[] {usableViewButton, usableBillingButton}, showButtons);
+            showButtons(new Button[] {usableViewButton, usableBillingButton, usablePatientBackgroundButton}, showButtons);
         }
 
         if (Pages.getPage().equals(Pages.ORDERS)) {
@@ -125,8 +126,6 @@ public class TableSearchBar implements Initializable {
 
     public Button getAddButton() {return usableAddButton;}
 
-    public Button getEditButton() {return usableEditButton;}
-
     public Button getCheckInButton() {return  usableCheckInButton;}
 
     public Button getDeleteButton() {return usableDeleteButton;}
@@ -138,4 +137,7 @@ public class TableSearchBar implements Initializable {
     public Button getBillingButton() { return usableBillingButton;}
 
     public Button getAddImageButton() {return usableAddImageButton;}
+
+    public Button getPatientBackgroundButton() {return usablePatientBackgroundButton;}
+
 }

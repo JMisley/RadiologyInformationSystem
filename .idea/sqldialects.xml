@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/src/main/java/com/risjavafx/components/TableSearchBar.java" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/src/main/java/com/risjavafx/pages/admin/Admin.java" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/src/main/java/com/risjavafx/pages/admin/AdminPopup.java" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/src/main/java/com/risjavafx/pages/login/Login.java" dialect="GenericSQL" />
-    <file url="PROJECT" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/src/main/java/com/risjavafx/pages/appointments/AppointmentPopUp.java" dialect="GenericSQL" />
   </component>
 </project>

@@ -9,6 +9,7 @@ import com.risjavafx.components.TitleBar;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
 import com.risjavafx.pages.TableManager;
+import com.risjavafx.pages.referrals.background.PatientBackgroundPopup;
 import com.risjavafx.pages.referrals.billing.BillingReferralsPopup;
 import com.risjavafx.popups.models.PopupConfirmation;
 import com.risjavafx.popups.PopupManager;
@@ -98,6 +99,7 @@ public class Referrals implements Initializable {
         tableSearchBarAddButtonListener();
         tableSearchBarViewButtonListener();
         tableSearchBarBillingButtonListener();
+        tableSearchBarPatientBackgroundButtonListener();
         setComboBoxItems();
         filterData();
 
@@ -281,6 +283,7 @@ public class Referrals implements Initializable {
             }
             if (infoTable.tableView.getSelectionModel().getSelectedItem() != null) {
                 ViewReferralsPopup.setPatientClickedId(infoTable.tableView.getSelectionModel().getSelectedItem().patientIdData.get());
+                PatientBackgroundPopup.setPatientClickedId(infoTable.tableView.getSelectionModel().getSelectedItem().patientIdData.get());
                 BillingReferralsPopup.setPatientId(infoTable.tableView.getSelectionModel().getSelectedItem().patientIdData.get());
             }
         });
@@ -337,5 +340,9 @@ public class Referrals implements Initializable {
 
     public void tableSearchBarBillingButtonListener() {
         tableSearchBar.getBillingButton().setOnAction(event -> PopupManager.createPopup(Popups.BILLING));
+    }
+
+    public void tableSearchBarPatientBackgroundButtonListener() {
+        tableSearchBar.getPatientBackgroundButton().setOnAction(event -> PopupManager.createPopup(Popups.PATIENT_BACKGROUND));
     }
 }

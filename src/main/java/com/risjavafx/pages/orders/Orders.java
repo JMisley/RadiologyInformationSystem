@@ -297,7 +297,6 @@ public class Orders implements Initializable {
 
     public void confirmDeletion() {
         try {
-            //deleteSelectedItemsQuery("order_id");
             deleteSelectedItemsQuery("orders");
 
         } catch (SQLException e) {

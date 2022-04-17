@@ -3,6 +3,7 @@ package com.risjavafx.pages.referrals.billing;
 import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
 import com.risjavafx.PromptButtonCell;
+import com.risjavafx.components.InfoTable;
 import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
 import javafx.collections.FXCollections;
@@ -11,93 +12,167 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class BillingReferralsPopup implements Initializable {
     public VBox popupContainer;
-    public Label insuranceBillLabel;
-    public Label patientBillLabel;
-    public Label totalBillLabel;
     public Button closeButton;
     public ComboBox<String> insuranceComboBox;
+    public StackPane tableViewContainer;
+    public Label subtotalLabel;
+    public Label taxLabel;
+    public Label totalBillLabel;
+    public Label insuranceBillLabel;
+    public Label patientBillLabel;
 
     private static int patientId;
-    private double totalCost;
+    private double subtotal;
+    private double tax;
+    private double totalBill;
+    private double insuranceBill;
+    private double patientBill;
+
+    private final ObservableList<BillingUtils.BillingData> observableList = FXCollections.observableArrayList();
+    private final TableColumn<BillingUtils.BillingData, String>
+            modalityColumn = new TableColumn<>("Modality"),
+            dateTimeColumn = new TableColumn<>("Date"),
+            priceColumn = new TableColumn<>("Price");
+    private final ArrayList<TableColumn<BillingUtils.BillingData, String>> tableColumnList = new ArrayList<>() {{
+        add(modalityColumn);
+        add(dateTimeColumn);
+        add(priceColumn);
+    }};
+
+    InfoTable<BillingUtils.BillingData, String> infoTable = new InfoTable<>();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         resizeElements();
         populateComboBox();
+        createTable();
 
         Popups.BILLING.getPopup().showingProperty().addListener((observableValue, aBoolean, t1) -> {
+            observableList.clear();
             refreshElements();
-            totalCost = queryTotalCost();
-            insuranceComboBox.valueProperty().addListener(observable -> calculatePatientBill());
+            queryTotalCost();
+
+            insuranceComboBox.valueProperty().addListener(observable -> {
+                if (insuranceComboBox.getSelectionModel().getSelectedItem() != null)
+                    setCostLabels();
+            });
         });
     }
 
-    private double queryTotalCost() {
-        int totalCost = 0;
+    private void createTable() {
         try {
-            
+            setCellFactoryValues();
+
+            infoTable.setColumns(tableColumnList);
+            infoTable.addColumnsToTable();
+            infoTable.tableView.setId("smallTableContent");
+
+            tableViewContainer.getChildren().add(infoTable.tableView);
+
+            infoTable.setCustomColumnWidth(modalityColumn, .3);
+            infoTable.setCustomColumnWidth(dateTimeColumn, .4);
+            infoTable.setCustomColumnWidth(priceColumn, .3);
+
+            infoTable.tableView.setItems(observableList);
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
+    }
+
+    private void setCellFactoryValues() {
+        modalityColumn.setCellValueFactory(new PropertyValueFactory<>("modalityData"));
+        dateTimeColumn.setCellValueFactory(new PropertyValueFactory<>("dateTimeData"));
+        priceColumn.setCellValueFactory(new PropertyValueFactory<>("priceData"));
+    }
+
+    private void queryTotalCost() {
+        try {
             String sql = """
-                    SELECT price
+                    SELECT name, date_time, price
                     FROM modalities, appointments
-                    WHERE appointments.patient = ? AND appointments.modality = modality_id
+                    WHERE appointments.patient = ?
+                        AND appointments.modality = modality_id
+                        AND appointments.closed = 0
                     """;
             PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
             preparedStatement.setInt(1, patientId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                totalCost += resultSet.getInt("price");
+                observableList.add(new BillingUtils.BillingData(
+                        resultSet.getString("name"),
+                        resultSet.getString("date_time"),
+                        resultSet.getInt("price")
+                ));
             }
         } catch (
                 Exception exception) {
             exception.printStackTrace();
         }
-        return totalCost;
+    }
+
+    private void setCostLabels() {
+        runCalculations();
+        subtotalLabel.setText(String.valueOf(subtotal));
+        taxLabel.setText(String.valueOf(Math.round(tax * 100.0) / 100.0));
+        totalBillLabel.setText("$" + Math.round(totalBill * 100.0) / 100.0);
+        insuranceBillLabel.setText("$" + Math.round(insuranceBill * 100.0) / 100.0);
+        patientBillLabel.setText("$" + Math.round(patientBill * 100.0) / 100.0);
+    }
+
+    private void runCalculations() {
+        subtotal = calculateSubtotal();
+        tax = calculateTax();
+        totalBill = calculateTotalBill();
+        insuranceBill = calculateInsuranceBill();
+        patientBill = calculatePatientBill();
+    }
+
+    private double calculateSubtotal() {
+        double subtotal = 0;
+        for (BillingUtils.BillingData billingData : observableList)
+            subtotal += billingData.priceData.get();
+        return subtotal;
+    }
+
+    private double calculateTax() {
+        return subtotal * .07;
     }
 
     private double calculateTotalBill() {
-        double tax = .07;
-        double bill = totalCost * (1 + tax);
-        double roundedBill = Math.round(bill * 100.00) / 100.00;
-        totalBillLabel.setText(String.valueOf(roundedBill));
-        return roundedBill;
+        return subtotal + tax;
     }
 
-    private double[] calculateInsuranceBill() {
-        double insurancePercent = 0;
-        for (InsuranceCompanies insuranceCompany : InsuranceCompanies.values()) {
-            if (insuranceCompany.toString().equals(insuranceComboBox.getValue())) {
-                insurancePercent = insuranceCompany.getPercent();
-            }
+    private double calculateInsuranceBill() {
+        double insurancePercentage = 0;
+        for (BillingUtils.InsuranceCompanies insuranceCompany : BillingUtils.InsuranceCompanies.values()) {
+            if (insuranceCompany.toString().equals(insuranceComboBox.getSelectionModel().getSelectedItem()))
+                insurancePercentage = insuranceCompany.getPercent();
         }
-
-        double totalCost = calculateTotalBill();
-        double insuranceCoverage = totalCost * insurancePercent;
-        double roundedBill = Math.round(insuranceCoverage * 100.00) / 100.00;
-        insuranceBillLabel.setText(String.valueOf(roundedBill));
-        return new double[]{totalCost, roundedBill};
+        return totalBill * insurancePercentage;
     }
 
-    private void calculatePatientBill() {
-        double[] costs = calculateInsuranceBill();
-        double bill = costs[0] - costs[1];
-        double roundedBill = Math.round(bill * 100.00) / 100.00;
-        patientBillLabel.setText(String.valueOf(roundedBill));
+    private double calculatePatientBill() {
+        return totalBill - insuranceBill;
     }
 
     private void populateComboBox() {
         ObservableList<String> insurance = FXCollections.observableArrayList();
         insurance.add("None");
-        for (InsuranceCompanies insuranceCompany : InsuranceCompanies.values()) {
+        for (BillingUtils.InsuranceCompanies insuranceCompany : BillingUtils.InsuranceCompanies.values()) {
             insurance.add(insuranceCompany.toString());
         }
         insuranceComboBox.setItems(insurance);
@@ -105,10 +180,10 @@ public class BillingReferralsPopup implements Initializable {
 
     private void resizeElements() {
         Miscellaneous misc = new Miscellaneous();
-        popupContainer.setPrefHeight(Popups.getMenuDimensions()[0]);
-        popupContainer.setPrefWidth(Popups.getMenuDimensions()[1]);
-        popupContainer.setMaxHeight(Popups.getMenuDimensions()[0]);
-        popupContainer.setMaxWidth(Popups.getMenuDimensions()[1]);
+        popupContainer.setPrefHeight(Popups.getLargeMenuDimensions()[0]);
+        popupContainer.setPrefWidth(Popups.getLargeMenuDimensions()[1]);
+        popupContainer.setMaxHeight(Popups.getLargeMenuDimensions()[0]);
+        popupContainer.setMaxWidth(Popups.getLargeMenuDimensions()[1]);
 
         closeButton.setPrefHeight(misc.getScreenWidth() * .033);
         closeButton.setPrefWidth(misc.getScreenWidth() * .11);
@@ -119,9 +194,11 @@ public class BillingReferralsPopup implements Initializable {
 
     private void refreshElements() {
         insuranceComboBox.getSelectionModel().clearSelection();
-        patientBillLabel.setText("");
-        insuranceBillLabel.setText("");
+        subtotalLabel.setText("");
+        taxLabel.setText("");
         totalBillLabel.setText("");
+        insuranceBillLabel.setText("");
+        patientBillLabel.setText("");
     }
 
     public static void setPatientId(int patientId) {

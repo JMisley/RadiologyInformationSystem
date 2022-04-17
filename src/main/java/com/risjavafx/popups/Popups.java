@@ -7,16 +7,15 @@ public enum Popups {
     ADMIN("admin-popup.fxml", PopupManager.popupMenu, "MENU", true),
     APPOINTMENT("appointment-popup.fxml", PopupManager.popupMenu, "MENU", true),
     ORDERS("orders-popup.fxml", PopupManager.popupMenu, "MENU", true),
-    BILLING("billing-popup.fxml", PopupManager.popupMenu, "MENU", true),
+    BILLING("billing-popup.fxml", PopupManager.largePopupMenu, "LARGE_MENU", true),
     CONFIRMATION("popup-confirmation.fxml", PopupManager.popupAlert, "ALERT", false),
     ALERT("popup-alert.fxml", PopupManager.popupAlert, "ALERT", true),
     LOADING("popup-loading.fxml", PopupManager.popupAlert, "ALERT", true),
     REFERRALS("referrals/referral-popup.fxml", PopupManager.popupMenu, "MENU", true),
+    PATIENT_BACKGROUND("referrals/patient-background.fxml", PopupManager.popupMenu, "MENU", true),
+    ORDER_ALERT("order-alert.fxml", PopupManager.largePopupMenu, "LARGE_MENU", true),
     VIEW_REFERRALS("referrals/view-referral-popup.fxml", PopupManager.largePopupMenu, "LARGE_MENU", true);
 
-    private static Popups menuPopups;
-    private static Popups largeMenuPopups;
-    private static Popups alertPopups;
     private final String filename;
     private final Popup popup;
     private final String type;
@@ -29,10 +28,6 @@ public enum Popups {
         this.popup = popup;
         this.type = type;
         this.isCachable = isCachable;
-    }
-
-    public static Popups[] getAlertPopupsArray() {
-        return new Popups[]{CONFIRMATION, ALERT};
     }
 
     public String getFilename() {
@@ -51,30 +46,6 @@ public enum Popups {
         return isCachable;
     }
 
-    public static void setMenuPopupEnum(Popups popups) {
-        Popups.menuPopups = popups;
-    }
-
-    public static Popups getMenuPopupEnum() {
-        return menuPopups;
-    }
-
-    public static void setAlertPopupEnum(Popups popups) {
-        Popups.alertPopups = popups;
-    }
-
-    public static Popups getAlertPopupEnum() {
-        return alertPopups;
-    }
-
-    public static void setLargeMenuPopupEnum(Popups popups) {
-        Popups.largeMenuPopups = popups;
-    }
-
-    public static Popups getLargeMenuPopupEnum() {
-        return largeMenuPopups;
-    }
-
     public static double[] getMenuDimensions() {
         return new double[]{misc.getScreenWidth() * .315, misc.getScreenWidth() * .285};
     }
@@ -85,9 +56,5 @@ public enum Popups {
 
     public static double[] getAlertDimensions() {
         return new double[]{misc.getScreenHeight() * .3, misc.getScreenHeight() * .415};
-    }
-
-    public static double[] getLoadingDimensions() {
-        return new double[]{175, 175};
     }
 }

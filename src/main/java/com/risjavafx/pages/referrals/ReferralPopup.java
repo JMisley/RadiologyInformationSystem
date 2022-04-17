@@ -9,6 +9,7 @@ import com.risjavafx.Miscellaneous;
 import com.risjavafx.popups.Popups;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
@@ -17,6 +18,8 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class ReferralPopup implements Initializable, Loadable {
@@ -24,7 +27,7 @@ public class ReferralPopup implements Initializable, Loadable {
     public Label patientIDLabel;
     public TextField firstNameTextField;
     public TextField lastNameTextField;
-    public TextField birthDateTextField;
+    public DatePicker birthDatePicker;
     public TextField sexTextField;
     public TextField raceTextField;
     public TextField ethnicityTextField;
@@ -48,7 +51,7 @@ public class ReferralPopup implements Initializable, Loadable {
     public void refreshElements() {
         firstNameTextField.clear();
         lastNameTextField.clear();
-        birthDateTextField.clear();
+        birthDatePicker.setValue(null);
         raceTextField.clear();
         sexTextField.clear();
         ethnicityTextField.clear();
@@ -80,7 +83,11 @@ public class ReferralPopup implements Initializable, Loadable {
         preparedStatement.setInt(1, Integer.parseInt(patientIDLabel.getText()));
         preparedStatement.setString(2, firstNameTextField.getText());
         preparedStatement.setString(3, lastNameTextField.getText());
-        preparedStatement.setString(4, birthDateTextField.getText());
+
+        LocalDate localDate = birthDatePicker.getValue();
+        localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        preparedStatement.setString(4, localDate.toString());
+
         preparedStatement.setString(5, sexTextField.getText());
         preparedStatement.setString(6, raceTextField.getText());
         preparedStatement.setString(7, ethnicityTextField.getText());
@@ -91,7 +98,7 @@ public class ReferralPopup implements Initializable, Loadable {
     // Returns false if any input field is invalid
     public boolean validInput() {
         return !firstNameTextField.getText().isBlank() &&
-               !birthDateTextField.getText().isBlank() &&
+               birthDatePicker.getValue() != null &&
                !lastNameTextField.getText().isBlank() &&
                !sexTextField.getText().isBlank() &&
                !raceTextField.getText().isBlank() &&
