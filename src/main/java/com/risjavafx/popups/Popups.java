@@ -13,7 +13,7 @@ public enum Popups {
     LOADING("popup-loading.fxml", PopupManager.popupAlert, "ALERT", true),
     REFERRALS("referrals/referral-popup.fxml", PopupManager.popupMenu, "MENU", true),
     PATIENT_BACKGROUND("referrals/patient-background.fxml", PopupManager.popupMenu, "MENU", true),
-    ORDER_ALERT("order-alert.fxml", PopupManager.largePopupMenu, "LARGE_MENU", true),
+    ORDER_ALERT("order-alert.fxml", PopupManager.customPopup, "CUSTOM", true),
     VIEW_REFERRALS("referrals/view-referral-popup.fxml", PopupManager.largePopupMenu, "LARGE_MENU", true);
 
     private final String filename;
@@ -56,5 +56,9 @@ public enum Popups {
 
     public static double[] getAlertDimensions() {
         return new double[]{misc.getScreenHeight() * .3, misc.getScreenHeight() * .415};
+    }
+
+    public static double[] getCustomDimensions() {
+        return new double[]{misc.getScreenHeight() * .6, misc.getScreenWidth() * .33};
     }
 }

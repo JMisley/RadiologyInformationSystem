@@ -15,7 +15,7 @@
     <padding>
         <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
     </padding>
-    <Label text="Notice" textFill="WHITE" underline="true">
+    <Label alignment="CENTER" text="Notice" textFill="WHITE" underline="true">
         <font>
             <Font name="Century Gothic" size="48.0"/>
         </font>
@@ -29,9 +29,9 @@
     <ListView fx:id="listView" VBox.vgrow="ALWAYS"/>
     <HBox alignment="CENTER">
         <Button fx:id="cancelButton" id="primaryButton" mnemonicParsing="false" text="Cancel Order" onAction="#cancel"
-                prefHeight="40"/>
+                minHeight="40"/>
         <HBox alignment="CENTER" HBox.hgrow="ALWAYS"/>
         <Button fx:id="confirmButton" id="primaryButton" mnemonicParsing="false" text="Confirm Order"
-                onAction="#confirm" prefHeight="40"/>
+                onAction="#confirm" minHeight="40"/>
     </HBox>
 </VBox>

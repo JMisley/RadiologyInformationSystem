@@ -65,10 +65,8 @@ public class OrderAlert implements Initializable {
 
     private void resizeElements() {
         Miscellaneous misc = new Miscellaneous();
-        popupContainer.setPrefHeight(Popups.getLargeMenuDimensions()[0]);
-        popupContainer.setPrefWidth(Popups.getLargeMenuDimensions()[1]);
-        popupContainer.setMaxHeight(Popups.getLargeMenuDimensions()[0]);
-        popupContainer.setMaxWidth(Popups.getLargeMenuDimensions()[1]);
+        popupContainer.setPrefHeight(Popups.getCustomDimensions()[0]);
+        popupContainer.setPrefWidth(Popups.getCustomDimensions()[1]);
 
         cancelButton.setPrefWidth(misc.getScreenWidth() * .08);
         confirmButton.setPrefWidth(misc.getScreenWidth() * .08);

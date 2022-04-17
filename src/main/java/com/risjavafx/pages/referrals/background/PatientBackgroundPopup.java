@@ -1,4 +1,5 @@
 package com.risjavafx.pages.referrals.background;
+
 import com.risjavafx.Driver;
 import com.risjavafx.pages.Loadable;
 import com.risjavafx.popups.PopupManager;
@@ -88,7 +89,7 @@ public class PatientBackgroundPopup implements Initializable, Loadable {
         String sql = """
                 UPDATE patient_background
                 SET %$ = null
-                WHERE (index_id = ? AND patient_id = ?)
+                WHERE index_id = ? AND patient_id = ?
                 """.replace("%$", columnName);
         PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
         preparedStatement.setInt(1, list.getItems().size());
@@ -119,8 +120,8 @@ public class PatientBackgroundPopup implements Initializable, Loadable {
     }
 
     private void deleteRow(ListView<String> list) throws SQLException {
-        String sql1 =  """
-                SELECT *
+        String sql1 = """
+                SELECT installed_devices, family_illness, allergies, previous_surgeries, current_medication
                 FROM patient_background
                 WHERE index_id = ? AND patient_id = ?
                 """;
@@ -132,17 +133,17 @@ public class PatientBackgroundPopup implements Initializable, Loadable {
         int col = 0, count = 0;
         while (resultSet.next()) {
             col++;
-            if (resultSet.getString(col) == (null))
+            if (resultSet.getString(col) == null)
                 count++;
-
         }
-        preparedStatement.close();
 
-        if (count == 5) {
+        if (count == col) {
             String sql2 = """
-                DELETE FROM patient_background
-                WHERE index_id = ? AND patient_id = ?
-                """;
+                    DELETE FROM patient_background
+                    WHERE index_id = ? AND patient_id = ?
+                    """;
+
+            preparedStatement.close();
             preparedStatement = Driver.getConnection().prepareStatement(sql2);
             preparedStatement.setInt(1, list.getItems().size());
             preparedStatement.setInt(2, clickedPatientId);
@@ -152,53 +153,48 @@ public class PatientBackgroundPopup implements Initializable, Loadable {
 
     void addListItem(ListView<String> list, TextField textField) {
         list.getItems().add(textField.getText());
-
     }
 
     public void insertDataToList(String columnName, TextField textArea, ListView<String> list) throws SQLException {
+        System.out.println("called");
+        PreparedStatement preparedStatement;
         String sql;
-        if (getIsNull(columnName, list)) {
+        if (isRowNull(list)) {
+            System.out.println("insert");
             sql = """
                     INSERT INTO patient_background (%$ , index_id, patient_id)
                     VALUES (?, ?, ?)
                     """.replace("%$", columnName);
-            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
-            preparedStatement.setString(1, textArea.getText());
-            preparedStatement.setInt(2, (list.getItems().size()));
-            preparedStatement.setInt(3, clickedPatientId);
-            preparedStatement.execute();
-            textArea.clear();
         } else {
+            System.out.println("update");
             sql = """
                       UPDATE patient_background
                       SET %$ = ?
                       WHERE index_id = ? AND patient_id = ?;
                     """.replace("%$", columnName);
-            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
-            preparedStatement.setString(1, textArea.getText());
-            preparedStatement.setInt(2, list.getItems().size());
-            preparedStatement.setInt(3, clickedPatientId);
-            preparedStatement.execute();
-            textArea.clear();
         }
+
+        preparedStatement = Driver.getConnection().prepareStatement(sql);
+        preparedStatement.setString(1, textArea.getText());
+        preparedStatement.setInt(2, (list.getItems().size()));
+        preparedStatement.setInt(3, clickedPatientId);
+        preparedStatement.execute();
+        preparedStatement.close();
+        textArea.clear();
     }
 
-    public boolean getIsNull(String columnName, ListView<String> list) throws SQLException {
+    public boolean isRowNull(ListView<String> list) throws SQLException {
         String sql = """
-                SELECT %$
-                    FROM patient_background
-                    WHERE index_id = ? AND patient_id = ?
-                    """.replace("%$", columnName);
+                SELECT installed_devices, family_illness, allergies, previous_surgeries, current_medication
+                FROM patient_background
+                WHERE index_id = ? AND patient_id = ?
+                    """;
         PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
         preparedStatement.setInt(1, list.getItems().size());
         preparedStatement.setInt(2, clickedPatientId);
         ResultSet result = preparedStatement.executeQuery();
-        String stringResult = "";
-        if (result.next()) {
-            stringResult = result.getString(columnName);
-        }
-        System.out.println(stringResult == (null));
-        return stringResult != (null);
+
+        return !result.next();
     }
 
     public void populateList(ListView<String> list, String columnName) throws SQLException {
@@ -212,7 +208,7 @@ public class PatientBackgroundPopup implements Initializable, Loadable {
         ResultSet result = preparedStatement.executeQuery();
         ObservableList<String> observableList = FXCollections.observableArrayList();
         while (result.next()) {
-            if (result.getString(columnName) != (null)) {
+            if (result.getString(columnName) != null) {
                 observableList.add(result.getString(columnName));
             }
         }

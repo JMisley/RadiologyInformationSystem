@@ -18,6 +18,7 @@ public class PopupManager {
     public static Popup popupMenu = new Popup();
     public static Popup largePopupMenu = new Popup();
     public static Popup popupAlert = new Popup();
+    public static Popup customPopup = new Popup();
     private static final ArrayList<Popups> currentPopups = new ArrayList<>();
     static Miscellaneous misc = new Miscellaneous();
 
@@ -57,6 +58,10 @@ public class PopupManager {
                     case "ALERT" -> {
                         popup.getPopup().setY(misc.getScreenHeight() / 2 - Popups.getAlertDimensions()[0] / 2);
                         popup.getPopup().setX(misc.getScreenWidth() / 2 - Popups.getAlertDimensions()[1] / 2);
+                    }
+                    case "CUSTOM" -> {
+                        popup.getPopup().setY(misc.getScreenHeight() / 2 - Popups.getCustomDimensions()[0] / 2);
+                        popup.getPopup().setX(misc.getScreenWidth() / 2 - Popups.getCustomDimensions()[1] / 2);
                     }
                 }
                 cache.put(popup, root);

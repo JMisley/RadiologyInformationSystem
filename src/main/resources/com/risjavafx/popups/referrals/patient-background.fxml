@@ -26,28 +26,24 @@
                         <Insets bottom="30.0" left="50.0" right="50.0" top="30.0"/>
                     </padding>
                     <VBox alignment="CENTER" prefHeight="303.0" prefWidth="425.0" spacing="10.0">
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0"
-                               prefWidth="600.0" text="Family Illness" textAlignment="CENTER"
-                               textFill="WHITE">
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="600.0"
+                               text="Family Illness" textAlignment="CENTER" textFill="WHITE">
                             <font>
                                 <Font size="24.0"/>
                             </font>
                         </Label>
-                        <ListView fx:id="FamilyIllnessList" prefHeight="195.0" prefWidth="600.0"
-                                  VBox.vgrow="ALWAYS">
+                        <ListView fx:id="FamilyIllnessList" prefHeight="195.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
                             <VBox.margin>
                                 <Insets/>
                             </VBox.margin>
                         </ListView>
-                        <TextField fx:id="addFamilyIllnessTextArea" alignment="CENTER"
-                                   VBox.vgrow="NEVER"/>
+                        <TextField fx:id="addFamilyIllnessTextArea" alignment="CENTER" VBox.vgrow="NEVER"/>
                         <HBox alignment="CENTER" spacing="50.0" VBox.vgrow="ALWAYS">
-                            <Button id="primaryButton" alignment="CENTER"
-                                    contentDisplay="CENTER" mnemonicParsing="false"
-                                    onAction="#addListItemFamilyIllness" prefHeight="22.0"
-                                    prefWidth="53.0" text="Add" HBox.hgrow="NEVER"/>
-                            <Button id="primaryButton" mnemonicParsing="false"
-                                    onAction="#removeListItemFamilyIllness" text="Remove"
+                            <Button id="primaryButton" alignment="CENTER" contentDisplay="CENTER" minHeight="30.0"
+                                    minWidth="70.0" mnemonicParsing="false" onAction="#addListItemFamilyIllness"
+                                    text="Add" HBox.hgrow="NEVER"/>
+                            <Button id="primaryButton" alignment="CENTER" minHeight="30.0" minWidth="70.0"
+                                    mnemonicParsing="false" onAction="#removeListItemFamilyIllness" text="Remove"
                                     HBox.hgrow="NEVER"/>
                         </HBox>
                     </VBox>
@@ -58,34 +54,28 @@
                     <padding>
                         <Insets bottom="30.0" left="50.0" right="50.0" top="30.0"/>
                     </padding>
-                    <VBox alignment="CENTER" layoutX="88.0" layoutY="35.0" prefHeight="303.0"
-                          prefWidth="425.0" spacing="10.0">
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0"
-                               prefWidth="600.0" text="Food &amp; Medicine Allergies"
-                               textAlignment="CENTER" textFill="WHITE">
+                    <VBox alignment="CENTER" layoutX="88.0" layoutY="35.0" prefHeight="303.0" prefWidth="425.0"
+                          spacing="10.0">
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="600.0"
+                               text="Food &amp; Medicine Allergies" textAlignment="CENTER" textFill="WHITE">
                             <font>
                                 <Font size="24.0"/>
                             </font>
                         </Label>
-                        <ListView fx:id="FoodMedicineAllergyList" prefHeight="195.0"
-                                  prefWidth="600.0" VBox.vgrow="ALWAYS">
+                        <ListView fx:id="FoodMedicineAllergyList" prefHeight="195.0" prefWidth="600.0"
+                                  VBox.vgrow="ALWAYS">
                             <VBox.margin>
                                 <Insets/>
                             </VBox.margin>
                         </ListView>
-                        <TextField fx:id="addFoodMedicineAllergyTextArea" alignment="CENTER"
-                                   VBox.vgrow="NEVER"/>
+                        <TextField fx:id="addFoodMedicineAllergyTextArea" alignment="CENTER" VBox.vgrow="NEVER"/>
                         <HBox alignment="CENTER" spacing="50.0" VBox.vgrow="ALWAYS">
-                            <Button id="primaryButton" alignment="CENTER"
-                                    contentDisplay="CENTER" mnemonicParsing="false"
-                                    onAction="#addListNameFoodMedicine"
-                                    onMouseClicked="#addListItemFamilyIllness"
-                                    prefHeight="22.0" prefWidth="53.0" text="Add"
+                            <Button id="primaryButton" alignment="CENTER" contentDisplay="CENTER" minHeight="30.0"
+                                    minWidth="70.0" mnemonicParsing="false" onAction="#addListNameFoodMedicine"
+                                    text="Add" HBox.hgrow="NEVER"/>
+                            <Button id="primaryButton" alignment="CENTER" minHeight="30.0" minWidth="70.0"
+                                    mnemonicParsing="false" onAction="#removeListFoodMedicine" text="Remove"
                                     HBox.hgrow="NEVER"/>
-                            <Button id="primaryButton" mnemonicParsing="false"
-                                    onAction="#removeListFoodMedicine"
-                                    onMouseClicked="#removeListItemFamilyIllness"
-                                    text="Remove" HBox.hgrow="NEVER"/>
                         </HBox>
                     </VBox>
                 </StackPane>
@@ -95,34 +85,28 @@
                     <padding>
                         <Insets bottom="30.0" left="50.0" right="50.0" top="30.0"/>
                     </padding>
-                    <VBox alignment="CENTER" layoutX="88.0" layoutY="35.0" prefHeight="303.0"
-                          prefWidth="425.0" spacing="10.0">
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0"
-                               prefWidth="600.0" text="Previous Surgeries"
-                               textAlignment="CENTER" textFill="WHITE">
+                    <VBox alignment="CENTER" layoutX="88.0" layoutY="35.0" prefHeight="303.0" prefWidth="425.0"
+                          spacing="10.0">
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="600.0"
+                               text="Previous Surgeries" textAlignment="CENTER" textFill="WHITE">
                             <font>
                                 <Font size="24.0"/>
                             </font>
                         </Label>
-                        <ListView fx:id="PreviousSurgeriesList" prefHeight="195.0"
-                                  prefWidth="600.0" VBox.vgrow="ALWAYS">
+                        <ListView fx:id="PreviousSurgeriesList" prefHeight="195.0" prefWidth="600.0"
+                                  VBox.vgrow="ALWAYS">
                             <VBox.margin>
                                 <Insets/>
                             </VBox.margin>
                         </ListView>
-                        <TextField fx:id="addTextAreaPreviousSurgeries" alignment="CENTER"
-                                   VBox.vgrow="NEVER"/>
+                        <TextField fx:id="addTextAreaPreviousSurgeries" alignment="CENTER" VBox.vgrow="NEVER"/>
                         <HBox alignment="CENTER" spacing="50.0" VBox.vgrow="ALWAYS">
-                            <Button id="primaryButton" alignment="CENTER"
-                                    contentDisplay="CENTER" mnemonicParsing="false"
-                                    onAction="#addListNamePreviousSurgeries"
-                                    onMouseClicked="#addListItemFamilyIllness"
-                                    prefHeight="22.0" prefWidth="53.0" text="Add"
+                            <Button id="primaryButton" alignment="CENTER" contentDisplay="CENTER" minHeight="30.0"
+                                    minWidth="70.0" mnemonicParsing="false" onAction="#addListNamePreviousSurgeries"
+                                    prefHeight="22.0" prefWidth="53.0" text="Add" HBox.hgrow="NEVER"/>
+                            <Button id="primaryButton" alignment="CENTER" minHeight="30.0" minWidth="70.0"
+                                    mnemonicParsing="false" onAction="#removeListNamePreviousSurgeries" text="Remove"
                                     HBox.hgrow="NEVER"/>
-                            <Button id="primaryButton" mnemonicParsing="false"
-                                    onAction="#removeListNamePreviousSurgeries"
-                                    onMouseClicked="#removeListItemFamilyIllness"
-                                    text="Remove" HBox.hgrow="NEVER"/>
                         </HBox>
                     </VBox>
                 </StackPane>
@@ -132,34 +116,28 @@
                     <padding>
                         <Insets bottom="30.0" left="50.0" right="50.0" top="30.0"/>
                     </padding>
-                    <VBox alignment="CENTER" layoutX="88.0" layoutY="35.0" prefHeight="303.0"
-                          prefWidth="425.0" spacing="10.0">
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0"
-                               prefWidth="600.0" text="Current Medication"
-                               textAlignment="CENTER" textFill="WHITE">
+                    <VBox alignment="CENTER" layoutX="88.0" layoutY="35.0" prefHeight="303.0" prefWidth="425.0"
+                          spacing="10.0">
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="600.0"
+                               text="Current Medication" textAlignment="CENTER" textFill="WHITE">
                             <font>
                                 <Font size="24.0"/>
                             </font>
                         </Label>
-                        <ListView fx:id="CurrentMedicationList" prefHeight="195.0"
-                                  prefWidth="600.0" VBox.vgrow="ALWAYS">
+                        <ListView fx:id="CurrentMedicationList" prefHeight="195.0" prefWidth="600.0"
+                                  VBox.vgrow="ALWAYS">
                             <VBox.margin>
                                 <Insets/>
                             </VBox.margin>
                         </ListView>
-                        <TextField fx:id="addTextAreaCurrentMedication" alignment="CENTER"
-                                   VBox.vgrow="NEVER"/>
+                        <TextField fx:id="addTextAreaCurrentMedication" alignment="CENTER" VBox.vgrow="NEVER"/>
                         <HBox alignment="CENTER" spacing="50.0" VBox.vgrow="ALWAYS">
-                            <Button id="primaryButton" alignment="CENTER"
-                                    contentDisplay="CENTER" mnemonicParsing="false"
-                                    onAction="#addListNameCurrentMedication"
-                                    onMouseClicked="#addListItemFamilyIllness"
-                                    prefHeight="22.0" prefWidth="53.0" text="Add"
+                            <Button id="primaryButton" alignment="CENTER" contentDisplay="CENTER" minHeight="30.0"
+                                    minWidth="70.0" mnemonicParsing="false" onAction="#addListNameCurrentMedication"
+                                    text="Add" HBox.hgrow="NEVER"/>
+                            <Button id="primaryButton" alignment="CENTER" minHeight="30.0" minWidth="70.0"
+                                    mnemonicParsing="false" onAction="#removeListNameCurrentMedication" text="Remove"
                                     HBox.hgrow="NEVER"/>
-                            <Button id="primaryButton" mnemonicParsing="false"
-                                    onAction="#removeListNameCurrentMedication"
-                                    onMouseClicked="#removeListItemFamilyIllness"
-                                    text="Remove" HBox.hgrow="NEVER"/>
                         </HBox>
                     </VBox>
                 </StackPane>
@@ -169,33 +147,27 @@
                     <padding>
                         <Insets bottom="30.0" left="50.0" right="50.0" top="30.0"/>
                     </padding>
-                    <VBox alignment="CENTER" layoutX="88.0" layoutY="35.0" prefHeight="303.0"
-                          prefWidth="425.0" spacing="10.0">
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0"
-                               prefWidth="600.0" text="Installed Medical Devices"
-                               textAlignment="CENTER" textFill="WHITE">
+                    <VBox alignment="CENTER" layoutX="88.0" layoutY="35.0" prefHeight="303.0" prefWidth="425.0"
+                          spacing="10.0">
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="600.0"
+                               text="Installed Medical Devices" textAlignment="CENTER" textFill="WHITE">
                             <font>
                                 <Font size="24.0"/>
                             </font>
                         </Label>
-                        <ListView fx:id="InstalledMedicalDevicesList" prefHeight="195.0"
-                                  prefWidth="600.0" VBox.vgrow="ALWAYS">
+                        <ListView fx:id="InstalledMedicalDevicesList" prefHeight="195.0" prefWidth="600.0"
+                                  VBox.vgrow="ALWAYS">
                             <VBox.margin>
                                 <Insets/>
                             </VBox.margin>
                         </ListView>
-                        <TextField fx:id="addTextAreaMedicalDevices" alignment="CENTER"
-                                   VBox.vgrow="NEVER"/>
+                        <TextField fx:id="addTextAreaMedicalDevices" alignment="CENTER" VBox.vgrow="NEVER"/>
                         <HBox alignment="CENTER" spacing="50.0" VBox.vgrow="ALWAYS">
-                            <Button id="primaryButton" alignment="CENTER"
-                                    contentDisplay="CENTER" mnemonicParsing="false"
-                                    onAction="#addListNameInstalledMedicalDevices"
-                                    onMouseClicked="#addListItemFamilyIllness"
-                                    prefHeight="22.0" prefWidth="53.0" text="Add"
-                                    HBox.hgrow="NEVER"/>
-                            <Button id="primaryButton" mnemonicParsing="false"
-                                    onAction="#removeListNameInstalledMedicalDevices"
-                                    onMouseClicked="#removeListItemFamilyIllness"
+                            <Button id="primaryButton" alignment="CENTER" contentDisplay="CENTER" minHeight="30.0"
+                                    minWidth="70.0" mnemonicParsing="false"
+                                    onAction="#addListNameInstalledMedicalDevices" text="Add" HBox.hgrow="NEVER"/>
+                            <Button id="primaryButton" alignment="CENTER" minHeight="30.0" minWidth="70.0"
+                                    mnemonicParsing="false" onAction="#removeListNameInstalledMedicalDevices"
                                     text="Remove" HBox.hgrow="NEVER"/>
                         </HBox>
                     </VBox>
@@ -203,9 +175,8 @@
             </Tab>
         </TabPane>
         <HBox alignment="CENTER" VBox.vgrow="NEVER">
-            <Button id="primaryButton" alignment="CENTER" contentDisplay="CENTER" maxHeight="60.0"
-                    maxWidth="200.0" mnemonicParsing="false" onAction="#cancelButtonOnclick"
-                    text="Return to Page"/>
+            <Button id="primaryButton" alignment="CENTER" contentDisplay="CENTER" minHeight="30.0" minWidth="100.0"
+                    mnemonicParsing="false" onAction="#cancelButtonOnclick" text="Return to Page"/>
         </HBox>
     </VBox>
 </StackPane>
