@@ -1,5 +1,6 @@
 package com.risjavafx.components.main;
 
+import com.risjavafx.Driver;
 import com.risjavafx.Miscellaneous;
 import com.risjavafx.pages.PageManager;
 import com.risjavafx.pages.Pages;
@@ -7,9 +8,12 @@ import com.risjavafx.popups.PopupManager;
 import com.risjavafx.popups.Popups;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
+import java.util.Objects;
 
 public class Main extends Application {
 
@@ -29,6 +33,8 @@ public class Main extends Application {
         usableStage.setMinHeight(misc.getScreenHeight());
         usableStage.setMaximized(false);
         usableStage.initStyle(StageStyle.UNDECORATED);
+        Image icon = new Image(Objects.requireNonNull(Driver.class.getResourceAsStream("images/appicon.png")));
+        primaryStage.getIcons().add(icon);
         usableStage.show();
     }
 
@@ -47,6 +53,8 @@ public class Main extends Application {
             newStage.setHeight(misc.getScreenHeight() *.8);
             newStage.setWidth(misc.getScreenWidth() * .6);
             newStage.setResizable(false);
+            Image icon = new Image(Objects.requireNonNull(Driver.class.getResourceAsStream("images/appicon.png")));
+            newStage.getIcons().add(icon);
             newStage.show();
         } catch (Exception exception) {
             exception.printStackTrace();
