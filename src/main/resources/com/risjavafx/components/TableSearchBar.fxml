@@ -41,20 +41,20 @@
         <Button id="viewButton" fx:id="addImageButton" managed="false" maxHeight="40.0" mnemonicParsing="false"
                 prefHeight="40.0" text="+Image" visible="false" HBox.hgrow="NEVER"/>
 
-        <Button id="viewButton" fx:id="viewButton" managed="false" maxHeight="40.0" mnemonicParsing="false"
-                prefHeight="40.0" text="View" visible="false" HBox.hgrow="NEVER"/>
+        <Button fx:id="viewButton" managed="false" maxHeight="40.0" mnemonicParsing="false" prefHeight="40.0"
+                text="View" visible="false" HBox.hgrow="NEVER"/>
 
-        <Button id="checkInButton" fx:id="checkInButton" managed="false" maxHeight="40.0" minWidth="85.0"
-                mnemonicParsing="false" prefHeight="40.0" text="Check In" visible="false" HBox.hgrow="NEVER"/>
+        <Button fx:id="checkInButton" managed="false" maxHeight="40.0" minWidth="85.0" mnemonicParsing="false"
+                prefHeight="40.0" text="Check In" visible="false" HBox.hgrow="NEVER"/>
 
-        <Button id="billingButton" fx:id="billingButton" managed="false" maxHeight="40.0" mnemonicParsing="false"
-                prefHeight="40.0" text="Billing" visible="false" HBox.hgrow="NEVER"/>
+        <Button fx:id="billingButton" managed="false" maxHeight="40.0" mnemonicParsing="false" prefHeight="40.0"
+                text="Billing" visible="false" HBox.hgrow="NEVER"/>
 
-        <Button id="deleteButton" fx:id="deleteButton" managed="false" maxHeight="40.0" mnemonicParsing="false"
-                prefHeight="40.0" text="Delete" visible="false" HBox.hgrow="NEVER"/>
+        <Button fx:id="deleteButton" managed="false" maxHeight="40.0" mnemonicParsing="false" prefHeight="40.0"
+                text="Delete" visible="false" HBox.hgrow="NEVER"/>
 
-        <Button id="editButton" fx:id="editButton" managed="false" maxHeight="40.0" mnemonicParsing="false"
-                prefHeight="40.0" text="Edit" visible="false" HBox.hgrow="NEVER"/>
+        <Button fx:id="editButton" managed="false" maxHeight="40.0" mnemonicParsing="false" prefHeight="40.0"
+                text="Edit" visible="false" HBox.hgrow="NEVER"/>
 
         <Button id="primaryButton" fx:id="addButton" maxHeight="40.0" mnemonicParsing="false" prefHeight="40.0"
                 text="Add" HBox.hgrow="NEVER"/>

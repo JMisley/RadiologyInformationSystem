@@ -63,7 +63,7 @@ public class TableSearchBar implements Initializable {
         ComponentsManager.createComponent(Components.TABLE_SEARCH_BAR, tableSearchBar);
     }
 
-    public void resizeElements() {
+    private void resizeElements() {
         Miscellaneous misc = new Miscellaneous();
 
         textField.setPrefHeight(misc.getScreenHeight() * .05);

@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
@@ -59,21 +60,8 @@
         </TextField>
     </HBox>
     <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" spacing="10.0" VBox.vgrow="ALWAYS">
-        <Label text="Date:" textFill="WHITE">
-            <font>
-                <Font name="Century Gothic" size="14.0"/>
-            </font>
-        </Label>
-        <Label text="(YYYY/MM/DD 00:00 am/pm)" textFill="WHITE">
-            <font>
-                <Font name="Century Gothic" size="11.0"/>
-            </font>
-        </Label>
-        <TextField fx:id="dateTextField" maxHeight="30.0" HBox.hgrow="ALWAYS">
-            <font>
-                <Font name="Arial" size="14.0"/>
-            </font>
-        </TextField>
+        <DatePicker fx:id="datePicker" promptText="Date"/>
+        <ComboBox fx:id="timeComboBox" prefWidth="85.0" promptText="Time"/>
 
     </HBox>
     <HBox alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" spacing="10.0" VBox.vgrow="ALWAYS">

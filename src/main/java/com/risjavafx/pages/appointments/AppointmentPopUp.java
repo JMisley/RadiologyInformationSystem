@@ -11,16 +11,15 @@ import com.risjavafx.popups.Popups;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class AppointmentPopUp implements Initializable, Loadable {
@@ -32,7 +31,8 @@ public class AppointmentPopUp implements Initializable, Loadable {
     public ComboBox<String> roleComboBoxRad;
     public ComboBox<String> roleComboBoxPatient;
     public ComboBox<Integer> orderIdComboBox;
-    public TextField dateTextField;
+    public DatePicker datePicker;
+    public ComboBox<String> timeComboBox;
     public TextField phoneNumberTextField;
     public TextField emailTextField;
     public Button cancelButton;
@@ -46,6 +46,7 @@ public class AppointmentPopUp implements Initializable, Loadable {
         setAppointmentIdLabel();
         populateRadTechCombos(roleComboBoxRad);
         populateRadTechCombos(roleComboBoxTech);
+        populateTimeComboBox();
         populateComboBoxPatient();
         setPatientComboBoxListener();
         populateComboBoxOrderFromPatient();
@@ -64,9 +65,10 @@ public class AppointmentPopUp implements Initializable, Loadable {
         roleComboBoxTech.getSelectionModel().clearSelection();
         orderIdComboBox.getSelectionModel().clearSelection();
         roleComboBoxPatient.getSelectionModel().clearSelection();
+        timeComboBox.getSelectionModel().clearSelection();
+        datePicker.setValue(null);
         phoneNumberTextField.clear();
         emailTextField.clear();
-        dateTextField.clear();
     }
 
     public int setAppointmentIdLabel() {
@@ -90,7 +92,7 @@ public class AppointmentPopUp implements Initializable, Loadable {
             String sql = """
                     SELECT first_name , last_name
                     FROM patients;
-                      """;
+                    """;
             ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
             ObservableList<String> oblist = FXCollections.observableArrayList();
             while (resultSet.next()) {
@@ -128,25 +130,40 @@ public class AppointmentPopUp implements Initializable, Loadable {
         }
     }
 
+    private void populateTimeComboBox() {
+        ObservableList<String> observableList = FXCollections.observableArrayList();
+        for (int i = 7; i < 17; i++) {
+            int j = i;
+            if (i > 12) {
+                j = i - 12;
+            }
+            observableList.add(j + ":00");
+            observableList.add(j + ":30");
+        }
+        timeComboBox.setItems(observableList);
+    }
+
     public void insertAppointmentQuery() throws SQLException {
         String sql = """
                 insert into appointments
                 values (?, ?,  ?, ?, ?, ?, ?, ?,? ,0);
                 """;
 
-
         PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
         preparedStatement.setInt(1, Integer.parseInt(appointmentIdLabel.getText()));
         preparedStatement.setInt(2, pullPatientComboboxId(roleComboBoxPatient.getValue()));
         preparedStatement.setInt(3, orderIdComboBox.getValue());
         preparedStatement.setInt(4, pullModalityComboboxId());
-        preparedStatement.setString(5, dateTextField.getText());
+
+        LocalDate localDate = datePicker.getValue();
+        localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        preparedStatement.setString(5, localDate + " " + timeComboBox.getValue() + ":00");
+
         preparedStatement.setInt(6, pullDocComboboxId(roleComboBoxRad.getValue()));
         preparedStatement.setInt(7, pullDocComboboxId(roleComboBoxTech.getValue()));
         preparedStatement.setString(8, phoneNumberTextField.getText());
         preparedStatement.setString(9, emailTextField.getText());
         preparedStatement.execute();
-
     }
 
     public int pullPatientComboboxId(String name) {
@@ -238,18 +255,6 @@ public class AppointmentPopUp implements Initializable, Loadable {
         return -1;
     }
 
-
-    // Returns false if any input field is invalid
-    public boolean validInput() {
-        return orderIdComboBox.getValue() != null &&
-               roleComboBoxRad.getValue() != null &&
-               roleComboBoxTech.getValue() != null &&
-               roleComboBoxPatient.getValue() != null &&
-               !dateTextField.getText().isBlank() &&
-               !phoneNumberTextField.getText().isBlank() &&
-               !emailTextField.getText().isBlank();
-    }
-
     public void resizeElements() {
         popupContainer.setPrefHeight(Popups.getMenuDimensions()[0]);
         popupContainer.setPrefWidth(Popups.getMenuDimensions()[1]);
@@ -265,6 +270,7 @@ public class AppointmentPopUp implements Initializable, Loadable {
         orderIdComboBox.setButtonCell(new PromptButtonCell<>("Order ID"));
         roleComboBoxTech.setButtonCell(new PromptButtonCell<>("Technician"));
         roleComboBoxRad.setButtonCell(new PromptButtonCell<>("Radiologist"));
+        timeComboBox.setButtonCell(new PromptButtonCell<>("Time"));
 
         double fontSize;
         if ((misc.getScreenWidth() / 80) < 20) {
@@ -274,6 +280,27 @@ public class AppointmentPopUp implements Initializable, Loadable {
         }
         cancelButton.setStyle("-fx-font-size: " + fontSize);
         submitButton.setStyle("-fx-font-size: " + fontSize);
+    }
+
+    // Returns false if any input field is invalid
+    public boolean validInput() {
+        boolean validDate;
+        try {
+            LocalDate localDate = datePicker.getValue();
+            localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            validDate = true;
+        } catch (Exception ignored) {
+            validDate = false;
+        }
+
+        return validDate &&
+               orderIdComboBox.getValue() != null &&
+               roleComboBoxRad.getValue() != null &&
+               roleComboBoxTech.getValue() != null &&
+               roleComboBoxPatient.getValue() != null &&
+               datePicker.getValue() != null &&
+               !phoneNumberTextField.getText().isBlank() &&
+               !emailTextField.getText().isBlank();
     }
 
     //Button OnClicks
