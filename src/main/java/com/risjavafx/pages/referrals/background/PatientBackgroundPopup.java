@@ -181,7 +181,6 @@ public class PatientBackgroundPopup implements Initializable, Loadable {
         preparedStatement.setInt(1, list.getItems().size());
         preparedStatement.setInt(2, clickedPatientId);
         ResultSet result = preparedStatement.executeQuery();
-        //returns true if it is null
         String stringResult = "";
         if (result.next()) {
             stringResult = result.getString(columnName);
