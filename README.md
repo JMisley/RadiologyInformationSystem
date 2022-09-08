@@ -88,7 +88,7 @@ TBA
 
 | | |
 |----|----|
-|<img width="1128" alt="admin-patient-image" src="https://user-images.githubusercontent.com/89669123/189007710-0fab2962-590a-462d-9524-17431a43e7fe.png">|![Screenshot (88)](https://user-images.githubusercontent.com/89669123/189007730-46646288-db7e-46cc-b98b-d4c89088db29.png)|
+|<img width="1128" alt="tech-orders" src="https://user-images.githubusercontent.com/89669123/189008036-c673c360-96c4-4beb-9286-676a941487fa.png">|<img width="1128" alt="admin-patient-image" src="https://user-images.githubusercontent.com/89669123/189007710-0fab2962-590a-462d-9524-17431a43e7fe.png">|
 
 ## Contributors
 
