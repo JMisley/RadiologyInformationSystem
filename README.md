@@ -1,4 +1,4 @@
-![feature-graphic](https://user-images.githubusercontent.com/89669123/188997982-308eac46-2977-4944-91e8-58f5632c7d27.png)
+<img width="1128" alt="login-page" src="https://user-images.githubusercontent.com/89669123/189007593-45be9e3c-7cfd-44c7-bd3d-dff1dcf7eeba.png">
 
 <div align="center">
 <h1>Radiology Information System</h1>
@@ -48,6 +48,7 @@ and write/store reports on patient modalities.
         delete orders, as well as fulfill orders with the needed modality.
     </li>
 </ul>
+<br/>
 
 <h2>Application Users</h2>
 <h3><b>Admin</b></h3>
@@ -77,18 +78,18 @@ and write/store reports on patient modalities.
 
 ## Installation
 
-Find it on the <a href="https://play.google.com/store/apps/details?id=com.C4.match4application">PlayStore</a>.
+TBA
 
 ## Screenshots
 
 | | |
 |----|----|
-|![Screenshot_2022-09-07-19-01-47-30_5a1b70452dd1ed87f05464317daa269f](https://user-images.githubusercontent.com/89669123/188998786-988b1285-f25c-4621-a236-3f6acf86ea56.jpg)|![Screenshot_2022-09-07-19-01-57-94_5a1b70452dd1ed87f05464317daa269f](https://user-images.githubusercontent.com/89669123/188998798-5dc6ce2a-b48e-4978-a20b-c73b232f27c0.jpg)|
+|<img width="1128" alt="admin-home" src="https://user-images.githubusercontent.com/89669123/189007637-3dafc1e5-09e5-4d6f-8497-015dbe3251d8.png">|<img width="1128" alt="admin-userinfo" src="https://user-images.githubusercontent.com/89669123/189007676-e53cd9f1-05a5-4089-8609-c74d02e35517.png">|
 
 | | |
 |----|----|
-|![Screenshot_2022-09-07-19-02-06-17_5a1b70452dd1ed87f05464317daa269f](https://user-images.githubusercontent.com/89669123/188998828-463ca20e-b42a-46d3-8aa8-c0b6312e99ad.jpg)|![Screenshot_2022-09-07-19-02-19-11_5a1b70452dd1ed87f05464317daa269f](https://user-images.githubusercontent.com/89669123/188998837-ef33f855-80d0-4552-ab57-8888c65cdd84.jpg)|
+|<img width="1128" alt="admin-patient-image" src="https://user-images.githubusercontent.com/89669123/189007710-0fab2962-590a-462d-9524-17431a43e7fe.png">|![Screenshot (88)](https://user-images.githubusercontent.com/89669123/189007730-46646288-db7e-46cc-b98b-d4c89088db29.png)|
 
 ## Contributors
 
-Darrell Smith, Cal Coussan, Johnny Misley, Steven Mixon.
+John Misley, Caleb Coussan, Thomas Leach, Jonathan Garcia, Jared Hardee.
