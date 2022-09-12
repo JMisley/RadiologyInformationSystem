@@ -81,7 +81,7 @@ and write/store reports on patient modalities.
 Note: You must have Java and MySQL
 <li> Installing the whole project from the "New_Master" branch</li>
 <li> Import the ```ris_database.txt``` file into a MySQL schema, run it, and copy the schema's JDBC string*</li>
-<li> Next, open up the project in an IDE and Navigate to ```src/main/java/com/risjavafx/Driver.java```</li>
+<li> Next, open up the project in an IDE and Navigate to "src/main/java/com/risjavafx/Driver.java"</li>
 <li> Replace the string that says "jdbc string" with the JDBC string you copied</li>
 <li> Replace the string that says "username" with your MySQL username</li>
 <li> Replace the string that says "password" with your MySQL password</li>
