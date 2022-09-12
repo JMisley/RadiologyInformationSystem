@@ -157,3 +157,26 @@ create index role_fk_idx
 create index user_fk_idx
     on users_roles (user_id);
 
+INSERT INTO roles (role_id, name) VALUES (1, 'ADMIN');
+INSERT INTO roles (role_id, name) VALUES (2, 'REFERRAL_MD');
+INSERT INTO roles (role_id, name) VALUES (3, 'RECEPTIONIST');
+INSERT INTO roles (role_id, name) VALUES (4, 'TECHNICIAN');
+INSERT INTO roles (role_id, name) VALUES (5, 'RADIOLOGIST');
+
+INSERT INTO users (user_id, email, full_name, username, password, enabled) VALUES (1, 'admin@gmailcom', 'test admin', 'admin', 'admin', 1);
+INSERT INTO users (user_id, email, full_name, username, password, enabled) VALUES (2, 'geo@gmailcom', 'test doc', 'doc', 'doc', 1);
+INSERT INTO users (user_id, email, full_name, username, password, enabled) VALUES (3, 'desk@gmailcom', 'test desk', 'desk', 'desk', 1);
+INSERT INTO users (user_id, email, full_name, username, password, enabled) VALUES (4, 'tech@gmailcom', 'test tech', 'tech', 'tech', 1);
+INSERT INTO users (user_id, email, full_name, username, password, enabled) VALUES (5, 'rad@gmailcom', 'test rad', 'rad', 'rad', 1);
+
+INSERT INTO users_roles (user_id, role_id, id) VALUES (1, 1, 1);
+INSERT INTO users_roles (user_id, role_id, id) VALUES (2, 2, 2);
+INSERT INTO users_roles (user_id, role_id, id) VALUES (3, 3, 3);
+INSERT INTO users_roles (user_id, role_id, id) VALUES (4, 4, 4);
+INSERT INTO users_roles (user_id, role_id, id) VALUES (5, 5, 5);
+
+INSERT INTO modalities (modality_id, name, price) VALUES (1, 'X-Ray', 150);
+INSERT INTO modalities (modality_id, name, price) VALUES (1, 'Ultrasound', 380);
+INSERT INTO modalities (modality_id, name, price) VALUES (1, 'CT Scan', 350);
+INSERT INTO modalities (modality_id, name, price) VALUES (1, 'MRI', 500);
+INSERT INTO modalities (modality_id, name, price) VALUES (1, 'PET Scan', 3500);
