@@ -1,0 +1,159 @@
+create table alerts
+(
+    alert_id   int auto_increment
+        primary key,
+    alert_name varchar(45) null
+);
+
+create table appointments
+(
+    appointment_id int auto_increment
+        primary key,
+    patient        int           null,
+    order_id       int           null,
+    modality       int           null,
+    date_time      datetime      null,
+    radiologist    int           null,
+    technician     int           null,
+    phone_number   varchar(25)   null,
+    email_address  varchar(50)   null,
+    closed         int default 0 null
+);
+
+create table diagnostic_reports
+(
+    diagnostic_report_id int auto_increment
+        primary key,
+    order_id             int          null,
+    patient              int          null,
+    radiologist          int          null,
+    diagnostic           varchar(250) null
+);
+
+create table file_uploads
+(
+    file_upload_id int auto_increment
+        primary key,
+    order_id       int          null,
+    file_name      varchar(50)  null,
+    file_type      varchar(50)  null,
+    is_active      bit          null,
+    upload_path    varchar(255) null
+);
+
+create table imaging_info
+(
+    imaging_id bigint auto_increment
+        primary key,
+    Image      mediumblob null,
+    order_id   int        null
+);
+
+create table modalities
+(
+    modality_id int auto_increment
+        primary key,
+    name        varchar(25) null,
+    price       int         not null
+);
+
+create table order_status
+(
+    order_status_id int auto_increment
+        primary key,
+    name            varchar(25) null
+);
+
+create table orders
+(
+    order_id    int auto_increment
+        primary key,
+    patient     varchar(50)  null,
+    referral_md varchar(50)  null,
+    modality    varchar(100) null,
+    notes       longtext     null,
+    status      varchar(10)  null,
+    report      longtext     null
+);
+
+create table patient_background
+(
+    index_id           int          not null,
+    patient_id         int          not null,
+    installed_devices  varchar(100) null,
+    family_illness     varchar(100) null,
+    allergies          varchar(100) null,
+    previous_surgeries varchar(100) null,
+    current_medication varchar(100) null,
+    primary key (index_id, patient_id)
+);
+
+create table patients
+(
+    patient_id int auto_increment
+        primary key,
+    first_name varchar(45) null,
+    last_name  varchar(45) null,
+    dob        varchar(50) null,
+    sex        varchar(10) null,
+    race       varchar(50) null,
+    ethnicity  varchar(50) null
+);
+
+create table patients_alerts
+(
+    id          int auto_increment
+        primary key,
+    patient_id  int           not null,
+    alert_id    int           not null,
+    alert_value int default 0 null,
+    constraint alert_fk
+        foreign key (alert_id) references alerts (alert_id),
+    constraint patient_fk
+        foreign key (patient_id) references patients (patient_id)
+);
+
+create index alert_fk_idx
+    on patients_alerts (alert_id);
+
+create index patient_fk_idx
+    on patients_alerts (patient_id);
+
+create table roles
+(
+    role_id int auto_increment
+        primary key,
+    name    varchar(45) not null
+);
+
+create table users
+(
+    user_id   int auto_increment
+        primary key,
+    email     varchar(45) null,
+    full_name varchar(45) null,
+    username  varchar(25) not null,
+    password  varchar(64) not null,
+    enabled   tinyint     null,
+    constraint email_UNIQUE
+        unique (email)
+);
+
+create table users_roles
+(
+    user_id int not null,
+    role_id int not null,
+    id      bigint auto_increment
+        primary key,
+    constraint role_fk
+        foreign key (role_id) references roles (role_id),
+    constraint user_fk
+        foreign key (user_id) references users (user_id)
+);
+
+create index role_fk_idx
+    on users_roles (role_id);
+
+create index user_fk_idx
+    on users_roles (user_id);
+
