@@ -78,7 +78,7 @@ and write/store reports on patient modalities.
 
 ## Installation
 
-TBA
+
 
 ## Screenshots
 
