@@ -78,7 +78,19 @@ and write/store reports on patient modalities.
 
 ## Installation
 
+Note: You must have Java and MySQL
+<li> Installing the whole project from the "New_Master" branch</li>
+<li> Import the ```ris_database.txt``` file into a MySQL schema, run it, and copy the schema's JDBC string*</li>
+<li> Next, open up the project in an IDE and Navigate to ```src/main/java/com/risjavafx/Driver.java```</li>
+<li> Replace the string that says "jdbc string" with the JDBC string you copied</li>
+<li> Replace the string that says "username" with your MySQL username</li>
+<li> Replace the string that says "password" with your MySQL password</li>
 
+*If you right click the schema, typically an option will appear to copy the JDBC string. This may vary for different IDEs.
+
+## Usage
+
+You may now log into the application and use it. In your database, you will see a table entitled "users". It contains all the user information, including usernames, passwords, and user roles. Use this to decide who you'd like to sign in as.
 
 ## Screenshots
 
