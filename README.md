@@ -85,7 +85,7 @@ Note: You must have Java and MySQL
 <li> Replace the string that says "jdbc string" with the JDBC string you copied</li>
 <li> Replace the string that says "username" with your MySQL username</li>
 <li> Replace the string that says "password" with your MySQL password</li>
-
+<br/>
 *If you right click the schema, typically an option will appear to copy the JDBC string. This may vary for different IDEs.
 
 ## Usage
