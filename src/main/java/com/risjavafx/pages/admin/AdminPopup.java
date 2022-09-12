@@ -170,7 +170,6 @@ public class AdminPopup implements Initializable, Loadable {
     //Button OnClicks
     // Onclick for submit button
     public void submitButtonOnclick() {
-        boolean exception = false;
         if (validInput()) {
             try {
                 insertUserQuery();
@@ -184,10 +183,9 @@ public class AdminPopup implements Initializable, Loadable {
                 String notiBody = "You have successfully added a new user";
                 Notification.createNotification(notiHeader, notiBody);
             } catch (Exception e) {
-                exception = true;
+                e.printStackTrace();
             }
-        }
-        if (!validInput() || exception) {
+        } else {
             PopupManager.createPopup(Popups.ALERT);
             new PopupAlert() {{
                 setHeaderLabel("Submission Failed");

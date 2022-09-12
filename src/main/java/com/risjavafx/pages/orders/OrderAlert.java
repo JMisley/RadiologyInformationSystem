@@ -93,6 +93,24 @@ public class OrderAlert implements Initializable {
         }
     }
 
+    public static boolean isEmpty(int patientId) {
+        try {
+            String sql = """
+                SELECT patient_id
+                FROM patient_background
+                WHERE patient_id = ?
+                LIMIT 1
+                """;
+            PreparedStatement preparedStatement = Driver.getConnection().prepareStatement(sql);
+            preparedStatement.setInt(1, patientId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return !resultSet.next();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
     private static String[] splitPatientName(String name) {
         return name.split("\\s+");
     }

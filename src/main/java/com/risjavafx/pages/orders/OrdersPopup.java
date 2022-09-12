@@ -12,6 +12,8 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import com.risjavafx.popups.models.PopupAlert;
@@ -31,6 +33,7 @@ public class OrdersPopup implements Initializable, Loadable {
     public Button cancelButton;
     public Button submitButton;
 
+    public Map<String, Integer> patientNameToIdMap = new HashMap<>();
     Miscellaneous misc = new Miscellaneous();
 
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -87,7 +90,7 @@ public class OrdersPopup implements Initializable, Loadable {
             String sql = """               
                     SELECT full_name
                     FROM users, users_roles
-                    where users_roles.role_id = 3 AND users_roles.user_id = users.user_id;
+                    where users_roles.role_id = 2 AND users_roles.user_id = users.user_id;
                     """;
             ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
             ObservableList<String> oblist = FXCollections.observableArrayList();
@@ -103,13 +106,15 @@ public class OrdersPopup implements Initializable, Loadable {
     public void populateComboBoxPatient() {
         try {
             String sql = """               
-                    SELECT first_name, last_name
+                    SELECT first_name, last_name, patient_id
                     FROM patients
                     """;
             ResultSet resultSet = Driver.getConnection().createStatement().executeQuery(sql);
             ObservableList<String> oblist = FXCollections.observableArrayList();
             while (resultSet.next()) {
-                oblist.add(resultSet.getString("first_name") + " " + resultSet.getString("last_name"));
+                String fullName = resultSet.getString("first_name") + " " + resultSet.getString("last_name");
+                oblist.add(fullName);
+                patientNameToIdMap.put(fullName, resultSet.getInt("patient_id"));
             }
             patientComboBox.setItems(oblist);
         } catch (Exception exception) {
@@ -167,7 +172,7 @@ public class OrdersPopup implements Initializable, Loadable {
     }
 
     public void submitButtonOnclick() throws SQLException {
-        if (!OrderAlert.isClicked()) {
+        if (!OrderAlert.isClicked() && !OrderAlert.isEmpty(patientNameToIdMap.get(patientComboBox.getValue()))) {
             OrderAlert.patientNameToID(patientComboBox.getValue());
             PopupManager.createPopup(Popups.ORDER_ALERT);
         } else {
