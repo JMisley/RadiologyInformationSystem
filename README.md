@@ -78,7 +78,7 @@ and write/store reports on patient modalities.
 
 ## Installation
 
-Note: You must have Java and MySQL
+Note: You must have Java and MySQL installed.
 <li> Installing the whole project from the "New_Master" branch</li>
 <li> Import the ```ris_database.txt``` file into a MySQL schema, run it, and copy the schema's JDBC string*</li>
 <li> Next, open up the project in an IDE and Navigate to "src/main/java/com/risjavafx/Driver.java"</li>
