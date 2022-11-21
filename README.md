@@ -13,12 +13,12 @@ and write/store reports on patient modalities.
 <h2>Navigation Menu Features</h2>
 <h3><b>Home</b></h3>
 <ul>
-    <li>Shows a list of all tables that the user is authorized to view.</li>
+    <li>Shows a list of all tables that the user is authorized to view. Tables cannot be modified in this section.</li>
 </ul>
 
 <h3><b>User Info</b></h3>
 <ul>
-    <li>Shows the user's personal and account information. User may change is at any time.</li>
+    <li>Shows the user's personal and account information. User may change it at any time.</li>
 </ul>
 
 <h3><b>Admin</b></h3>
